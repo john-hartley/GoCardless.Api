@@ -109,5 +109,30 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result.Subscription.Links, Is.Not.Null);
             Assert.That(result.Subscription.Links.Mandate, Is.EqualTo("MD0003T17KJWM8"));
         }
+
+        [Test]
+        public async Task UpdatesSubscription()
+        {
+            // given
+            var request = new UpdateSubscriptionRequest
+            {
+                Id = "SB0000G9PZP814",
+                Amount = 456,
+                Name = "Updated subscription name"
+            };
+
+            var subject = new SubscriptionsClient(_accessToken);
+
+            // when
+            var result = await subject.UpdateAsync(request);
+
+            // then
+            Assert.That(result.Subscription.Id, Is.EqualTo(request));
+            Assert.That(result.Subscription.Amount, Is.EqualTo(request.Amount));
+            Assert.That(result.Subscription.AppFee, Is.EqualTo(0));
+            Assert.That(result.Subscription.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(result.Subscription.Name, Is.EqualTo(request.Name));
+            Assert.That(result.Subscription.PaymentReference, Is.Null);
+        }
     }
 }

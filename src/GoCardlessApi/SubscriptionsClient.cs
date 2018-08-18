@@ -61,5 +61,28 @@ namespace GoCardlessApi
                 .GetJsonAsync<SubscriptionResponse>()
                 .ConfigureAwait(false);
         }
+
+        public async Task<UpdateSubscriptionResponse> UpdateAsync(UpdateSubscriptionRequest request)
+        {
+            var envelope = new { subscriptions = request };
+            Debug.WriteLine(JsonConvert.SerializeObject(envelope));
+
+            try
+            {
+                var response = await "https://api-sandbox.gocardless.com/"
+                    .WithHeader("Authorization", $"Bearer {_accessToken}")
+                    .WithHeader("GoCardless-Version", "2015-07-06")
+                    .AppendPathSegments("subscriptions", request.Id)
+                    .PutJsonAsync(envelope)
+                    .ReceiveJson<UpdateSubscriptionResponse>();
+                return response;
+            }
+            catch (FlurlHttpException ex)
+            {
+                var error = await ex.GetResponseJsonAsync();
+            }
+
+            return null;
+        }
     }
 }
