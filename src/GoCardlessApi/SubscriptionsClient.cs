@@ -24,7 +24,8 @@ namespace GoCardlessApi
                 .WithHeader("Authorization", $"Bearer {_accessToken}")
                 .WithHeader("GoCardless-Version", "2015-07-06")
                 .AppendPathSegment("subscriptions")
-                .GetJsonAsync<SubscriptionsResponse>();
+                .GetJsonAsync<SubscriptionsResponse>()
+                .ConfigureAwait(false);
         }
 
         public async Task<CreateSubscriptionResponse> CreateAsync(CreateSubscriptionRequest request)
@@ -35,16 +36,13 @@ namespace GoCardlessApi
             try
             {
                 var idempotencyKey = Guid.NewGuid().ToString();
-                Debug.WriteLine(idempotencyKey);
-                var rawResponse = await "https://api-sandbox.gocardless.com/"
+                return await "https://api-sandbox.gocardless.com/"
                     .WithHeader("Authorization", $"Bearer {_accessToken}")
                     .WithHeader("GoCardless-Version", "2015-07-06")
                     .WithHeader("Idempotency-Key", idempotencyKey)
                     .AppendPathSegment("subscriptions")
                     .PostJsonAsync(envelope)
-                    .ReceiveString();
-
-                Debug.WriteLine(rawResponse);
+                    .ReceiveJson<CreateSubscriptionResponse>();
             }
             catch (FlurlHttpException ex)
             {
@@ -60,7 +58,8 @@ namespace GoCardlessApi
                 .WithHeader("Authorization", $"Bearer {_accessToken}")
                 .WithHeader("GoCardless-Version", "2015-07-06")
                 .AppendPathSegments("subscriptions", subscriptionId)
-                .GetJsonAsync<SubscriptionResponse>();
+                .GetJsonAsync<SubscriptionResponse>()
+                .ConfigureAwait(false);
         }
     }
 }

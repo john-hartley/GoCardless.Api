@@ -21,7 +21,7 @@ namespace GoCardlessApi
         [JsonProperty("interval_unit")]
         public string IntervalUnit { get; set; }
         [JsonProperty("day_of_month")]
-        public int DayOfMonth { get; set; }
+        public int? DayOfMonth { get; set; }
         public string Month { get; set; }
         [JsonProperty("payment_reference")]
         public string PaymentReference { get; set; }
@@ -29,7 +29,7 @@ namespace GoCardlessApi
         public IEnumerable<UpcomingPayment> UpcomingPayments { get; set; }
         public IDictionary<string, string> Metadata { get; set; }
         [JsonProperty("app_fee")]
-        public int AppFee { get; set; }
+        public int? AppFee { get; set; }
         public Links Links { get; set; }
         public Meta Meta { get; set; }
     }
