@@ -134,5 +134,24 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result.Subscription.Name, Is.EqualTo(request.Name));
             Assert.That(result.Subscription.PaymentReference, Is.Null);
         }
+
+        [Test]
+        public async Task CancelsSubscription()
+        {
+            // given
+            var request = new CancelSubscriptionRequest
+            {
+                Id = "SB0000GN09Z7CY"
+            };
+
+            var subject = new SubscriptionsClient(_accessToken);
+
+            // when
+            var result = await subject.CancelAsync(request);
+
+            // then
+            Assert.That(result.Subscription.Id, Is.EqualTo(request.Id));
+            Assert.That(result.Subscription.Status, Is.EqualTo("cancelled"));
+        }
     }
 }

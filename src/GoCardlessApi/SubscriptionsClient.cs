@@ -84,5 +84,27 @@ namespace GoCardlessApi
 
             return null;
         }
+
+        public async Task<CancelSubscriptionResponse> CancelAsync(CancelSubscriptionRequest request)
+        {
+            Debug.WriteLine(JsonConvert.SerializeObject(request));
+
+            try
+            {
+                var response = await "https://api-sandbox.gocardless.com/"
+                    .WithHeader("Authorization", $"Bearer {_accessToken}")
+                    .WithHeader("GoCardless-Version", "2015-07-06")
+                    .AppendPathSegments("subscriptions", request.Id, "actions", "cancel")
+                    .PostJsonAsync(request)
+                    .ReceiveJson<CancelSubscriptionResponse>();
+                return response;
+            }
+            catch (FlurlHttpException ex)
+            {
+                var error = await ex.GetResponseJsonAsync();
+            }
+
+            return null;
+        }
     }
 }
