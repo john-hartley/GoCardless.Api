@@ -35,7 +35,5 @@ namespace GoCardlessApi
         public string StartDate { get; set; }
         [JsonProperty("links")]
         public Links Links { get; set; }
-        //[JsonProperty("idempotency_key")]
-        //public string IdempotencyKey { get; set; }
     }
 }

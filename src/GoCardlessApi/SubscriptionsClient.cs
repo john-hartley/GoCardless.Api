@@ -30,16 +30,21 @@ namespace GoCardlessApi
         public async Task<CreateSubscriptionResponse> CreateAsync(CreateSubscriptionRequest request)
         {
             var envelope = new { subscriptions = request };
-            Debug.Write(JsonConvert.SerializeObject(envelope));
+            Debug.WriteLine(JsonConvert.SerializeObject(envelope));
 
             try
             {
+                var idempotencyKey = Guid.NewGuid().ToString();
+                Debug.WriteLine(idempotencyKey);
                 var rawResponse = await "https://api-sandbox.gocardless.com/"
                     .WithHeader("Authorization", $"Bearer {_accessToken}")
                     .WithHeader("GoCardless-Version", "2015-07-06")
+                    .WithHeader("Idempotency-Key", idempotencyKey)
                     .AppendPathSegment("subscriptions")
                     .PostJsonAsync(envelope)
                     .ReceiveString();
+
+                Debug.WriteLine(rawResponse);
             }
             catch (FlurlHttpException ex)
             {

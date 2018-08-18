@@ -35,8 +35,7 @@ namespace GoCardlessApi.Tests.Integration
                 Links = new Links
                 {
                     Mandate = "MD0003T17KJWM8"
-                },
-                //IdempotencyKey = Guid.NewGuid().ToString()
+                }
             };
             var subject = new SubscriptionsClient(_accessToken);
 
