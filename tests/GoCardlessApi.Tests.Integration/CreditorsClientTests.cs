@@ -33,5 +33,39 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result.Creditor.VerificationStatus, Is.EqualTo("successful"));
             Assert.That(result.Creditor.CanCreateRefunds, Is.False);
         }
+
+        [Test]
+        public async Task UpdatesCreditor()
+        {
+            // given
+            var request = new UpdateCreditorRequest
+            {
+                Id = "CR00005N9ZWBFK",
+                AddressLine1 = "Address Line 1",
+                AddressLine2 = "Address Line 2",
+                AddressLine3 = "Address Line 3",
+                City = "London",
+                CountryCode = "GB",
+                Name = "API Client Development",
+                PostCode = "SW1A 1AA",
+                Region = "Essex"
+            };
+
+            var subject = new CreditorsClient(_accessToken);
+
+            // when
+            var result = await subject.UpdateAsync(request);
+
+            // then
+            Assert.That(result.Creditor.Id, Is.EqualTo(request.Id));
+            Assert.That(result.Creditor.Name, Is.EqualTo(request.Name));
+            Assert.That(result.Creditor.AddressLine1, Is.EqualTo(request.AddressLine1));
+            Assert.That(result.Creditor.AddressLine2, Is.EqualTo(request.AddressLine2));
+            Assert.That(result.Creditor.AddressLine3, Is.EqualTo(request.AddressLine3));
+            Assert.That(result.Creditor.City, Is.EqualTo(request.City));
+            Assert.That(result.Creditor.Region, Is.EqualTo(request.Region));
+            Assert.That(result.Creditor.PostCode, Is.EqualTo(request.PostCode));
+            Assert.That(result.Creditor.CountryCode, Is.EqualTo(request.CountryCode));
+        }
     }
 }
