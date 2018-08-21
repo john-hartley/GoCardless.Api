@@ -13,7 +13,7 @@ namespace GoCardlessApi.Tests.Integration
             var creditorId = "CR00005N9ZWBFK";
             var expectedCreatedAt = DateTimeOffset.Parse("2018-08-20T05:53:51.860Z");
 
-            var subject = new CreditorsClient(_accessToken);
+            var subject = new CreditorsClient(ClientConfiguration.ForSandbox(_accessToken));
 
             // when
             var result = await subject.ForIdAsync(creditorId);
@@ -51,7 +51,7 @@ namespace GoCardlessApi.Tests.Integration
                 Region = "Essex"
             };
 
-            var subject = new CreditorsClient(_accessToken);
+            var subject = new CreditorsClient(ClientConfiguration.ForSandbox(_accessToken));
 
             // when
             var result = await subject.UpdateAsync(request);

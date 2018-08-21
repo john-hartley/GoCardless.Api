@@ -37,7 +37,7 @@ namespace GoCardlessApi.Tests.Integration
                     Mandate = "MD0003T17KJWM8"
                 }
             };
-            var subject = new SubscriptionsClient(_accessToken);
+            var subject = new SubscriptionsClient(ClientConfiguration.ForSandbox(_accessToken));
 
             // when
             var result = await subject.CreateAsync(request);
@@ -67,7 +67,7 @@ namespace GoCardlessApi.Tests.Integration
         public async Task ReturnsAllSubscriptions()
         {
             // given
-            var subject = new SubscriptionsClient(_accessToken);
+            var subject = new SubscriptionsClient(ClientConfiguration.ForSandbox(_accessToken));
 
             // when
             var result = await subject.AllAsync();
@@ -84,7 +84,7 @@ namespace GoCardlessApi.Tests.Integration
             var expectedCreatedAt = DateTimeOffset.Parse("2018-07-30T19:28:02.962Z");
             var expectedStartDate = DateTime.Parse("2018-08-06");
 
-            var subject = new SubscriptionsClient(_accessToken);
+            var subject = new SubscriptionsClient(ClientConfiguration.ForSandbox(_accessToken));
 
             // when
             var result = await subject.ForIdAsync(subscriptionId);
@@ -121,7 +121,7 @@ namespace GoCardlessApi.Tests.Integration
                 Name = "Updated subscription name"
             };
 
-            var subject = new SubscriptionsClient(_accessToken);
+            var subject = new SubscriptionsClient(ClientConfiguration.ForSandbox(_accessToken));
 
             // when
             var result = await subject.UpdateAsync(request);
@@ -144,7 +144,7 @@ namespace GoCardlessApi.Tests.Integration
                 Id = "SB0000GN09Z7CY"
             };
 
-            var subject = new SubscriptionsClient(_accessToken);
+            var subject = new SubscriptionsClient(ClientConfiguration.ForSandbox(_accessToken));
 
             // when
             var result = await subject.CancelAsync(request);

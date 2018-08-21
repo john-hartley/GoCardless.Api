@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace GoCardlessApi
 {
-    public class CreditorsClient
+    public class CreditorsClient : ICreditorsClient
     {
-        private readonly string _accessToken;
+        private readonly ClientConfiguration _configuration;
 
-        public CreditorsClient(string accessToken)
+        public CreditorsClient(ClientConfiguration configuration)
         {
-            _accessToken = accessToken;
+            _configuration = configuration;
         }
 
         public async Task<CreditorResponse> ForIdAsync(string creditorId)
         {
-            return await "https://api-sandbox.gocardless.com/"
-                .WithHeader("Authorization", $"Bearer {_accessToken}")
+            return await _configuration.BaseUri
+                .WithHeader("Authorization", $"Bearer {_configuration.AccessToken}")
                 .WithHeader("GoCardless-Version", "2015-07-06")
                 .AppendPathSegments("creditors", creditorId)
                 .GetJsonAsync<CreditorResponse>()
@@ -32,8 +32,8 @@ namespace GoCardlessApi
 
             try
             {
-                var response = await "https://api-sandbox.gocardless.com/"
-                    .WithHeader("Authorization", $"Bearer {_accessToken}")
+                var response = await _configuration.BaseUri
+                    .WithHeader("Authorization", $"Bearer {_configuration.AccessToken}")
                     .WithHeader("GoCardless-Version", "2015-07-06")
                     .AppendPathSegments("creditors", request.Id)
                     .PutJsonAsync(envelope)

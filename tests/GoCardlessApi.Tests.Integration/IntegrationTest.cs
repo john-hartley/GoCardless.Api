@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GoCardlessApi.Tests.Integration
+﻿namespace GoCardlessApi.Tests.Integration
 {
     public abstract class IntegrationTest
     {
@@ -8,7 +6,7 @@ namespace GoCardlessApi.Tests.Integration
 
         public IntegrationTest()
         {
-            _accessToken = Environment.GetEnvironmentVariable("GoCardlessAccessToken");
+            _accessToken = System.Environment.GetEnvironmentVariable("GoCardlessAccessToken");
         }
     }
 }
