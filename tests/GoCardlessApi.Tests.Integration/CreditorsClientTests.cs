@@ -31,7 +31,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result.Creditor.CountryCode, Is.EqualTo("GB"));
             Assert.That(result.Creditor.LogoUrl, Is.Null);
             Assert.That(result.Creditor.VerificationStatus, Is.EqualTo("successful"));
-            Assert.That(result.Creditor.CanCreateRefunds, Is.False);
+            Assert.That(result.Creditor.CanCreateRefunds, Is.True);
         }
 
         [Test]

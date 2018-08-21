@@ -19,8 +19,7 @@ namespace GoCardlessApi
         public async Task<SubscriptionsResponse> AllAsync()
         {            
             return await _configuration.BaseUri
-                .WithHeader("Authorization", $"Bearer {_configuration.AccessToken}")
-                .WithHeader("GoCardless-Version", "2015-07-06")
+                .WithHeaders(_configuration.Headers)
                 .AppendPathSegment("subscriptions")
                 .GetJsonAsync<SubscriptionsResponse>()
                 .ConfigureAwait(false);
@@ -35,8 +34,7 @@ namespace GoCardlessApi
             {
                 var idempotencyKey = Guid.NewGuid().ToString();
                 return await _configuration.BaseUri
-                    .WithHeader("Authorization", $"Bearer {_configuration.AccessToken}")
-                    .WithHeader("GoCardless-Version", "2015-07-06")
+                    .WithHeaders(_configuration.Headers)
                     .WithHeader("Idempotency-Key", idempotencyKey)
                     .AppendPathSegment("subscriptions")
                     .PostJsonAsync(envelope)
@@ -53,8 +51,7 @@ namespace GoCardlessApi
         public async Task<SubscriptionResponse> ForIdAsync(string subscriptionId)
         {
             return await _configuration.BaseUri
-                .WithHeader("Authorization", $"Bearer {_configuration.AccessToken}")
-                .WithHeader("GoCardless-Version", "2015-07-06")
+                .WithHeaders(_configuration.Headers)
                 .AppendPathSegments("subscriptions", subscriptionId)
                 .GetJsonAsync<SubscriptionResponse>()
                 .ConfigureAwait(false);
@@ -68,8 +65,7 @@ namespace GoCardlessApi
             try
             {
                 var response = await _configuration.BaseUri
-                    .WithHeader("Authorization", $"Bearer {_configuration.AccessToken}")
-                    .WithHeader("GoCardless-Version", "2015-07-06")
+                    .WithHeaders(_configuration.Headers)
                     .AppendPathSegments("subscriptions", request.Id)
                     .PutJsonAsync(envelope)
                     .ReceiveJson<UpdateSubscriptionResponse>();
@@ -90,8 +86,7 @@ namespace GoCardlessApi
             try
             {
                 var response = await _configuration.BaseUri
-                    .WithHeader("Authorization", $"Bearer {_configuration.AccessToken}")
-                    .WithHeader("GoCardless-Version", "2015-07-06")
+                    .WithHeaders(_configuration.Headers)
                     .AppendPathSegments("subscriptions", request.Id, "actions", "cancel")
                     .PostJsonAsync(request)
                     .ReceiveJson<CancelSubscriptionResponse>();

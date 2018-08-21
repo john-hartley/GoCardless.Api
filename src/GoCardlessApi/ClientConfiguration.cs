@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GoCardlessApi
 {
@@ -23,9 +24,16 @@ namespace GoCardlessApi
                 : new Uri("https://api-sandbox.gocardless.com");
 
             AccessToken = accessToken;
+
+            Headers = new Dictionary<string, string>
+            {
+                ["Authorization"] = $"Bearer {AccessToken}",
+                ["GoCardless-Version"] = "2015-07-06",
+            };
         }
         
         public string BaseUri => _baseUri.ToString();
         public string AccessToken { get; }
+        public IReadOnlyDictionary<string, string> Headers { get; }
     }
 }

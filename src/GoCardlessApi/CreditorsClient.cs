@@ -18,8 +18,7 @@ namespace GoCardlessApi
         public async Task<CreditorResponse> ForIdAsync(string creditorId)
         {
             return await _configuration.BaseUri
-                .WithHeader("Authorization", $"Bearer {_configuration.AccessToken}")
-                .WithHeader("GoCardless-Version", "2015-07-06")
+                .WithHeaders(_configuration.Headers)
                 .AppendPathSegments("creditors", creditorId)
                 .GetJsonAsync<CreditorResponse>()
                 .ConfigureAwait(false);
@@ -33,8 +32,7 @@ namespace GoCardlessApi
             try
             {
                 var response = await _configuration.BaseUri
-                    .WithHeader("Authorization", $"Bearer {_configuration.AccessToken}")
-                    .WithHeader("GoCardless-Version", "2015-07-06")
+                    .WithHeaders(_configuration.Headers)
                     .AppendPathSegments("creditors", request.Id)
                     .PutJsonAsync(envelope)
                     .ReceiveJson<UpdateCreditorResponse>();
