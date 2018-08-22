@@ -48,7 +48,8 @@ namespace GoCardlessApi.Tests.Integration
                 CountryCode = "GB",
                 Name = "API Client Development",
                 PostCode = "SW1A 1AA",
-                Region = "Essex"
+                Region = "Essex",
+                //LogoUrl = "https://via.placeholder.com/350x150"
             };
 
             var subject = new CreditorsClient(ClientConfiguration.ForSandbox(_accessToken));
