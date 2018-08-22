@@ -12,8 +12,6 @@ namespace GoCardlessApi
         public string AddressLine2 { get; set; }
         [JsonProperty("address_line3")]
         public string AddressLine3 { get; set; }
-        //[JsonProperty("can_create_refunds")]
-        //public bool CanCreateRefunds { get; set; }
         [JsonProperty("city")]
         public string City { get; set; }
         [JsonProperty("country_code")]
