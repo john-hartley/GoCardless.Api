@@ -22,7 +22,8 @@ namespace GoCardlessApi
             return PutAsync<UpdateCreditorRequest, UpdateCreditorResponse>(
                 new { creditors = request },
                 "creditors",
-                request.Id);
+                request.Id
+            );
         }
     }
 }

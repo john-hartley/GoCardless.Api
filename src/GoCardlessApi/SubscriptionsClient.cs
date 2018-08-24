@@ -1,9 +1,4 @@
-﻿using Flurl;
-using Flurl.Http;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace GoCardlessApi
@@ -22,27 +17,15 @@ namespace GoCardlessApi
             return GetAsync<SubscriptionsResponse>("subscriptions");
         }
 
-        public async Task<CreateSubscriptionResponse> CreateAsync(CreateSubscriptionRequest request)
+        public Task<CreateSubscriptionResponse> CreateAsync(CreateSubscriptionRequest request)
         {
-            var envelope = new { subscriptions = request };
-            Debug.WriteLine(JsonConvert.SerializeObject(envelope));
+            var idempotencyKey = Guid.NewGuid().ToString();
 
-            try
-            {
-                var idempotencyKey = Guid.NewGuid().ToString();
-                return await _configuration.BaseUri
-                    .WithHeaders(_configuration.Headers)
-                    .WithHeader("Idempotency-Key", idempotencyKey)
-                    .AppendPathSegment("subscriptions")
-                    .PostJsonAsync(envelope)
-                    .ReceiveJson<CreateSubscriptionResponse>();
-            }
-            catch (FlurlHttpException ex)
-            {
-                var error = await ex.GetResponseJsonAsync();
-            }
-
-            return null;
+            return PostAsync<CreateSubscriptionRequest, CreateSubscriptionResponse>(
+                new { subscriptions = request },
+                idempotencyKey,
+                "subscriptions"
+            );
         }
 
         public Task<SubscriptionResponse> ForIdAsync(string subscriptionId)
@@ -55,28 +38,19 @@ namespace GoCardlessApi
             return PutAsync<UpdateSubscriptionRequest, UpdateSubscriptionResponse>(
                 new { subscriptions = request },
                 "subscriptions", 
-                request.Id);
+                request.Id
+            );
         }
 
-        public async Task<CancelSubscriptionResponse> CancelAsync(CancelSubscriptionRequest request)
+        public Task<CancelSubscriptionResponse> CancelAsync(CancelSubscriptionRequest request)
         {
-            Debug.WriteLine(JsonConvert.SerializeObject(request));
-
-            try
-            {
-                var response = await _configuration.BaseUri
-                    .WithHeaders(_configuration.Headers)
-                    .AppendPathSegments("subscriptions", request.Id, "actions", "cancel")
-                    .PostJsonAsync(request)
-                    .ReceiveJson<CancelSubscriptionResponse>();
-                return response;
-            }
-            catch (FlurlHttpException ex)
-            {
-                var error = await ex.GetResponseJsonAsync();
-            }
-
-            return null;
+            return PostAsync<CancelSubscriptionRequest, CancelSubscriptionResponse>(
+                request,
+                "subscriptions",
+                request.Id,
+                "actions",
+                "cancel"
+            );
         }
     }
 }

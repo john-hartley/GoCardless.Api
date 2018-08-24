@@ -28,7 +28,9 @@ namespace GoCardlessApi
                 .ConfigureAwait(false);
         }
 
-        internal async Task<TResponse> PutAsync<TRequest, TResponse>(object envelope, params string[] pathSegments)
+        internal async Task<TResponse> PutAsync<TRequest, TResponse>(
+            object envelope, 
+            params string[] pathSegments)
         {
             Debug.WriteLine(JsonConvert.SerializeObject(envelope));
 
@@ -38,6 +40,36 @@ namespace GoCardlessApi
                     .WithHeaders(_configuration.Headers)
                     .AppendPathSegments(pathSegments)
                     .PutJsonAsync(envelope)
+                    .ReceiveJson<TResponse>();
+                return response;
+            }
+            catch (FlurlHttpException ex)
+            {
+                var error = await ex.GetResponseJsonAsync();
+            }
+
+            return default(TResponse);
+        }
+
+        internal async Task<TResponse> PostAsync<TRequest, TResponse>(
+            object envelope,
+            string idempotencyKey,
+            params string[] pathSegments)
+        {
+            Debug.WriteLine(JsonConvert.SerializeObject(envelope));
+
+            var request = _baseRequest;
+
+            if (!string.IsNullOrWhiteSpace(idempotencyKey))
+            {
+                request = request.WithHeader("Idempotency-Key", idempotencyKey);
+            }
+
+            try
+            {
+                var response = await request
+                    .AppendPathSegments(pathSegments)
+                    .PostJsonAsync(envelope)
                     .ReceiveJson<TResponse>();
                 return response;
             }
