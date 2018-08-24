@@ -5,12 +5,7 @@ namespace GoCardlessApi
 {
     public class SubscriptionsClient : ApiClientBase, ISubscriptionsClient
     {
-        private readonly ClientConfiguration _configuration;
-
-        public SubscriptionsClient(ClientConfiguration configuration) : base(configuration)
-        {
-            _configuration = configuration;
-        }
+        public SubscriptionsClient(ClientConfiguration configuration) : base(configuration) { }
 
         public Task<AllSubscriptionsResponse> AllAsync()
         {

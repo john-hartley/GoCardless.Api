@@ -4,12 +4,7 @@ namespace GoCardlessApi
 {
     public class CreditorsClient : ApiClientBase, ICreditorsClient
     {
-        private readonly ClientConfiguration _configuration;
-
-        public CreditorsClient(ClientConfiguration configuration) : base(configuration)
-        {
-            _configuration = configuration;
-        }
+        public CreditorsClient(ClientConfiguration configuration) : base(configuration) { }
 
         public Task<AllCreditorResponse> AllAsync()
         {
