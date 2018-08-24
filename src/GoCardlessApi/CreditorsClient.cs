@@ -11,6 +11,11 @@ namespace GoCardlessApi
             _configuration = configuration;
         }
 
+        public Task<AllCreditorResponse> AllAsync()
+        {
+            return GetAsync<AllCreditorResponse>("creditors");
+        }
+
         public Task<CreditorResponse> ForIdAsync(string creditorId)
         {
             return GetAsync<CreditorResponse>("creditors", creditorId);

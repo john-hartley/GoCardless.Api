@@ -1,11 +1,38 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace GoCardlessApi.Tests.Integration
 {
     public class CreditorsClientTests : IntegrationTest
     {
+        [Test]
+        public async Task ReturnsCreditors()
+        {
+            // given
+            var subject = new CreditorsClient(ClientConfiguration.ForSandbox(_accessToken));
+
+            // when
+            var result = (await subject.AllAsync()).Creditors.ToList();
+
+            // then
+            Assert.That(result.Any(), Is.True);
+            Assert.That(result[0].Id, Is.Not.Null);
+            //Assert.That(result[0].CreatedAt, Is.EqualTo(expectedCreatedAt));
+            Assert.That(result[0].Name, Is.EqualTo("API Client Development"));
+            Assert.That(result[0].AddressLine1, Is.EqualTo("Address Line 1"));
+            Assert.That(result[0].AddressLine2, Is.EqualTo("Address Line 2"));
+            Assert.That(result[0].AddressLine3, Is.EqualTo("Address Line 3"));
+            Assert.That(result[0].City, Is.EqualTo("London"));
+            Assert.That(result[0].Region, Is.EqualTo("Essex"));
+            Assert.That(result[0].PostCode, Is.EqualTo("SW1A 1AA"));
+            Assert.That(result[0].CountryCode, Is.EqualTo("GB"));
+            Assert.That(result[0].LogoUrl, Is.Null);
+            Assert.That(result[0].VerificationStatus, Is.EqualTo("successful"));
+            Assert.That(result[0].CanCreateRefunds, Is.True);
+        }
+
         [Test]
         public async Task ReturnsIndividualCreditor()
         {
