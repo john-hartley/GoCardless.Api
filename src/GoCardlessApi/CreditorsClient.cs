@@ -1,8 +1,4 @@
-﻿using Flurl;
-using Flurl.Http;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GoCardlessApi
@@ -16,31 +12,17 @@ namespace GoCardlessApi
             _configuration = configuration;
         }
 
-        public async Task<CreditorResponse> ForIdAsync(string creditorId)
+        public Task<CreditorResponse> ForIdAsync(string creditorId)
         {
-            return await ForIdAsync<CreditorResponse>("creditors", creditorId);
+            return GetAsync<CreditorResponse>("creditors", creditorId);
         }
 
-        public async Task<UpdateCreditorResponse> UpdateAsync(UpdateCreditorRequest request)
+        public Task<UpdateCreditorResponse> UpdateAsync(UpdateCreditorRequest request)
         {
-            var envelope = new { creditors = request };
-            Debug.WriteLine(JsonConvert.SerializeObject(envelope));
-
-            try
-            {
-                var response = await _configuration.BaseUri
-                    .WithHeaders(_configuration.Headers)
-                    .AppendPathSegments("creditors", request.Id)
-                    .PutJsonAsync(envelope)
-                    .ReceiveJson<UpdateCreditorResponse>();
-                return response;
-            }
-            catch (FlurlHttpException ex)
-            {
-                var error = await ex.GetResponseJsonAsync();
-            }
-
-            return null;
+            return PutAsync<UpdateCreditorRequest, UpdateCreditorResponse>(
+                new { creditors = request },
+                "creditors",
+                request.Id);
         }
     }
 }

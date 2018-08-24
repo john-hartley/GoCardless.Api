@@ -2,6 +2,7 @@
 using Flurl.Http;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -48,31 +49,17 @@ namespace GoCardlessApi
             return null;
         }
 
-        public async Task<SubscriptionResponse> ForIdAsync(string subscriptionId)
+        public Task<SubscriptionResponse> ForIdAsync(string subscriptionId)
         {
-            return await ForIdAsync<SubscriptionResponse>("subscriptions", subscriptionId);
+            return GetAsync<SubscriptionResponse>("subscriptions", subscriptionId);
         }
 
-        public async Task<UpdateSubscriptionResponse> UpdateAsync(UpdateSubscriptionRequest request)
+        public Task<UpdateSubscriptionResponse> UpdateAsync(UpdateSubscriptionRequest request)
         {
-            var envelope = new { subscriptions = request };
-            Debug.WriteLine(JsonConvert.SerializeObject(envelope));
-
-            try
-            {
-                var response = await _configuration.BaseUri
-                    .WithHeaders(_configuration.Headers)
-                    .AppendPathSegments("subscriptions", request.Id)
-                    .PutJsonAsync(envelope)
-                    .ReceiveJson<UpdateSubscriptionResponse>();
-                return response;
-            }
-            catch (FlurlHttpException ex)
-            {
-                var error = await ex.GetResponseJsonAsync();
-            }
-
-            return null;
+            return PutAsync<UpdateSubscriptionRequest, UpdateSubscriptionResponse>(
+                new { subscriptions = request },
+                "subscriptions", 
+                request.Id);
         }
 
         public async Task<CancelSubscriptionResponse> CancelAsync(CancelSubscriptionRequest request)
