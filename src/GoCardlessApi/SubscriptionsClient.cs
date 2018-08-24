@@ -17,13 +17,9 @@ namespace GoCardlessApi
             _configuration = configuration;
         }
 
-        public async Task<SubscriptionsResponse> AllAsync()
-        {            
-            return await _configuration.BaseUri
-                .WithHeaders(_configuration.Headers)
-                .AppendPathSegment("subscriptions")
-                .GetJsonAsync<SubscriptionsResponse>()
-                .ConfigureAwait(false);
+        public Task<SubscriptionsResponse> AllAsync()
+        {
+            return GetAsync<SubscriptionsResponse>("subscriptions");
         }
 
         public async Task<CreateSubscriptionResponse> CreateAsync(CreateSubscriptionRequest request)
