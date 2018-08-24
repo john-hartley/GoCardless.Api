@@ -2,7 +2,7 @@
 
 namespace GoCardlessApi
 {
-    public class SubscriptionsResponse
+    public class AllSubscriptionsResponse
     {
         public IEnumerable<Subscription> Subscriptions { get; set; }
     }

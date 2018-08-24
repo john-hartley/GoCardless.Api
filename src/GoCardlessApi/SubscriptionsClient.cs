@@ -12,9 +12,9 @@ namespace GoCardlessApi
             _configuration = configuration;
         }
 
-        public Task<SubscriptionsResponse> AllAsync()
+        public Task<AllSubscriptionsResponse> AllAsync()
         {
-            return GetAsync<SubscriptionsResponse>("subscriptions");
+            return GetAsync<AllSubscriptionsResponse>("subscriptions");
         }
 
         public Task<CreateSubscriptionResponse> CreateAsync(CreateSubscriptionRequest request)
