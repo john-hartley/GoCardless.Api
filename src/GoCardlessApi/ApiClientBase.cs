@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Threading.Tasks;
-using Flurl;
+﻿using Flurl;
 using Flurl.Http;
 using Newtonsoft.Json;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace GoCardlessApi
 {
