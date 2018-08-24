@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace GoCardlessApi
 {
-    public class SubscriptionsClient : ISubscriptionsClient
+    public class SubscriptionsClient : ApiClientBase, ISubscriptionsClient
     {
         private readonly ClientConfiguration _configuration;
 
-        public SubscriptionsClient(ClientConfiguration configuration)
+        public SubscriptionsClient(ClientConfiguration configuration) : base(configuration)
         {
             _configuration = configuration;
         }
@@ -50,11 +50,7 @@ namespace GoCardlessApi
 
         public async Task<SubscriptionResponse> ForIdAsync(string subscriptionId)
         {
-            return await _configuration.BaseUri
-                .WithHeaders(_configuration.Headers)
-                .AppendPathSegments("subscriptions", subscriptionId)
-                .GetJsonAsync<SubscriptionResponse>()
-                .ConfigureAwait(false);
+            return await ForIdAsync<SubscriptionResponse>("subscriptions", subscriptionId);
         }
 
         public async Task<UpdateSubscriptionResponse> UpdateAsync(UpdateSubscriptionRequest request)

@@ -1,27 +1,24 @@
 ﻿using Flurl;
 using Flurl.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace GoCardlessApi
 {
-    public class CreditorsClient : ICreditorsClient
+    public class CreditorsClient : ApiClientBase, ICreditorsClient
     {
         private readonly ClientConfiguration _configuration;
 
-        public CreditorsClient(ClientConfiguration configuration)
+        public CreditorsClient(ClientConfiguration configuration) : base(configuration)
         {
             _configuration = configuration;
         }
 
         public async Task<CreditorResponse> ForIdAsync(string creditorId)
         {
-            return await _configuration.BaseUri
-                .WithHeaders(_configuration.Headers)
-                .AppendPathSegments("creditors", creditorId)
-                .GetJsonAsync<CreditorResponse>()
-                .ConfigureAwait(false);
+            return await ForIdAsync<CreditorResponse>("creditors", creditorId);
         }
 
         public async Task<UpdateCreditorResponse> UpdateAsync(UpdateCreditorRequest request)
