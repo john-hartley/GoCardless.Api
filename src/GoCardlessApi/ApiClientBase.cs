@@ -72,7 +72,8 @@ namespace GoCardlessApi
             }
             catch (FlurlHttpException ex)
             {
-                var error = await ex.GetResponseJsonAsync();
+                var error = await ex.GetResponseStringAsync();
+                Debug.WriteLine(JsonConvert.SerializeObject(error));
             }
 
             return default(TResponse);
