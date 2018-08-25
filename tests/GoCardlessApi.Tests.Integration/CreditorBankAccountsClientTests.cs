@@ -24,7 +24,8 @@ namespace GoCardlessApi.Tests.Integration
                     ["Key1"] = "Value1",
                     ["Key2"] = "Value2",
                     ["Key3"] = "Value3",
-                }
+                },
+                SetAsDefaultPayoutAccount = true
             };
 
             var subject = new CreditorBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));

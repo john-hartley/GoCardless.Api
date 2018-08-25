@@ -31,6 +31,9 @@ namespace GoCardlessApi
         [JsonProperty("iban", NullValueHandling = NullValueHandling.Ignore)]
         public string Iban { get; set; }
 
+        [JsonProperty("set_as_default_payout_account")]
+        public bool SetAsDefaultPayoutAccount { get; set; }
+
         [JsonProperty("links")]
         public CreditorBankAccountLinks Links { get; set; }
 
