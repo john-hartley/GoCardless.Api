@@ -8,7 +8,7 @@ namespace GoCardlessApi.Tests.Integration
     public class CreditorBankAccountsClientTests : IntegrationTest
     {
         [Test]
-        public async Task CreatesAndDisablesCreditorBankAccount()
+        public async Task CreatesAndDisablesCreditorBankAccountUsingBranchCode()
         {
             // given
             var createRequest = new CreateCreditorBankAccountRequest
@@ -18,6 +18,51 @@ namespace GoCardlessApi.Tests.Integration
                 BranchCode = "200000",
                 CountryCode = "GB",
                 Currency = "GBP",
+                Links = new CreditorBankAccountLinks { Creditor = "CR00005N9ZWBFK" },
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                }
+            };
+
+            var subject = new CreditorBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
+
+            // when
+            var creationResult = await subject.CreateAsync(createRequest);
+
+            var disableRequest = new DisableCreditorBankAccountRequest
+            {
+                Id = creationResult.CreditorBankAccount.Id
+            };
+
+            var disabledResult = await subject.DisableAsync(disableRequest);
+
+            // then
+            Assert.That(creationResult.CreditorBankAccount.Id, Is.Not.Null.And.Not.Empty);
+            Assert.That(creationResult.CreditorBankAccount.AccountHolderName, Is.EqualTo(createRequest.AccountHolderName));
+            Assert.That(creationResult.CreditorBankAccount.AccountNumberEnding, Is.Not.Null.And.Not.Empty);
+            Assert.That(creationResult.CreditorBankAccount.BankName, Is.Not.Null.And.Not.Empty);
+            Assert.That(creationResult.CreditorBankAccount.CountryCode, Is.EqualTo(createRequest.CountryCode));
+            Assert.That(creationResult.CreditorBankAccount.Currency, Is.EqualTo(createRequest.Currency));
+            Assert.That(creationResult.CreditorBankAccount.Metadata, Is.EqualTo(createRequest.Metadata));
+            Assert.That(creationResult.CreditorBankAccount.Links.Creditor, Is.EqualTo(createRequest.Links.Creditor));
+            Assert.That(creationResult.CreditorBankAccount.Enabled, Is.True);
+            Assert.That(disabledResult.CreditorBankAccount.Enabled, Is.False);
+        }
+
+        [Test]
+        public async Task CreatesAndDisablesCreditorBankAccountUsingBankCode()
+        {
+            // given
+            var createRequest = new CreateCreditorBankAccountRequest
+            {
+                AccountHolderName = "API BANK ACCOUNT",
+                AccountNumber = "532013001",
+                BankCode = "37040044",
+                CountryCode = "DE",
+                Currency = "EUR",
                 Links = new CreditorBankAccountLinks { Creditor = "CR00005N9ZWBFK" },
                 Metadata = new Dictionary<string, string>
                 {

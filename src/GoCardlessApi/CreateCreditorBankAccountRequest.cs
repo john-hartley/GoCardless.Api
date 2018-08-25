@@ -16,6 +16,9 @@ namespace GoCardlessApi
         [JsonProperty("account_number")]
         public string AccountNumber { get; set; }
 
+        [JsonProperty("bank_code")]
+        public string BankCode { get; set; }
+
         [JsonProperty("branch_code")]
         public string BranchCode { get; set; }
 
