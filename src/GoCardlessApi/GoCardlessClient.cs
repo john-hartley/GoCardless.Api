@@ -1,4 +1,5 @@
 ﻿using GoCardlessApi.Core;
+using GoCardlessApi.CreditorBankAccounts;
 using GoCardlessApi.Creditors;
 using GoCardlessApi.Subscriptions;
 
@@ -12,10 +13,12 @@ namespace GoCardlessApi
         {
             _configuration = configuration;
 
+            CreditorBankAccounts = new CreditorBankAccountsClient(configuration);
             Creditors = new CreditorsClient(configuration);
             Subscriptions = new SubscriptionsClient(configuration);
         }
 
+        public ICreditorBankAccountsClient CreditorBankAccounts { get; }
         public ICreditorsClient Creditors { get; }
         public ISubscriptionsClient Subscriptions { get; }
     }
