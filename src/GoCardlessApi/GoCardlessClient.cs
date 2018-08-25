@@ -1,4 +1,8 @@
-﻿namespace GoCardlessApi
+﻿using GoCardlessApi.Core;
+using GoCardlessApi.Creditors;
+using GoCardlessApi.Subscriptions;
+
+namespace GoCardlessApi
 {
     public class GoCardlessClient
     {

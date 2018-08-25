@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using GoCardlessApi.Core;
+using GoCardlessApi.Subscriptions;
+using System.Threading.Tasks;
 
 namespace GoCardlessApi
 {

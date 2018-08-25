@@ -2,6 +2,8 @@
 using System;
 using System.Threading.Tasks;
 using System.Linq;
+using GoCardlessApi.Creditors;
+using GoCardlessApi.Core;
 
 namespace GoCardlessApi.Tests.Integration
 {
