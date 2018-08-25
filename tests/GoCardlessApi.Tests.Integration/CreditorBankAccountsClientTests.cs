@@ -43,10 +43,10 @@ namespace GoCardlessApi.Tests.Integration
             var disabledResult = await subject.DisableAsync(disableRequest);
 
             // then
-            Assert.That(creationResult.CreditorBankAccount.Id, Is.Not.Null.And.Not.Empty);
+            Assert.That(creationResult.CreditorBankAccount.Id, Is.Not.Null);
             Assert.That(creationResult.CreditorBankAccount.AccountHolderName, Is.EqualTo(createRequest.AccountHolderName));
-            Assert.That(creationResult.CreditorBankAccount.AccountNumberEnding, Is.Not.Null.And.Not.Empty);
-            Assert.That(creationResult.CreditorBankAccount.BankName, Is.Not.Null.And.Not.Empty);
+            Assert.That(creationResult.CreditorBankAccount.AccountNumberEnding, Is.Not.Null);
+            Assert.That(creationResult.CreditorBankAccount.BankName, Is.Not.Null);
             Assert.That(creationResult.CreditorBankAccount.CountryCode, Is.EqualTo(createRequest.CountryCode));
             Assert.That(creationResult.CreditorBankAccount.Currency, Is.EqualTo(createRequest.Currency));
             Assert.That(creationResult.CreditorBankAccount.Metadata, Is.EqualTo(createRequest.Metadata));
@@ -54,6 +54,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(creationResult.CreditorBankAccount.Enabled, Is.True);
             Assert.That(disabledResult.CreditorBankAccount.Enabled, Is.False);
         }
+
         [Test]
         public async Task CreatesAndDisablesCreditorBankAccountUsingBranchCode()
         {
@@ -89,7 +90,7 @@ namespace GoCardlessApi.Tests.Integration
             // then
             Assert.That(creationResult.CreditorBankAccount.Id, Is.Not.Null.And.Not.Empty);
             Assert.That(creationResult.CreditorBankAccount.AccountHolderName, Is.EqualTo(createRequest.AccountHolderName));
-            Assert.That(creationResult.CreditorBankAccount.AccountNumberEnding, Is.Not.Null.And.Not.Empty);
+            Assert.That(creationResult.CreditorBankAccount.AccountNumberEnding, Is.Not.Null);
             Assert.That(creationResult.CreditorBankAccount.BankName, Is.Not.Null.And.Not.Empty);
             Assert.That(creationResult.CreditorBankAccount.CountryCode, Is.EqualTo(createRequest.CountryCode));
             Assert.That(creationResult.CreditorBankAccount.Currency, Is.EqualTo(createRequest.Currency));
@@ -129,12 +130,12 @@ namespace GoCardlessApi.Tests.Integration
             var disabledResult = await subject.DisableAsync(disableRequest);
 
             // then
-            Assert.That(creationResult.CreditorBankAccount.Id, Is.Not.Null.And.Not.Empty);
+            Assert.That(creationResult.CreditorBankAccount.Id, Is.Not.Null);
             Assert.That(creationResult.CreditorBankAccount.AccountHolderName, Is.EqualTo(createRequest.AccountHolderName));
-            Assert.That(creationResult.CreditorBankAccount.AccountNumberEnding, Is.Not.Null.And.Not.Empty);
-            Assert.That(creationResult.CreditorBankAccount.BankName, Is.Not.Null.And.Not.Empty);
-            Assert.That(creationResult.CreditorBankAccount.CountryCode, Is.Not.Null.And.Not.Empty);
-            Assert.That(creationResult.CreditorBankAccount.Currency, Is.Not.Null.And.Not.Empty);
+            Assert.That(creationResult.CreditorBankAccount.AccountNumberEnding, Is.Not.Null);
+            Assert.That(creationResult.CreditorBankAccount.BankName, Is.Not.Null);
+            Assert.That(creationResult.CreditorBankAccount.CountryCode, Is.Not.Null);
+            Assert.That(creationResult.CreditorBankAccount.Currency, Is.Not.Null);
             Assert.That(creationResult.CreditorBankAccount.Metadata, Is.EqualTo(createRequest.Metadata));
             Assert.That(creationResult.CreditorBankAccount.Links.Creditor, Is.EqualTo(createRequest.Links.Creditor));
             Assert.That(creationResult.CreditorBankAccount.Enabled, Is.True);
@@ -152,13 +153,13 @@ namespace GoCardlessApi.Tests.Integration
 
             // then
             Assert.That(result.Any(), Is.True);
-            Assert.That(result[0].Id, Is.Not.Null.And.Not.Empty);
-            Assert.That(result[0].AccountHolderName, Is.Not.Null.And.Not.Empty);
-            Assert.That(result[0].AccountNumberEnding, Is.Not.Null.And.Not.Empty);
-            Assert.That(result[0].BankName, Is.Not.Null.And.Not.Empty);
-            Assert.That(result[0].CountryCode, Is.Not.Null.And.Not.Empty);
-            Assert.That(result[0].Currency, Is.Not.Null.And.Not.Empty);
-            Assert.That(result[0].Links.Creditor, Is.Not.Null.And.Not.Empty);
+            Assert.That(result[0].Id, Is.Not.Null);
+            Assert.That(result[0].AccountHolderName, Is.Not.Null);
+            Assert.That(result[0].AccountNumberEnding, Is.Not.Null);
+            Assert.That(result[0].BankName, Is.Not.Null);
+            Assert.That(result[0].CountryCode, Is.Not.Null);
+            Assert.That(result[0].Currency, Is.Not.Null);
+            Assert.That(result[0].Links.Creditor, Is.Not.Null);
         }
 
         [Test]
@@ -174,13 +175,13 @@ namespace GoCardlessApi.Tests.Integration
 
             // then
             Assert.That(returnedAccount, Is.Not.Null);
-            Assert.That(returnedAccount.Id, Is.Not.Null.And.Not.Empty.And.EqualTo(creditorBankAccount.Id));
-            Assert.That(returnedAccount.AccountHolderName, Is.Not.Null.And.Not.Empty.And.EqualTo(creditorBankAccount.AccountHolderName));
-            Assert.That(returnedAccount.AccountNumberEnding, Is.Not.Null.And.Not.Empty.And.EqualTo(creditorBankAccount.AccountNumberEnding));
-            Assert.That(returnedAccount.BankName, Is.Not.Null.And.Not.Empty.And.EqualTo(creditorBankAccount.BankName));
-            Assert.That(returnedAccount.CountryCode, Is.Not.Null.And.Not.Empty.And.EqualTo(creditorBankAccount.CountryCode));
-            Assert.That(returnedAccount.Currency, Is.Not.Null.And.Not.Empty.And.EqualTo(creditorBankAccount.Currency));
-            Assert.That(returnedAccount.Links.Creditor, Is.Not.Null.And.Not.Empty.And.EqualTo(creditorBankAccount.Links.Creditor));
+            Assert.That(returnedAccount.Id, Is.Not.Null.And.EqualTo(creditorBankAccount.Id));
+            Assert.That(returnedAccount.AccountHolderName, Is.Not.Null.And.EqualTo(creditorBankAccount.AccountHolderName));
+            Assert.That(returnedAccount.AccountNumberEnding, Is.Not.Null.And.EqualTo(creditorBankAccount.AccountNumberEnding));
+            Assert.That(returnedAccount.BankName, Is.Not.Null.And.EqualTo(creditorBankAccount.BankName));
+            Assert.That(returnedAccount.CountryCode, Is.Not.Null.And.EqualTo(creditorBankAccount.CountryCode));
+            Assert.That(returnedAccount.Currency, Is.Not.Null.And.EqualTo(creditorBankAccount.Currency));
+            Assert.That(returnedAccount.Links.Creditor, Is.Not.Null.And.EqualTo(creditorBankAccount.Links.Creditor));
             Assert.That(returnedAccount.Enabled, Is.EqualTo(creditorBankAccount.Enabled));
         }
     }

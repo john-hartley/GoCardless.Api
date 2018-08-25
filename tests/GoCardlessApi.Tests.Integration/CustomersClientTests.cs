@@ -3,6 +3,7 @@ using GoCardlessApi.Customers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GoCardlessApi.Tests.Integration
@@ -45,7 +46,7 @@ namespace GoCardlessApi.Tests.Integration
 
             // then
             Assert.That(customer, Is.Not.Null);
-            Assert.That(customer.Id, Is.Not.Null.And.Not.Empty);
+            Assert.That(customer.Id, Is.Not.Null);
             Assert.That(customer.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(customer.Email, Is.EqualTo(request.Email));
             Assert.That(customer.GivenName, Is.EqualTo(request.GivenName));
@@ -61,6 +62,36 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(customer.DanishIdentityNumber, Is.EqualTo(request.DanishIdentityNumber));
             Assert.That(customer.SwedishIdentityNumber, Does.Contain(request.SwedishIdentityNumber));
             Assert.That(customer.Metadata, Is.EqualTo(request.Metadata));
+        }
+
+
+        [Test]
+        public async Task ReturnsCustomers()
+        {
+            // given
+            var subject = new CustomersClient(ClientConfiguration.ForSandbox(_accessToken));
+
+            // when
+            var result = (await subject.AllAsync()).Customers.ToList();
+
+            // then
+            Assert.That(result[0], Is.Not.Null);
+            Assert.That(result[0].Id, Is.Not.Null);
+            Assert.That(result[0].CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result[0].Email, Is.Not.Null);
+            Assert.That(result[0].GivenName, Is.Not.Null);
+            Assert.That(result[0].FamilyName, Is.Not.Null);
+            Assert.That(result[0].AddressLine1, Is.Not.Null);
+            Assert.That(result[0].AddressLine2, Is.Not.Null);
+            Assert.That(result[0].AddressLine3, Is.Not.Null);
+            Assert.That(result[0].City, Is.Not.Null);
+            Assert.That(result[0].Region, Is.Not.Null);
+            Assert.That(result[0].PostCode, Is.Not.Null);
+            Assert.That(result[0].CountryCode, Is.Not.Null);
+            Assert.That(result[0].Language, Is.Not.Null);
+            Assert.That(result[0].DanishIdentityNumber, Is.Not.Null);
+            Assert.That(result[0].SwedishIdentityNumber, Is.Not.Null);
+            Assert.That(result[0].Metadata, Is.Not.Null);
         }
     }
 }
