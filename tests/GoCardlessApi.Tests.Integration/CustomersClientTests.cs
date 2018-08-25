@@ -42,26 +42,26 @@ namespace GoCardlessApi.Tests.Integration
 
             // when
             var result = await subject.CreateAsync(request);
-            var customer = result.Customer;
+            var actual = result.Customer;
 
             // then
-            Assert.That(customer, Is.Not.Null);
-            Assert.That(customer.Id, Is.Not.Null);
-            Assert.That(customer.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(customer.Email, Is.EqualTo(request.Email));
-            Assert.That(customer.GivenName, Is.EqualTo(request.GivenName));
-            Assert.That(customer.FamilyName, Is.EqualTo(request.FamilyName));
-            Assert.That(customer.AddressLine1, Is.EqualTo(request.AddressLine1));
-            Assert.That(customer.AddressLine2, Is.EqualTo(request.AddressLine2));
-            Assert.That(customer.AddressLine3, Is.EqualTo(request.AddressLine3));
-            Assert.That(customer.City, Is.EqualTo(request.City));
-            Assert.That(customer.Region, Is.EqualTo(request.Region));
-            Assert.That(customer.PostCode, Is.EqualTo(request.PostCode));
-            Assert.That(customer.CountryCode, Is.EqualTo(request.CountryCode));
-            Assert.That(customer.Language, Is.EqualTo(request.Language));
-            Assert.That(customer.DanishIdentityNumber, Is.EqualTo(request.DanishIdentityNumber));
-            Assert.That(customer.SwedishIdentityNumber, Does.Contain(request.SwedishIdentityNumber));
-            Assert.That(customer.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null);
+            Assert.That(actual.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(actual.Email, Is.EqualTo(request.Email));
+            Assert.That(actual.GivenName, Is.EqualTo(request.GivenName));
+            Assert.That(actual.FamilyName, Is.EqualTo(request.FamilyName));
+            Assert.That(actual.AddressLine1, Is.EqualTo(request.AddressLine1));
+            Assert.That(actual.AddressLine2, Is.EqualTo(request.AddressLine2));
+            Assert.That(actual.AddressLine3, Is.EqualTo(request.AddressLine3));
+            Assert.That(actual.City, Is.EqualTo(request.City));
+            Assert.That(actual.Region, Is.EqualTo(request.Region));
+            Assert.That(actual.PostCode, Is.EqualTo(request.PostCode));
+            Assert.That(actual.CountryCode, Is.EqualTo(request.CountryCode));
+            Assert.That(actual.Language, Is.EqualTo(request.Language));
+            Assert.That(actual.DanishIdentityNumber, Is.EqualTo(request.DanishIdentityNumber));
+            Assert.That(actual.SwedishIdentityNumber, Does.Contain(request.SwedishIdentityNumber));
+            Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
         }
 
         [Test]

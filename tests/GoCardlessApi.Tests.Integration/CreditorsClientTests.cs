@@ -21,7 +21,7 @@ namespace GoCardlessApi.Tests.Integration
             // then
             Assert.That(result.Any(), Is.True);
             Assert.That(result[0].Id, Is.Not.Null);
-            //Assert.That(result[0].CreatedAt, Is.EqualTo(expectedCreatedAt));
+            Assert.That(result[0].CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result[0].Name, Is.EqualTo("API Client Development"));
             Assert.That(result[0].AddressLine1, Is.EqualTo("Address Line 1"));
             Assert.That(result[0].AddressLine2, Is.EqualTo("Address Line 2"));
