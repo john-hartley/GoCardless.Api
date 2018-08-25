@@ -23,5 +23,10 @@ namespace GoCardlessApi.Customers
         {
             return GetAsync<AllCustomersResponse>("customers");
         }
+
+        public Task<CustomersResponse> ForIdAsync(string customerId)
+        {
+            return GetAsync<CustomersResponse>("customers", customerId);
+        }
     }
 }

@@ -171,18 +171,18 @@ namespace GoCardlessApi.Tests.Integration
 
             // when
             var result = await subject.ForIdAsync(creditorBankAccount.Id);
-            var returnedAccount = result.CreditorBankAccount;
+            var actual = result.CreditorBankAccount;
 
             // then
-            Assert.That(returnedAccount, Is.Not.Null);
-            Assert.That(returnedAccount.Id, Is.Not.Null.And.EqualTo(creditorBankAccount.Id));
-            Assert.That(returnedAccount.AccountHolderName, Is.Not.Null.And.EqualTo(creditorBankAccount.AccountHolderName));
-            Assert.That(returnedAccount.AccountNumberEnding, Is.Not.Null.And.EqualTo(creditorBankAccount.AccountNumberEnding));
-            Assert.That(returnedAccount.BankName, Is.Not.Null.And.EqualTo(creditorBankAccount.BankName));
-            Assert.That(returnedAccount.CountryCode, Is.Not.Null.And.EqualTo(creditorBankAccount.CountryCode));
-            Assert.That(returnedAccount.Currency, Is.Not.Null.And.EqualTo(creditorBankAccount.Currency));
-            Assert.That(returnedAccount.Links.Creditor, Is.Not.Null.And.EqualTo(creditorBankAccount.Links.Creditor));
-            Assert.That(returnedAccount.Enabled, Is.EqualTo(creditorBankAccount.Enabled));
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null.And.EqualTo(creditorBankAccount.Id));
+            Assert.That(actual.AccountHolderName, Is.Not.Null.And.EqualTo(creditorBankAccount.AccountHolderName));
+            Assert.That(actual.AccountNumberEnding, Is.Not.Null.And.EqualTo(creditorBankAccount.AccountNumberEnding));
+            Assert.That(actual.BankName, Is.Not.Null.And.EqualTo(creditorBankAccount.BankName));
+            Assert.That(actual.CountryCode, Is.Not.Null.And.EqualTo(creditorBankAccount.CountryCode));
+            Assert.That(actual.Currency, Is.Not.Null.And.EqualTo(creditorBankAccount.Currency));
+            Assert.That(actual.Links.Creditor, Is.Not.Null.And.EqualTo(creditorBankAccount.Links.Creditor));
+            Assert.That(actual.Enabled, Is.EqualTo(creditorBankAccount.Enabled));
         }
     }
 }

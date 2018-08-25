@@ -64,7 +64,6 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(customer.Metadata, Is.EqualTo(request.Metadata));
         }
 
-
         [Test]
         public async Task ReturnsCustomers()
         {
@@ -92,6 +91,37 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result[0].DanishIdentityNumber, Is.Not.Null);
             Assert.That(result[0].SwedishIdentityNumber, Is.Not.Null);
             Assert.That(result[0].Metadata, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task ReturnsIndividualCustomer()
+        {
+            // given
+            var subject = new CustomersClient(ClientConfiguration.ForSandbox(_accessToken));
+            var customer = (await subject.AllAsync()).Customers.First();
+
+            // when
+            var result = await subject.ForIdAsync(customer.Id);
+            var actual = result.Customer;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null);
+            Assert.That(actual.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(actual.Email, Is.Not.Null.And.EqualTo(customer.Email));
+            Assert.That(actual.GivenName, Is.Not.Null.And.EqualTo(customer.GivenName));
+            Assert.That(actual.FamilyName, Is.Not.Null.And.EqualTo(customer.FamilyName));
+            Assert.That(actual.AddressLine1, Is.Not.Null.And.EqualTo(customer.AddressLine1));
+            Assert.That(actual.AddressLine2, Is.Not.Null.And.EqualTo(customer.AddressLine2));
+            Assert.That(actual.AddressLine3, Is.Not.Null.And.EqualTo(customer.AddressLine3));
+            Assert.That(actual.City, Is.Not.Null.And.EqualTo(customer.City));
+            Assert.That(actual.Region, Is.Not.Null.And.EqualTo(customer.Region));
+            Assert.That(actual.PostCode, Is.Not.Null.And.EqualTo(customer.PostCode));
+            Assert.That(actual.CountryCode, Is.Not.Null.And.EqualTo(customer.CountryCode));
+            Assert.That(actual.Language, Is.Not.Null.And.EqualTo(customer.Language));
+            Assert.That(actual.DanishIdentityNumber, Is.Not.Null.And.EqualTo(customer.DanishIdentityNumber));
+            Assert.That(actual.SwedishIdentityNumber, Is.Not.Null.And.EqualTo(customer.SwedishIdentityNumber));
+            Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(customer.Metadata));
         }
     }
 }
