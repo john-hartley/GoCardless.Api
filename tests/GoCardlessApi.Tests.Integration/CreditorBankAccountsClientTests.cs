@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,7 +18,13 @@ namespace GoCardlessApi.Tests.Integration
                 BranchCode = "200000",
                 CountryCode = "GB",
                 Currency = "GBP",
-                Links = new CreditorBankAccountLinks { Creditor = "CR00005N9ZWBFK" }
+                Links = new CreditorBankAccountLinks { Creditor = "CR00005N9ZWBFK" },
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                }
             };
 
             var subject = new CreditorBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
@@ -39,6 +46,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(creationResult.CreditorBankAccount.BankName, Is.Not.Null.And.Not.Empty);
             Assert.That(creationResult.CreditorBankAccount.CountryCode, Is.EqualTo(createRequest.CountryCode));
             Assert.That(creationResult.CreditorBankAccount.Currency, Is.EqualTo(createRequest.Currency));
+            Assert.That(creationResult.CreditorBankAccount.Metadata, Is.EqualTo(createRequest.Metadata));
             Assert.That(creationResult.CreditorBankAccount.Links.Creditor, Is.EqualTo(createRequest.Links.Creditor));
             Assert.That(creationResult.CreditorBankAccount.Enabled, Is.True);
             Assert.That(disabledResult.CreditorBankAccount.Enabled, Is.False);

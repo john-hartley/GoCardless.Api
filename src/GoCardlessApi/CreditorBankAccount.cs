@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace GoCardlessApi
 {
@@ -21,6 +22,8 @@ namespace GoCardlessApi
         public string Currency { get; set; }
 
         public bool Enabled { get; set; }
+
+        public IDictionary<string, string> Metadata { get; set; }
 
         public CreditorBankAccountLinks Links { get; set; }
     }

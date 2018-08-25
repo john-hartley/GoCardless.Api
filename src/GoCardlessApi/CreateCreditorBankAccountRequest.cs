@@ -1,9 +1,15 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace GoCardlessApi
 {
     public class CreateCreditorBankAccountRequest
     {
+        public CreateCreditorBankAccountRequest()
+        {
+            Metadata = new Dictionary<string, string>();
+        }
+
         [JsonProperty("account_holder_name")]
         public string AccountHolderName { get; set; }
 
@@ -21,5 +27,8 @@ namespace GoCardlessApi
 
         [JsonProperty("links")]
         public CreditorBankAccountLinks Links { get; set; }
+
+        [JsonProperty("metadata")]
+        public IDictionary<string, string> Metadata { get; set; }
     }
 }
