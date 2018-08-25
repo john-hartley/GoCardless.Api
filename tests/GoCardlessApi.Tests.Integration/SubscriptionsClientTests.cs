@@ -17,7 +17,7 @@ namespace GoCardlessApi.Tests.Integration
             var request = new CreateSubscriptionRequest
             {
                 Amount = 123,
-                Currency = CurrencyCode.GBP,
+                Currency = "GBP",
                 IntervalUnit = "weekly",
                 //AppFee = 12,
                 Count = 5,
