@@ -13,20 +13,23 @@ namespace GoCardlessApi
         [JsonProperty("account_holder_name")]
         public string AccountHolderName { get; set; }
 
-        [JsonProperty("account_number")]
+        [JsonProperty("account_number", NullValueHandling = NullValueHandling.Ignore)]
         public string AccountNumber { get; set; }
 
-        [JsonProperty("bank_code")]
+        [JsonProperty("bank_code", NullValueHandling = NullValueHandling.Ignore)]
         public string BankCode { get; set; }
 
-        [JsonProperty("branch_code")]
+        [JsonProperty("branch_code", NullValueHandling = NullValueHandling.Ignore)]
         public string BranchCode { get; set; }
 
-        [JsonProperty("country_code")]
+        [JsonProperty("country_code", NullValueHandling = NullValueHandling.Ignore)]
         public string CountryCode { get; set; }
 
-        [JsonProperty("currency")]
+        [JsonProperty("currency", NullValueHandling = NullValueHandling.Ignore)]
         public string Currency { get; set; }
+
+        [JsonProperty("iban", NullValueHandling = NullValueHandling.Ignore)]
+        public string Iban { get; set; }
 
         [JsonProperty("links")]
         public CreditorBankAccountLinks Links { get; set; }
