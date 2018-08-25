@@ -23,8 +23,8 @@ namespace GoCardlessApi.CreditorBankAccounts
 
         public bool Enabled { get; set; }
 
-        public IDictionary<string, string> Metadata { get; set; }
-
         public CreditorBankAccountLinks Links { get; set; }
+
+        public IDictionary<string, string> Metadata { get; set; }
     }
 }

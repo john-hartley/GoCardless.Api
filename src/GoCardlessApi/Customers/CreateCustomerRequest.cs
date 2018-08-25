@@ -31,9 +31,6 @@ namespace GoCardlessApi.Customers
         [JsonProperty("danish_identity_number")]
         public string DanishIdentityNumber { get; set; }
 
-        [JsonProperty("swedish_identity_number")]
-        public string SwedishIdentityNumber { get; set; }
-
         [JsonProperty("email")]
         public string Email { get; set; }
 
@@ -54,5 +51,8 @@ namespace GoCardlessApi.Customers
 
         [JsonProperty("region")]
         public string Region { get; set; }
+
+        [JsonProperty("swedish_identity_number")]
+        public string SwedishIdentityNumber { get; set; }
     }
 }
