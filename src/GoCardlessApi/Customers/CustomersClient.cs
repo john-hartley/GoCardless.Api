@@ -28,5 +28,14 @@ namespace GoCardlessApi.Customers
         {
             return GetAsync<CustomersResponse>("customers", customerId);
         }
+
+        public Task<UpdateCustomerResponse> UpdateAsync(UpdateCustomerRequest request)
+        {
+            return PutAsync<UpdateCustomerRequest, UpdateCustomerResponse>(
+                new { customers = request },
+                "customers",
+                request.Id
+            );
+        }
     }
 }

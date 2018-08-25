@@ -123,5 +123,59 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(actual.SwedishIdentityNumber, Is.Not.Null.And.EqualTo(customer.SwedishIdentityNumber));
             Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(customer.Metadata));
         }
+
+        [Test]
+        public async Task UpdatesCustomer()
+        {
+            // given
+            var subject = new CustomersClient(ClientConfiguration.ForSandbox(_accessToken));
+            var customer = (await subject.AllAsync()).Customers.First();
+
+            var request = new UpdateCustomerRequest
+            {
+                Id = customer.Id,
+                AddressLine1 = "Address Line 1",
+                AddressLine2 = "Address Line 2",
+                AddressLine3 = "Address Line 3",
+                City = "London",
+                CompanyName = "Company Name",
+                CountryCode = "DK",
+                Email = "email@example.com",
+                FamilyName = "Family Name",
+                GivenName = "Given Name",
+                Language = "da",
+                PostCode = "SW1A 1AA",
+                Region = "Essex",
+                DanishIdentityNumber = "2205506218",
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                },
+            };
+
+            // when
+            var result = await subject.UpdateAsync(request);
+            var actual = result.Customer;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null);
+            Assert.That(actual.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(actual.Email, Is.EqualTo(request.Email));
+            Assert.That(actual.GivenName, Is.EqualTo(request.GivenName));
+            Assert.That(actual.FamilyName, Is.EqualTo(request.FamilyName));
+            Assert.That(actual.AddressLine1, Is.EqualTo(request.AddressLine1));
+            Assert.That(actual.AddressLine2, Is.EqualTo(request.AddressLine2));
+            Assert.That(actual.AddressLine3, Is.EqualTo(request.AddressLine3));
+            Assert.That(actual.City, Is.EqualTo(request.City));
+            Assert.That(actual.Region, Is.EqualTo(request.Region));
+            Assert.That(actual.PostCode, Is.EqualTo(request.PostCode));
+            Assert.That(actual.CountryCode, Is.EqualTo(request.CountryCode));
+            Assert.That(actual.Language, Is.EqualTo(request.Language));
+            Assert.That(actual.DanishIdentityNumber, Is.EqualTo(request.DanishIdentityNumber));
+            Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
+        }
     }
 }
