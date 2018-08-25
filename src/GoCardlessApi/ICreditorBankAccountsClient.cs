@@ -2,9 +2,11 @@
 
 namespace GoCardlessApi
 {
-    public interface ICreditorBankAccounts
+    public interface ICreditorBankAccountsClient
     {
         Task<CreateCreditorBankAccountResponse> CreateAsync(CreateCreditorBankAccountRequest request);
+        Task<AllCreditorBankAccountsResponse> AllAsync();
+        Task<CreditorBankAccountResponse> ForIdAsync(string creditorBankAccountId);
         Task<DisableCreditorBankAccountResponse> DisableAsync(DisableCreditorBankAccountRequest request);
     }
 }

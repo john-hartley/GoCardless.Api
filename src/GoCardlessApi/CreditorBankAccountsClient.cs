@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace GoCardlessApi
 {
-    public class CreditorBankAccountsClient : ApiClientBase, ICreditorBankAccounts
+    public class CreditorBankAccountsClient : ApiClientBase, ICreditorBankAccountsClient
     {
         public CreditorBankAccountsClient(ClientConfiguration configuration) : base(configuration) { }
 
@@ -16,6 +16,18 @@ namespace GoCardlessApi
                 idempotencyKey,
                 new string[] { "creditor_bank_accounts" }
             );
+        }
+
+        public Task<AllCreditorBankAccountsResponse> AllAsync()
+        {
+            return GetAsync<AllCreditorBankAccountsResponse>(
+                new string[] { "creditor_bank_accounts" }
+            );
+        }
+
+        public Task<CreditorBankAccountResponse> ForIdAsync(string creditorBankAccountId)
+        {
+            return GetAsync<CreditorBankAccountResponse>("creditor_bank_accounts", creditorBankAccountId);
         }
 
         public Task<DisableCreditorBankAccountResponse> DisableAsync(DisableCreditorBankAccountRequest request)
