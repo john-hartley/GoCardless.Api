@@ -9,17 +9,15 @@ namespace GoCardlessApi
     public abstract class ApiClientBase
     {
         private readonly ClientConfiguration _configuration;
-        private readonly IFlurlRequest _baseRequest;
 
         internal ApiClientBase(ClientConfiguration configuration)
         {
             _configuration = configuration;
-            _baseRequest = _configuration.BaseUri.WithHeaders(_configuration.Headers);
         }
 
         internal async Task<TResponse> GetAsync<TResponse>(params string[] pathSegments)
         {
-            return await _baseRequest
+            return await BaseRequest()
                 .AppendPathSegments(pathSegments)
                 .GetJsonAsync<TResponse>()
                 .ConfigureAwait(false);
@@ -33,42 +31,10 @@ namespace GoCardlessApi
 
             try
             {
-                var response = await _configuration.BaseUri
-                    .WithHeaders(_configuration.Headers)
+                return await BaseRequest()
                     .AppendPathSegments(pathSegments)
                     .PutJsonAsync(envelope)
                     .ReceiveJson<TResponse>();
-                return response;
-            }
-            catch (FlurlHttpException ex)
-            {
-                var error = await ex.GetResponseJsonAsync();
-            }
-
-            return default(TResponse);
-        }
-
-        internal async Task<TResponse> PostAsync<TRequest, TResponse>(
-            object envelope,
-            string idempotencyKey,
-            params string[] pathSegments)
-        {
-            Debug.WriteLine(JsonConvert.SerializeObject(envelope));
-
-            var request = _baseRequest;
-
-            if (!string.IsNullOrWhiteSpace(idempotencyKey))
-            {
-                request = request.WithHeader("Idempotency-Key", idempotencyKey);
-            }
-
-            try
-            {
-                var response = await request
-                    .AppendPathSegments(pathSegments)
-                    .PostJsonAsync(envelope)
-                    .ReceiveJson<TResponse>();
-                return response;
             }
             catch (FlurlHttpException ex)
             {
@@ -77,6 +43,67 @@ namespace GoCardlessApi
             }
 
             return default(TResponse);
+        }
+
+        internal async Task<TResponse> PostAsync<TRequest, TResponse>(
+            string[] pathSegments)
+        {
+            try
+            {
+                return await BaseRequest()
+                    .AppendPathSegments(pathSegments)
+                    .PostJsonAsync(new { })
+                    .ReceiveJson<TResponse>();
+            }
+            catch (FlurlHttpException ex)
+            {
+                var error = await ex.GetResponseStringAsync();
+                Debug.WriteLine(JsonConvert.SerializeObject(error));
+            }
+
+            return default(TResponse);
+        }
+
+        internal Task<TResponse> PostAsync<TRequest, TResponse>(
+            object envelope,
+            string[] pathSegments)
+        {
+            return PostAsync<TRequest, TResponse>(envelope, null, pathSegments);
+        }
+
+        internal async Task<TResponse> PostAsync<TRequest, TResponse>(
+            object envelope,
+            string idempotencyKey,
+            string[] pathSegments)
+        {
+            Debug.WriteLine(JsonConvert.SerializeObject(envelope));
+
+            var request = BaseRequest();
+
+            if (!string.IsNullOrWhiteSpace(idempotencyKey))
+            {
+                request.WithHeader("Idempotency-Key", idempotencyKey);
+            }
+
+            try
+            {
+                return await request
+                    .AppendPathSegments(pathSegments)
+                    .PostJsonAsync(envelope)
+                    .ReceiveJson<TResponse>();
+            }
+            catch (FlurlHttpException ex)
+            {
+                var error = await ex.GetResponseStringAsync();
+                Debug.WriteLine(JsonConvert.SerializeObject(error));
+            }
+
+            return default(TResponse);
+        }
+
+        private IFlurlRequest BaseRequest()
+        {
+            return _configuration.BaseUri.WithHeaders(_configuration.Headers);
         }
     }
 }

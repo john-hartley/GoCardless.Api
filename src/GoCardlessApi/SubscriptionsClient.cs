@@ -19,7 +19,7 @@ namespace GoCardlessApi
             return PostAsync<CreateSubscriptionRequest, CreateSubscriptionResponse>(
                 new { subscriptions = request },
                 idempotencyKey,
-                "subscriptions"
+                new string[] { "subscriptions" }
             );
         }
 
@@ -41,10 +41,7 @@ namespace GoCardlessApi
         {
             return PostAsync<CancelSubscriptionRequest, CancelSubscriptionResponse>(
                 request,
-                "subscriptions",
-                request.Id,
-                "actions",
-                "cancel"
+                new string[] { "subscriptions", request.Id, "actions", "cancel" }
             );
         }
     }

@@ -9,16 +9,18 @@ namespace GoCardlessApi
         [JsonProperty("account_holder_name")]
         public string AccountHolderName { get; set; }
 
-        [JsonProperty("account_number")]
-        public string AccountNumber { get; set; }
+        [JsonProperty("account_number_ending")]
+        public string AccountNumberEnding { get; set; }
 
-        [JsonProperty("branch_code")]
-        public string BranchCode { get; set; }
+        [JsonProperty("bank_name")]
+        public string BankName { get; set; }
 
         [JsonProperty("country_code")]
         public string CountryCode { get; set; }
 
         public string Currency { get; set; }
+
+        public bool Enabled { get; set; }
 
         public CreditorBankAccountLinks Links { get; set; }
     }

@@ -14,7 +14,14 @@ namespace GoCardlessApi
             return PostAsync<CreateCreditorBankAccountRequest, CreateCreditorBankAccountResponse>(
                 new { creditor_bank_accounts = request },
                 idempotencyKey,
-                "creditor_bank_accounts"
+                new string[] { "creditor_bank_accounts" }
+            );
+        }
+
+        public Task<DisableCreditorBankAccountResponse> DisableAsync(DisableCreditorBankAccountRequest request)
+        {
+            return PostAsync<DisableCreditorBankAccountRequest, DisableCreditorBankAccountResponse>(
+                new string[] { "creditor_bank_accounts", request.Id, "actions", "disable" }
             );
         }
     }
