@@ -29,5 +29,13 @@ namespace GoCardlessApi.Mandates
             return GetAsync<MandateResponse>("mandates", mandateId);
         }
 
+        public Task<UpdateMandateResponse> UpdateAsync(UpdateMandateRequest request)
+        {
+            return PutAsync<UpdateMandateRequest, UpdateMandateResponse>(
+                new { mandates = request },
+                "mandates",
+                request.Id
+            );
+        }
     }
 }

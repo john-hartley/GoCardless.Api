@@ -101,7 +101,7 @@ namespace GoCardlessApi.Tests.Integration
         }
 
         [Test]
-        public async Task UpdatesCustomer()
+        public async Task UpdatesCustomerBankAccount()
         {
             // given
             var subject = new CustomerBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));

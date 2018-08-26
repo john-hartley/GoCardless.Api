@@ -107,6 +107,34 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(actual.Status, Is.Not.Null.And.EqualTo(mandate.Status));
         }
 
+        [Test]
+        public async Task UpdatesMandate()
+        {
+            // given
+            var subject = new MandatesClient(ClientConfiguration.ForSandbox(_accessToken));
+            var mandate = (await subject.AllAsync()).Mandates.First();
+
+            var request = new UpdateMandateRequest
+            {
+                Id = mandate.Id,
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                },
+            };
+
+            // when
+            var result = await subject.UpdateAsync(request);
+            var actual = result.Mandate;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null);
+            Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
+        }
+
         private async Task<CustomerBankAccount> CreateCustomerBankAccountFor(Customer customer)
         {
             var customerBankAccountsClient = new CustomerBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
