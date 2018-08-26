@@ -52,6 +52,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(creationResult.CreditorBankAccount.Metadata, Is.EqualTo(createRequest.Metadata));
             Assert.That(creationResult.CreditorBankAccount.Links.Creditor, Is.EqualTo(createRequest.Links.Creditor));
             Assert.That(creationResult.CreditorBankAccount.Enabled, Is.True);
+
             Assert.That(disabledResult.CreditorBankAccount.Enabled, Is.False);
         }
 
@@ -97,6 +98,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(creationResult.CreditorBankAccount.Metadata, Is.EqualTo(createRequest.Metadata));
             Assert.That(creationResult.CreditorBankAccount.Links.Creditor, Is.EqualTo(createRequest.Links.Creditor));
             Assert.That(creationResult.CreditorBankAccount.Enabled, Is.True);
+
             Assert.That(disabledResult.CreditorBankAccount.Enabled, Is.False);
         }
 
@@ -139,6 +141,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(creationResult.CreditorBankAccount.Metadata, Is.EqualTo(createRequest.Metadata));
             Assert.That(creationResult.CreditorBankAccount.Links.Creditor, Is.EqualTo(createRequest.Links.Creditor));
             Assert.That(creationResult.CreditorBankAccount.Enabled, Is.True);
+
             Assert.That(disabledResult.CreditorBankAccount.Enabled, Is.False);
         }
 

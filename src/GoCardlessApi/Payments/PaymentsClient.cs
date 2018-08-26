@@ -49,7 +49,7 @@ namespace GoCardlessApi.Payments
         public Task<CancelPaymentResponse> CancelAsync(CancelPaymentRequest request)
         {
             return PostAsync<CancelPaymentRequest, CancelPaymentResponse>(
-                new { data = request },
+                new { payments = request },
                 new string[] { "payments", request.Id, "actions", "cancel" }
             );
         }

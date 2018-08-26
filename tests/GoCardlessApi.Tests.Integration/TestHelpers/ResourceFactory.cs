@@ -26,7 +26,21 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
             _clientConfiguration = clientConfiguration;
         }
 
-        public async Task<Customer> CreateCustomer()
+        public Task<Customer> CreateForeignCustomer()
+        {
+            return CreateCustomer("DK", "da", "2205506218", "5302256218");
+        }
+
+        public Task<Customer> CreateLocalCustomer()
+        {
+            return CreateCustomer("GB", "en");
+        }
+
+        private async Task<Customer> CreateCustomer(
+            string countryCode,
+            string language,
+            string danishIdentityNumber = null,
+            string swedishIdentityNumber = null)
         {
             var request = new CreateCustomerRequest
             {
@@ -35,13 +49,21 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
                 AddressLine3 = "Address Line 3",
                 City = "London",
                 CompanyName = "Company Name",
-                CountryCode = "GB",
+                CountryCode = countryCode,
                 Email = "email@example.com",
                 FamilyName = "Family Name",
                 GivenName = "Given Name",
-                Language = "en",
+                Language = language,
+                DanishIdentityNumber = danishIdentityNumber,
+                SwedishIdentityNumber = swedishIdentityNumber,
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                },
                 PostCode = "SW1A 1AA",
-                Region = "Essex"
+                Region = "Essex",
             };
 
             var customersClient = new CustomersClient(_clientConfiguration);
@@ -57,7 +79,13 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
                 BranchCode = "200000",
                 CountryCode = "GB",
                 Currency = "GBP",
-                Links = new CustomerBankAccountLinks { Customer = customer.Id }
+                Links = new CustomerBankAccountLinks { Customer = customer.Id },
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                }
             };
 
             var customerBankAccountsClient = new CustomerBankAccountsClient(_clientConfiguration);

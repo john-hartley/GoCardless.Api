@@ -1,20 +1,30 @@
 ﻿using GoCardlessApi.Core;
 using GoCardlessApi.CustomerBankAccounts;
+using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GoCardlessApi.Tests.Integration
 {
     public class CustomerBankAccountsTests : IntegrationTest
     {
+        private readonly ClientConfiguration _configuration;
+        private readonly ResourceFactory _resourceFactory;
+
+        public CustomerBankAccountsTests()
+        {
+            _configuration = ClientConfiguration.ForSandbox(_accessToken);
+            _resourceFactory = new ResourceFactory(_configuration);
+        }
+
         [Test]
         public async Task CreatesAndDisablesCustomerBankAccountUsingBranchCode()
         {
             // given
+            var customer = await _resourceFactory.CreateLocalCustomer();
+
             var createRequest = new CreateCustomerBankAccountRequest
             {
                 AccountHolderName = "API BANK ACCOUNT",
@@ -22,7 +32,7 @@ namespace GoCardlessApi.Tests.Integration
                 BranchCode = "200000",
                 CountryCode = "GB",
                 Currency = "GBP",
-                Links = new CustomerBankAccountLinks { Customer = "CU000439RS7SA2" },
+                Links = new CustomerBankAccountLinks { Customer = customer.Id },
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
@@ -31,7 +41,7 @@ namespace GoCardlessApi.Tests.Integration
                 }
             };
 
-            var subject = new CustomerBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new CustomerBankAccountsClient(_configuration);
 
             // when
             var creationResult = await subject.CreateAsync(createRequest);
@@ -53,6 +63,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(creationResult.CustomerBankAccount.Metadata, Is.EqualTo(createRequest.Metadata));
             Assert.That(creationResult.CustomerBankAccount.Links.Customer, Is.EqualTo(createRequest.Links.Customer));
             Assert.That(creationResult.CustomerBankAccount.Enabled, Is.True);
+
             Assert.That(disabledResult.CustomerBankAccount.Enabled, Is.False);
         }
 
@@ -60,7 +71,7 @@ namespace GoCardlessApi.Tests.Integration
         public async Task ReturnsCustomerBankAccounts()
         {
             // given
-            var subject = new CustomerBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new CustomerBankAccountsClient(_configuration);
 
             // when
             var result = (await subject.AllAsync()).CustomerBankAccounts.ToList();
@@ -81,8 +92,10 @@ namespace GoCardlessApi.Tests.Integration
         public async Task ReturnsIndividualCustomerBankAccount()
         {
             // given
-            var subject = new CustomerBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
-            var customerBankAccount = (await subject.AllAsync()).CustomerBankAccounts.First();
+            var customer = await _resourceFactory.CreateLocalCustomer();
+            var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
+
+            var subject = new CustomerBankAccountsClient(_configuration);
 
             // when
             var result = await subject.ForIdAsync(customerBankAccount.Id);
@@ -97,6 +110,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(actual.CountryCode, Is.Not.Null.And.EqualTo(customerBankAccount.CountryCode));
             Assert.That(actual.Currency, Is.Not.Null.And.EqualTo(customerBankAccount.Currency));
             Assert.That(actual.Links.Customer, Is.Not.Null.And.EqualTo(customerBankAccount.Links.Customer));
+            Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(customerBankAccount.Metadata));
             Assert.That(actual.Enabled, Is.EqualTo(customerBankAccount.Enabled));
         }
 
@@ -104,17 +118,19 @@ namespace GoCardlessApi.Tests.Integration
         public async Task UpdatesCustomerBankAccount()
         {
             // given
-            var subject = new CustomerBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
-            var customerBankAccount = (await subject.AllAsync()).CustomerBankAccounts.First();
+            var customer = await _resourceFactory.CreateLocalCustomer();
+            var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
+
+            var subject = new CustomerBankAccountsClient(_configuration);
 
             var request = new UpdateCustomerBankAccountRequest
             {
                 Id = customerBankAccount.Id,
                 Metadata = new Dictionary<string, string>
                 {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
+                    ["Key4"] = "Value4",
+                    ["Key5"] = "Value5",
+                    ["Key6"] = "Value6",
                 },
             };
 

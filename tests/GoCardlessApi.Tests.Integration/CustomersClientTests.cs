@@ -1,5 +1,6 @@
 ﻿using GoCardlessApi.Core;
 using GoCardlessApi.Customers;
+using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,15 @@ namespace GoCardlessApi.Tests.Integration
 {
     public class CustomersClientTests : IntegrationTest
     {
+        private readonly ClientConfiguration _configuration;
+        private readonly ResourceFactory _resourceFactory;
+
+        public CustomersClientTests()
+        {
+            _configuration = ClientConfiguration.ForSandbox(_accessToken);
+            _resourceFactory = new ResourceFactory(_configuration);
+        }
+
         [Test]
         public async Task CreatesCustomer()
         {
@@ -38,7 +48,7 @@ namespace GoCardlessApi.Tests.Integration
                 },
             };
 
-            var subject = new CustomersClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new CustomersClient(_configuration);
 
             // when
             var result = await subject.CreateAsync(request);
@@ -68,7 +78,7 @@ namespace GoCardlessApi.Tests.Integration
         public async Task ReturnsCustomers()
         {
             // given
-            var subject = new CustomersClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new CustomersClient(_configuration);
 
             // when
             var result = (await subject.AllAsync()).Customers.ToList();
@@ -98,8 +108,8 @@ namespace GoCardlessApi.Tests.Integration
         public async Task ReturnsIndividualCustomer()
         {
             // given
-            var subject = new CustomersClient(ClientConfiguration.ForSandbox(_accessToken));
-            var customer = (await subject.AllAsync()).Customers.First();
+            var customer = await _resourceFactory.CreateForeignCustomer();
+            var subject = new CustomersClient(_configuration);
 
             // when
             var result = await subject.ForIdAsync(customer.Id);
@@ -129,8 +139,8 @@ namespace GoCardlessApi.Tests.Integration
         public async Task UpdatesCustomer()
         {
             // given
-            var subject = new CustomersClient(ClientConfiguration.ForSandbox(_accessToken));
-            var customer = (await subject.AllAsync()).Customers.First();
+            var customer = await _resourceFactory.CreateForeignCustomer();
+            var subject = new CustomersClient(_configuration);
 
             var request = new UpdateCustomerRequest
             {
@@ -150,9 +160,9 @@ namespace GoCardlessApi.Tests.Integration
                 DanishIdentityNumber = "2205506218",
                 Metadata = new Dictionary<string, string>
                 {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
+                    ["Key4"] = "Value6",
+                    ["Key5"] = "Value7",
+                    ["Key6"] = "Value8",
                 },
             };
 

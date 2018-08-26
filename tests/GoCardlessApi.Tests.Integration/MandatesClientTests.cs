@@ -31,7 +31,7 @@ namespace GoCardlessApi.Tests.Integration
         public async Task OneTimeSetup()
         {
             _creditor = await _resourceFactory.Creditor();
-            _customer = await _resourceFactory.CreateCustomer();
+            _customer = await _resourceFactory.CreateLocalCustomer();
             _customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(_customer);
         }
 
@@ -98,8 +98,10 @@ namespace GoCardlessApi.Tests.Integration
             //Assert.That(actual.Reference, Is.EqualTo(request.Reference));
             Assert.That(creationResult.Mandate.Scheme, Is.EqualTo(createRequest.Scheme));
             Assert.That(creationResult.Mandate.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
+
             Assert.That(cancellationResult.Mandate.Metadata, Is.EqualTo(cancelRequest.Metadata));
             Assert.That(cancellationResult.Mandate.Status, Is.EqualTo("cancelled"));
+
             Assert.That(reinstateResult.Mandate.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
             Assert.That(reinstateResult.Mandate.Metadata, Is.EqualTo(reinstateRequest.Metadata));
         }
