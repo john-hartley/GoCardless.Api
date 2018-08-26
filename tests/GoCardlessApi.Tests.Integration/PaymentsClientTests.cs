@@ -82,6 +82,32 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(cancellationResult.Payment.Status, Is.EqualTo("cancelled"));
         }
 
+        [Test]
+        public async Task ReturnsPayments()
+        {
+            // given
+            var subject = new PaymentsClient(_configuration);
+
+            // when
+            var result = (await subject.AllAsync()).Payments.ToList();
+
+            // then
+            Assert.That(result.Any(), Is.True);
+            Assert.That(result[0], Is.Not.Null);
+            Assert.That(result[0].Id, Is.Not.Null);
+            Assert.That(result[0].Amount, Is.Not.EqualTo(default(int)));
+            //Assert.That(result[0].AppFee, Is.Not.Null);
+            Assert.That(result[0].ChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(result[0].Currency, Is.Not.Null);
+            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result[0].Description, Is.Not.Null);
+            Assert.That(result[0].Links.Creditor, Is.Not.Null);
+            Assert.That(result[0].Links.Mandate, Is.Not.Null);
+            Assert.That(result[0].Metadata, Is.Not.Null);
+            Assert.That(result[0].Reference, Is.Not.Null);
+            Assert.That(result[0].Status, Is.Not.Null);
+        }
+
         private async Task<Mandate> CreateMandate(
             Creditor creditor,
             Customer customer, 

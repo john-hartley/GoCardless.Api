@@ -19,6 +19,11 @@ namespace GoCardlessApi.Payments
             );
         }
 
+        public Task<AllPaymentsResponse> AllAsync()
+        {
+            return GetAsync<AllPaymentsResponse>("payments");
+        }
+
         public Task<CancelPaymentResponse> CancelAsync(CancelPaymentRequest request)
         {
             return PostAsync<CancelPaymentRequest, CancelPaymentResponse>(

@@ -17,7 +17,7 @@ namespace GoCardlessApi.Payments
         public int? AppFee { get; set; }
 
         [JsonProperty("charge_date")]
-        public string ChargeDate { get; set; }
+        public DateTime ChargeDate { get; set; }
 
         [JsonProperty("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
