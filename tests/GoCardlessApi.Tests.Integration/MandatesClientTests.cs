@@ -61,7 +61,7 @@ namespace GoCardlessApi.Tests.Integration
                 },
             };
 
-            var cancellationResult = (await subject.CancelAsync(cancelRequest));
+            var cancellationResult = await subject.CancelAsync(cancelRequest);
 
             var reinstateRequest = new ReinstateMandateRequest
             {

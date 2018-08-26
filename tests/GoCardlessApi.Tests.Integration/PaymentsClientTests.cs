@@ -137,6 +137,58 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(actual.Status, Is.EqualTo(payment.Status));
         }
 
+        [Test]
+        public async Task UpdatesPayment()
+        {
+            // given
+            var creditor = await Creditor();
+            var customer = await CreateCustomer();
+            var customerBankAccount = await CreateCustomerBankAccountFor(customer);
+            var mandate = await CreateMandate(creditor, customer, customerBankAccount);
+
+            var createRequest = new CreatePaymentRequest
+            {
+                Amount = 500,
+                //AppFee = 50,
+                ChargeDate = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd"),
+                Description = "Sandbox Payment",
+                Currency = "GBP",
+                Links = new CreatePaymentLinks { Mandate = mandate.Id },
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                },
+                Reference = "REF123456"
+            };
+
+            var subject = new PaymentsClient(_configuration);
+
+            // when
+            var creationResult = await subject.CreateAsync(createRequest);
+
+            var updateRequest = new UpdatePaymentRequest
+            {
+                Id = creationResult.Payment.Id,
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key4"] = "Value4",
+                    ["Key5"] = "Value5",
+                    ["Key6"] = "Value6",
+                },
+            };
+
+            // when
+            var result = await subject.UpdateAsync(updateRequest);
+            var actual = result.Payment;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.EqualTo(creationResult.Payment.Id));
+            Assert.That(actual.Metadata, Is.EqualTo(updateRequest.Metadata));
+        }
+
         private async Task<Mandate> CreateMandate(
             Creditor creditor,
             Customer customer, 
