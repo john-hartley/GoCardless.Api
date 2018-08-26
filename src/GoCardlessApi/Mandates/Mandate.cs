@@ -16,7 +16,7 @@ namespace GoCardlessApi.Mandates
         public IDictionary<string, string> Metadata { get; set; }
 
         [JsonProperty("next_possible_charge_date")]
-        public DateTime NextPossibleChargeDate { get; set; }
+        public DateTime? NextPossibleChargeDate { get; set; }
 
         public string Reference { get; set; }
 
