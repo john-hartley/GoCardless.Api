@@ -99,5 +99,33 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(actual.Links.Customer, Is.Not.Null.And.EqualTo(customerBankAccount.Links.Customer));
             Assert.That(actual.Enabled, Is.EqualTo(customerBankAccount.Enabled));
         }
+
+        [Test]
+        public async Task UpdatesCustomer()
+        {
+            // given
+            var subject = new CustomerBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var customerBankAccount = (await subject.AllAsync()).CustomerBankAccounts.First();
+
+            var request = new UpdateCustomerBankAccountRequest
+            {
+                Id = customerBankAccount.Id,
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                },
+            };
+
+            // when
+            var result = await subject.UpdateAsync(request);
+            var actual = result.CustomerBankAccount;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null);
+            Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
+        }
     }
 }

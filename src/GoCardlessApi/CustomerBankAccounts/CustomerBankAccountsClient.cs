@@ -37,5 +37,14 @@ namespace GoCardlessApi.CustomerBankAccounts
         {
             return GetAsync<CustomerBankAccountResponse>("customer_bank_accounts", customerBankAccountId);
         }
+
+        public Task<UpdateCustomerBankAccountResponse> UpdateAsync(UpdateCustomerBankAccountRequest request)
+        {
+            return PutAsync<UpdateCustomerBankAccountRequest, UpdateCustomerBankAccountResponse>(
+                new { customer_bank_accounts = request },
+                "customer_bank_accounts",
+                request.Id
+            );
+        }
     }
 }
