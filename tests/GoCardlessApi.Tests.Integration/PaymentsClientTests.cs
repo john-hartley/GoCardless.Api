@@ -1,4 +1,6 @@
 ﻿using GoCardlessApi.Core;
+using GoCardlessApi.Creditors;
+using GoCardlessApi.Mandates;
 using GoCardlessApi.Payments;
 using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
@@ -14,21 +16,28 @@ namespace GoCardlessApi.Tests.Integration
         private readonly ClientConfiguration _configuration;
         private readonly ResourceFactory _resourceFactory;
 
+        private Creditor _creditor;
+        private Mandate _mandate;
+
         public PaymentsClientTests()
         {
             _configuration = ClientConfiguration.ForSandbox(_accessToken);
             _resourceFactory = new ResourceFactory(_configuration);
         }
 
+        [OneTimeSetUp]
+        public async Task OneTimeSetup()
+        {
+            _creditor = await _resourceFactory.Creditor();
+            var customer = await _resourceFactory.CreateCustomer();
+            var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
+            _mandate = await _resourceFactory.CreateMandate(_creditor, customer, customerBankAccount);
+        }
+
         [Test]
         public async Task CreatesAndCancelsPayment()
         {
             // given
-            var creditor = await _resourceFactory.Creditor();
-            var customer = await _resourceFactory.CreateCustomer();
-            var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
-            var mandate = await _resourceFactory.CreateMandate(creditor, customer, customerBankAccount);
-
             var createRequest = new CreatePaymentRequest
             {
                 Amount = 500,
@@ -36,7 +45,7 @@ namespace GoCardlessApi.Tests.Integration
                 ChargeDate = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd"),
                 Description = "Sandbox Payment",
                 Currency = "GBP",
-                Links = new CreatePaymentLinks { Mandate = mandate.Id },
+                Links = new CreatePaymentLinks { Mandate = _mandate.Id },
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
@@ -73,8 +82,8 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(creationResult.Payment.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(creationResult.Payment.Currency, Is.EqualTo(createRequest.Currency));
             Assert.That(creationResult.Payment.Description, Is.EqualTo(createRequest.Description));
-            Assert.That(creationResult.Payment.Links.Creditor, Is.EqualTo(creditor.Id));
-            Assert.That(creationResult.Payment.Links.Mandate, Is.EqualTo(mandate.Id));
+            Assert.That(creationResult.Payment.Links.Creditor, Is.EqualTo(_creditor.Id));
+            Assert.That(creationResult.Payment.Links.Mandate, Is.EqualTo(_mandate.Id));
             Assert.That(creationResult.Payment.Metadata, Is.EqualTo(createRequest.Metadata));
             Assert.That(creationResult.Payment.Reference, Is.EqualTo(createRequest.Reference));
             Assert.That(creationResult.Payment.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
@@ -113,7 +122,7 @@ namespace GoCardlessApi.Tests.Integration
         {
             // given
             var subject = new PaymentsClient(_configuration);
-            var payment = (await subject.AllAsync()).Payments.First();
+            var payment = await _resourceFactory.CreatePaymentFor(_mandate);
 
             // when
             var result = await subject.ForIdAsync(payment.Id);
@@ -140,11 +149,7 @@ namespace GoCardlessApi.Tests.Integration
         public async Task UpdatesPayment()
         {
             // given
-            var creditor = await _resourceFactory.Creditor();
-            var customer = await _resourceFactory.CreateCustomer();
-            var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
-            var mandate = await _resourceFactory.CreateMandate(creditor, customer, customerBankAccount);
-            var payment = await _resourceFactory.CreatePaymentFor(mandate);
+            var payment = await _resourceFactory.CreatePaymentFor(_mandate);
 
             var request = new UpdatePaymentRequest
             {
@@ -173,11 +178,7 @@ namespace GoCardlessApi.Tests.Integration
         public async Task RetriesPayment()
         {
             // given
-            var creditor = await _resourceFactory.Creditor();
-            var customer = await _resourceFactory.CreateCustomer();
-            var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
-            var mandate = await _resourceFactory.CreateMandate(creditor, customer, customerBankAccount);
-            var payment = await _resourceFactory.CreatePaymentFor(mandate);
+            var payment = await _resourceFactory.CreatePaymentFor(_mandate);
 
             var request = new RetryPaymentRequest
             {
