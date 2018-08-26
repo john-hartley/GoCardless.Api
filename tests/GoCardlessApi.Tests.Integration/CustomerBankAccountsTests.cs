@@ -76,5 +76,28 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result[0].Metadata, Is.Not.Null);
             Assert.That(result[0].Links.Customer, Is.Not.Null);
         }
+
+        [Test]
+        public async Task ReturnsIndividualCustomerBankAccount()
+        {
+            // given
+            var subject = new CustomerBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var customerBankAccount = (await subject.AllAsync()).CustomerBankAccounts.First();
+
+            // when
+            var result = await subject.ForIdAsync(customerBankAccount.Id);
+            var actual = result.CustomerBankAccount;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null.And.EqualTo(customerBankAccount.Id));
+            Assert.That(actual.AccountHolderName, Is.Not.Null.And.EqualTo(customerBankAccount.AccountHolderName));
+            Assert.That(actual.AccountNumberEnding, Is.Not.Null.And.EqualTo(customerBankAccount.AccountNumberEnding));
+            Assert.That(actual.BankName, Is.Not.Null.And.EqualTo(customerBankAccount.BankName));
+            Assert.That(actual.CountryCode, Is.Not.Null.And.EqualTo(customerBankAccount.CountryCode));
+            Assert.That(actual.Currency, Is.Not.Null.And.EqualTo(customerBankAccount.Currency));
+            Assert.That(actual.Links.Customer, Is.Not.Null.And.EqualTo(customerBankAccount.Links.Customer));
+            Assert.That(actual.Enabled, Is.EqualTo(customerBankAccount.Enabled));
+        }
     }
 }

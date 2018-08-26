@@ -32,5 +32,10 @@ namespace GoCardlessApi.CustomerBankAccounts
                 new string[] { "customer_bank_accounts" }
             );
         }
+
+        public Task<CustomerBankAccountResponse> ForIdAsync(string customerBankAccountId)
+        {
+            return GetAsync<CustomerBankAccountResponse>("customer_bank_accounts", customerBankAccountId);
+        }
     }
 }
