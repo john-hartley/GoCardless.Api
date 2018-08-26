@@ -13,17 +13,22 @@ namespace GoCardlessApi.Tests.Integration
 {
     public class MandatesClientTests : IntegrationTest
     {
+        private readonly ClientConfiguration _configuration;
+
+        public MandatesClientTests()
+        {
+            _configuration = ClientConfiguration.ForSandbox(_accessToken);
+        }
+
         [Test]
-        public async Task CreatesMandate()
+        public async Task CreatesAndCancelsMandate()
         {
             // given
-            var creditorsClient = new CreditorsClient(ClientConfiguration.ForSandbox(_accessToken));
-            var creditor = (await creditorsClient.AllAsync()).Creditors.First();
-
+            var creditor = await Creditor();
             var customer = await CreateCustomer();
             var customerBankAccount = await CreateCustomerBankAccountFor(customer);
 
-            var request = new CreateMandateRequest
+            var createRequest = new CreateMandateRequest
             {
                 Metadata = new Dictionary<string, string>
                 {
@@ -40,30 +45,44 @@ namespace GoCardlessApi.Tests.Integration
                 }
             };
 
-            var subject = new MandatesClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new MandatesClient(_configuration);
 
             // when
-            var result = await subject.CreateAsync(request);
-            var actual = result.Mandate;
+            var creationResult = await subject.CreateAsync(createRequest);
+
+            var cancelRequest = new CancelMandateRequest
+            {
+                Id = creationResult.Mandate.Id,
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key4"] = "Value4",
+                    ["Key5"] = "Value5",
+                    ["Key6"] = "Value6",
+                },
+            };
+
+            var cancellationResult = (await subject.CancelAsync(cancelRequest));
 
             // then
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual.Id, Is.Not.Null);
-            Assert.That(actual.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(actual.Links.Creditor, Is.EqualTo(creditor.Id));
-            Assert.That(actual.Links.CustomerBankAccount, Is.EqualTo(customerBankAccount.Id));
-            Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
-            Assert.That(actual.NextPossibleChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(creationResult.Mandate, Is.Not.Null);
+            Assert.That(creationResult.Mandate.Id, Is.Not.Null);
+            Assert.That(creationResult.Mandate.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(creationResult.Mandate.Links.Creditor, Is.EqualTo(creditor.Id));
+            Assert.That(creationResult.Mandate.Links.CustomerBankAccount, Is.EqualTo(customerBankAccount.Id));
+            Assert.That(creationResult.Mandate.Metadata, Is.EqualTo(createRequest.Metadata));
+            Assert.That(creationResult.Mandate.NextPossibleChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
             //Assert.That(actual.Reference, Is.EqualTo(request.Reference));
-            Assert.That(actual.Scheme, Is.EqualTo(request.Scheme));
-            Assert.That(actual.Status, Is.Not.Null);
+            Assert.That(creationResult.Mandate.Scheme, Is.EqualTo(createRequest.Scheme));
+            Assert.That(creationResult.Mandate.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
+            //Assert.That(cancellationResult.Mandate.Metadata, Is.EqualTo(cancelRequest.Metadata));
+            Assert.That(cancellationResult.Mandate.Status, Is.EqualTo("cancelled"));
         }
 
         [Test]
         public async Task ReturnsMandates()
         {
             // given
-            var subject = new MandatesClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new MandatesClient(_configuration);
 
             // when
             var result = (await subject.AllAsync()).Mandates.ToList();
@@ -86,7 +105,7 @@ namespace GoCardlessApi.Tests.Integration
         public async Task ReturnsIndividualMandate()
         {
             // given
-            var subject = new MandatesClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new MandatesClient(_configuration);
             var mandate = (await subject.AllAsync()).Mandates.First();
 
             // when
@@ -111,7 +130,7 @@ namespace GoCardlessApi.Tests.Integration
         public async Task UpdatesMandate()
         {
             // given
-            var subject = new MandatesClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new MandatesClient(_configuration);
             var mandate = (await subject.AllAsync()).Mandates.First();
 
             var request = new UpdateMandateRequest
@@ -135,55 +154,9 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
         }
 
-        [Test]
-        public async Task CancelsMandate()
-        {
-            // given
-            var subject = new MandatesClient(ClientConfiguration.ForSandbox(_accessToken));
-
-            var creditorsClient = new CreditorsClient(ClientConfiguration.ForSandbox(_accessToken));
-            var creditor = (await creditorsClient.AllAsync()).Creditors.First();
-
-            var customer = await CreateCustomer();
-            var customerBankAccount = await CreateCustomerBankAccountFor(customer);
-
-            var request = new CreateMandateRequest
-            {
-                Scheme = "bacs",
-                Links = new CreateMandateLinks
-                {
-                    Creditor = creditor.Id,
-                    CustomerBankAccount = customerBankAccount.Id
-                }
-            };
-
-            var mandate = (await subject.CreateAsync(request)).Mandate;
-
-            var cancelRequest = new CancelMandateRequest
-            {
-                Id = mandate.Id,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
-            };
-
-            // when
-            var result = (await subject.CancelAsync(cancelRequest));
-            var actual = result.Mandate;
-
-            // then
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual.Id, Is.EqualTo(mandate.Id));
-            Assert.That(actual.Metadata, Is.EqualTo(cancelRequest.Metadata));
-            Assert.That(actual.Status, Is.EqualTo("cancelled"));
-        }
-
         private async Task<CustomerBankAccount> CreateCustomerBankAccountFor(Customer customer)
         {
-            var customerBankAccountsClient = new CustomerBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var customerBankAccountsClient = new CustomerBankAccountsClient(_configuration);
 
             var request = new CreateCustomerBankAccountRequest
             {
@@ -200,7 +173,7 @@ namespace GoCardlessApi.Tests.Integration
 
         private async Task<Customer> CreateCustomer()
         {
-            var customersClient = new CustomersClient(ClientConfiguration.ForSandbox(_accessToken));
+            var customersClient = new CustomersClient(_configuration);
 
             var request = new CreateCustomerRequest
             {
@@ -219,6 +192,12 @@ namespace GoCardlessApi.Tests.Integration
             };
 
             return (await customersClient.CreateAsync(request)).Customer;
+        }
+
+        private async Task<Creditor> Creditor()
+        {
+            var creditorsClient = new CreditorsClient(_configuration);
+            return (await creditorsClient.AllAsync()).Creditors.First();
         }
     }
 }

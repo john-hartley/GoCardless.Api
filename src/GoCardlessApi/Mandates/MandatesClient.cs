@@ -41,7 +41,7 @@ namespace GoCardlessApi.Mandates
         public Task<CancelMandateResponse> CancelAsync(CancelMandateRequest request)
         {
             return PostAsync<CancelMandateRequest, CancelMandateResponse>(
-                request,
+                new { data = request },
                 new string[] { "mandates", request.Id, "actions", "cancel" }
             );
         }
