@@ -1,8 +1,6 @@
 ﻿using GoCardlessApi.Core;
-using GoCardlessApi.Creditors;
-using GoCardlessApi.CustomerBankAccounts;
-using GoCardlessApi.Customers;
 using GoCardlessApi.Mandates;
+using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -14,19 +12,21 @@ namespace GoCardlessApi.Tests.Integration
     public class MandatesClientTests : IntegrationTest
     {
         private readonly ClientConfiguration _configuration;
+        private readonly ResourceFactory _resourceFactory;
 
         public MandatesClientTests()
         {
             _configuration = ClientConfiguration.ForSandbox(_accessToken);
+            _resourceFactory = new ResourceFactory(_configuration);
         }
 
         [Test]
         public async Task CreatesCancelsAndReinstatesMandate()
         {
             // given
-            var creditor = await Creditor();
-            var customer = await CreateCustomer();
-            var customerBankAccount = await CreateCustomerBankAccountFor(customer);
+            var creditor = await _resourceFactory.Creditor();
+            var customer = await _resourceFactory.CreateCustomer();
+            var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
 
             var createRequest = new CreateMandateRequest
             {
@@ -152,9 +152,9 @@ namespace GoCardlessApi.Tests.Integration
                 Id = mandate.Id,
                 Metadata = new Dictionary<string, string>
                 {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
+                    ["Key4"] = "Value4",
+                    ["Key5"] = "Value5",
+                    ["Key6"] = "Value6",
                 },
             };
 
@@ -166,52 +166,6 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Id, Is.Not.Null);
             Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
-        }
-
-        private async Task<CustomerBankAccount> CreateCustomerBankAccountFor(Customer customer)
-        {
-            var customerBankAccountsClient = new CustomerBankAccountsClient(_configuration);
-
-            var request = new CreateCustomerBankAccountRequest
-            {
-                AccountHolderName = "API BANK ACCOUNT",
-                AccountNumber = "55666666",
-                BranchCode = "200000",
-                CountryCode = "GB",
-                Currency = "GBP",
-                Links = new CustomerBankAccountLinks { Customer = customer.Id }
-            };
-
-            return (await customerBankAccountsClient.CreateAsync(request)).CustomerBankAccount;
-        }
-
-        private async Task<Customer> CreateCustomer()
-        {
-            var customersClient = new CustomersClient(_configuration);
-
-            var request = new CreateCustomerRequest
-            {
-                AddressLine1 = "Address Line 1",
-                AddressLine2 = "Address Line 2",
-                AddressLine3 = "Address Line 3",
-                City = "London",
-                CompanyName = "Company Name",
-                CountryCode = "GB",
-                Email = "email@example.com",
-                FamilyName = "Family Name",
-                GivenName = "Given Name",
-                Language = "en",
-                PostCode = "SW1A 1AA",
-                Region = "Essex"
-            };
-
-            return (await customersClient.CreateAsync(request)).Customer;
-        }
-
-        private async Task<Creditor> Creditor()
-        {
-            var creditorsClient = new CreditorsClient(_configuration);
-            return (await creditorsClient.AllAsync()).Creditors.First();
         }
     }
 }
