@@ -45,5 +45,13 @@ namespace GoCardlessApi.Mandates
                 new string[] { "mandates", request.Id, "actions", "cancel" }
             );
         }
+
+        public Task<ReinstateMandateResponse> ReinstateAsync(ReinstateMandateRequest request)
+        {
+            return PostAsync<ReinstateMandateRequest, ReinstateMandateResponse>(
+                new { data = request },
+                new string[] { "mandates", request.Id, "actions", "reinstate" }
+            );
+        }
     }
 }

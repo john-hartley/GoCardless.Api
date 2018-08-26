@@ -21,7 +21,7 @@ namespace GoCardlessApi.Tests.Integration
         }
 
         [Test]
-        public async Task CreatesAndCancelsMandate()
+        public async Task CreatesCancelsAndReinstatesMandate()
         {
             // given
             var creditor = await Creditor();
@@ -63,6 +63,19 @@ namespace GoCardlessApi.Tests.Integration
 
             var cancellationResult = (await subject.CancelAsync(cancelRequest));
 
+            var reinstateRequest = new ReinstateMandateRequest
+            {
+                Id = creationResult.Mandate.Id,
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key7"] = "Value7",
+                    ["Key8"] = "Value8",
+                    ["Key9"] = "Value9",
+                },
+            };
+
+            var reinstateResult = (await subject.ReinstateAsync(reinstateRequest));
+
             // then
             Assert.That(creationResult.Mandate, Is.Not.Null);
             Assert.That(creationResult.Mandate.Id, Is.Not.Null);
@@ -76,6 +89,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(creationResult.Mandate.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
             //Assert.That(cancellationResult.Mandate.Metadata, Is.EqualTo(cancelRequest.Metadata));
             Assert.That(cancellationResult.Mandate.Status, Is.EqualTo("cancelled"));
+            Assert.That(reinstateResult.Mandate.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
         }
 
         [Test]
