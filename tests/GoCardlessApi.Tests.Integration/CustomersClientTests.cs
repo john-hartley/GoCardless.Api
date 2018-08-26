@@ -74,6 +74,7 @@ namespace GoCardlessApi.Tests.Integration
             var result = (await subject.AllAsync()).Customers.ToList();
 
             // then
+            Assert.That(result.Any(), Is.True);
             Assert.That(result[0], Is.Not.Null);
             Assert.That(result[0].Id, Is.Not.Null);
             Assert.That(result[0].CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));

@@ -18,5 +18,11 @@ namespace GoCardlessApi.Mandates
                 new string[] { "mandates" }
             );
         }
+
+        public Task<AllMandatesResponse> AllAsync()
+        {
+            return GetAsync<AllMandatesResponse>("mandates");
+        }
+
     }
 }
