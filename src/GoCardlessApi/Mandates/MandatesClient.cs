@@ -24,5 +24,10 @@ namespace GoCardlessApi.Mandates
             return GetAsync<AllMandatesResponse>("mandates");
         }
 
+        public Task<MandateResponse> ForIdAsync(string mandateId)
+        {
+            return GetAsync<MandateResponse>("mandates", mandateId);
+        }
+
     }
 }

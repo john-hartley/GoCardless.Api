@@ -82,6 +82,31 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result[0].Status, Is.Not.Null);
         }
 
+        [Test]
+        public async Task ReturnsIndividualMandate()
+        {
+            // given
+            var subject = new MandatesClient(ClientConfiguration.ForSandbox(_accessToken));
+            var mandate = (await subject.AllAsync()).Mandates.First();
+
+            // when
+            var result = await subject.ForIdAsync(mandate.Id);
+            var actual = result.Mandate;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null.And.EqualTo(mandate.Id));
+            Assert.That(actual.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(actual.Links.Creditor, Is.Not.Null.And.EqualTo(mandate.Links.Creditor));
+            Assert.That(actual.Links.Customer, Is.Not.Null.And.EqualTo(mandate.Links.Customer));
+            Assert.That(actual.Links.CustomerBankAccount, Is.Not.Null.And.EqualTo(mandate.Links.CustomerBankAccount));
+            Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(mandate.Metadata));
+            Assert.That(actual.NextPossibleChargeDate, Is.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(actual.Reference, Is.Not.Null);
+            Assert.That(actual.Scheme, Is.Not.Null.And.EqualTo(mandate.Scheme));
+            Assert.That(actual.Status, Is.Not.Null.And.EqualTo(mandate.Status));
+        }
+
         private async Task<CustomerBankAccount> CreateCustomerBankAccountFor(Customer customer)
         {
             var customerBankAccountsClient = new CustomerBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
