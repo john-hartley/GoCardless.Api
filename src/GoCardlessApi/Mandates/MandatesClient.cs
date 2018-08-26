@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace GoCardlessApi.Mandates
 {
-    public class MandatesClient : ApiClientBase
+    public class MandatesClient : ApiClientBase, IMandatesClient
     {
         public MandatesClient(ClientConfiguration configuration) : base(configuration) { }
 
