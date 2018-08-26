@@ -105,7 +105,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result.Any(), Is.True);
             Assert.That(result[0], Is.Not.Null);
             Assert.That(result[0].Id, Is.Not.Null);
-            Assert.That(result[0].CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result[0].Links.Creditor, Is.Not.Null);
             Assert.That(result[0].Links.CustomerBankAccount, Is.Not.Null);
             Assert.That(result[0].Metadata, Is.Not.Null);
