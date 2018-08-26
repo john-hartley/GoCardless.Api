@@ -92,7 +92,7 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
             return (await customerBankAccountsClient.CreateAsync(request)).CustomerBankAccount;
         }
 
-        public async Task<Mandate> CreateMandate(
+        public async Task<Mandate> CreateMandateFor(
             Creditor creditor,
             Customer customer,
             CustomerBankAccount customerBankAccount)

@@ -5,11 +5,33 @@ using System;
 using System.Collections.Generic;
 using GoCardlessApi.Subscriptions;
 using GoCardlessApi.Core;
+using GoCardlessApi.Tests.Integration.TestHelpers;
+using GoCardlessApi.Mandates;
 
 namespace GoCardlessApi.Tests.Integration
 {
     public class SubscriptionsClientTests : IntegrationTest
     {
+        private readonly ClientConfiguration _configuration;
+        private readonly ResourceFactory _resourceFactory;
+
+        private Mandate _mandate;
+
+        public SubscriptionsClientTests()
+        {
+            _configuration = ClientConfiguration.ForSandbox(_accessToken);
+            _resourceFactory = new ResourceFactory(_configuration);
+        }
+
+        [OneTimeSetUp]
+        public async Task OneTimeSetup()
+        {
+            var creditor = await _resourceFactory.Creditor();
+            var customer = await _resourceFactory.CreateLocalCustomer();
+            var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
+            _mandate = await _resourceFactory.CreateMandateFor(creditor, customer, customerBankAccount);
+        }
+
         [Test]
         public async Task CreatesSubscription()
         {
@@ -36,7 +58,7 @@ namespace GoCardlessApi.Tests.Integration
                 StartDate = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd"),
                 Links = new Links
                 {
-                    Mandate = "MD0003T17KJWM8"
+                    Mandate = _mandate.Id
                 }
             };
             var subject = new SubscriptionsClient(ClientConfiguration.ForSandbox(_accessToken));
@@ -109,7 +131,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result.Subscription.UpcomingPayments.Any(), Is.True);
             Assert.That(result.Subscription.AppFee, Is.EqualTo(0));
             Assert.That(result.Subscription.Links, Is.Not.Null);
-            Assert.That(result.Subscription.Links.Mandate, Is.EqualTo("MD0003T17KJWM8"));
+            Assert.That(result.Subscription.Links.Mandate, Is.EqualTo(_mandate.Id));
         }
 
         [Test]

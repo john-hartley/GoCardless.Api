@@ -134,7 +134,7 @@ namespace GoCardlessApi.Tests.Integration
         {
             // given
             var subject = new MandatesClient(_configuration);
-            var mandate = await _resourceFactory.CreateMandate(_creditor, _customer, _customerBankAccount);
+            var mandate = await _resourceFactory.CreateMandateFor(_creditor, _customer, _customerBankAccount);
 
             // when
             var result = await subject.ForIdAsync(mandate.Id);
@@ -159,7 +159,7 @@ namespace GoCardlessApi.Tests.Integration
         {
             // given
             var subject = new MandatesClient(_configuration);
-            var mandate = await _resourceFactory.CreateMandate(_creditor, _customer, _customerBankAccount);
+            var mandate = await _resourceFactory.CreateMandateFor(_creditor, _customer, _customerBankAccount);
 
             var request = new UpdateMandateRequest
             {

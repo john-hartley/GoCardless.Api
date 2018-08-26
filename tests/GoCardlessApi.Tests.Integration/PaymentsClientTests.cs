@@ -31,7 +31,7 @@ namespace GoCardlessApi.Tests.Integration
             _creditor = await _resourceFactory.Creditor();
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
-            _mandate = await _resourceFactory.CreateMandate(_creditor, customer, customerBankAccount);
+            _mandate = await _resourceFactory.CreateMandateFor(_creditor, customer, customerBankAccount);
         }
 
         [Test]
