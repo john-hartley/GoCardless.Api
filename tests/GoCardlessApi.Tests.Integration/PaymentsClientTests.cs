@@ -170,7 +170,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
         }
 
-        [Test]
+        [Test, Explicit]
         public async Task RetriesPayment()
         {
             // given
