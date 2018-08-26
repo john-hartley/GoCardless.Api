@@ -70,7 +70,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(creationResult.Payment.Amount, Is.EqualTo(createRequest.Amount));
             Assert.That(creationResult.Payment.AmountRefunded, Is.Not.Null);
             //Assert.That(creationResult.Payment.AppFee, Is.EqualTo(createRequest.AppFee));
-            Assert.That(creationResult.Payment.ChargeDate, Is.EqualTo(createRequest.ChargeDate));
+            Assert.That(creationResult.Payment.ChargeDate.ToString("yyyy-MM-dd"), Is.EqualTo(createRequest.ChargeDate));
             Assert.That(creationResult.Payment.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(creationResult.Payment.Currency, Is.EqualTo(createRequest.Currency));
             Assert.That(creationResult.Payment.Description, Is.EqualTo(createRequest.Description));
@@ -145,8 +145,67 @@ namespace GoCardlessApi.Tests.Integration
             var customer = await CreateCustomer();
             var customerBankAccount = await CreateCustomerBankAccountFor(customer);
             var mandate = await CreateMandate(creditor, customer, customerBankAccount);
+            var payment = await CreatePaymentFor(mandate);
 
-            var createRequest = new CreatePaymentRequest
+            var request = new UpdatePaymentRequest
+            {
+                Id = payment.Id,
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key4"] = "Value4",
+                    ["Key5"] = "Value5",
+                    ["Key6"] = "Value6",
+                },
+            };
+
+            var subject = new PaymentsClient(_configuration);
+
+            // when
+            var result = await subject.UpdateAsync(request);
+            var actual = result.Payment;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.EqualTo(payment.Id));
+            Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
+        }
+
+        [Test]
+        public async Task RetriesPayment()
+        {
+            // given
+            var creditor = await Creditor();
+            var customer = await CreateCustomer();
+            var customerBankAccount = await CreateCustomerBankAccountFor(customer);
+            var mandate = await CreateMandate(creditor, customer, customerBankAccount);
+            var payment = await CreatePaymentFor(mandate);
+
+            var request = new RetryPaymentRequest
+            {
+                Id = payment.Id,
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key4"] = "Value4",
+                    ["Key5"] = "Value5",
+                    ["Key6"] = "Value6",
+                },
+            };
+
+            var subject = new PaymentsClient(_configuration);
+
+            // when
+            var result = await subject.RetryAsync(request);
+            var actual = result.Payment;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.EqualTo(payment.Id));
+            Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
+        }
+
+        private async Task<Payment> CreatePaymentFor(Mandate mandate)
+        {
+            var request = new CreatePaymentRequest
             {
                 Amount = 500,
                 //AppFee = 50,
@@ -163,30 +222,9 @@ namespace GoCardlessApi.Tests.Integration
                 Reference = "REF123456"
             };
 
-            var subject = new PaymentsClient(_configuration);
-
-            // when
-            var creationResult = await subject.CreateAsync(createRequest);
-
-            var updateRequest = new UpdatePaymentRequest
-            {
-                Id = creationResult.Payment.Id,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key4"] = "Value4",
-                    ["Key5"] = "Value5",
-                    ["Key6"] = "Value6",
-                },
-            };
-
-            // when
-            var result = await subject.UpdateAsync(updateRequest);
-            var actual = result.Payment;
-
-            // then
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual.Id, Is.EqualTo(creationResult.Payment.Id));
-            Assert.That(actual.Metadata, Is.EqualTo(updateRequest.Metadata));
+            var paymentsClient = new PaymentsClient(_configuration);
+            
+            return (await paymentsClient.CreateAsync(request)).Payment;
         }
 
         private async Task<Mandate> CreateMandate(

@@ -38,6 +38,14 @@ namespace GoCardlessApi.Payments
             );
         }
 
+        public Task<RetryPaymentResponse> RetryAsync(RetryPaymentRequest request)
+        {
+            return PostAsync<RetryPaymentRequest, RetryPaymentResponse>(
+                new { payments = request },
+                new string[] { "payments", request.Id, "actions", "retry" }
+            );
+        }
+
         public Task<CancelPaymentResponse> CancelAsync(CancelPaymentRequest request)
         {
             return PostAsync<CancelPaymentRequest, CancelPaymentResponse>(
