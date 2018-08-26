@@ -96,6 +96,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result[0], Is.Not.Null);
             Assert.That(result[0].Id, Is.Not.Null);
             Assert.That(result[0].Amount, Is.Not.EqualTo(default(int)));
+            Assert.That(result[0].AmountRefunded, Is.EqualTo(0));
             //Assert.That(result[0].AppFee, Is.Not.Null);
             Assert.That(result[0].ChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
             Assert.That(result[0].Currency, Is.Not.Null);
@@ -106,6 +107,34 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result[0].Metadata, Is.Not.Null);
             Assert.That(result[0].Reference, Is.Not.Null);
             Assert.That(result[0].Status, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task ReturnsIndividualPayment()
+        {
+            // given
+            var subject = new PaymentsClient(_configuration);
+            var payment = (await subject.AllAsync()).Payments.First();
+
+            // when
+            var result = await subject.ForIdAsync(payment.Id);
+            var actual = result.Payment;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null);
+            Assert.That(actual.Amount, Is.EqualTo(payment.Amount));
+            Assert.That(actual.AmountRefunded, Is.EqualTo(0));
+            //Assert.That(actual.AppFee, Is.Not.Null);
+            Assert.That(actual.ChargeDate, Is.EqualTo(payment.ChargeDate));
+            Assert.That(actual.Currency, Is.EqualTo(payment.Currency));
+            Assert.That(actual.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(actual.Description, Is.EqualTo(payment.Description));
+            Assert.That(actual.Links.Creditor, Is.EqualTo(payment.Links.Creditor));
+            Assert.That(actual.Links.Mandate, Is.EqualTo(payment.Links.Mandate));
+            Assert.That(actual.Metadata, Is.EqualTo(payment.Metadata));
+            Assert.That(actual.Reference, Is.EqualTo(payment.Reference));
+            Assert.That(actual.Status, Is.EqualTo(payment.Status));
         }
 
         private async Task<Mandate> CreateMandate(
