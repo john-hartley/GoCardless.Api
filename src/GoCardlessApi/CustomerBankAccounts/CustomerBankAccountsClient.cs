@@ -25,5 +25,12 @@ namespace GoCardlessApi.CustomerBankAccounts
                 new string[] { "customer_bank_accounts", request.Id, "actions", "disable" }
             );
         }
+
+        public Task<AllCustomerBankAccountsResponse> AllAsync()
+        {
+            return GetAsync<AllCustomerBankAccountsResponse>(
+                new string[] { "customer_bank_accounts" }
+            );
+        }
     }
 }
