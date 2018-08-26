@@ -1,4 +1,7 @@
 ﻿using GoCardlessApi.Core;
+using GoCardlessApi.Creditors;
+using GoCardlessApi.CustomerBankAccounts;
+using GoCardlessApi.Customers;
 using GoCardlessApi.Mandates;
 using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
@@ -14,20 +17,28 @@ namespace GoCardlessApi.Tests.Integration
         private readonly ClientConfiguration _configuration;
         private readonly ResourceFactory _resourceFactory;
 
+        private Creditor _creditor;
+        private Customer _customer;
+        private CustomerBankAccount _customerBankAccount;
+
         public MandatesClientTests()
         {
             _configuration = ClientConfiguration.ForSandbox(_accessToken);
             _resourceFactory = new ResourceFactory(_configuration);
         }
 
+        [OneTimeSetUp]
+        public async Task OneTimeSetup()
+        {
+            _creditor = await _resourceFactory.Creditor();
+            _customer = await _resourceFactory.CreateCustomer();
+            _customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(_customer);
+        }
+
         [Test]
         public async Task CreatesCancelsAndReinstatesMandate()
         {
             // given
-            var creditor = await _resourceFactory.Creditor();
-            var customer = await _resourceFactory.CreateCustomer();
-            var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
-
             var createRequest = new CreateMandateRequest
             {
                 Metadata = new Dictionary<string, string>
@@ -40,8 +51,8 @@ namespace GoCardlessApi.Tests.Integration
                 Scheme = "bacs",
                 Links = new CreateMandateLinks
                 {
-                    Creditor = creditor.Id,
-                    CustomerBankAccount = customerBankAccount.Id
+                    Creditor = _creditor.Id,
+                    CustomerBankAccount = _customerBankAccount.Id
                 }
             };
 
@@ -80,16 +91,17 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(creationResult.Mandate, Is.Not.Null);
             Assert.That(creationResult.Mandate.Id, Is.Not.Null);
             Assert.That(creationResult.Mandate.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(creationResult.Mandate.Links.Creditor, Is.EqualTo(creditor.Id));
-            Assert.That(creationResult.Mandate.Links.CustomerBankAccount, Is.EqualTo(customerBankAccount.Id));
+            Assert.That(creationResult.Mandate.Links.Creditor, Is.EqualTo(_creditor.Id));
+            Assert.That(creationResult.Mandate.Links.CustomerBankAccount, Is.EqualTo(_customerBankAccount.Id));
             Assert.That(creationResult.Mandate.Metadata, Is.EqualTo(createRequest.Metadata));
             Assert.That(creationResult.Mandate.NextPossibleChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
             //Assert.That(actual.Reference, Is.EqualTo(request.Reference));
             Assert.That(creationResult.Mandate.Scheme, Is.EqualTo(createRequest.Scheme));
             Assert.That(creationResult.Mandate.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
-            //Assert.That(cancellationResult.Mandate.Metadata, Is.EqualTo(cancelRequest.Metadata));
+            Assert.That(cancellationResult.Mandate.Metadata, Is.EqualTo(cancelRequest.Metadata));
             Assert.That(cancellationResult.Mandate.Status, Is.EqualTo("cancelled"));
             Assert.That(reinstateResult.Mandate.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
+            Assert.That(reinstateResult.Mandate.Metadata, Is.EqualTo(reinstateRequest.Metadata));
         }
 
         [Test]
@@ -120,7 +132,7 @@ namespace GoCardlessApi.Tests.Integration
         {
             // given
             var subject = new MandatesClient(_configuration);
-            var mandate = (await subject.AllAsync()).Mandates.First();
+            var mandate = await _resourceFactory.CreateMandate(_creditor, _customer, _customerBankAccount);
 
             // when
             var result = await subject.ForIdAsync(mandate.Id);
@@ -145,7 +157,7 @@ namespace GoCardlessApi.Tests.Integration
         {
             // given
             var subject = new MandatesClient(_configuration);
-            var mandate = (await subject.AllAsync()).Mandates.First();
+            var mandate = await _resourceFactory.CreateMandate(_creditor, _customer, _customerBankAccount);
 
             var request = new UpdateMandateRequest
             {
