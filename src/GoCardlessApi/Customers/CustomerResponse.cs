@@ -2,7 +2,7 @@
 
 namespace GoCardlessApi.Customers
 {
-    public class CustomersResponse
+    public class CustomerResponse
     {
         [JsonProperty("customers")]
         public Customer Customer { get; set; }
