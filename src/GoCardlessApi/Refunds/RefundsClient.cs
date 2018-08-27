@@ -28,5 +28,14 @@ namespace GoCardlessApi.Refunds
         {
             return GetAsync<RefundResponse>("refunds", refundId);
         }
+
+        public Task<UpdateRefundResponse> UpdateAsync(UpdateRefundRequest request)
+        {
+            return PutAsync<UpdateRefundRequest, UpdateRefundResponse>(
+                new { refunds = request },
+                "refunds",
+                request.Id
+            );
+        }
     }
 }
