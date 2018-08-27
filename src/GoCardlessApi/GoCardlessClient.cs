@@ -5,6 +5,7 @@ using GoCardlessApi.CustomerBankAccounts;
 using GoCardlessApi.Customers;
 using GoCardlessApi.Mandates;
 using GoCardlessApi.Payments;
+using GoCardlessApi.Payouts;
 using GoCardlessApi.Refunds;
 using GoCardlessApi.Subscriptions;
 
@@ -24,6 +25,7 @@ namespace GoCardlessApi
             CustomerBankAccounts = new CustomerBankAccountsClient(configuration);
             Mandates = new MandatesClient(configuration);
             Payments = new PaymentsClient(configuration);
+            Payouts = new PayoutsClient(configuration);
             Refunds = new RefundsClient(configuration);
             Subscriptions = new SubscriptionsClient(configuration);
         }
@@ -34,6 +36,7 @@ namespace GoCardlessApi
         public ICustomerBankAccountsClient CustomerBankAccounts { get; set; }
         public IMandatesClient Mandates { get; set; }
         public IPaymentsClient Payments { get; set; }
+        public IPayoutsClient Payouts { get; set; }
         public IRefundsClient Refunds { get; set; }
         public ISubscriptionsClient Subscriptions { get; }
     }

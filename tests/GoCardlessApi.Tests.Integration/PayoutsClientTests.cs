@@ -10,11 +10,18 @@ namespace GoCardlessApi.Tests.Integration
 {
     public class PayoutsClientTests : IntegrationTest
     {
+        private readonly ClientConfiguration _configuration;
+
+        public PayoutsClientTests()
+        {
+            _configuration = ClientConfiguration.ForSandbox(_accessToken);
+        }
+
         [Test]
         public async Task ReturnsPayouts()
         {
             // given
-            var subject = new PayoutsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new PayoutsClient(_configuration);
 
             // when
             var result = (await subject.AllAsync()).Payouts.ToList();
@@ -40,7 +47,7 @@ namespace GoCardlessApi.Tests.Integration
         public async Task ReturnsIndividualPayout()
         {
             // given
-            var subject = new PayoutsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new PayoutsClient(_configuration);
             var payout = (await subject.AllAsync()).Payouts.First();
 
             // when
