@@ -17,10 +17,20 @@ namespace GoCardlessApi.Core
 
         internal async Task<TResponse> GetAsync<TResponse>(params string[] pathSegments)
         {
-            return await BaseRequest()
-                .AppendPathSegments(pathSegments)
-                .GetJsonAsync<TResponse>()
-                .ConfigureAwait(false);
+            try
+            {
+                return await BaseRequest()
+                    .AppendPathSegments(pathSegments)
+                    .GetJsonAsync<TResponse>()
+                    .ConfigureAwait(false);
+            }
+            catch (FlurlHttpException ex)
+            {
+                var error = await ex.GetResponseStringAsync();
+                Debug.WriteLine(JsonConvert.SerializeObject(error));
+            }
+
+            return default(TResponse);
         }
 
         internal async Task<TResponse> PutAsync<TRequest, TResponse>(
