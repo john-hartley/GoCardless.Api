@@ -54,7 +54,7 @@ namespace GoCardlessApi.Tests.Integration
                 },
                 //Month = "september",
                 Name = "Test subscription",
-                //PaymentReference = "PaymentReference123",
+                PaymentReference = "PR123456",
                 StartDate = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd"),
                 Links = new Links
                 {
@@ -68,7 +68,7 @@ namespace GoCardlessApi.Tests.Integration
 
             // then
             Assert.That(result.Subscription.Id, Is.Not.Empty);
-            //Assert.That(result.Subscription.CreatedAt, Is.EqualTo(expectedCreatedAt));
+            Assert.That(result.Subscription.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result.Subscription.Amount, Is.EqualTo(request.Amount));
             Assert.That(result.Subscription.Currency, Is.EqualTo(request.Currency));
             Assert.That(result.Subscription.Status, Is.EqualTo("active"));
@@ -80,7 +80,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result.Subscription.DayOfMonth, Is.EqualTo(request.DayOfMonth));
             Assert.That(result.Subscription.Month, Is.EqualTo(request.Month));
             Assert.That(result.Subscription.Metadata, Is.EqualTo(request.Metadata));
-            //Assert.That(result.Subscription.PaymentReference, Is.EqualTo(request.PaymentReference));
+            Assert.That(result.Subscription.PaymentReference, Is.EqualTo(request.PaymentReference));
             Assert.That(result.Subscription.UpcomingPayments.Count(), Is.EqualTo(request.Count));
             Assert.That(result.Subscription.AppFee, Is.EqualTo(request.AppFee));
             Assert.That(result.Subscription.Links, Is.Not.Null);

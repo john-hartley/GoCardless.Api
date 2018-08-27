@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GoCardlessApi.Core;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace GoCardlessApi.CustomerBankAccounts
@@ -7,5 +8,7 @@ namespace GoCardlessApi.CustomerBankAccounts
     {
         [JsonProperty("customer_bank_accounts")]
         public IEnumerable<CustomerBankAccount> CustomerBankAccounts { get; set; }
+
+        public Meta Meta { get; set; }
     }
 }

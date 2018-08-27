@@ -32,8 +32,6 @@ namespace GoCardlessApi.Subscriptions
 
         public Links Links { get; set; }
 
-        public Meta Meta { get; set; }
-
         public IDictionary<string, string> Metadata { get; set; }
 
         public string Month { get; set; }
