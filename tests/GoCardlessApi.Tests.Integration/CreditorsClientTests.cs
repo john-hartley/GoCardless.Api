@@ -106,6 +106,8 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result.Creditor.Region, Is.EqualTo(request.Region));
             Assert.That(result.Creditor.PostCode, Is.EqualTo(request.PostCode));
             Assert.That(result.Creditor.CountryCode, Is.EqualTo(request.CountryCode));
+            Assert.That(result.Creditor.VerificationStatus, Is.Not.Null);
+            Assert.That(result.Creditor.CanCreateRefunds, Is.Not.Null);
         }
     }
 }
