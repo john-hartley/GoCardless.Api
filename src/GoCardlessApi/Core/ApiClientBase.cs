@@ -55,23 +55,10 @@ namespace GoCardlessApi.Core
             return default(TResponse);
         }
 
-        internal async Task<TResponse> PostAsync<TRequest, TResponse>(
+        internal Task<TResponse> PostAsync<TRequest, TResponse>(
             string relativeEndpoint)
         {
-            try
-            {
-                return await BaseRequest()
-                    .AppendPathSegment(relativeEndpoint)
-                    .PostJsonAsync(new { })
-                    .ReceiveJson<TResponse>();
-            }
-            catch (FlurlHttpException ex)
-            {
-                var error = await ex.GetResponseStringAsync();
-                Debug.WriteLine(JsonConvert.SerializeObject(error));
-            }
-
-            return default(TResponse);
+            return PostAsync<TRequest, TResponse>(relativeEndpoint, null, null);
         }
 
         internal Task<TResponse> PostAsync<TRequest, TResponse>(
@@ -99,7 +86,7 @@ namespace GoCardlessApi.Core
             {
                 return await request
                     .AppendPathSegment(relativeEndpoint)
-                    .PostJsonAsync(envelope)
+                    .PostJsonAsync(envelope ?? new { })
                     .ReceiveJson<TResponse>();
             }
             catch (FlurlHttpException ex)
