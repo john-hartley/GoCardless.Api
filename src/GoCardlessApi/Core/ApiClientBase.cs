@@ -15,12 +15,12 @@ namespace GoCardlessApi.Core
             _configuration = configuration;
         }
 
-        internal async Task<TResponse> GetAsync<TResponse>(params string[] pathSegments)
+        internal async Task<TResponse> GetAsync<TResponse>(string relativeEndpoint)
         {
             try
             {
                 return await BaseRequest()
-                    .AppendPathSegments(pathSegments)
+                    .AppendPathSegment(relativeEndpoint)
                     .GetJsonAsync<TResponse>()
                     .ConfigureAwait(false);
             }
@@ -34,15 +34,15 @@ namespace GoCardlessApi.Core
         }
 
         internal async Task<TResponse> PutAsync<TRequest, TResponse>(
-            object envelope, 
-            params string[] pathSegments)
+            string relativeEndpoint,
+            object envelope)
         {
             Debug.WriteLine(JsonConvert.SerializeObject(envelope));
 
             try
             {
                 return await BaseRequest()
-                    .AppendPathSegments(pathSegments)
+                    .AppendPathSegment(relativeEndpoint)
                     .PutJsonAsync(envelope)
                     .ReceiveJson<TResponse>();
             }
@@ -56,12 +56,12 @@ namespace GoCardlessApi.Core
         }
 
         internal async Task<TResponse> PostAsync<TRequest, TResponse>(
-            string[] pathSegments)
+            string relativeEndpoint)
         {
             try
             {
                 return await BaseRequest()
-                    .AppendPathSegments(pathSegments)
+                    .AppendPathSegment(relativeEndpoint)
                     .PostJsonAsync(new { })
                     .ReceiveJson<TResponse>();
             }
@@ -75,16 +75,16 @@ namespace GoCardlessApi.Core
         }
 
         internal Task<TResponse> PostAsync<TRequest, TResponse>(
-            object envelope,
-            string[] pathSegments)
+            string relativeEndpoint,
+            object envelope)
         {
-            return PostAsync<TRequest, TResponse>(envelope, null, pathSegments);
+            return PostAsync<TRequest, TResponse>(relativeEndpoint, envelope, null);
         }
 
         internal async Task<TResponse> PostAsync<TRequest, TResponse>(
+            string relativeEndpoint,
             object envelope,
-            string idempotencyKey,
-            string[] pathSegments)
+            string idempotencyKey)
         {
             Debug.WriteLine(JsonConvert.SerializeObject(envelope));
 
@@ -98,7 +98,7 @@ namespace GoCardlessApi.Core
             try
             {
                 return await request
-                    .AppendPathSegments(pathSegments)
+                    .AppendPathSegment(relativeEndpoint)
                     .PostJsonAsync(envelope)
                     .ReceiveJson<TResponse>();
             }

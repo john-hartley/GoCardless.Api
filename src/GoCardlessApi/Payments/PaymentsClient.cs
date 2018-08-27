@@ -13,9 +13,9 @@ namespace GoCardlessApi.Payments
             var idempotencyKey = Guid.NewGuid().ToString();
 
             return PostAsync<CreatePaymentRequest, CreatePaymentResponse>(
+                "payments",
                 new { payments = request },
-                idempotencyKey,
-                new string[] { "payments" }
+                idempotencyKey
             );
         }
 
@@ -26,31 +26,30 @@ namespace GoCardlessApi.Payments
 
         public Task<PaymentResponse> ForIdAsync(string paymentId)
         {
-            return GetAsync<PaymentResponse>("payments", paymentId);
+            return GetAsync<PaymentResponse>($"payments/{paymentId}");
         }
 
         public Task<UpdatePaymentResponse> UpdateAsync(UpdatePaymentRequest request)
         {
             return PutAsync<UpdatePaymentRequest, UpdatePaymentResponse>(
-                new { payments = request },
-                "payments",
-                request.Id
-            );
-        }
-
-        public Task<RetryPaymentResponse> RetryAsync(RetryPaymentRequest request)
-        {
-            return PostAsync<RetryPaymentRequest, RetryPaymentResponse>(
-                new { payments = request },
-                new string[] { "payments", request.Id, "actions", "retry" }
+                $"payments/{request.Id}",
+                new { payments = request }
             );
         }
 
         public Task<CancelPaymentResponse> CancelAsync(CancelPaymentRequest request)
         {
             return PostAsync<CancelPaymentRequest, CancelPaymentResponse>(
-                new { payments = request },
-                new string[] { "payments", request.Id, "actions", "cancel" }
+                $"payments/{request.Id}/actions/cancel",
+                new { payments = request }
+            );
+        }
+
+        public Task<RetryPaymentResponse> RetryAsync(RetryPaymentRequest request)
+        {
+            return PostAsync<RetryPaymentRequest, RetryPaymentResponse>(
+                $"payments/{request.Id}/actions/retry",
+                new { payments = request }
             );
         }
     }

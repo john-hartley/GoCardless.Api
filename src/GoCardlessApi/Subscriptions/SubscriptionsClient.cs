@@ -18,31 +18,30 @@ namespace GoCardlessApi.Subscriptions
             var idempotencyKey = Guid.NewGuid().ToString();
 
             return PostAsync<CreateSubscriptionRequest, CreateSubscriptionResponse>(
+                "subscriptions",
                 new { subscriptions = request },
-                idempotencyKey,
-                new string[] { "subscriptions" }
+                idempotencyKey
             );
         }
 
         public Task<SubscriptionResponse> ForIdAsync(string subscriptionId)
         {
-            return GetAsync<SubscriptionResponse>("subscriptions", subscriptionId);
+            return GetAsync<SubscriptionResponse>($"subscriptions/{subscriptionId}");
         }
 
         public Task<UpdateSubscriptionResponse> UpdateAsync(UpdateSubscriptionRequest request)
         {
             return PutAsync<UpdateSubscriptionRequest, UpdateSubscriptionResponse>(
-                new { subscriptions = request },
-                "subscriptions", 
-                request.Id
+                $"subscriptions/{request.Id}",
+                new { subscriptions = request }
             );
         }
 
         public Task<CancelSubscriptionResponse> CancelAsync(CancelSubscriptionRequest request)
         {
             return PostAsync<CancelSubscriptionRequest, CancelSubscriptionResponse>(
-                new { subscriptions = request },
-                new string[] { "subscriptions", request.Id, "actions", "cancel" }
+                $"subscriptions/{request.Id}/actions/cancel",
+                new { subscriptions = request }
             );
         }
     }

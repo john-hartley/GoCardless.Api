@@ -13,9 +13,9 @@ namespace GoCardlessApi.Refunds
             var idempotencyKey = Guid.NewGuid().ToString();
 
             return PostAsync<CreateRefundRequest, CreateRefundResponse>(
+                "refunds",
                 new { refunds = request },
-                idempotencyKey,
-                new string[] { "refunds" }
+                idempotencyKey
             );
         }
 
@@ -26,15 +26,14 @@ namespace GoCardlessApi.Refunds
 
         public Task<RefundResponse> ForIdAsync(string refundId)
         {
-            return GetAsync<RefundResponse>("refunds", refundId);
+            return GetAsync<RefundResponse>($"refunds/{refundId}");
         }
 
         public Task<UpdateRefundResponse> UpdateAsync(UpdateRefundRequest request)
         {
             return PutAsync<UpdateRefundRequest, UpdateRefundResponse>(
-                new { refunds = request },
-                "refunds",
-                request.Id
+                $"refunds/{request.Id}",
+                new { refunds = request }
             );
         }
     }

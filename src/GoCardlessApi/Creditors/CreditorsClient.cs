@@ -14,15 +14,14 @@ namespace GoCardlessApi.Creditors
 
         public Task<CreditorResponse> ForIdAsync(string creditorId)
         {
-            return GetAsync<CreditorResponse>("creditors", creditorId);
+            return GetAsync<CreditorResponse>($"creditors/{creditorId}");
         }
 
         public Task<UpdateCreditorResponse> UpdateAsync(UpdateCreditorRequest request)
         {
             return PutAsync<UpdateCreditorRequest, UpdateCreditorResponse>(
-                new { creditors = request },
-                "creditors",
-                request.Id
+                $"creditors/{request.Id}",
+                new { creditors = request }
             );
         }
     }

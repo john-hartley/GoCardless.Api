@@ -13,9 +13,9 @@ namespace GoCardlessApi.Mandates
             var idempotencyKey = Guid.NewGuid().ToString();
 
             return PostAsync<CreateMandateRequest, CreateMandateResponse>(
+                "mandates",
                 new { mandates = request },
-                idempotencyKey,
-                new string[] { "mandates" }
+                idempotencyKey
             );
         }
 
@@ -26,31 +26,30 @@ namespace GoCardlessApi.Mandates
 
         public Task<MandateResponse> ForIdAsync(string mandateId)
         {
-            return GetAsync<MandateResponse>("mandates", mandateId);
+            return GetAsync<MandateResponse>($"mandates/{mandateId}");
         }
 
         public Task<UpdateMandateResponse> UpdateAsync(UpdateMandateRequest request)
         {
             return PutAsync<UpdateMandateRequest, UpdateMandateResponse>(
-                new { mandates = request },
-                "mandates",
-                request.Id
+                $"mandates/{request.Id}",
+                new { mandates = request }
             );
         }
 
         public Task<CancelMandateResponse> CancelAsync(CancelMandateRequest request)
         {
             return PostAsync<CancelMandateRequest, CancelMandateResponse>(
-                new { mandates = request },
-                new string[] { "mandates", request.Id, "actions", "cancel" }
+                $"mandates/{request.Id}/actions/cancel",
+                new { mandates = request }
             );
         }
 
         public Task<ReinstateMandateResponse> ReinstateAsync(ReinstateMandateRequest request)
         {
             return PostAsync<ReinstateMandateRequest, ReinstateMandateResponse>(
-                new { mandates = request },
-                new string[] { "mandates", request.Id, "actions", "reinstate" }
+                $"mandates/{request.Id}/actions/reinstate",
+                new { mandates = request }
             );
         }
     }

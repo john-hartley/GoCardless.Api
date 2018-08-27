@@ -13,28 +13,26 @@ namespace GoCardlessApi.CreditorBankAccounts
             var idempotencyKey = Guid.NewGuid().ToString();
 
             return PostAsync<CreateCreditorBankAccountRequest, CreateCreditorBankAccountResponse>(
+                "creditor_bank_accounts",
                 new { creditor_bank_accounts = request },
-                idempotencyKey,
-                new string[] { "creditor_bank_accounts" }
+                idempotencyKey
             );
         }
 
         public Task<AllCreditorBankAccountsResponse> AllAsync()
         {
-            return GetAsync<AllCreditorBankAccountsResponse>(
-                new string[] { "creditor_bank_accounts" }
-            );
+            return GetAsync<AllCreditorBankAccountsResponse>("creditor_bank_accounts");
         }
 
         public Task<CreditorBankAccountResponse> ForIdAsync(string creditorBankAccountId)
         {
-            return GetAsync<CreditorBankAccountResponse>("creditor_bank_accounts", creditorBankAccountId);
+            return GetAsync<CreditorBankAccountResponse>($"creditor_bank_accounts/{creditorBankAccountId}");
         }
 
         public Task<DisableCreditorBankAccountResponse> DisableAsync(DisableCreditorBankAccountRequest request)
         {
             return PostAsync<DisableCreditorBankAccountRequest, DisableCreditorBankAccountResponse>(
-                new string[] { "creditor_bank_accounts", request.Id, "actions", "disable" }
+                $"creditor_bank_accounts/{request.Id}/actions/disable"
             );
         }
     }

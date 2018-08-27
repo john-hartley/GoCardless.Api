@@ -13,37 +13,34 @@ namespace GoCardlessApi.CustomerBankAccounts
             var idempotencyKey = Guid.NewGuid().ToString();
 
             return PostAsync<CreateCustomerBankAccountRequest, CustomerBankAccountResponse>(
+                "customer_bank_accounts",
                 new { customer_bank_accounts = request },
-                idempotencyKey,
-                new string[] { "customer_bank_accounts" }
+                idempotencyKey
             );
         }
 
         public Task<DisableCustomerBankAccountResponse> DisableAsync(DisableCustomerBankAccountRequest request)
         {
             return PostAsync<DisableCustomerBankAccountRequest, DisableCustomerBankAccountResponse>(
-                new string[] { "customer_bank_accounts", request.Id, "actions", "disable" }
+                $"customer_bank_accounts/{request.Id}/actions/disable"
             );
         }
 
         public Task<AllCustomerBankAccountsResponse> AllAsync()
         {
-            return GetAsync<AllCustomerBankAccountsResponse>(
-                new string[] { "customer_bank_accounts" }
-            );
+            return GetAsync<AllCustomerBankAccountsResponse>("customer_bank_accounts");
         }
 
         public Task<CustomerBankAccountResponse> ForIdAsync(string customerBankAccountId)
         {
-            return GetAsync<CustomerBankAccountResponse>("customer_bank_accounts", customerBankAccountId);
+            return GetAsync<CustomerBankAccountResponse>($"customer_bank_accounts/{customerBankAccountId}");
         }
 
         public Task<UpdateCustomerBankAccountResponse> UpdateAsync(UpdateCustomerBankAccountRequest request)
         {
             return PutAsync<UpdateCustomerBankAccountRequest, UpdateCustomerBankAccountResponse>(
-                new { customer_bank_accounts = request },
-                "customer_bank_accounts",
-                request.Id
+                $"customer_bank_accounts/{request.Id}",
+                new { customer_bank_accounts = request }
             );
         }
     }
