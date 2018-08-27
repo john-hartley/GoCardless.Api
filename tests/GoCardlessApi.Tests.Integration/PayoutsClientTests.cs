@@ -35,5 +35,32 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result[0].Reference, Is.Not.Null);
             Assert.That(result[0].Status, Is.Not.Null);
         }
+
+        [Test]
+        public async Task ReturnsIndividualPayout()
+        {
+            // given
+            var subject = new PayoutsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var payout = (await subject.AllAsync()).Payouts.First();
+
+            // when
+            var result = await subject.ForIdAsync(payout.Id);
+            var actual = result.Payout;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null.And.EqualTo(payout.Id));
+            Assert.That(actual.Amount, Is.Not.Null.And.EqualTo(payout.Amount));
+            Assert.That(actual.ArrivalDate, Is.Not.Null.And.EqualTo(payout.ArrivalDate));
+            Assert.That(actual.CreatedAt, Is.Not.Null.And.EqualTo(payout.CreatedAt));
+            Assert.That(actual.Currency, Is.Not.Null.And.EqualTo(payout.Currency));
+            Assert.That(actual.DeductedFees, Is.Not.Null.And.EqualTo(payout.DeductedFees));
+            Assert.That(actual.Links, Is.Not.Null);
+            Assert.That(actual.Links.Creditor, Is.Not.Null.And.EqualTo(payout.Links.Creditor));
+            Assert.That(actual.Links.CreditorBankAccount, Is.Not.Null.And.EqualTo(payout.Links.CreditorBankAccount));
+            Assert.That(actual.PayoutType, Is.Not.Null.And.EqualTo(payout.PayoutType));
+            Assert.That(actual.Reference, Is.Not.Null.And.EqualTo(payout.Reference));
+            Assert.That(actual.Status, Is.Not.Null.And.EqualTo(payout.Status));
+        }
     }
 }

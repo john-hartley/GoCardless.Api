@@ -11,5 +11,10 @@ namespace GoCardlessApi.Payouts
         {
             return GetAsync<AllPayoutsResponse>("payouts");
         }
+
+        public Task<PayoutResponse> ForIdAsync(string payoutId)
+        {
+            return GetAsync<PayoutResponse>("payouts", payoutId);
+        }
     }
 }
