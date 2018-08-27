@@ -18,5 +18,10 @@ namespace GoCardlessApi.Refunds
                 new string[] { "refunds" }
             );
         }
+
+        public Task<AllRefundsResponse> AllAsync()
+        {
+            return GetAsync<AllRefundsResponse>("refunds");
+        }
     }
 }

@@ -2,10 +2,9 @@
 
 namespace GoCardlessApi.Refunds
 {
-    public class RefundLinks
+    public class CreateRefundLinks
     {
-        public string Mandate { get; set; }
-        
+        [JsonProperty("payment")]
         public string Payment { get; set; }
     }
 }

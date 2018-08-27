@@ -5,6 +5,7 @@ using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GoCardlessApi.Tests.Integration
@@ -40,7 +41,7 @@ namespace GoCardlessApi.Tests.Integration
             var request = new CreateRefundRequest
             {
                 Amount = 100,
-                Links = new RefundLinks { Payment = payment.Id },
+                Links = new CreateRefundLinks { Payment = payment.Id },
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
@@ -67,6 +68,29 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(actual.Links.Payment, Is.EqualTo(request.Links.Payment));
             Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
             Assert.That(actual.Reference, Is.EqualTo(request.Reference));
+        }
+
+        [Test]
+        public async Task ReturnsRefunds()
+        {
+            // given
+            var subject = new RefundsClient(_configuration);
+
+            // when
+            var result = (await subject.AllAsync()).Refunds.ToList();
+
+            // then
+            Assert.That(result.Any(), Is.True);
+            Assert.That(result[0], Is.Not.Null);
+            Assert.That(result[0].Id, Is.Not.Null);
+            Assert.That(result[0].Amount, Is.Not.EqualTo(default(int)));
+            Assert.That(result[0].Currency, Is.Not.Null);
+            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result[0].Links, Is.Not.Null);
+            Assert.That(result[0].Links.Mandate, Is.Not.Null);
+            Assert.That(result[0].Links.Payment, Is.Not.Null);
+            Assert.That(result[0].Metadata, Is.Not.Null);
+            Assert.That(result[0].Reference, Is.Not.Null);
         }
     }
 }

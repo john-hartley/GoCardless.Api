@@ -14,7 +14,7 @@ namespace GoCardlessApi.Refunds
         public int Amount { get; set; }
 
         [JsonProperty("links")]
-        public RefundLinks Links { get; set; }
+        public CreateRefundLinks Links { get; set; }
 
         [JsonProperty("metadata")]
         public IDictionary<string, string> Metadata { get; set; }
