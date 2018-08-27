@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace GoCardlessApi.Core
+namespace GoCardlessApi.Subscriptions
 {
-    public class Links
+    public class SubscriptionLinks
     {
         [JsonProperty("mandate")]
         public string Mandate { get; set; }

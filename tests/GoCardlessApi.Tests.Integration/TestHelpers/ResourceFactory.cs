@@ -160,7 +160,7 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
                 Name = "Test subscription",
                 PaymentReference = "PR123456",
                 StartDate = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd"),
-                Links = new Links
+                Links = new SubscriptionLinks
                 {
                     Mandate = mandate.Id
                 }

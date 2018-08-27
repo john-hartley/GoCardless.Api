@@ -1,5 +1,4 @@
-﻿using GoCardlessApi.Core;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -33,7 +32,7 @@ namespace GoCardlessApi.Subscriptions
         public string IntervalUnit { get; set; }
 
         [JsonProperty("links")]
-        public Links Links { get; set; }
+        public SubscriptionLinks Links { get; set; }
 
         [JsonProperty("metadata")]
         public IDictionary<string, string> Metadata { get; set; }
