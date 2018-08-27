@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace GoCardlessApi.Refunds
 {
-    public class RefundsClient : ApiClientBase
+    public class RefundsClient : ApiClientBase, IRefundsClient
     {
         public RefundsClient(ClientConfiguration configuration) : base(configuration) { }
 
