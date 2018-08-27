@@ -35,7 +35,7 @@ namespace GoCardlessApi.Tests.Integration
             _customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(_customer);
         }
 
-        [Test]
+        [Test, Explicit("GoCardless API is not currently updating metadata for cancellations.")]
         public async Task CreatesCancelsAndReinstatesMandate()
         {
             // given

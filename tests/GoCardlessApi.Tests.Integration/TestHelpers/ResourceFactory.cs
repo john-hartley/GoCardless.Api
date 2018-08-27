@@ -4,6 +4,7 @@ using GoCardlessApi.CustomerBankAccounts;
 using GoCardlessApi.Customers;
 using GoCardlessApi.Mandates;
 using GoCardlessApi.Payments;
+using GoCardlessApi.Subscriptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -139,6 +140,34 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
 
             var paymentsClient = new PaymentsClient(_clientConfiguration);
             return (await paymentsClient.CreateAsync(request)).Payment;
+        }
+
+        public async Task<Subscription> CreateSubscriptionFor(Mandate mandate)
+        {
+            var request = new CreateSubscriptionRequest
+            {
+                Amount = 123,
+                Currency = "GBP",
+                IntervalUnit = "weekly",
+                Count = 5,
+                Interval = 3,
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                },
+                Name = "Test subscription",
+                PaymentReference = "PR123456",
+                StartDate = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd"),
+                Links = new Links
+                {
+                    Mandate = mandate.Id
+                }
+            };
+
+            var subscriptionsClient = new SubscriptionsClient(_clientConfiguration);
+            return (await subscriptionsClient.CreateAsync(request)).Subscription;
         }
     }
 }

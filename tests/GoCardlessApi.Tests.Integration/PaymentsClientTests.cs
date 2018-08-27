@@ -176,7 +176,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
         }
 
-        [Test, Explicit]
+        [Test, Explicit("Need to use scenario simulators to fail the created payment before continuing.")]
         public async Task RetriesPayment()
         {
             // given

@@ -61,7 +61,7 @@ namespace GoCardlessApi.Tests.Integration
                     Mandate = _mandate.Id
                 }
             };
-            var subject = new SubscriptionsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new SubscriptionsClient(_configuration);
 
             // when
             var result = await subject.CreateAsync(request);
@@ -91,84 +91,114 @@ namespace GoCardlessApi.Tests.Integration
         public async Task ReturnsAllSubscriptions()
         {
             // given
-            var subject = new SubscriptionsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new SubscriptionsClient(_configuration);
 
             // when
-            var result = await subject.AllAsync();
+            var result = (await subject.AllAsync()).Subscriptions.ToList();
 
             // then
-            Assert.That(result.Subscriptions.Any(), Is.True);
+            Assert.That(result.Any(), Is.True);
+            Assert.That(result[0], Is.Not.Null);
+            Assert.That(result[0].Id, Is.Not.Null);
+            Assert.That(result[0].Amount, Is.Not.EqualTo(default(int)));
+            Assert.That(result[0].AppFee, Is.Null);
+            Assert.That(result[0].Currency, Is.Not.Null);
+            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result[0].DayOfMonth, Is.Null);
+            Assert.That(result[0].EndDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(result[0].Interval, Is.Not.Null);
+            Assert.That(result[0].IntervalUnit, Is.Not.Null);
+            Assert.That(result[0].Links, Is.Not.Null);
+            Assert.That(result[0].Links.Mandate, Is.Not.Null);
+            Assert.That(result[0].Metadata, Is.Not.Null);
+            Assert.That(result[0].Month, Is.Null);
+            Assert.That(result[0].Name, Is.Not.Null);
+            Assert.That(result[0].PaymentReference, Is.Not.Null);
+            Assert.That(result[0].StartDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(result[0].Status, Is.Not.Null);
+            Assert.That(result[0].UpcomingPayments, Is.Not.Null);
+            Assert.That(result[0].UpcomingPayments.Any(), Is.True);
         }
 
         [Test]
         public async Task ReturnsIndividualSubscription()
         {
             // given
-            var subscriptionId = "SB0000G9PZP814";
-            var expectedCreatedAt = DateTimeOffset.Parse("2018-07-30T19:28:02.962Z");
-            var expectedStartDate = DateTime.Parse("2018-08-06");
+            var subscription = await _resourceFactory.CreateSubscriptionFor(_mandate);
 
-            var subject = new SubscriptionsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new SubscriptionsClient(_configuration);
 
             // when
-            var result = await subject.ForIdAsync(subscriptionId);
+            var result = await subject.ForIdAsync(subscription.Id);
 
             // then
-            Assert.That(result.Subscription.Id, Is.EqualTo(subscriptionId));
-            Assert.That(result.Subscription.CreatedAt, Is.EqualTo(expectedCreatedAt));
-            Assert.That(result.Subscription.Amount, Is.EqualTo(500));
-            Assert.That(result.Subscription.Currency, Is.EqualTo("GBP"));
-            Assert.That(result.Subscription.Status, Is.EqualTo("active"));
-            Assert.That(result.Subscription.Name, Is.Null);
-            Assert.That(result.Subscription.StartDate, Is.EqualTo(expectedStartDate));
-            Assert.That(result.Subscription.EndDate, Is.Null);
-            Assert.That(result.Subscription.Interval, Is.EqualTo(1));
-            Assert.That(result.Subscription.IntervalUnit, Is.EqualTo("monthly"));
-            Assert.That(result.Subscription.DayOfMonth, Is.EqualTo(6));
-            Assert.That(result.Subscription.Month, Is.Null);
-            Assert.That(result.Subscription.Metadata, Is.Empty);
-            Assert.That(result.Subscription.PaymentReference, Is.Null);
-            Assert.That(result.Subscription.UpcomingPayments.Any(), Is.True);
-            Assert.That(result.Subscription.AppFee, Is.EqualTo(0));
+            Assert.That(result.Subscription.Id, Is.EqualTo(subscription.Id));
+            Assert.That(result.Subscription.Amount, Is.Not.Null.And.EqualTo(subscription.Amount));
+            Assert.That(result.Subscription.AppFee, Is.Null);
+            Assert.That(result.Subscription.Currency, Is.Not.Null.And.EqualTo(subscription.Currency));
+            Assert.That(result.Subscription.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result.Subscription.DayOfMonth, Is.Null);
+            Assert.That(result.Subscription.EndDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(result.Subscription.Interval, Is.Not.Null.And.EqualTo(subscription.Interval));
+            Assert.That(result.Subscription.IntervalUnit, Is.Not.Null.And.EqualTo(subscription.IntervalUnit));
             Assert.That(result.Subscription.Links, Is.Not.Null);
-            Assert.That(result.Subscription.Links.Mandate, Is.EqualTo(_mandate.Id));
+            Assert.That(result.Subscription.Links.Mandate, Is.Not.Null.And.EqualTo(subscription.Links.Mandate));
+            Assert.That(result.Subscription.Metadata, Is.Not.Null.And.EqualTo(subscription.Metadata));
+            Assert.That(result.Subscription.Month, Is.Null);
+            Assert.That(result.Subscription.Name, Is.Not.Null.And.EqualTo(subscription.Name));
+            Assert.That(result.Subscription.PaymentReference, Is.Not.Null.And.EqualTo(subscription.PaymentReference));
+            Assert.That(result.Subscription.StartDate, Is.Not.Null.And.EqualTo(subscription.StartDate));
+            Assert.That(result.Subscription.Status, Is.Not.Null.And.EqualTo(subscription.Status));
+            Assert.That(result.Subscription.UpcomingPayments, Is.Not.Null);
+            Assert.That(result.Subscription.UpcomingPayments.Count(), Is.EqualTo(subscription.UpcomingPayments.Count()));
         }
 
         [Test]
         public async Task UpdatesSubscription()
         {
             // given
+            var subscription = await _resourceFactory.CreateSubscriptionFor(_mandate);
+
             var request = new UpdateSubscriptionRequest
             {
-                Id = "SB0000G9PZP814",
+                Id = subscription.Id,
                 Amount = 456,
-                Name = "Updated subscription name"
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key4"] = "Value4",
+                    ["Key5"] = "Value5",
+                    ["Key6"] = "Value6",
+                },
+                Name = "Updated subscription name",
+                PaymentReference = "PR456789"
             };
 
-            var subject = new SubscriptionsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new SubscriptionsClient(_configuration);
 
             // when
             var result = await subject.UpdateAsync(request);
 
             // then
-            Assert.That(result.Subscription.Id, Is.EqualTo(request));
+            Assert.That(result.Subscription.Id, Is.EqualTo(request.Id));
             Assert.That(result.Subscription.Amount, Is.EqualTo(request.Amount));
-            Assert.That(result.Subscription.AppFee, Is.EqualTo(0));
+            Assert.That(result.Subscription.AppFee, Is.Null);
             Assert.That(result.Subscription.Metadata, Is.EqualTo(request.Metadata));
             Assert.That(result.Subscription.Name, Is.EqualTo(request.Name));
-            Assert.That(result.Subscription.PaymentReference, Is.Null);
+            Assert.That(result.Subscription.PaymentReference, Is.EqualTo(request.PaymentReference));
         }
 
         [Test]
         public async Task CancelsSubscription()
         {
             // given
+            var subscription = await _resourceFactory.CreateSubscriptionFor(_mandate);
+
             var request = new CancelSubscriptionRequest
             {
-                Id = "SB0000GN09Z7CY"
+                Id = subscription.Id
             };
 
-            var subject = new SubscriptionsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new SubscriptionsClient(_configuration);
 
             // when
             var result = await subject.CancelAsync(request);
