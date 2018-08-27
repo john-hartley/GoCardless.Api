@@ -1,5 +1,6 @@
 ﻿using GoCardlessApi.Core;
 using GoCardlessApi.CreditorBankAccounts;
+using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;

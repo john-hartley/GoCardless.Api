@@ -1,4 +1,4 @@
-﻿namespace GoCardlessApi.Tests.Integration
+﻿namespace GoCardlessApi.Tests.Integration.TestHelpers
 {
     public abstract class IntegrationTest
     {
