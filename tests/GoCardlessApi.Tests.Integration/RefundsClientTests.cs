@@ -92,5 +92,30 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result[0].Metadata, Is.Not.Null);
             Assert.That(result[0].Reference, Is.Not.Null);
         }
+
+        [Test]
+        public async Task ReturnsIndividualRefund()
+        {
+            // given
+            var subject = new RefundsClient(_configuration);
+
+            var refund = (await subject.AllAsync()).Refunds.First();
+
+            // when
+            var result = await subject.ForIdAsync(refund.Id);
+            var actual = result.Refund;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null.And.EqualTo(refund.Id));
+            Assert.That(actual.Amount, Is.Not.Null.And.EqualTo(refund.Amount));
+            Assert.That(actual.Currency, Is.Not.Null.And.EqualTo(refund.Currency));
+            Assert.That(actual.CreatedAt, Is.Not.Null.And.EqualTo(refund.CreatedAt));
+            Assert.That(actual.Links, Is.Not.Null);
+            Assert.That(actual.Links.Mandate, Is.Not.Null.And.EqualTo(refund.Links.Mandate));
+            Assert.That(actual.Links.Payment, Is.Not.Null.And.EqualTo(refund.Links.Payment));
+            Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(refund.Metadata));
+            Assert.That(actual.Reference, Is.Not.Null.And.EqualTo(refund.Reference));
+        }
     }
 }

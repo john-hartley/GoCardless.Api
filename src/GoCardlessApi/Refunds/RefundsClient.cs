@@ -23,5 +23,10 @@ namespace GoCardlessApi.Refunds
         {
             return GetAsync<AllRefundsResponse>("refunds");
         }
+
+        public Task<RefundResponse> ForIdAsync(string refundId)
+        {
+            return GetAsync<RefundResponse>("refunds", refundId);
+        }
     }
 }
