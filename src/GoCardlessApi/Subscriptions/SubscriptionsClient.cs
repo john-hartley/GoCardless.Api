@@ -41,7 +41,7 @@ namespace GoCardlessApi.Subscriptions
         public Task<CancelSubscriptionResponse> CancelAsync(CancelSubscriptionRequest request)
         {
             return PostAsync<CancelSubscriptionRequest, CancelSubscriptionResponse>(
-                request,
+                new { subscriptions = request },
                 new string[] { "subscriptions", request.Id, "actions", "cancel" }
             );
         }
