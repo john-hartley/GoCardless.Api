@@ -35,7 +35,7 @@ namespace GoCardlessApi.Tests.Integration
             _customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(_customer);
         }
 
-        [Test, Explicit("GoCardless API is not currently updating metadata properly for cancellations.")]
+        [Test]
         public async Task CreatesCancelsAndReinstatesMandate()
         {
             // given
@@ -47,7 +47,7 @@ namespace GoCardlessApi.Tests.Integration
                     ["Key2"] = "Value2",
                     ["Key3"] = "Value3",
                 },
-                //Reference = "REF12345678",
+                Reference = "REF12345678",
                 Scheme = "bacs",
                 Links = new CreateMandateLinks
                 {
@@ -95,15 +95,13 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(creationResult.Mandate.Links.CustomerBankAccount, Is.EqualTo(_customerBankAccount.Id));
             Assert.That(creationResult.Mandate.Metadata, Is.EqualTo(createRequest.Metadata));
             Assert.That(creationResult.Mandate.NextPossibleChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
-            //Assert.That(actual.Reference, Is.EqualTo(request.Reference));
+            Assert.That(creationResult.Mandate.Reference, Is.Not.Null.And.EqualTo(createRequest.Reference));
             Assert.That(creationResult.Mandate.Scheme, Is.EqualTo(createRequest.Scheme));
             Assert.That(creationResult.Mandate.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
-
-            Assert.That(cancellationResult.Mandate.Metadata, Is.EqualTo(cancelRequest.Metadata));
+            
             Assert.That(cancellationResult.Mandate.Status, Is.EqualTo("cancelled"));
 
             Assert.That(reinstateResult.Mandate.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
-            Assert.That(reinstateResult.Mandate.Metadata, Is.EqualTo(reinstateRequest.Metadata));
         }
 
         [Test]
@@ -124,7 +122,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result[0].Links.CustomerBankAccount, Is.Not.Null);
             Assert.That(result[0].Metadata, Is.Not.Null);
             Assert.That(result[0].NextPossibleChargeDate, Is.Not.EqualTo(default(DateTime)));
-            //Assert.That(result[0].Reference, Is.EqualTo(request.Reference));
+            Assert.That(result[0].Reference, Is.Not.Null);
             Assert.That(result[0].Scheme, Is.Not.Null);
             Assert.That(result[0].Status, Is.Not.Null);
         }
