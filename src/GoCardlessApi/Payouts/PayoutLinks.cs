@@ -6,7 +6,6 @@ namespace GoCardlessApi.Payouts
     {
         public string Creditor { get; set; }
 
-        [JsonProperty("creditor_bank_account")]
         public string CreditorBankAccount { get; set; }
     }
 }

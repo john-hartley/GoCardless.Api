@@ -13,7 +13,6 @@ namespace GoCardlessApi.Mandates
         [JsonIgnore]
         public string Id { get; set; }
 
-        [JsonProperty("metadata")]
         public IDictionary<string, string> Metadata { get; set; }
     }
 }

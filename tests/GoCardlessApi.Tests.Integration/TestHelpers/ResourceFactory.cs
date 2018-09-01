@@ -63,7 +63,7 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
                     ["Key2"] = "Value2",
                     ["Key3"] = "Value3",
                 },
-                PostCode = "SW1A 1AA",
+                PostalCode = "SW1A 1AA",
                 Region = "Essex",
             };
 
@@ -106,7 +106,6 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
                     ["Key2"] = "Value2",
                     ["Key3"] = "Value3",
                 },
-                //Reference = "REF12345678",
                 Scheme = "bacs",
                 Links = new CreateMandateLinks
                 {

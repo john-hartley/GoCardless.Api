@@ -47,7 +47,7 @@ namespace GoCardlessApi.Tests.Integration
                     ["Key2"] = "Value2",
                     ["Key3"] = "Value3",
                 },
-                Reference = "REF12345678",
+                Reference = DateTime.Now.ToString("yyyyMMddhhmmss"),
                 Scheme = "bacs",
                 Links = new CreateMandateLinks
                 {

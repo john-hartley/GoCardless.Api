@@ -131,8 +131,7 @@ namespace GoCardlessApi.Tests.Integration
 
             var firstPageRequest = new AllSubscriptionsRequest
             {
-                Limit = 1,
-                CreatedGreaterThan = DateTimeOffset.UtcNow
+                Limit = 1
             };
 
             // when

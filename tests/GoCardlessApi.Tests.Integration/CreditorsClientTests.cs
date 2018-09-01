@@ -38,7 +38,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result[0].AddressLine3, Is.Not.Null.And.EqualTo(creditor.AddressLine3));
             Assert.That(result[0].City, Is.Not.Null.And.EqualTo(creditor.City));
             Assert.That(result[0].Region, Is.Not.Null.And.EqualTo(creditor.Region));
-            Assert.That(result[0].PostCode, Is.Not.Null.And.EqualTo(creditor.PostCode));
+            Assert.That(result[0].PostalCode, Is.Not.Null.And.EqualTo(creditor.PostalCode));
             Assert.That(result[0].CountryCode, Is.Not.Null.And.EqualTo(creditor.CountryCode));
             Assert.That(result[0].LogoUrl, Is.Null);
             Assert.That(result[0].VerificationStatus, Is.Not.Null.And.EqualTo(creditor.VerificationStatus));
@@ -66,7 +66,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(actual.AddressLine3, Is.Not.Null.And.EqualTo(creditor.AddressLine3));
             Assert.That(actual.City, Is.Not.Null.And.EqualTo(creditor.City));
             Assert.That(actual.Region, Is.Not.Null.And.EqualTo(creditor.Region));
-            Assert.That(actual.PostCode, Is.Not.Null.And.EqualTo(creditor.PostCode));
+            Assert.That(actual.PostalCode, Is.Not.Null.And.EqualTo(creditor.PostalCode));
             Assert.That(actual.CountryCode, Is.Not.Null.And.EqualTo(creditor.CountryCode));
             Assert.That(actual.LogoUrl, Is.Null);
             Assert.That(actual.VerificationStatus, Is.Not.Null.And.EqualTo(creditor.VerificationStatus));
@@ -86,7 +86,7 @@ namespace GoCardlessApi.Tests.Integration
                 City = "London",
                 CountryCode = "GB",
                 Name = "API Client Development",
-                PostCode = "SW1A 1AA",
+                PostalCode = "SW1A 1AA",
                 Region = "Essex",
                 //LogoUrl = "https://via.placeholder.com/350x150"
             };
@@ -104,7 +104,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result.Creditor.AddressLine3, Is.EqualTo(request.AddressLine3));
             Assert.That(result.Creditor.City, Is.EqualTo(request.City));
             Assert.That(result.Creditor.Region, Is.EqualTo(request.Region));
-            Assert.That(result.Creditor.PostCode, Is.EqualTo(request.PostCode));
+            Assert.That(result.Creditor.PostalCode, Is.EqualTo(request.PostalCode));
             Assert.That(result.Creditor.CountryCode, Is.EqualTo(request.CountryCode));
             Assert.That(result.Creditor.VerificationStatus, Is.Not.Null);
             Assert.That(result.Creditor.CanCreateRefunds, Is.Not.Null);

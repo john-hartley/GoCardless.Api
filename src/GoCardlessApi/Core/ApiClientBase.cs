@@ -1,6 +1,8 @@
 ﻿using Flurl;
 using Flurl.Http;
+using Flurl.Http.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -10,10 +12,22 @@ namespace GoCardlessApi.Core
     public abstract class ApiClientBase
     {
         private readonly ClientConfiguration _configuration;
+        private readonly NewtonsoftJsonSerializer _newtonsoftJsonSerializer;
 
         internal ApiClientBase(ClientConfiguration configuration)
         {
             _configuration = configuration;
+
+            var jsonSerializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                },
+                Formatting = Formatting.Indented
+            };
+
+            _newtonsoftJsonSerializer = new NewtonsoftJsonSerializer(jsonSerializerSettings);
         }
 
         internal async Task<TResponse> GetAsync<TResponse>(
@@ -104,7 +118,9 @@ namespace GoCardlessApi.Core
 
         private IFlurlRequest BaseRequest()
         {
-            return _configuration.BaseUri.WithHeaders(_configuration.Headers);
+            return _configuration.BaseUri
+                .WithHeaders(_configuration.Headers)
+                .ConfigureRequest(x => x.JsonSerializer = _newtonsoftJsonSerializer);
         }
     }
 }

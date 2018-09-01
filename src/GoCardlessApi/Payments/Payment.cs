@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace GoCardlessApi.Payments
@@ -10,16 +9,12 @@ namespace GoCardlessApi.Payments
 
         public int Amount { get; set; }
 
-        [JsonProperty("amount_refunded")]
         public int AmountRefunded { get; set; }
 
-        [JsonProperty("app_fee")]
         public int? AppFee { get; set; }
 
-        [JsonProperty("charge_date")]
         public DateTime ChargeDate { get; set; }
 
-        [JsonProperty("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
         public string Currency { get; set; }

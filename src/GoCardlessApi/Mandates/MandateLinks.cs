@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace GoCardlessApi.Mandates
+﻿namespace GoCardlessApi.Mandates
 {
     public class MandateLinks
     {
@@ -8,7 +6,6 @@ namespace GoCardlessApi.Mandates
 
         public string Customer { get; set; }
 
-        [JsonProperty("customer_bank_account")]
         public string CustomerBankAccount { get; set; }
     }
 }
