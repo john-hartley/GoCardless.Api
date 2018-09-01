@@ -43,6 +43,11 @@ namespace GoCardlessApi.Mandates
 
         public Task<CreateMandateResponse> CreateAsync(CreateMandateRequest request)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             var idempotencyKey = Guid.NewGuid().ToString();
 
             return PostAsync<CreateMandateRequest, CreateMandateResponse>(
