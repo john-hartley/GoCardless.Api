@@ -1,9 +1,9 @@
 ﻿using GoCardlessApi.Core;
 using System;
 
-namespace GoCardlessApi.Subscriptions
+namespace GoCardlessApi.Payments
 {
-    public class AllSubscriptionsRequest : IPageRequest
+    public class AllPaymentsRequest : IPageRequest
     {
         public string Before { get; set; }
 
@@ -23,10 +23,14 @@ namespace GoCardlessApi.Subscriptions
         [QueryStringKey("created_at[lte]")]
         public DateTimeOffset? CreatedLessThanOrEqual { get; set; }
 
+        public string Creditor { get; set; }
+
         public string Customer { get; set; }
 
         public string Mandate { get; set; }
 
         public string Status { get; set; }
+
+        public string Subscription { get; set; }
     }
 }

@@ -10,6 +10,11 @@ namespace GoCardlessApi.Payments
 
         public Task<CreatePaymentResponse> CreateAsync(CreatePaymentRequest request)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             var idempotencyKey = Guid.NewGuid().ToString();
 
             return PostAsync<CreatePaymentRequest, CreatePaymentResponse>(
@@ -24,13 +29,38 @@ namespace GoCardlessApi.Payments
             return GetAsync<AllPaymentsResponse>("payments");
         }
 
+        public Task<AllPaymentsResponse> AllAsync(AllPaymentsRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return GetAsync<AllPaymentsResponse>("payments", request.ToReadOnlyDictionary());
+        }
+
         public Task<PaymentResponse> ForIdAsync(string paymentId)
         {
+            if (string.IsNullOrWhiteSpace(paymentId))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(paymentId));
+            }
+
             return GetAsync<PaymentResponse>($"payments/{paymentId}");
         }
 
         public Task<UpdatePaymentResponse> UpdateAsync(UpdatePaymentRequest request)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+            }
+
             return PutAsync<UpdatePaymentRequest, UpdatePaymentResponse>(
                 $"payments/{request.Id}",
                 new { payments = request }
@@ -39,6 +69,16 @@ namespace GoCardlessApi.Payments
 
         public Task<CancelPaymentResponse> CancelAsync(CancelPaymentRequest request)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+            }
+
             return PostAsync<CancelPaymentRequest, CancelPaymentResponse>(
                 $"payments/{request.Id}/actions/cancel",
                 new { payments = request }
@@ -47,6 +87,16 @@ namespace GoCardlessApi.Payments
 
         public Task<RetryPaymentResponse> RetryAsync(RetryPaymentRequest request)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+            }
+
             return PostAsync<RetryPaymentRequest, RetryPaymentResponse>(
                 $"payments/{request.Id}/actions/retry",
                 new { payments = request }

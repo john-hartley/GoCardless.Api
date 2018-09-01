@@ -20,7 +20,7 @@ namespace GoCardlessApi.Subscriptions
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return GetAsync<AllSubscriptionsResponse>("subscriptions", request?.ToReadOnlyDictionary());
+            return GetAsync<AllSubscriptionsResponse>("subscriptions", request.ToReadOnlyDictionary());
         }
 
         public Task<CreateSubscriptionResponse> CreateAsync(CreateSubscriptionRequest request)
