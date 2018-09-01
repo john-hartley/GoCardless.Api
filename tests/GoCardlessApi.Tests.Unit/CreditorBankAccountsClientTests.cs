@@ -135,10 +135,10 @@ namespace GoCardlessApi.Tests.Unit
         {
             // given
             var subject = new CreditorBankAccountsClient(_clientConfiguration);
-            var CreditorBankAccountId = "BA12345678";
+            var creditorBankAccountId = "BA12345678";
 
             // when
-            await subject.ForIdAsync(CreditorBankAccountId);
+            await subject.ForIdAsync(creditorBankAccountId);
 
             // then
             _httpTest

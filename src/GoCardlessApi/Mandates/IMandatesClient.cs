@@ -5,6 +5,7 @@ namespace GoCardlessApi.Mandates
     public interface IMandatesClient
     {
         Task<AllMandatesResponse> AllAsync();
+        Task<AllMandatesResponse> AllAsync(AllMandatesRequest request);
         Task<CancelMandateResponse> CancelAsync(CancelMandateRequest request);
         Task<CreateMandateResponse> CreateAsync(CreateMandateRequest request);
         Task<MandateResponse> ForIdAsync(string mandateId);

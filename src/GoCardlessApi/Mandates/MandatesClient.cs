@@ -24,13 +24,38 @@ namespace GoCardlessApi.Mandates
             return GetAsync<AllMandatesResponse>("mandates");
         }
 
+        public Task<AllMandatesResponse> AllAsync(AllMandatesRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return GetAsync<AllMandatesResponse>("mandates", request.ToReadOnlyDictionary());
+        }
+
         public Task<MandateResponse> ForIdAsync(string mandateId)
         {
+            if (string.IsNullOrWhiteSpace(mandateId))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(mandateId));
+            }
+
             return GetAsync<MandateResponse>($"mandates/{mandateId}");
         }
 
         public Task<UpdateMandateResponse> UpdateAsync(UpdateMandateRequest request)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+            }
+
             return PutAsync<UpdateMandateRequest, UpdateMandateResponse>(
                 $"mandates/{request.Id}",
                 new { mandates = request }
@@ -39,6 +64,16 @@ namespace GoCardlessApi.Mandates
 
         public Task<CancelMandateResponse> CancelAsync(CancelMandateRequest request)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+            }
+
             return PostAsync<CancelMandateRequest, CancelMandateResponse>(
                 $"mandates/{request.Id}/actions/cancel",
                 new { mandates = request }
@@ -47,6 +82,16 @@ namespace GoCardlessApi.Mandates
 
         public Task<ReinstateMandateResponse> ReinstateAsync(ReinstateMandateRequest request)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+            }
+
             return PostAsync<ReinstateMandateRequest, ReinstateMandateResponse>(
                 $"mandates/{request.Id}/actions/reinstate",
                 new { mandates = request }

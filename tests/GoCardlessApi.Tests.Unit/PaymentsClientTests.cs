@@ -135,10 +135,10 @@ namespace GoCardlessApi.Tests.Unit
         {
             // given
             var subject = new PaymentsClient(_clientConfiguration);
-            var PaymentId = "PM12345678";
+            var paymentId = "PM12345678";
 
             // when
-            await subject.ForIdAsync(PaymentId);
+            await subject.ForIdAsync(paymentId);
 
             // then
             _httpTest
