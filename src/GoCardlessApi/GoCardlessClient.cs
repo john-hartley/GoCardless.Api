@@ -33,11 +33,11 @@ namespace GoCardlessApi
         public ICreditorBankAccountsClient CreditorBankAccounts { get; }
         public ICreditorsClient Creditors { get; }
         public ICustomersClient Customers { get; }
-        public ICustomerBankAccountsClient CustomerBankAccounts { get; set; }
-        public IMandatesClient Mandates { get; set; }
-        public IPaymentsClient Payments { get; set; }
-        public IPayoutsClient Payouts { get; set; }
-        public IRefundsClient Refunds { get; set; }
+        public ICustomerBankAccountsClient CustomerBankAccounts { get; }
+        public IMandatesClient Mandates { get; }
+        public IPaymentsClient Payments { get; }
+        public IPayoutsClient Payouts { get; }
+        public IRefundsClient Refunds { get; }
         public ISubscriptionsClient Subscriptions { get; }
     }
 }
