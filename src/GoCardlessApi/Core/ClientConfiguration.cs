@@ -19,9 +19,14 @@ namespace GoCardlessApi.Core
 
         private ClientConfiguration(bool live, string accessToken)
         {
-            _baseUri = live
-                ? new Uri("https://api.gocardless.com")
-                : new Uri("https://api-sandbox.gocardless.com");
+            if (string.IsNullOrWhiteSpace(accessToken))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(accessToken));
+            }
+
+            BaseUri = live
+                ? "https://api.gocardless.com/"
+                : "https://api-sandbox.gocardless.com/";
 
             AccessToken = accessToken;
 
@@ -32,7 +37,7 @@ namespace GoCardlessApi.Core
             };
         }
         
-        public string BaseUri => _baseUri.ToString();
+        public string BaseUri { get; }
         public string AccessToken { get; }
         public IReadOnlyDictionary<string, string> Headers { get; }
     }

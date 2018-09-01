@@ -16,7 +16,7 @@ namespace GoCardlessApi.Tests.Unit
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("");
+            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
             _httpTest = new HttpTest();
         }
 
