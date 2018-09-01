@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GoCardlessApi.Creditors
 {
-    public class AllCreditorResponse
+    public class AllCreditorsResponse
     {
         public IEnumerable<Creditor> Creditors { get; set; }
 
