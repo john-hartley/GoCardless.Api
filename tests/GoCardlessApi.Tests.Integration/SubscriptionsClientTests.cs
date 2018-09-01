@@ -94,30 +94,68 @@ namespace GoCardlessApi.Tests.Integration
             var subject = new SubscriptionsClient(_configuration);
 
             // when
-            var result = (await subject.AllAsync()).Subscriptions.ToList();
+            var result = await subject.AllAsync();
+            var actual = result.Subscriptions.ToList();
 
             // then
-            Assert.That(result.Any(), Is.True);
-            Assert.That(result[0], Is.Not.Null);
-            Assert.That(result[0].Id, Is.Not.Null);
-            Assert.That(result[0].Amount, Is.Not.EqualTo(default(int)));
-            Assert.That(result[0].AppFee, Is.Null);
-            Assert.That(result[0].Currency, Is.Not.Null);
-            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result[0].DayOfMonth, Is.Null);
-            Assert.That(result[0].EndDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
-            Assert.That(result[0].Interval, Is.Not.Null);
-            Assert.That(result[0].IntervalUnit, Is.Not.Null);
-            Assert.That(result[0].Links, Is.Not.Null);
-            Assert.That(result[0].Links.Mandate, Is.Not.Null);
-            Assert.That(result[0].Metadata, Is.Not.Null);
-            Assert.That(result[0].Month, Is.Null);
-            Assert.That(result[0].Name, Is.Not.Null);
-            Assert.That(result[0].PaymentReference, Is.Not.Null);
-            Assert.That(result[0].StartDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
-            Assert.That(result[0].Status, Is.Not.Null);
-            Assert.That(result[0].UpcomingPayments, Is.Not.Null);
-            Assert.That(result[0].UpcomingPayments.Any(), Is.True);
+            Assert.That(actual.Any(), Is.True);
+            Assert.That(result.Meta.Limit, Is.Not.EqualTo(0));
+            Assert.That(actual.Count, Is.LessThanOrEqualTo(result.Meta.Limit));
+            Assert.That(actual[0], Is.Not.Null);
+            Assert.That(actual[0].Id, Is.Not.Null);
+            Assert.That(actual[0].Amount, Is.Not.EqualTo(default(int)));
+            Assert.That(actual[0].AppFee, Is.Null);
+            Assert.That(actual[0].Currency, Is.Not.Null);
+            Assert.That(actual[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(actual[0].DayOfMonth, Is.Null);
+            Assert.That(actual[0].EndDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(actual[0].Interval, Is.Not.Null);
+            Assert.That(actual[0].IntervalUnit, Is.Not.Null);
+            Assert.That(actual[0].Links, Is.Not.Null);
+            Assert.That(actual[0].Links.Mandate, Is.Not.Null);
+            Assert.That(actual[0].Metadata, Is.Not.Null);
+            Assert.That(actual[0].Month, Is.Null);
+            Assert.That(actual[0].Name, Is.Not.Null);
+            Assert.That(actual[0].PaymentReference, Is.Not.Null);
+            Assert.That(actual[0].StartDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(actual[0].Status, Is.Not.Null);
+            Assert.That(actual[0].UpcomingPayments, Is.Not.Null);
+            Assert.That(actual[0].UpcomingPayments.Any(), Is.True);
+        }
+
+        [Test]
+        public async Task MapsPagingProperties()
+        {
+            // given
+            var subject = new SubscriptionsClient(_configuration);
+
+            var firstPageRequest = new AllSubscriptionsRequest
+            {
+                Limit = 1,
+                CreatedGreaterThan = DateTimeOffset.UtcNow
+            };
+
+            // when
+            var firstPageResult = await subject.AllAsync(firstPageRequest);
+
+            var secondPageRequest = new AllSubscriptionsRequest
+            {
+                After = firstPageResult.Meta.Cursors.After,
+                Limit = 2
+            };
+
+            var secondPageResult = await subject.AllAsync(secondPageRequest);
+
+            // then
+            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
+            Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
+            Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
+            Assert.That(firstPageResult.Subscriptions.Count(), Is.EqualTo(firstPageRequest.Limit));
+
+            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
+            Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
+            Assert.That(secondPageResult.Meta.Cursors.After, Is.Not.Null);
+            Assert.That(secondPageResult.Subscriptions.Count(), Is.EqualTo(secondPageRequest.Limit));
         }
 
         [Test]
@@ -187,7 +225,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result.Subscription.PaymentReference, Is.EqualTo(request.PaymentReference));
         }
 
-        [Test, Explicit("GoCardless API is not currently updating metadata properly for cancellations.")]
+        [Test]
         public async Task CancelsSubscription()
         {
             // given
@@ -211,7 +249,6 @@ namespace GoCardlessApi.Tests.Integration
 
             // then
             Assert.That(result.Subscription.Id, Is.EqualTo(request.Id));
-            Assert.That(result.Subscription.Metadata, Is.EqualTo(request.Metadata));
             Assert.That(result.Subscription.Status, Is.EqualTo("cancelled"));
         }
     }

@@ -34,7 +34,7 @@ namespace GoCardlessApi.Tests.Integration
             _mandate = await _resourceFactory.CreateMandateFor(_creditor, customer, customerBankAccount);
         }
 
-        [Test, Explicit("GoCardless API is not currently updating metadata properly for cancellations.")]
+        [Test]
         public async Task CreatesAndCancelsPayment()
         {
             // given
@@ -88,7 +88,6 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(creationResult.Payment.Reference, Is.EqualTo(createRequest.Reference));
             Assert.That(creationResult.Payment.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
 
-            Assert.That(cancellationResult.Payment.Metadata, Is.EqualTo(cancelRequest.Metadata));
             Assert.That(cancellationResult.Payment.Status, Is.EqualTo("cancelled"));
         }
 

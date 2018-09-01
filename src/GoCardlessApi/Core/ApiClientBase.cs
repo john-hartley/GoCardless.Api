@@ -1,6 +1,7 @@
 ﻿using Flurl;
 using Flurl.Http;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -15,12 +16,15 @@ namespace GoCardlessApi.Core
             _configuration = configuration;
         }
 
-        internal async Task<TResponse> GetAsync<TResponse>(string relativeEndpoint)
+        internal async Task<TResponse> GetAsync<TResponse>(
+            string relativeEndpoint,
+            IReadOnlyDictionary<string, object> queryParams = null)
         {
             try
             {
                 return await BaseRequest()
                     .AppendPathSegment(relativeEndpoint)
+                    .SetQueryParams(queryParams)
                     .GetJsonAsync<TResponse>()
                     .ConfigureAwait(false);
             }
