@@ -27,23 +27,22 @@ namespace GoCardlessApi.Tests.Unit
         }
 
         [Test]
-        public void CreateCustomerBankAccountRequestIsNullThrows()
+        public async Task CallsAllCustomerBankAccountsEndpoint()
         {
             // given
             var subject = new CustomerBankAccountsClient(_clientConfiguration);
 
-            CreateCustomerBankAccountRequest request = null;
-
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            await subject.AllAsync();
 
             // then
-            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/customer_bank_accounts")
+                .WithVerb(HttpMethod.Get);
         }
 
         [Test]
-        public void AllCustomerBankAccountssRequestIsNullThrows()
+        public void AllCustomerBankAccountsRequestIsNullThrows()
         {
             // given
             var subject = new CustomerBankAccountsClient(_clientConfiguration);
@@ -81,6 +80,22 @@ namespace GoCardlessApi.Tests.Unit
         }
 
         [Test]
+        public void CreateCustomerBankAccountRequestIsNullThrows()
+        {
+            // given
+            var subject = new CustomerBankAccountsClient(_clientConfiguration);
+
+            CreateCustomerBankAccountRequest request = null;
+
+            // when
+            AsyncTestDelegate test = () => subject.CreateAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+        }
+
+        [Test]
         public async Task CallsCreateCustomerBankAccountEndpoint()
         {
             // given
@@ -96,21 +111,6 @@ namespace GoCardlessApi.Tests.Unit
                 .ShouldHaveCalled("https://api.gocardless.com/customer_bank_accounts")
                 .WithHeader("Idempotency-Key")
                 .WithVerb(HttpMethod.Post);
-        }
-
-        [Test]
-        public async Task CallsAllCustomerBankAccountsEndpoint()
-        {
-            // given
-            var subject = new CustomerBankAccountsClient(_clientConfiguration);
-
-            // when
-            await subject.AllAsync();
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/customer_bank_accounts")
-                .WithVerb(HttpMethod.Get);
         }
 
         [TestCase(null)]
@@ -196,6 +196,58 @@ namespace GoCardlessApi.Tests.Unit
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/customer_bank_accounts/BA12345678/actions/disable")
                 .WithVerb(HttpMethod.Post);
+        }
+
+        [Test]
+        public void UpdateCustomerBankAccountRequestIsNullThrows()
+        {
+            // given
+            var subject = new CustomerBankAccountsClient(_clientConfiguration);
+
+            UpdateCustomerBankAccountRequest request = null;
+
+            // when
+            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+        }
+
+        [Test]
+        public void UpdateCustomerBankAccountRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        {
+            // given
+            var subject = new CustomerBankAccountsClient(_clientConfiguration);
+
+            var request = new UpdateCustomerBankAccountRequest();
+
+            // when
+            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+        }
+
+        [Test]
+        public async Task CallsUpdateCustomerBankAccountEndpoint()
+        {
+            // given
+            var subject = new CustomerBankAccountsClient(_clientConfiguration);
+
+            var request = new UpdateCustomerBankAccountRequest
+            {
+                Id = "BA12345678"
+            };
+
+            // when
+            await subject.UpdateAsync(request);
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/customer_bank_accounts")
+                .WithVerb(HttpMethod.Put);
         }
     }
 }

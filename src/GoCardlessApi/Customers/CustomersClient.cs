@@ -8,6 +8,21 @@ namespace GoCardlessApi.Customers
     {
         public CustomersClient(ClientConfiguration configuration) : base(configuration) { }
 
+        public Task<AllCustomersResponse> AllAsync()
+        {
+            return GetAsync<AllCustomersResponse>("customers");
+        }
+
+        public Task<AllCustomersResponse> AllAsync(AllCustomersRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return GetAsync<AllCustomersResponse>("customers", request.ToReadOnlyDictionary());
+        }
+
         public Task<CreateCustomerResponse> CreateAsync(CreateCustomerRequest request)
         {
             if (request == null)
@@ -22,21 +37,6 @@ namespace GoCardlessApi.Customers
                 new { customers = request },
                 idempotencyKey
             );
-        }
-
-        public Task<AllCustomersResponse> AllAsync()
-        {
-            return GetAsync<AllCustomersResponse>("customers");
-        }
-
-        public Task<AllCustomersResponse> AllAsync(AllCustomersRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            return GetAsync<AllCustomersResponse>("customers", request.ToReadOnlyDictionary());
         }
 
         public Task<CustomerResponse> ForIdAsync(string customerId)

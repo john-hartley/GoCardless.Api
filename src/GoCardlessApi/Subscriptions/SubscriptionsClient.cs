@@ -23,6 +23,24 @@ namespace GoCardlessApi.Subscriptions
             return GetAsync<AllSubscriptionsResponse>("subscriptions", request.ToReadOnlyDictionary());
         }
 
+        public Task<CancelSubscriptionResponse> CancelAsync(CancelSubscriptionRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+            }
+
+            return PostAsync<CancelSubscriptionRequest, CancelSubscriptionResponse>(
+                $"subscriptions/{request.Id}/actions/cancel",
+                new { subscriptions = request }
+            );
+        }
+
         public Task<CreateSubscriptionResponse> CreateAsync(CreateSubscriptionRequest request)
         {
             if (request == null)
@@ -63,24 +81,6 @@ namespace GoCardlessApi.Subscriptions
 
             return PutAsync<UpdateSubscriptionRequest, UpdateSubscriptionResponse>(
                 $"subscriptions/{request.Id}",
-                new { subscriptions = request }
-            );
-        }
-
-        public Task<CancelSubscriptionResponse> CancelAsync(CancelSubscriptionRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            if (string.IsNullOrWhiteSpace(request.Id))
-            {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
-            }
-
-            return PostAsync<CancelSubscriptionRequest, CancelSubscriptionResponse>(
-                $"subscriptions/{request.Id}/actions/cancel",
                 new { subscriptions = request }
             );
         }

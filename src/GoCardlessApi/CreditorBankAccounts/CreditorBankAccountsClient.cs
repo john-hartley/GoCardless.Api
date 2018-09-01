@@ -8,6 +8,21 @@ namespace GoCardlessApi.CreditorBankAccounts
     {
         public CreditorBankAccountsClient(ClientConfiguration configuration) : base(configuration) { }
 
+        public Task<AllCreditorBankAccountsResponse> AllAsync()
+        {
+            return GetAsync<AllCreditorBankAccountsResponse>("creditor_bank_accounts");
+        }
+
+        public Task<AllCreditorBankAccountsResponse> AllAsync(AllCreditorBankAccountsRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return GetAsync<AllCreditorBankAccountsResponse>("creditor_bank_accounts", request.ToReadOnlyDictionary());
+        }
+
         public Task<CreateCreditorBankAccountResponse> CreateAsync(CreateCreditorBankAccountRequest request)
         {
             if (request == null)
@@ -22,31 +37,6 @@ namespace GoCardlessApi.CreditorBankAccounts
                 new { creditor_bank_accounts = request },
                 idempotencyKey
             );
-        }
-
-        public Task<AllCreditorBankAccountsResponse> AllAsync()
-        {
-            return GetAsync<AllCreditorBankAccountsResponse>("creditor_bank_accounts");
-        }
-
-        public Task<AllCreditorBankAccountsResponse> AllAsync(AllCreditorBankAccountsRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-            
-            return GetAsync<AllCreditorBankAccountsResponse>("creditor_bank_accounts", request.ToReadOnlyDictionary());
-        }
-
-        public Task<CreditorBankAccountResponse> ForIdAsync(string creditorBankAccountId)
-        {
-            if (string.IsNullOrWhiteSpace(creditorBankAccountId))
-            {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(creditorBankAccountId));
-            }
-
-            return GetAsync<CreditorBankAccountResponse>($"creditor_bank_accounts/{creditorBankAccountId}");
         }
 
         public Task<DisableCreditorBankAccountResponse> DisableAsync(DisableCreditorBankAccountRequest request)
@@ -64,6 +54,16 @@ namespace GoCardlessApi.CreditorBankAccounts
             return PostAsync<DisableCreditorBankAccountRequest, DisableCreditorBankAccountResponse>(
                 $"creditor_bank_accounts/{request.Id}/actions/disable"
             );
+        }
+
+        public Task<CreditorBankAccountResponse> ForIdAsync(string creditorBankAccountId)
+        {
+            if (string.IsNullOrWhiteSpace(creditorBankAccountId))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(creditorBankAccountId));
+            }
+
+            return GetAsync<CreditorBankAccountResponse>($"creditor_bank_accounts/{creditorBankAccountId}");
         }
     }
 }

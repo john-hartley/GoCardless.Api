@@ -27,7 +27,22 @@ namespace GoCardlessApi.Tests.Unit
         }
 
         [Test]
-        public void AllMandatessRequestIsNullThrows()
+        public async Task CallsAllMandatesEndpoint()
+        {
+            // given
+            var subject = new MandatesClient(_clientConfiguration);
+
+            // when
+            await subject.AllAsync();
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/mandates")
+                .WithVerb(HttpMethod.Get);
+        }
+
+        [Test]
+        public void AllMandatesRequestIsNullThrows()
         {
             // given
             var subject = new MandatesClient(_clientConfiguration);
@@ -65,18 +80,89 @@ namespace GoCardlessApi.Tests.Unit
         }
 
         [Test]
-        public async Task CallsAllMandatesEndpoint()
+        public void CancelMandateRequestIsNullThrows()
         {
             // given
             var subject = new MandatesClient(_clientConfiguration);
 
+            CancelMandateRequest request = null;
+
             // when
-            await subject.AllAsync();
+            AsyncTestDelegate test = () => subject.CancelAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+        }
+
+        [Test]
+        public void CancelMandateRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        {
+            // given
+            var subject = new MandatesClient(_clientConfiguration);
+
+            var request = new CancelMandateRequest();
+
+            // when
+            AsyncTestDelegate test = () => subject.CancelAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+        }
+
+        [Test]
+        public async Task CallsCancelMandateEndpoint()
+        {
+            // given
+            var subject = new MandatesClient(_clientConfiguration);
+
+            var request = new CancelMandateRequest
+            {
+                Id = "MD12345678"
+            };
+
+            // when
+            await subject.CancelAsync(request);
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/mandates/MD12345678/actions/cancel")
+                .WithVerb(HttpMethod.Post);
+        }
+
+        [Test]
+        public void CreateMandateRequestIsNullThrows()
+        {
+            // given
+            var subject = new MandatesClient(_clientConfiguration);
+
+            CreateMandateRequest request = null;
+
+            // when
+            AsyncTestDelegate test = () => subject.CreateAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+        }
+
+        [Test]
+        public async Task CallsCreateMandateEndpoint()
+        {
+            // given
+            var subject = new MandatesClient(_clientConfiguration);
+
+            var request = new CreateMandateRequest();
+
+            // when
+            await subject.CreateAsync(request);
 
             // then
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/mandates")
-                .WithVerb(HttpMethod.Get);
+                .WithHeader("Idempotency-Key")
+                .WithVerb(HttpMethod.Post);
         }
 
         [TestCase(null)]
@@ -162,58 +248,6 @@ namespace GoCardlessApi.Tests.Unit
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/mandates")
                 .WithVerb(HttpMethod.Put);
-        }
-
-        [Test]
-        public void CancelMandateRequestIsNullThrows()
-        {
-            // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            CancelMandateRequest request = null;
-
-            // when
-            AsyncTestDelegate test = () => subject.CancelAsync(request);
-
-            // then
-            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
-        }
-
-        [Test]
-        public void CancelMandateRequestIdIsNullEmptyOrWhiteSpaceThrows()
-        {
-            // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            var request = new CancelMandateRequest();
-
-            // when
-            AsyncTestDelegate test = () => subject.CancelAsync(request);
-
-            // then
-            var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
-        }
-
-        [Test]
-        public async Task CallsCancelMandateEndpoint()
-        {
-            // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            var request = new CancelMandateRequest
-            {
-                Id = "MD12345678"
-            };
-
-            // when
-            await subject.CancelAsync(request);
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/mandates/MD12345678/actions/cancel")
-                .WithVerb(HttpMethod.Post);
         }
 
         [Test]

@@ -80,6 +80,58 @@ namespace GoCardlessApi.Tests.Unit
         }
 
         [Test]
+        public void CancelSubscriptionRequestIsNullThrows()
+        {
+            // given
+            var subject = new SubscriptionsClient(_clientConfiguration);
+
+            CancelSubscriptionRequest request = null;
+
+            // when
+            AsyncTestDelegate test = () => subject.CancelAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+        }
+
+        [Test]
+        public void CancelSubscriptionRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        {
+            // given
+            var subject = new SubscriptionsClient(_clientConfiguration);
+
+            var request = new CancelSubscriptionRequest();
+
+            // when
+            AsyncTestDelegate test = () => subject.CancelAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+        }
+
+        [Test]
+        public async Task CallsCancelSubscriptionEndpoint()
+        {
+            // given
+            var subject = new SubscriptionsClient(_clientConfiguration);
+
+            var request = new CancelSubscriptionRequest
+            {
+                Id = "SB12345678"
+            };
+
+            // when
+            await subject.CancelAsync(request);
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/subscriptions/SB12345678/actions/cancel")
+                .WithVerb(HttpMethod.Post);
+        }
+
+        [Test]
         public void CreateSubscriptionRequestIsNullThrows()
         {
             // given
@@ -196,58 +248,6 @@ namespace GoCardlessApi.Tests.Unit
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/subscriptions")
                 .WithVerb(HttpMethod.Put);
-        }
-
-        [Test]
-        public void CancelSubscriptionRequestIsNullThrows()
-        {
-            // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            CancelSubscriptionRequest request = null;
-
-            // when
-            AsyncTestDelegate test = () => subject.CancelAsync(request);
-
-            // then
-            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
-        }
-
-        [Test]
-        public void CancelSubscriptionRequestIdIsNullEmptyOrWhiteSpaceThrows()
-        {
-            // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            var request = new CancelSubscriptionRequest();
-
-            // when
-            AsyncTestDelegate test = () => subject.CancelAsync(request);
-
-            // then
-            var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
-        }
-
-        [Test]
-        public async Task CallsCancelSubscriptionEndpoint()
-        {
-            // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            var request = new CancelSubscriptionRequest
-            {
-                Id = "SB12345678"
-            };
-
-            // when
-            await subject.CancelAsync(request);
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/subscriptions/SB12345678/actions/cancel")
-                .WithVerb(HttpMethod.Post);
         }
     }
 }

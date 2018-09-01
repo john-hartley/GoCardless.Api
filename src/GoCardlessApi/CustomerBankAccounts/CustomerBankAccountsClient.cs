@@ -8,6 +8,21 @@ namespace GoCardlessApi.CustomerBankAccounts
     {
         public CustomerBankAccountsClient(ClientConfiguration configuration) : base(configuration) { }
 
+        public Task<AllCustomerBankAccountsResponse> AllAsync()
+        {
+            return GetAsync<AllCustomerBankAccountsResponse>("customer_bank_accounts");
+        }
+
+        public Task<AllCustomerBankAccountsResponse> AllAsync(AllCustomerBankAccountsRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return GetAsync<AllCustomerBankAccountsResponse>("customer_bank_accounts", request.ToReadOnlyDictionary());
+        }
+
         public Task<CustomerBankAccountResponse> CreateAsync(CreateCustomerBankAccountRequest request)
         {
             if (request == null)
@@ -39,21 +54,6 @@ namespace GoCardlessApi.CustomerBankAccounts
             return PostAsync<DisableCustomerBankAccountRequest, DisableCustomerBankAccountResponse>(
                 $"customer_bank_accounts/{request.Id}/actions/disable"
             );
-        }
-
-        public Task<AllCustomerBankAccountsResponse> AllAsync()
-        {
-            return GetAsync<AllCustomerBankAccountsResponse>("customer_bank_accounts");
-        }
-
-        public Task<AllCustomerBankAccountsResponse> AllAsync(AllCustomerBankAccountsRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            return GetAsync<AllCustomerBankAccountsResponse>("customer_bank_accounts", request.ToReadOnlyDictionary());
         }
 
         public Task<CustomerBankAccountResponse> ForIdAsync(string customerBankAccountId)

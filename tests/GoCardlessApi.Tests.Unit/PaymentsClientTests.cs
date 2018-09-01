@@ -27,23 +27,7 @@ namespace GoCardlessApi.Tests.Unit
         }
 
         [Test]
-        public void CreatePaymentRequestIsNullThrows()
-        {
-            // given
-            var subject = new PaymentsClient(_clientConfiguration);
-
-            CreatePaymentRequest request = null;
-
-            // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
-
-            // then
-            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
-        }
-
-        [Test]
-        public void AllPaymentssRequestIsNullThrows()
+        public void AllPaymentsRequestIsNullThrows()
         {
             // given
             var subject = new PaymentsClient(_clientConfiguration);
@@ -81,24 +65,6 @@ namespace GoCardlessApi.Tests.Unit
         }
 
         [Test]
-        public async Task CallsCreatePaymentEndpoint()
-        {
-            // given
-            var subject = new PaymentsClient(_clientConfiguration);
-
-            var request = new CreatePaymentRequest();
-
-            // when
-            await subject.CreateAsync(request);
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/payments")
-                .WithHeader("Idempotency-Key")
-                .WithVerb(HttpMethod.Post);
-        }
-
-        [Test]
         public async Task CallsAllPaymentsEndpoint()
         {
             // given
@@ -111,91 +77,6 @@ namespace GoCardlessApi.Tests.Unit
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/payments")
                 .WithVerb(HttpMethod.Get);
-        }
-
-        [TestCase(null)]
-        [TestCase("")]
-        [TestCase("\t  ")]
-        public void PaymentIdIsNullOrWhiteSpaceThrows(string paymentId)
-        {
-            // given
-            var subject = new PaymentsClient(_clientConfiguration);
-
-            // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(paymentId);
-
-            // then
-            var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.Message, Is.Not.Null);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(paymentId)));
-        }
-
-        [Test]
-        public async Task CallsIndividualPaymentsEndpoint()
-        {
-            // given
-            var subject = new PaymentsClient(_clientConfiguration);
-            var paymentId = "PM12345678";
-
-            // when
-            await subject.ForIdAsync(paymentId);
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/payments/PM12345678")
-                .WithVerb(HttpMethod.Get);
-        }
-
-        [Test]
-        public void UpdatePaymentRequestIsNullThrows()
-        {
-            // given
-            var subject = new PaymentsClient(_clientConfiguration);
-
-            UpdatePaymentRequest request = null;
-
-            // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
-
-            // then
-            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
-        }
-
-        [Test]
-        public void UpdatePaymentRequestIdIsNullEmptyOrWhiteSpaceThrows()
-        {
-            // given
-            var subject = new PaymentsClient(_clientConfiguration);
-
-            var request = new UpdatePaymentRequest();
-
-            // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
-
-            // then
-            var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
-        }
-
-        [Test]
-        public async Task CallsUpdatePaymentEndpoint()
-        {
-            // given
-            var subject = new PaymentsClient(_clientConfiguration);
-
-            var request = new UpdatePaymentRequest
-            {
-                Id = "PM12345678"
-            };
-
-            // when
-            await subject.UpdateAsync(request);
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/payments")
-                .WithVerb(HttpMethod.Put);
         }
 
         [Test]
@@ -251,6 +132,73 @@ namespace GoCardlessApi.Tests.Unit
         }
 
         [Test]
+        public void CreatePaymentRequestIsNullThrows()
+        {
+            // given
+            var subject = new PaymentsClient(_clientConfiguration);
+
+            CreatePaymentRequest request = null;
+
+            // when
+            AsyncTestDelegate test = () => subject.CreateAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+        }
+
+        [Test]
+        public async Task CallsCreatePaymentEndpoint()
+        {
+            // given
+            var subject = new PaymentsClient(_clientConfiguration);
+
+            var request = new CreatePaymentRequest();
+
+            // when
+            await subject.CreateAsync(request);
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/payments")
+                .WithHeader("Idempotency-Key")
+                .WithVerb(HttpMethod.Post);
+        }
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("\t  ")]
+        public void PaymentIdIsNullOrWhiteSpaceThrows(string paymentId)
+        {
+            // given
+            var subject = new PaymentsClient(_clientConfiguration);
+
+            // when
+            AsyncTestDelegate test = () => subject.ForIdAsync(paymentId);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentException>(test);
+            Assert.That(ex.Message, Is.Not.Null);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(paymentId)));
+        }
+
+        [Test]
+        public async Task CallsIndividualPaymentsEndpoint()
+        {
+            // given
+            var subject = new PaymentsClient(_clientConfiguration);
+            var paymentId = "PM12345678";
+
+            // when
+            await subject.ForIdAsync(paymentId);
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/payments/PM12345678")
+                .WithVerb(HttpMethod.Get);
+        }
+
+        [Test]
         public void RetryPaymentRequestIsNullThrows()
         {
             // given
@@ -300,6 +248,58 @@ namespace GoCardlessApi.Tests.Unit
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/payments/PM12345678/actions/retry")
                 .WithVerb(HttpMethod.Post);
+        }
+
+        [Test]
+        public void UpdatePaymentRequestIsNullThrows()
+        {
+            // given
+            var subject = new PaymentsClient(_clientConfiguration);
+
+            UpdatePaymentRequest request = null;
+
+            // when
+            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+        }
+
+        [Test]
+        public void UpdatePaymentRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        {
+            // given
+            var subject = new PaymentsClient(_clientConfiguration);
+
+            var request = new UpdatePaymentRequest();
+
+            // when
+            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+        }
+
+        [Test]
+        public async Task CallsUpdatePaymentEndpoint()
+        {
+            // given
+            var subject = new PaymentsClient(_clientConfiguration);
+
+            var request = new UpdatePaymentRequest
+            {
+                Id = "PM12345678"
+            };
+
+            // when
+            await subject.UpdateAsync(request);
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/payments")
+                .WithVerb(HttpMethod.Put);
         }
     }
 }

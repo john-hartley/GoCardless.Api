@@ -27,7 +27,22 @@ namespace GoCardlessApi.Tests.Unit
         }
 
         [Test]
-        public void AllCustomerssRequestIsNullThrows()
+        public async Task CallsAllCustomersEndpoint()
+        {
+            // given
+            var subject = new CustomersClient(_clientConfiguration);
+
+            // when
+            await subject.AllAsync();
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/customers")
+                .WithVerb(HttpMethod.Get);
+        }
+
+        [Test]
+        public void AllCustomersRequestIsNullThrows()
         {
             // given
             var subject = new CustomersClient(_clientConfiguration);
@@ -65,18 +80,37 @@ namespace GoCardlessApi.Tests.Unit
         }
 
         [Test]
-        public async Task CallsAllCustomersEndpoint()
+        public void CreateCustomerRequestIsNullThrows()
         {
             // given
             var subject = new CustomersClient(_clientConfiguration);
 
+            CreateCustomerRequest request = null;
+
             // when
-            await subject.AllAsync();
+            AsyncTestDelegate test = () => subject.CreateAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+        }
+
+        [Test]
+        public async Task CallsCreateCustomerEndpoint()
+        {
+            // given
+            var subject = new CustomersClient(_clientConfiguration);
+
+            var request = new CreateCustomerRequest();
+
+            // when
+            await subject.CreateAsync(request);
 
             // then
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/customers")
-                .WithVerb(HttpMethod.Get);
+                .WithHeader("Idempotency-Key")
+                .WithVerb(HttpMethod.Post);
         }
 
         [TestCase(null)]
