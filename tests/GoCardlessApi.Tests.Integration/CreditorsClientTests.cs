@@ -45,6 +45,27 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result[0].CanCreateRefunds, Is.Not.Null.And.EqualTo(creditor.CanCreateRefunds));
         }
 
+        [Test]
+        public async Task MapsPagingProperties()
+        {
+            // given
+            var subject = new CreditorsClient(_configuration);
+
+            var request = new AllCreditorsRequest
+            {
+                Limit = 1
+            };
+
+            // when
+            var result = await subject.AllAsync(request);
+
+            // then
+            Assert.That(result.Meta.Limit, Is.EqualTo(request.Limit));
+            Assert.That(result.Meta.Cursors.Before, Is.Null);
+            Assert.That(result.Meta.Cursors.After, Is.Null);
+            Assert.That(result.Creditors.Count(), Is.EqualTo(request.Limit));
+        }
+
         [Test, NonParallelizable]
         public async Task ReturnsIndividualCreditor()
         {
