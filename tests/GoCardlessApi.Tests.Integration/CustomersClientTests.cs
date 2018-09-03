@@ -105,6 +105,40 @@ namespace GoCardlessApi.Tests.Integration
         }
 
         [Test]
+        public async Task MapsPagingProperties()
+        {
+            // given
+            var subject = new CustomersClient(_configuration);
+
+            var firstPageRequest = new AllCustomersRequest
+            {
+                Limit = 1
+            };
+
+            // when
+            var firstPageResult = await subject.AllAsync(firstPageRequest);
+
+            var secondPageRequest = new AllCustomersRequest
+            {
+                After = firstPageResult.Meta.Cursors.After,
+                Limit = 2
+            };
+
+            var secondPageResult = await subject.AllAsync(secondPageRequest);
+
+            // then
+            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
+            Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
+            Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
+            Assert.That(firstPageResult.Customers.Count(), Is.EqualTo(firstPageRequest.Limit));
+
+            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
+            Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
+            Assert.That(secondPageResult.Meta.Cursors.After, Is.Not.Null);
+            Assert.That(secondPageResult.Customers.Count(), Is.EqualTo(secondPageRequest.Limit));
+        }
+
+        [Test]
         public async Task ReturnsIndividualCustomer()
         {
             // given
