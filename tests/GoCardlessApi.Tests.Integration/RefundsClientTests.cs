@@ -93,6 +93,40 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result[0].Reference, Is.Not.Null);
         }
 
+        [Test]
+        public async Task MapsPagingProperties()
+        {
+            // given
+            var subject = new RefundsClient(_configuration);
+
+            var firstPageRequest = new AllRefundsRequest
+            {
+                Limit = 1
+            };
+
+            // when
+            var firstPageResult = await subject.AllAsync(firstPageRequest);
+
+            var secondPageRequest = new AllRefundsRequest
+            {
+                After = firstPageResult.Meta.Cursors.After,
+                Limit = 1
+            };
+
+            var secondPageResult = await subject.AllAsync(secondPageRequest);
+
+            // then
+            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
+            Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
+            Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
+            Assert.That(firstPageResult.Refunds.Count(), Is.EqualTo(firstPageRequest.Limit));
+
+            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
+            Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
+            Assert.That(secondPageResult.Meta.Cursors.After, Is.Null);
+            Assert.That(secondPageResult.Refunds.Count(), Is.EqualTo(secondPageRequest.Limit));
+        }
+
         [Test, NonParallelizable]
         public async Task ReturnsIndividualRefund()
         {
