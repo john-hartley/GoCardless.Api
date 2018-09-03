@@ -24,7 +24,8 @@ namespace GoCardlessApi.Core
                 {
                     NamingStrategy = new SnakeCaseNamingStrategy()
                 },
-                Formatting = Formatting.Indented
+                Formatting = Formatting.Indented,
+                NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
             };
 
             _newtonsoftJsonSerializer = new NewtonsoftJsonSerializer(jsonSerializerSettings);
