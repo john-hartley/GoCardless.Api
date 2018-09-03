@@ -1,12 +1,10 @@
 ﻿using GoCardlessApi.Core;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GoCardlessApi.RedirectFlows
 {
-    public class RedirectFlowsClient : ApiClientBase
+    public class RedirectFlowsClient : ApiClientBase, IRedirectFlowsClient
     {
         public RedirectFlowsClient(ClientConfiguration configuration) : base(configuration) { }
 

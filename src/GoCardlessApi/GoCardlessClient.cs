@@ -6,6 +6,7 @@ using GoCardlessApi.Customers;
 using GoCardlessApi.Mandates;
 using GoCardlessApi.Payments;
 using GoCardlessApi.Payouts;
+using GoCardlessApi.RedirectFlows;
 using GoCardlessApi.Refunds;
 using GoCardlessApi.Subscriptions;
 
@@ -26,6 +27,7 @@ namespace GoCardlessApi
             Mandates = new MandatesClient(configuration);
             Payments = new PaymentsClient(configuration);
             Payouts = new PayoutsClient(configuration);
+            RedirectFlows = new RedirectFlowsClient(configuration);
             Refunds = new RefundsClient(configuration);
             Subscriptions = new SubscriptionsClient(configuration);
         }
@@ -37,6 +39,7 @@ namespace GoCardlessApi
         public IMandatesClient Mandates { get; }
         public IPaymentsClient Payments { get; }
         public IPayoutsClient Payouts { get; }
+        public IRedirectFlowsClient RedirectFlows { get; set; }
         public IRefundsClient Refunds { get; }
         public ISubscriptionsClient Subscriptions { get; }
     }
