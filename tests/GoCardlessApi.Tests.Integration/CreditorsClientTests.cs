@@ -77,9 +77,10 @@ namespace GoCardlessApi.Tests.Integration
         public async Task UpdatesCreditor()
         {
             // given
+            var creditor = await _resourceFactory.Creditor();
             var request = new UpdateCreditorRequest
             {
-                Id = "CR00005N9ZWBFK",
+                Id = creditor.Id,
                 AddressLine1 = "Address Line 1",
                 AddressLine2 = "Address Line 2",
                 AddressLine3 = "Address Line 3",
