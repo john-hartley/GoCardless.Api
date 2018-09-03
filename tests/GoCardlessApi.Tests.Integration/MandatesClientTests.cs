@@ -153,7 +153,29 @@ namespace GoCardlessApi.Tests.Integration
         }
 
         [Test]
-        public async Task UpdatesMandate()
+        public async Task UpdatesMandatePreservingMetadata()
+        {
+            // given
+            var subject = new MandatesClient(_configuration);
+            var mandate = await _resourceFactory.CreateMandateFor(_creditor, _customer, _customerBankAccount);
+
+            var request = new UpdateMandateRequest
+            {
+                Id = mandate.Id
+            };
+
+            // when
+            var result = await subject.UpdateAsync(request);
+            var actual = result.Mandate;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null);
+            Assert.That(actual.Metadata, Is.EqualTo(mandate.Metadata));
+        }
+
+        [Test]
+        public async Task UpdatesMandateReplacingMetadata()
         {
             // given
             var subject = new MandatesClient(_configuration);

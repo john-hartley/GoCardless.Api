@@ -115,7 +115,31 @@ namespace GoCardlessApi.Tests.Integration
         }
 
         [Test]
-        public async Task UpdatesCustomerBankAccount()
+        public async Task UpdatesCustomerBankAccountPreservingMetadata()
+        {
+            // given
+            var customer = await _resourceFactory.CreateLocalCustomer();
+            var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
+
+            var subject = new CustomerBankAccountsClient(_configuration);
+
+            var request = new UpdateCustomerBankAccountRequest
+            {
+                Id = customerBankAccount.Id
+            };
+
+            // when
+            var result = await subject.UpdateAsync(request);
+            var actual = result.CustomerBankAccount;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null);
+            Assert.That(actual.Metadata, Is.EqualTo(customerBankAccount.Metadata));
+        }
+
+        [Test]
+        public async Task UpdatesCustomerBankAccountReplacingMetadata()
         {
             // given
             var customer = await _resourceFactory.CreateLocalCustomer();

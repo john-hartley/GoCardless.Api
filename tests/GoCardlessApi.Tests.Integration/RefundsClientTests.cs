@@ -118,7 +118,36 @@ namespace GoCardlessApi.Tests.Integration
         }
 
         [Test, NonParallelizable]
-        public async Task UpdatesRefund()
+        public async Task UpdatesRefundPreservingMetadata()
+        {
+            // given
+            var subject = new RefundsClient(_configuration);
+            var refund = (await subject.AllAsync()).Refunds.First();
+
+            var request = new UpdateRefundRequest
+            {
+                Id = refund.Id
+            };
+
+            // when
+            var result = await subject.UpdateAsync(request);
+            var actual = result.Refund;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null.And.EqualTo(refund.Id));
+            Assert.That(actual.Amount, Is.Not.Null.And.EqualTo(refund.Amount));
+            Assert.That(actual.Currency, Is.Not.Null.And.EqualTo(refund.Currency));
+            Assert.That(actual.CreatedAt, Is.Not.Null.And.EqualTo(refund.CreatedAt));
+            Assert.That(actual.Links, Is.Not.Null);
+            Assert.That(actual.Links.Mandate, Is.Not.Null.And.EqualTo(refund.Links.Mandate));
+            Assert.That(actual.Links.Payment, Is.Not.Null.And.EqualTo(refund.Links.Payment));
+            Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(refund.Metadata));
+            Assert.That(actual.Reference, Is.Not.Null.And.EqualTo(refund.Reference));
+        }
+
+        [Test, NonParallelizable]
+        public async Task UpdatesRefundReplacingMetadata()
         {
             // given
             var subject = new RefundsClient(_configuration);
@@ -135,7 +164,7 @@ namespace GoCardlessApi.Tests.Integration
                     [$"Key-3-{now}"] = $"Value-3-{now}",
                 },
             };
-            
+
             // when
             var result = await subject.UpdateAsync(request);
             var actual = result.Refund;

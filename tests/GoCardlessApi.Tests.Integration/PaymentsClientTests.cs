@@ -147,7 +147,30 @@ namespace GoCardlessApi.Tests.Integration
         }
 
         [Test]
-        public async Task UpdatesPayment()
+        public async Task UpdatesPaymentPreservingMetadata()
+        {
+            // given
+            var payment = await _resourceFactory.CreatePaymentFor(_mandate);
+
+            var request = new UpdatePaymentRequest
+            {
+                Id = payment.Id
+            };
+
+            var subject = new PaymentsClient(_configuration);
+
+            // when
+            var result = await subject.UpdateAsync(request);
+            var actual = result.Payment;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.EqualTo(payment.Id));
+            Assert.That(actual.Metadata, Is.EqualTo(payment.Metadata));
+        }
+
+        [Test]
+        public async Task UpdatesPaymentReplacingMetadata()
         {
             // given
             var payment = await _resourceFactory.CreatePaymentFor(_mandate);

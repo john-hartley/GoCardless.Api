@@ -191,7 +191,35 @@ namespace GoCardlessApi.Tests.Integration
         }
 
         [Test]
-        public async Task UpdatesSubscription()
+        public async Task UpdatesSubscriptionPreservingMetadata()
+        {
+            // given
+            var subscription = await _resourceFactory.CreateSubscriptionFor(_mandate);
+
+            var request = new UpdateSubscriptionRequest
+            {
+                Id = subscription.Id,
+                Amount = 456,
+                Name = "Updated subscription name",
+                PaymentReference = "PR456789"
+            };
+
+            var subject = new SubscriptionsClient(_configuration);
+
+            // when
+            var result = await subject.UpdateAsync(request);
+
+            // then
+            Assert.That(result.Subscription.Id, Is.EqualTo(request.Id));
+            Assert.That(result.Subscription.Amount, Is.EqualTo(request.Amount));
+            Assert.That(result.Subscription.AppFee, Is.Null);
+            Assert.That(result.Subscription.Metadata, Is.EqualTo(subscription.Metadata));
+            Assert.That(result.Subscription.Name, Is.EqualTo(request.Name));
+            Assert.That(result.Subscription.PaymentReference, Is.EqualTo(request.PaymentReference));
+        }
+
+        [Test]
+        public async Task UpdatesSubscriptionReplacingMetadata()
         {
             // given
             var subscription = await _resourceFactory.CreateSubscriptionFor(_mandate);
