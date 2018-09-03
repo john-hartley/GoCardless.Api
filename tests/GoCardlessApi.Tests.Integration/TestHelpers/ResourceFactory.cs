@@ -4,6 +4,7 @@ using GoCardlessApi.CustomerBankAccounts;
 using GoCardlessApi.Customers;
 using GoCardlessApi.Mandates;
 using GoCardlessApi.Payments;
+using GoCardlessApi.RedirectFlows;
 using GoCardlessApi.Subscriptions;
 using System;
 using System.Collections.Generic;
@@ -139,6 +140,42 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
 
             var paymentsClient = new PaymentsClient(_clientConfiguration);
             return (await paymentsClient.CreateAsync(request)).Payment;
+        }
+
+        public async Task<RedirectFlow> CreateRedirectFlowFor(Creditor creditor)
+        {
+            var request = new CreateRedirectFlowRequest
+            {
+                Description = "First redirect flow",
+                Links = new CreateRedirectFlowLinks
+                {
+                    Creditor = creditor.Id
+                },
+                PrefilledCustomer = new PrefilledCustomer
+                {
+                    AddressLine1 = "Address Line 1",
+                    AddressLine2 = "Address Line 2",
+                    AddressLine3 = "Address Line 3",
+                    City = "London",
+                    CompanyName = "Company Name",
+                    CountryCode = "GB",
+                    DanishIdentityNumber = "2205506218",
+                    Email = "email@example.com",
+                    FamilyName = "Family Name",
+                    GivenName = "Given Name",
+                    Language = "en",
+                    PostalCode = "SW1A 1AA",
+                    Region = "Essex",
+                    SwedishIdentityNumber = "5302256218",
+                },
+                Scheme = "bacs",
+                SessionToken = Guid.NewGuid().ToString(),
+                SuccessRedirectUrl = "https://localhost",
+            };
+
+            // when
+            var redirectFlowsClient = new RedirectFlowsClient(_clientConfiguration);
+            return (await redirectFlowsClient.CreateAsync(request)).RedirectFlow;
         }
 
         public async Task<Subscription> CreateSubscriptionFor(Mandate mandate)
