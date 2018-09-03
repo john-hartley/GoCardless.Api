@@ -5,8 +5,6 @@ namespace GoCardlessApi.Core
 {
     public class ClientConfiguration
     {
-        private readonly Uri _baseUri;
-
         public static ClientConfiguration ForLive(string accessToken)
         {
             return new ClientConfiguration(true, accessToken);
