@@ -119,6 +119,40 @@ namespace GoCardlessApi.Tests.Integration
         }
 
         [Test]
+        public async Task MapsPagingProperties()
+        {
+            // given
+            var subject = new PaymentsClient(_configuration);
+
+            var firstPageRequest = new AllPaymentsRequest
+            {
+                Limit = 1
+            };
+
+            // when
+            var firstPageResult = await subject.AllAsync(firstPageRequest);
+
+            var secondPageRequest = new AllPaymentsRequest
+            {
+                After = firstPageResult.Meta.Cursors.After,
+                Limit = 2
+            };
+
+            var secondPageResult = await subject.AllAsync(secondPageRequest);
+
+            // then
+            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
+            Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
+            Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
+            Assert.That(firstPageResult.Payments.Count(), Is.EqualTo(firstPageRequest.Limit));
+
+            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
+            Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
+            Assert.That(secondPageResult.Meta.Cursors.After, Is.Not.Null);
+            Assert.That(secondPageResult.Payments.Count(), Is.EqualTo(secondPageRequest.Limit));
+        }
+
+        [Test]
         public async Task ReturnsIndividualPayment()
         {
             // given
