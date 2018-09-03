@@ -77,20 +77,22 @@ namespace GoCardlessApi.Core
         internal Task<TResponse> PostAsync<TRequest, TResponse>(
             string relativeEndpoint)
         {
-            return PostAsync<TRequest, TResponse>(relativeEndpoint, null, null);
+            return PostAsync<TRequest, TResponse>(relativeEndpoint, null, null, null);
         }
 
         internal Task<TResponse> PostAsync<TRequest, TResponse>(
             string relativeEndpoint,
-            object envelope)
+            object envelope,
+            IReadOnlyDictionary<string, string> customHeaders = null)
         {
-            return PostAsync<TRequest, TResponse>(relativeEndpoint, envelope, null);
+            return PostAsync<TRequest, TResponse>(relativeEndpoint, envelope, null, customHeaders);
         }
 
         internal async Task<TResponse> PostAsync<TRequest, TResponse>(
             string relativeEndpoint,
             object envelope,
-            string idempotencyKey)
+            string idempotencyKey,
+            IReadOnlyDictionary<string, string> customHeaders = null)
         {
             Debug.WriteLine(JsonConvert.SerializeObject(envelope));
 
@@ -99,6 +101,11 @@ namespace GoCardlessApi.Core
             if (!string.IsNullOrWhiteSpace(idempotencyKey))
             {
                 request.WithHeader("Idempotency-Key", idempotencyKey);
+            }
+
+            if (customHeaders?.Count > 0)
+            {
+                request.WithHeaders(customHeaders);
             }
 
             try
