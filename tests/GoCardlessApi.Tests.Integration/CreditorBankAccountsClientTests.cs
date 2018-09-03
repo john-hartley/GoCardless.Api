@@ -1,5 +1,6 @@
 ﻿using GoCardlessApi.Core;
 using GoCardlessApi.CreditorBankAccounts;
+using GoCardlessApi.Creditors;
 using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -10,6 +11,23 @@ namespace GoCardlessApi.Tests.Integration
 {
     public class CreditorBankAccountsClientTests : IntegrationTest
     {
+        private readonly ClientConfiguration _configuration;
+        private readonly ResourceFactory _resourceFactory;
+
+        private Creditor _creditor;
+
+        public CreditorBankAccountsClientTests()
+        {
+            _configuration = ClientConfiguration.ForSandbox(_accessToken);
+            _resourceFactory = new ResourceFactory(_configuration);
+        }
+
+        [OneTimeSetUp]
+        public async Task OneTimeSetup()
+        {
+            _creditor = await _resourceFactory.Creditor();
+        }
+
         [Test]
         public async Task CreatesAndDisablesCreditorBankAccountUsingBankCode()
         {
@@ -21,7 +39,7 @@ namespace GoCardlessApi.Tests.Integration
                 BankCode = "37040044",
                 CountryCode = "DE",
                 Currency = "EUR",
-                Links = new CreditorBankAccountLinks { Creditor = "CR00005N9ZWBFK" },
+                Links = new CreditorBankAccountLinks { Creditor = _creditor.Id },
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
@@ -31,7 +49,7 @@ namespace GoCardlessApi.Tests.Integration
                 SetAsDefaultPayoutAccount = true
             };
 
-            var subject = new CreditorBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new CreditorBankAccountsClient(_configuration);
 
             // when
             var creationResult = await subject.CreateAsync(createRequest);
@@ -68,7 +86,7 @@ namespace GoCardlessApi.Tests.Integration
                 BranchCode = "200000",
                 CountryCode = "GB",
                 Currency = "GBP",
-                Links = new CreditorBankAccountLinks { Creditor = "CR00005N9ZWBFK" },
+                Links = new CreditorBankAccountLinks { Creditor = _creditor.Id },
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
@@ -77,7 +95,7 @@ namespace GoCardlessApi.Tests.Integration
                 }
             };
 
-            var subject = new CreditorBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new CreditorBankAccountsClient(_configuration);
 
             // when
             var creationResult = await subject.CreateAsync(createRequest);
@@ -111,7 +129,7 @@ namespace GoCardlessApi.Tests.Integration
             {
                 AccountHolderName = "API BANK ACCOUNT",
                 Iban = "GB60 BARC 2000 0055 7799 11",
-                Links = new CreditorBankAccountLinks { Creditor = "CR00005N9ZWBFK" },
+                Links = new CreditorBankAccountLinks { Creditor = _creditor.Id },
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
@@ -120,7 +138,7 @@ namespace GoCardlessApi.Tests.Integration
                 }
             };
 
-            var subject = new CreditorBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new CreditorBankAccountsClient(_configuration);
 
             // when
             var creationResult = await subject.CreateAsync(createRequest);
@@ -150,7 +168,7 @@ namespace GoCardlessApi.Tests.Integration
         public async Task ReturnsCreditorBankAccounts()
         {
             // given
-            var subject = new CreditorBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new CreditorBankAccountsClient(_configuration);
 
             // when
             var result = (await subject.AllAsync()).CreditorBankAccounts.ToList();
@@ -167,10 +185,44 @@ namespace GoCardlessApi.Tests.Integration
         }
 
         [Test]
+        public async Task MapsPagingProperties()
+        {
+            // given
+            var subject = new CreditorBankAccountsClient(_configuration);
+
+            var firstPageRequest = new AllCreditorBankAccountsRequest
+            {
+                Limit = 1
+            };
+
+            // when
+            var firstPageResult = await subject.AllAsync(firstPageRequest);
+
+            var secondPageRequest = new AllCreditorBankAccountsRequest
+            {
+                After = firstPageResult.Meta.Cursors.After,
+                Limit = 2
+            };
+
+            var secondPageResult = await subject.AllAsync(secondPageRequest);
+
+            // then
+            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
+            Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
+            Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
+            Assert.That(firstPageResult.CreditorBankAccounts.Count(), Is.EqualTo(firstPageRequest.Limit));
+
+            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
+            Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
+            Assert.That(secondPageResult.Meta.Cursors.After, Is.Not.Null);
+            Assert.That(secondPageResult.CreditorBankAccounts.Count(), Is.EqualTo(secondPageRequest.Limit));
+        }
+
+        [Test]
         public async Task ReturnsIndividualCreditorBankAccount()
         {
             // given
-            var subject = new CreditorBankAccountsClient(ClientConfiguration.ForSandbox(_accessToken));
+            var subject = new CreditorBankAccountsClient(_configuration);
             var creditorBankAccount = (await subject.AllAsync()).CreditorBankAccounts.First();
 
             // when
