@@ -4,11 +4,6 @@ namespace GoCardlessApi.CustomerBankAccounts
 {
     public class CreateCustomerBankAccountRequest
     {
-        public CreateCustomerBankAccountRequest()
-        {
-            Metadata = new Dictionary<string, string>();
-        }
-
         public string AccountHolderName { get; set; }
 
         public string AccountNumber { get; set; }

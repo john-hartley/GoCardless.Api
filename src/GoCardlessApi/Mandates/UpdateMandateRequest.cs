@@ -5,11 +5,6 @@ namespace GoCardlessApi.Mandates
 {
     public class UpdateMandateRequest
     {
-        public UpdateMandateRequest()
-        {
-            Metadata = new Dictionary<string, string>();
-        }
-
         [JsonIgnore]
         public string Id { get; set; }
 

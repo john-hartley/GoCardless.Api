@@ -4,11 +4,6 @@ namespace GoCardlessApi.Customers
 {
     public class CreateCustomerRequest
     {
-        public CreateCustomerRequest()
-        {
-            Metadata = new Dictionary<string, string>();
-        }
-
         public string AddressLine1 { get; set; }
 
         public string AddressLine2 { get; set; }

@@ -5,11 +5,6 @@ namespace GoCardlessApi.Customers
 {
     public class UpdateCustomerRequest
     {
-        public UpdateCustomerRequest()
-        {
-            Metadata = new Dictionary<string, string>();
-        }
-
         [JsonIgnore]
         public string Id { get; set; }
 

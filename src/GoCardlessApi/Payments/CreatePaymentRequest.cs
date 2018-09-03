@@ -4,11 +4,6 @@ namespace GoCardlessApi.Payments
 {
     public class CreatePaymentRequest
     {
-        public CreatePaymentRequest()
-        {
-            Metadata = new Dictionary<string, string>();
-        }
-
         public int Amount { get; set; }
 
         public int? AppFee { get; set; }

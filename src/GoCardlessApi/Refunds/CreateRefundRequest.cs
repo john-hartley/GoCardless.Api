@@ -4,11 +4,6 @@ namespace GoCardlessApi.Refunds
 {
     public class CreateRefundRequest
     {
-        public CreateRefundRequest()
-        {
-            Metadata = new Dictionary<string, string>();
-        }
-
         public int Amount { get; set; }
 
         public CreateRefundLinks Links { get; set; }

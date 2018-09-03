@@ -4,11 +4,6 @@ namespace GoCardlessApi.CreditorBankAccounts
 {
     public class CreateCreditorBankAccountRequest
     {
-        public CreateCreditorBankAccountRequest()
-        {
-            Metadata = new Dictionary<string, string>();
-        }
-
         public string AccountHolderName { get; set; }
 
         public string AccountNumber { get; set; }

@@ -5,11 +5,6 @@ namespace GoCardlessApi.Refunds
 {
     public class UpdateRefundRequest
     {
-        public UpdateRefundRequest()
-        {
-            Metadata = new Dictionary<string, string>();
-        }
-
         [JsonIgnore]
         public string Id { get; set; }
 

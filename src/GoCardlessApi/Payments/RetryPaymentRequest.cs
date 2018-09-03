@@ -5,11 +5,6 @@ namespace GoCardlessApi.Payments
 {
     public class RetryPaymentRequest
     {
-        public RetryPaymentRequest()
-        {
-            Metadata = new Dictionary<string, string>();
-        }
-
         [JsonIgnore]
         public string Id { get; set; }
 
