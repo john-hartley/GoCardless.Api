@@ -40,7 +40,6 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result[0].Region, Is.Not.Null.And.EqualTo(creditor.Region));
             Assert.That(result[0].PostalCode, Is.Not.Null.And.EqualTo(creditor.PostalCode));
             Assert.That(result[0].CountryCode, Is.Not.Null.And.EqualTo(creditor.CountryCode));
-            Assert.That(result[0].LogoUrl, Is.Null);
             Assert.That(result[0].VerificationStatus, Is.Not.Null.And.EqualTo(creditor.VerificationStatus));
             Assert.That(result[0].CanCreateRefunds, Is.Not.Null.And.EqualTo(creditor.CanCreateRefunds));
         }
@@ -89,7 +88,6 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(actual.Region, Is.Not.Null.And.EqualTo(creditor.Region));
             Assert.That(actual.PostalCode, Is.Not.Null.And.EqualTo(creditor.PostalCode));
             Assert.That(actual.CountryCode, Is.Not.Null.And.EqualTo(creditor.CountryCode));
-            Assert.That(actual.LogoUrl, Is.Null);
             Assert.That(actual.VerificationStatus, Is.Not.Null.And.EqualTo(creditor.VerificationStatus));
             Assert.That(actual.CanCreateRefunds, Is.Not.Null.And.EqualTo(creditor.CanCreateRefunds));
         }
@@ -110,7 +108,6 @@ namespace GoCardlessApi.Tests.Integration
                 Name = "API Client Development",
                 PostalCode = "SW1A 1AA",
                 Region = "Essex",
-                //LogoUrl = "https://via.placeholder.com/350x150"
             };
 
             var subject = new CreditorsClient(_configuration);
