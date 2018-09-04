@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GoCardlessApi.Creditors
 {
@@ -17,6 +18,7 @@ namespace GoCardlessApi.Creditors
         public string Name { get; set; }
         public string PostalCode { get; set; }
         public string Region { get; set; }
+        public IReadOnlyList<SchemeIdentifier> SchemeIdentifiers { get; set; }
         public string VerificationStatus { get; set; }
     }
 }

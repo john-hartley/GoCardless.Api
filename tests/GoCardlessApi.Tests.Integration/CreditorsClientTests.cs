@@ -31,21 +31,36 @@ namespace GoCardlessApi.Tests.Integration
             // then
             Assert.That(result.Any(), Is.True);
             Assert.That(result[0].Id, Is.Not.Null.And.EqualTo(creditor.Id));
-            Assert.That(result[0].CreatedAt, Is.Not.Null.And.EqualTo(creditor.CreatedAt));
-            Assert.That(result[0].Name, Is.Not.Null.And.EqualTo(creditor.Name));
             Assert.That(result[0].AddressLine1, Is.Not.Null.And.EqualTo(creditor.AddressLine1));
             Assert.That(result[0].AddressLine2, Is.Not.Null.And.EqualTo(creditor.AddressLine2));
             Assert.That(result[0].AddressLine3, Is.Not.Null.And.EqualTo(creditor.AddressLine3));
-            Assert.That(result[0].City, Is.Not.Null.And.EqualTo(creditor.City));
-            Assert.That(result[0].Region, Is.Not.Null.And.EqualTo(creditor.Region));
-            Assert.That(result[0].PostalCode, Is.Not.Null.And.EqualTo(creditor.PostalCode));
-            Assert.That(result[0].CountryCode, Is.Not.Null.And.EqualTo(creditor.CountryCode));
-            Assert.That(result[0].VerificationStatus, Is.Not.Null.And.EqualTo(creditor.VerificationStatus));
             Assert.That(result[0].CanCreateRefunds, Is.Not.Null.And.EqualTo(creditor.CanCreateRefunds));
+            Assert.That(result[0].City, Is.Not.Null.And.EqualTo(creditor.City));
+            Assert.That(result[0].CountryCode, Is.Not.Null.And.EqualTo(creditor.CountryCode));
+            Assert.That(result[0].CreatedAt, Is.Not.Null.And.EqualTo(creditor.CreatedAt));
             Assert.That(result[0].Links, Is.Not.Null);
             Assert.That(result[0].Links.DefaultDkkPayoutAccount, Is.Not.Null);
             Assert.That(result[0].Links.DefaultGbpPayoutAccount, Is.Not.Null);
             Assert.That(result[0].Links.DefaultSekPayoutAccount, Is.Not.Null);
+            Assert.That(result[0].Name, Is.Not.Null.And.EqualTo(creditor.Name));
+            Assert.That(result[0].PostalCode, Is.Not.Null.And.EqualTo(creditor.PostalCode));
+            Assert.That(result[0].Region, Is.Not.Null.And.EqualTo(creditor.Region));
+            Assert.That(result[0].SchemeIdentifiers, Is.Not.Null);
+            Assert.That(result[0].SchemeIdentifiers.Any(), Is.True);
+            Assert.That(result[0].SchemeIdentifiers[0].AddressLine1, Is.Not.Null);
+            Assert.That(result[0].SchemeIdentifiers[0].CanSpecifyMandateReference, Is.True);
+            Assert.That(result[0].SchemeIdentifiers[0].City, Is.Not.Null);
+            Assert.That(result[0].SchemeIdentifiers[0].CountryCode, Is.Not.Null);
+            Assert.That(result[0].SchemeIdentifiers[0].Currency, Is.Not.Null);
+            Assert.That(result[0].SchemeIdentifiers[0].Email, Is.Not.Null);
+            Assert.That(result[0].SchemeIdentifiers[0].MinimumAdvanceNotice, Is.Not.EqualTo(default(int)));
+            Assert.That(result[0].SchemeIdentifiers[0].Name, Is.Not.Null);
+            Assert.That(result[0].SchemeIdentifiers[0].PhoneNumber, Is.Not.Null);
+            Assert.That(result[0].SchemeIdentifiers[0].PostalCode, Is.Not.Null);
+            Assert.That(result[0].SchemeIdentifiers[0].Region, Is.Not.Null);
+            Assert.That(result[0].SchemeIdentifiers[0].Reference, Is.Not.Null);
+            Assert.That(result[0].SchemeIdentifiers[0].Scheme, Is.Not.Null);
+            Assert.That(result[0].VerificationStatus, Is.Not.Null.And.EqualTo(creditor.VerificationStatus));
         }
 
         [Test]
@@ -83,21 +98,36 @@ namespace GoCardlessApi.Tests.Integration
             // then
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Id, Is.Not.Null.And.EqualTo(creditor.Id));
-            Assert.That(actual.CreatedAt, Is.Not.Null.And.EqualTo(creditor.CreatedAt));
-            Assert.That(actual.Name, Is.Not.Null.And.EqualTo(creditor.Name));
             Assert.That(actual.AddressLine1, Is.Not.Null.And.EqualTo(creditor.AddressLine1));
             Assert.That(actual.AddressLine2, Is.Not.Null.And.EqualTo(creditor.AddressLine2));
             Assert.That(actual.AddressLine3, Is.Not.Null.And.EqualTo(creditor.AddressLine3));
-            Assert.That(actual.City, Is.Not.Null.And.EqualTo(creditor.City));
-            Assert.That(actual.Region, Is.Not.Null.And.EqualTo(creditor.Region));
-            Assert.That(actual.PostalCode, Is.Not.Null.And.EqualTo(creditor.PostalCode));
-            Assert.That(actual.CountryCode, Is.Not.Null.And.EqualTo(creditor.CountryCode));
-            Assert.That(actual.VerificationStatus, Is.Not.Null.And.EqualTo(creditor.VerificationStatus));
             Assert.That(actual.CanCreateRefunds, Is.Not.Null.And.EqualTo(creditor.CanCreateRefunds));
+            Assert.That(actual.City, Is.Not.Null.And.EqualTo(creditor.City));
+            Assert.That(actual.CountryCode, Is.Not.Null.And.EqualTo(creditor.CountryCode));
+            Assert.That(actual.CreatedAt, Is.Not.Null.And.EqualTo(creditor.CreatedAt));
             Assert.That(actual.Links, Is.Not.Null);
             Assert.That(actual.Links.DefaultDkkPayoutAccount, Is.Not.Null);
             Assert.That(actual.Links.DefaultGbpPayoutAccount, Is.Not.Null);
             Assert.That(actual.Links.DefaultSekPayoutAccount, Is.Not.Null);
+            Assert.That(actual.Name, Is.Not.Null.And.EqualTo(creditor.Name));
+            Assert.That(actual.PostalCode, Is.Not.Null.And.EqualTo(creditor.PostalCode));
+            Assert.That(actual.Region, Is.Not.Null.And.EqualTo(creditor.Region));
+            Assert.That(actual.SchemeIdentifiers, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers.Any(), Is.True);
+            Assert.That(actual.SchemeIdentifiers[0].AddressLine1, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].CanSpecifyMandateReference, Is.True);
+            Assert.That(actual.SchemeIdentifiers[0].City, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].CountryCode, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].Currency, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].Email, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].MinimumAdvanceNotice, Is.Not.EqualTo(default(int)));
+            Assert.That(actual.SchemeIdentifiers[0].Name, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].PhoneNumber, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].PostalCode, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].Region, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].Reference, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].Scheme, Is.Not.Null);
+            Assert.That(actual.VerificationStatus, Is.Not.Null.And.EqualTo(creditor.VerificationStatus));
         }
 
         [Test, NonParallelizable]
@@ -128,23 +158,41 @@ namespace GoCardlessApi.Tests.Integration
 
             // when
             var result = await subject.UpdateAsync(request);
+            var actual = result.Creditor;
 
             // then
-            Assert.That(result.Creditor.Id, Is.EqualTo(request.Id));
-            Assert.That(result.Creditor.Name, Is.EqualTo(request.Name));
-            Assert.That(result.Creditor.AddressLine1, Is.EqualTo(request.AddressLine1));
-            Assert.That(result.Creditor.AddressLine2, Is.EqualTo(request.AddressLine2));
-            Assert.That(result.Creditor.AddressLine3, Is.EqualTo(request.AddressLine3));
-            Assert.That(result.Creditor.City, Is.EqualTo(request.City));
-            Assert.That(result.Creditor.Region, Is.EqualTo(request.Region));
-            Assert.That(result.Creditor.PostalCode, Is.EqualTo(request.PostalCode));
-            Assert.That(result.Creditor.CountryCode, Is.EqualTo(request.CountryCode));
-            Assert.That(result.Creditor.VerificationStatus, Is.Not.Null);
-            Assert.That(result.Creditor.CanCreateRefunds, Is.Not.Null);
-            Assert.That(result.Creditor.Links, Is.Not.Null);
-            Assert.That(result.Creditor.Links.DefaultDkkPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultDkkPayoutAccount));
-            Assert.That(result.Creditor.Links.DefaultGbpPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultGbpPayoutAccount));
-            Assert.That(result.Creditor.Links.DefaultSekPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultSekPayoutAccount));
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.EqualTo(request.Id));
+            Assert.That(actual.AddressLine1, Is.EqualTo(request.AddressLine1));
+            Assert.That(actual.AddressLine2, Is.EqualTo(request.AddressLine2));
+            Assert.That(actual.AddressLine3, Is.EqualTo(request.AddressLine3));
+            Assert.That(actual.CanCreateRefunds, Is.Not.Null);
+            Assert.That(actual.City, Is.EqualTo(request.City));
+            Assert.That(actual.CountryCode, Is.EqualTo(request.CountryCode));
+            Assert.That(actual.CreatedAt, Is.Not.Null.And.EqualTo(creditor.CreatedAt));
+            Assert.That(actual.Links, Is.Not.Null);
+            Assert.That(actual.Links.DefaultDkkPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultDkkPayoutAccount));
+            Assert.That(actual.Links.DefaultGbpPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultGbpPayoutAccount));
+            Assert.That(actual.Links.DefaultSekPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultSekPayoutAccount));
+            Assert.That(actual.Name, Is.EqualTo(request.Name));
+            Assert.That(actual.PostalCode, Is.EqualTo(request.PostalCode));
+            Assert.That(actual.Region, Is.EqualTo(request.Region));
+            Assert.That(actual.SchemeIdentifiers, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers.Any(), Is.True);
+            Assert.That(actual.SchemeIdentifiers[0].AddressLine1, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].CanSpecifyMandateReference, Is.True);
+            Assert.That(actual.SchemeIdentifiers[0].City, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].CountryCode, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].Currency, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].Email, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].MinimumAdvanceNotice, Is.Not.EqualTo(default(int)));
+            Assert.That(actual.SchemeIdentifiers[0].Name, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].PhoneNumber, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].PostalCode, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].Region, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].Reference, Is.Not.Null);
+            Assert.That(actual.SchemeIdentifiers[0].Scheme, Is.Not.Null);
+            Assert.That(actual.VerificationStatus, Is.Not.Null);
         }
     }
 }
