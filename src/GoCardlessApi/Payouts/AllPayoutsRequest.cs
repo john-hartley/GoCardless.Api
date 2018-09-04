@@ -6,9 +6,7 @@ namespace GoCardlessApi.Payouts
     public class AllPayoutsRequest : IPageRequest
     {
         public string Before { get; set; }
-
         public string After { get; set; }
-
         public int? Limit { get; set; }
 
         [QueryStringKey("created_at[gt]")]
@@ -34,7 +32,6 @@ namespace GoCardlessApi.Payouts
         public string PayoutType { get; set; }
 
         public string Reference { get; set; }
-
         public string Status { get; set; }
     }
 }

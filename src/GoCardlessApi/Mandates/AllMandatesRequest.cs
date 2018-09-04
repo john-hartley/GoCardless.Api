@@ -6,9 +6,7 @@ namespace GoCardlessApi.Mandates
     public class AllMandatesRequest : IPageRequest
     {
         public string Before { get; set; }
-
         public string After { get; set; }
-
         public int? Limit { get; set; }
 
         [QueryStringKey("created_at[gt]")]
@@ -24,14 +22,12 @@ namespace GoCardlessApi.Mandates
         public DateTimeOffset? CreatedLessThanOrEqual { get; set; }
 
         public string Creditor { get; set; }
-
         public string Customer { get; set; }
 
         [QueryStringKey("customer_bank_account")]
         public string CustomerBankAccount { get; set; }
 
         public string Reference { get; set; }
-
         public string Status { get; set; }
     }
 }

@@ -6,9 +6,7 @@ namespace GoCardlessApi.Refunds
     public class AllRefundsRequest : IPageRequest
     {
         public string Before { get; set; }
-
         public string After { get; set; }
-
         public int? Limit { get; set; }
 
         [QueryStringKey("created_at[gt]")]
@@ -24,7 +22,6 @@ namespace GoCardlessApi.Refunds
         public DateTimeOffset? CreatedLessThanOrEqual { get; set; }
 
         public string Mandate { get; set; }
-
         public string Payment { get; set; }
 
         [QueryStringKey("refund_type")]

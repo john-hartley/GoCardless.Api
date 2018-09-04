@@ -6,9 +6,7 @@ namespace GoCardlessApi.Creditors
     public class AllCreditorsRequest : IPageRequest
     {
         public string Before { get; set; }
-
         public string After { get; set; }
-
         public int? Limit { get; set; }
 
         [QueryStringKey("created_at[gt]")]

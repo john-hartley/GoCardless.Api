@@ -14,9 +14,7 @@ namespace GoCardlessApi.Subscriptions
         public int? AppFee { get; set; }
 
         public IDictionary<string, string> Metadata { get; set; }
-
         public string Name { get; set; }
-
         public string PaymentReference { get; set; }
     }
 }
