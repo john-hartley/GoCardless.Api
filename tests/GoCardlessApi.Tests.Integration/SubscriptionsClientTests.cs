@@ -45,7 +45,7 @@ namespace GoCardlessApi.Tests.Integration
                 Count = 5,
                 //DayOfMonth = 17,
                 //EndDate = DateTime.Now.AddMonths(6).ToString("yyyy-MM-dd"),
-                Interval = 3,
+                Interval = 1,
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
