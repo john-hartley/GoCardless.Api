@@ -42,6 +42,10 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result[0].CountryCode, Is.Not.Null.And.EqualTo(creditor.CountryCode));
             Assert.That(result[0].VerificationStatus, Is.Not.Null.And.EqualTo(creditor.VerificationStatus));
             Assert.That(result[0].CanCreateRefunds, Is.Not.Null.And.EqualTo(creditor.CanCreateRefunds));
+            Assert.That(result[0].Links, Is.Not.Null);
+            Assert.That(result[0].Links.DefaultDkkPayoutAccount, Is.Not.Null);
+            Assert.That(result[0].Links.DefaultGbpPayoutAccount, Is.Not.Null);
+            Assert.That(result[0].Links.DefaultSekPayoutAccount, Is.Not.Null);
         }
 
         [Test]
@@ -90,6 +94,10 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(actual.CountryCode, Is.Not.Null.And.EqualTo(creditor.CountryCode));
             Assert.That(actual.VerificationStatus, Is.Not.Null.And.EqualTo(creditor.VerificationStatus));
             Assert.That(actual.CanCreateRefunds, Is.Not.Null.And.EqualTo(creditor.CanCreateRefunds));
+            Assert.That(actual.Links, Is.Not.Null);
+            Assert.That(actual.Links.DefaultDkkPayoutAccount, Is.Not.Null);
+            Assert.That(actual.Links.DefaultGbpPayoutAccount, Is.Not.Null);
+            Assert.That(actual.Links.DefaultSekPayoutAccount, Is.Not.Null);
         }
 
         [Test, NonParallelizable]
@@ -105,6 +113,12 @@ namespace GoCardlessApi.Tests.Integration
                 AddressLine3 = "Address Line 3",
                 City = "London",
                 CountryCode = "GB",
+                Links = new CreditorLinks
+                {
+                    DefaultDkkPayoutAccount = creditor.Links.DefaultDkkPayoutAccount,
+                    DefaultGbpPayoutAccount = creditor.Links.DefaultGbpPayoutAccount,
+                    DefaultSekPayoutAccount = creditor.Links.DefaultSekPayoutAccount,
+                },
                 Name = "API Client Development",
                 PostalCode = "SW1A 1AA",
                 Region = "Essex",
@@ -127,6 +141,10 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(result.Creditor.CountryCode, Is.EqualTo(request.CountryCode));
             Assert.That(result.Creditor.VerificationStatus, Is.Not.Null);
             Assert.That(result.Creditor.CanCreateRefunds, Is.Not.Null);
+            Assert.That(result.Creditor.Links, Is.Not.Null);
+            Assert.That(result.Creditor.Links.DefaultDkkPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultDkkPayoutAccount));
+            Assert.That(result.Creditor.Links.DefaultGbpPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultGbpPayoutAccount));
+            Assert.That(result.Creditor.Links.DefaultSekPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultSekPayoutAccount));
         }
     }
 }

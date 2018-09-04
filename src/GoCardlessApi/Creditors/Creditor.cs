@@ -12,6 +12,7 @@ namespace GoCardlessApi.Creditors
         public string City { get; set; }
         public string CountryCode { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
+        public CreditorLinks Links { get; set; }
         public string LogoUrl { get; set; }
         public string Name { get; set; }
         public string PostalCode { get; set; }
