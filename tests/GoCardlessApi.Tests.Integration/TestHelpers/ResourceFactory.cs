@@ -2,6 +2,7 @@
 using GoCardlessApi.Creditors;
 using GoCardlessApi.CustomerBankAccounts;
 using GoCardlessApi.Customers;
+using GoCardlessApi.MandateImports;
 using GoCardlessApi.Mandates;
 using GoCardlessApi.Payments;
 using GoCardlessApi.RedirectFlows;
@@ -117,6 +118,17 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
 
             var mandatesClient = new MandatesClient(_clientConfiguration);
             return (await mandatesClient.CreateAsync(request)).Mandate;
+        }
+
+        public async Task<MandateImport> CreateMandateImport()
+        {
+            var request = new CreateMandateImportRequest
+            {
+                Scheme = "bacs",
+            };
+
+            var mandateImportsClient = new MandateImportsClient(_clientConfiguration);
+            return (await mandateImportsClient.CreateAsync(request)).MandateImport;
         }
 
         public async Task<Payment> CreatePaymentFor(Mandate mandate)
