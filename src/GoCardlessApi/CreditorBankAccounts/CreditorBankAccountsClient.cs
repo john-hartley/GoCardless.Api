@@ -32,7 +32,7 @@ namespace GoCardlessApi.CreditorBankAccounts
 
             var idempotencyKey = Guid.NewGuid().ToString();
 
-            return PostAsync<CreateCreditorBankAccountRequest, CreateCreditorBankAccountResponse>(
+            return PostAsync<CreateCreditorBankAccountResponse>(
                 "creditor_bank_accounts",
                 new { creditor_bank_accounts = request },
                 idempotencyKey
@@ -51,7 +51,7 @@ namespace GoCardlessApi.CreditorBankAccounts
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PostAsync<DisableCreditorBankAccountRequest, DisableCreditorBankAccountResponse>(
+            return PostAsync<DisableCreditorBankAccountResponse>(
                 $"creditor_bank_accounts/{request.Id}/actions/disable"
             );
         }

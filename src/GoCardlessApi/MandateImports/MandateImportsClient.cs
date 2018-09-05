@@ -15,7 +15,7 @@ namespace GoCardlessApi.MandateImports
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(mandateImportId));
             }
 
-            return PostAsync<string, CancelMandateImportResponse>(
+            return PostAsync<CancelMandateImportResponse>(
                 $"mandate_imports/{mandateImportId}/actions/cancel"
             );
         }
@@ -27,7 +27,7 @@ namespace GoCardlessApi.MandateImports
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return PostAsync<CreateMandateImportRequest, CreateMandateImportResponse>(
+            return PostAsync<CreateMandateImportResponse>(
                 "mandate_imports",
                 new { mandate_imports = request }
             );
@@ -50,7 +50,7 @@ namespace GoCardlessApi.MandateImports
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(mandateImportId));
             }
 
-            return PostAsync<string, SubmitMandateImportResponse>(
+            return PostAsync<SubmitMandateImportResponse>(
                 $"mandate_imports/{mandateImportId}/actions/submit"
             );
         }

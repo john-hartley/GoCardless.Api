@@ -22,7 +22,7 @@ namespace GoCardlessApi.MandatePdfs
                 customHeaders.Add("Accept-Language", request.Language);
             }
 
-            return PostAsync<CreateMandatePdfRequest, CreateMandatePdfResponse>(
+            return PostAsync<CreateMandatePdfResponse>(
                 "mandate_pdfs",
                 new { mandate_pdfs = request },
                 customHeaders

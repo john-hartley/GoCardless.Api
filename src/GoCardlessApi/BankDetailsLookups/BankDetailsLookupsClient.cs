@@ -15,7 +15,7 @@ namespace GoCardlessApi.BankDetailsLookups
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return PostAsync<BankDetailsLookupRequest, BankDetailsLookupResponse>(
+            return PostAsync<BankDetailsLookupResponse>(
                 "bank_details_lookups",
                 new { bank_details_lookups = request }
             );

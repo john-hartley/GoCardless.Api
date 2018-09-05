@@ -32,7 +32,7 @@ namespace GoCardlessApi.Refunds
 
             var idempotencyKey = Guid.NewGuid().ToString();
 
-            return PostAsync<CreateRefundRequest, CreateRefundResponse>(
+            return PostAsync<CreateRefundResponse>(
                 "refunds",
                 new { refunds = request },
                 idempotencyKey
@@ -61,7 +61,7 @@ namespace GoCardlessApi.Refunds
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PutAsync<UpdateRefundRequest, UpdateRefundResponse>(
+            return PutAsync<UpdateRefundResponse>(
                 $"refunds/{request.Id}",
                 new { refunds = request }
             );

@@ -35,7 +35,7 @@ namespace GoCardlessApi.Mandates
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PostAsync<CancelMandateRequest, CancelMandateResponse>(
+            return PostAsync<CancelMandateResponse>(
                 $"mandates/{request.Id}/actions/cancel",
                 new { mandates = request }
             );
@@ -50,7 +50,7 @@ namespace GoCardlessApi.Mandates
 
             var idempotencyKey = Guid.NewGuid().ToString();
 
-            return PostAsync<CreateMandateRequest, CreateMandateResponse>(
+            return PostAsync<CreateMandateResponse>(
                 "mandates",
                 new { mandates = request },
                 idempotencyKey
@@ -79,7 +79,7 @@ namespace GoCardlessApi.Mandates
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PostAsync<ReinstateMandateRequest, ReinstateMandateResponse>(
+            return PostAsync<ReinstateMandateResponse>(
                 $"mandates/{request.Id}/actions/reinstate",
                 new { mandates = request }
             );
@@ -97,7 +97,7 @@ namespace GoCardlessApi.Mandates
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PutAsync<UpdateMandateRequest, UpdateMandateResponse>(
+            return PutAsync<UpdateMandateResponse>(
                 $"mandates/{request.Id}",
                 new { mandates = request }
             );

@@ -35,7 +35,7 @@ namespace GoCardlessApi.Payments
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PostAsync<CancelPaymentRequest, CancelPaymentResponse>(
+            return PostAsync<CancelPaymentResponse>(
                 $"payments/{request.Id}/actions/cancel",
                 new { payments = request }
             );
@@ -50,7 +50,7 @@ namespace GoCardlessApi.Payments
 
             var idempotencyKey = Guid.NewGuid().ToString();
 
-            return PostAsync<CreatePaymentRequest, CreatePaymentResponse>(
+            return PostAsync<CreatePaymentResponse>(
                 "payments",
                 new { payments = request },
                 idempotencyKey
@@ -79,7 +79,7 @@ namespace GoCardlessApi.Payments
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PostAsync<RetryPaymentRequest, RetryPaymentResponse>(
+            return PostAsync<RetryPaymentResponse>(
                 $"payments/{request.Id}/actions/retry",
                 new { payments = request }
             );
@@ -97,7 +97,7 @@ namespace GoCardlessApi.Payments
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PutAsync<UpdatePaymentRequest, UpdatePaymentResponse>(
+            return PutAsync<UpdatePaymentResponse>(
                 $"payments/{request.Id}",
                 new { payments = request }
             );

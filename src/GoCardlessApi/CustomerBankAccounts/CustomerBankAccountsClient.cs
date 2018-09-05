@@ -32,7 +32,7 @@ namespace GoCardlessApi.CustomerBankAccounts
 
             var idempotencyKey = Guid.NewGuid().ToString();
 
-            return PostAsync<CreateCustomerBankAccountRequest, CustomerBankAccountResponse>(
+            return PostAsync<CustomerBankAccountResponse>(
                 "customer_bank_accounts",
                 new { customer_bank_accounts = request },
                 idempotencyKey
@@ -51,7 +51,7 @@ namespace GoCardlessApi.CustomerBankAccounts
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PostAsync<DisableCustomerBankAccountRequest, DisableCustomerBankAccountResponse>(
+            return PostAsync<DisableCustomerBankAccountResponse>(
                 $"customer_bank_accounts/{request.Id}/actions/disable"
             );
         }
@@ -78,7 +78,7 @@ namespace GoCardlessApi.CustomerBankAccounts
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PutAsync<UpdateCustomerBankAccountRequest, UpdateCustomerBankAccountResponse>(
+            return PutAsync<UpdateCustomerBankAccountResponse>(
                 $"customer_bank_accounts/{request.Id}",
                 new { customer_bank_accounts = request }
             );

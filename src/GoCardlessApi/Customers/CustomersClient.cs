@@ -32,7 +32,7 @@ namespace GoCardlessApi.Customers
 
             var idempotencyKey = Guid.NewGuid().ToString();
 
-            return PostAsync<CreateCustomerRequest, CreateCustomerResponse>(
+            return PostAsync<CreateCustomerResponse>(
                 "customers",
                 new { customers = request },
                 idempotencyKey
@@ -61,7 +61,7 @@ namespace GoCardlessApi.Customers
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PutAsync<UpdateCustomerRequest, UpdateCustomerResponse>(
+            return PutAsync<UpdateCustomerResponse>(
                 $"customers/{request.Id}",
                 new { customers = request }
             );

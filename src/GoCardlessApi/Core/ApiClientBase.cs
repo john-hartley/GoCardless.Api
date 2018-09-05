@@ -52,7 +52,7 @@ namespace GoCardlessApi.Core
             return default(TResponse);
         }
 
-        internal async Task<TResponse> PutAsync<TRequest, TResponse>(
+        internal async Task<TResponse> PutAsync<TResponse>(
             string relativeEndpoint,
             object envelope)
         {
@@ -74,21 +74,21 @@ namespace GoCardlessApi.Core
             return default(TResponse);
         }
 
-        internal Task<TResponse> PostAsync<TRequest, TResponse>(
+        internal Task<TResponse> PostAsync<TResponse>(
             string relativeEndpoint)
         {
-            return PostAsync<TRequest, TResponse>(relativeEndpoint, null, null, null);
+            return PostAsync<TResponse>(relativeEndpoint, null, null, null);
         }
 
-        internal Task<TResponse> PostAsync<TRequest, TResponse>(
+        internal Task<TResponse> PostAsync<TResponse>(
             string relativeEndpoint,
             object envelope,
             IReadOnlyDictionary<string, string> customHeaders = null)
         {
-            return PostAsync<TRequest, TResponse>(relativeEndpoint, envelope, null, customHeaders);
+            return PostAsync<TResponse>(relativeEndpoint, envelope, null, customHeaders);
         }
 
-        internal async Task<TResponse> PostAsync<TRequest, TResponse>(
+        internal async Task<TResponse> PostAsync<TResponse>(
             string relativeEndpoint,
             object envelope,
             string idempotencyKey,

@@ -35,7 +35,7 @@ namespace GoCardlessApi.Subscriptions
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PostAsync<CancelSubscriptionRequest, CancelSubscriptionResponse>(
+            return PostAsync<CancelSubscriptionResponse>(
                 $"subscriptions/{request.Id}/actions/cancel",
                 new { subscriptions = request }
             );
@@ -50,7 +50,7 @@ namespace GoCardlessApi.Subscriptions
 
             var idempotencyKey = Guid.NewGuid().ToString();
 
-            return PostAsync<CreateSubscriptionRequest, CreateSubscriptionResponse>(
+            return PostAsync<CreateSubscriptionResponse>(
                 "subscriptions",
                 new { subscriptions = request },
                 idempotencyKey
@@ -79,7 +79,7 @@ namespace GoCardlessApi.Subscriptions
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PutAsync<UpdateSubscriptionRequest, UpdateSubscriptionResponse>(
+            return PutAsync<UpdateSubscriptionResponse>(
                 $"subscriptions/{request.Id}",
                 new { subscriptions = request }
             );

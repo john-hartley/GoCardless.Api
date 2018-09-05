@@ -45,7 +45,7 @@ namespace GoCardlessApi.Creditors
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PutAsync<UpdateCreditorRequest, UpdateCreditorResponse>(
+            return PutAsync<UpdateCreditorResponse>(
                 $"creditors/{request.Id}",
                 new { creditors = request }
             );
