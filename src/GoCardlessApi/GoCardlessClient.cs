@@ -8,6 +8,7 @@ using GoCardlessApi.MandateImports;
 using GoCardlessApi.MandatePdfs;
 using GoCardlessApi.Mandates;
 using GoCardlessApi.Payments;
+using GoCardlessApi.PayoutItems;
 using GoCardlessApi.Payouts;
 using GoCardlessApi.RedirectFlows;
 using GoCardlessApi.Refunds;
@@ -32,6 +33,7 @@ namespace GoCardlessApi
             MandateImports = new MandateImportsClient(configuration);
             MandatePdfs = new MandatePdfsClient(configuration);
             Payments = new PaymentsClient(configuration);
+            PayoutItems = new PayoutItemsClient(configuration);
             Payouts = new PayoutsClient(configuration);
             RedirectFlows = new RedirectFlowsClient(configuration);
             Refunds = new RefundsClient(configuration);
@@ -47,6 +49,7 @@ namespace GoCardlessApi
         public IMandatePdfsClient MandatePdfs { get; }
         public IMandatesClient Mandates { get; }
         public IPaymentsClient Payments { get; }
+        public IPayoutItemsClient PayoutItems { get; set; }
         public IPayoutsClient Payouts { get; }
         public IRedirectFlowsClient RedirectFlows { get; }
         public IRefundsClient Refunds { get; }

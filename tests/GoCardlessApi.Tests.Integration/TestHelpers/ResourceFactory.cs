@@ -5,6 +5,7 @@ using GoCardlessApi.Customers;
 using GoCardlessApi.MandateImports;
 using GoCardlessApi.Mandates;
 using GoCardlessApi.Payments;
+using GoCardlessApi.Payouts;
 using GoCardlessApi.RedirectFlows;
 using GoCardlessApi.Subscriptions;
 using System;
@@ -37,40 +38,6 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
         public Task<Customer> CreateLocalCustomer()
         {
             return CreateCustomer("GB", "en");
-        }
-
-        private async Task<Customer> CreateCustomer(
-            string countryCode,
-            string language,
-            string danishIdentityNumber = null,
-            string swedishIdentityNumber = null)
-        {
-            var request = new CreateCustomerRequest
-            {
-                AddressLine1 = "Address Line 1",
-                AddressLine2 = "Address Line 2",
-                AddressLine3 = "Address Line 3",
-                City = "London",
-                CompanyName = "Company Name",
-                CountryCode = countryCode,
-                Email = "email@example.com",
-                FamilyName = "Family Name",
-                GivenName = "Given Name",
-                Language = language,
-                DanishIdentityNumber = danishIdentityNumber,
-                SwedishIdentityNumber = swedishIdentityNumber,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
-                PostalCode = "SW1A 1AA",
-                Region = "Essex",
-            };
-
-            var customersClient = new CustomersClient(_clientConfiguration);
-            return (await customersClient.CreateAsync(request)).Customer;
         }
 
         public async Task<CustomerBankAccount> CreateCustomerBankAccountFor(Customer customer)
@@ -154,6 +121,14 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
             return (await paymentsClient.CreateAsync(request)).Payment;
         }
 
+        public async Task<Payout> Payout()
+        {
+            var request = new AllPayoutsRequest();
+
+            var payoutsClient = new PayoutsClient(_clientConfiguration);
+            return (await payoutsClient.AllAsync(request)).Payouts.First();
+        }
+
         public async Task<RedirectFlow> CreateRedirectFlowFor(Creditor creditor)
         {
             var request = new CreateRedirectFlowRequest
@@ -216,6 +191,40 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
 
             var subscriptionsClient = new SubscriptionsClient(_clientConfiguration);
             return (await subscriptionsClient.CreateAsync(request)).Subscription;
+        }
+
+        private async Task<Customer> CreateCustomer(
+            string countryCode,
+            string language,
+            string danishIdentityNumber = null,
+            string swedishIdentityNumber = null)
+        {
+            var request = new CreateCustomerRequest
+            {
+                AddressLine1 = "Address Line 1",
+                AddressLine2 = "Address Line 2",
+                AddressLine3 = "Address Line 3",
+                City = "London",
+                CompanyName = "Company Name",
+                CountryCode = countryCode,
+                Email = "email@example.com",
+                FamilyName = "Family Name",
+                GivenName = "Given Name",
+                Language = language,
+                DanishIdentityNumber = danishIdentityNumber,
+                SwedishIdentityNumber = swedishIdentityNumber,
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                },
+                PostalCode = "SW1A 1AA",
+                Region = "Essex",
+            };
+
+            var customersClient = new CustomersClient(_clientConfiguration);
+            return (await customersClient.CreateAsync(request)).Customer;
         }
     }
 }

@@ -17,6 +17,7 @@ namespace GoCardlessApi.Mandates
         [JsonProperty("next_possible_charge_date")]
         public DateTime? NextPossibleChargeDate { get; set; }
 
+        public bool PaymentsRequireApproval { get; set; }
         public string Reference { get; set; }
         public string Scheme { get; set; }
         public string Status { get; set; }

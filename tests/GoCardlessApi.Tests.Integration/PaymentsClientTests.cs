@@ -78,7 +78,7 @@ namespace GoCardlessApi.Tests.Integration
             Assert.That(creationResult.Payment.Amount, Is.EqualTo(createRequest.Amount));
             Assert.That(creationResult.Payment.AmountRefunded, Is.Not.Null);
             //Assert.That(creationResult.Payment.AppFee, Is.EqualTo(createRequest.AppFee));
-            Assert.That(creationResult.Payment.ChargeDate.ToString("yyyy-MM-dd"), Is.EqualTo(createRequest.ChargeDate));
+            Assert.That(creationResult.Payment.ChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
             Assert.That(creationResult.Payment.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(creationResult.Payment.Currency, Is.EqualTo(createRequest.Currency));
             Assert.That(creationResult.Payment.Description, Is.EqualTo(createRequest.Description));
