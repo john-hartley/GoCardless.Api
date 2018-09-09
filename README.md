@@ -1,5 +1,7 @@
 # GoCardless.Api
 
+[![Build status](https://ci.appveyor.com/api/projects/status/aowcdofcx48csujf/branch/master?svg=true)](https://ci.appveyor.com/project/john-hartley/gocardless-api)
+
 This is an unofficial alternative to the existing GoCardless .NET API client.
 
 Currently in alpha, this project aims to improve upon the official client by:
