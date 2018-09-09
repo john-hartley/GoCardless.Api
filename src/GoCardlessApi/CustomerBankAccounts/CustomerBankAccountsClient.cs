@@ -30,12 +30,10 @@ namespace GoCardlessApi.CustomerBankAccounts
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var idempotencyKey = Guid.NewGuid().ToString();
-
             return PostAsync<CustomerBankAccountResponse>(
                 "customer_bank_accounts",
                 new { customer_bank_accounts = request },
-                idempotencyKey
+                request.IdempotencyKey
             );
         }
 

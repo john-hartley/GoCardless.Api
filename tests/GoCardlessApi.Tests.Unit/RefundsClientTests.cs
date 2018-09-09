@@ -101,7 +101,10 @@ namespace GoCardlessApi.Tests.Unit
             // given
             var subject = new RefundsClient(_clientConfiguration);
 
-            var request = new CreateRefundRequest();
+            var request = new CreateRefundRequest
+            {
+                IdempotencyKey = Guid.NewGuid().ToString()
+            };
 
             // when
             await subject.CreateAsync(request);

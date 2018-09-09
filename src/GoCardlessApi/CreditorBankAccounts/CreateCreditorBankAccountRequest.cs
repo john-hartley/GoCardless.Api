@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace GoCardlessApi.CreditorBankAccounts
 {
@@ -11,6 +12,10 @@ namespace GoCardlessApi.CreditorBankAccounts
         public string CountryCode { get; set; }
         public string Currency { get; set; }
         public string Iban { get; set; }
+
+        [JsonIgnore]
+        public string IdempotencyKey { get; set; }
+
         public CreditorBankAccountLinks Links { get; set; }
         public IDictionary<string, string> Metadata { get; set; }
         public bool SetAsDefaultPayoutAccount { get; set; }

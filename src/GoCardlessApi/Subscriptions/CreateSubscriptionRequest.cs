@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace GoCardlessApi.Subscriptions
@@ -13,6 +14,9 @@ namespace GoCardlessApi.Subscriptions
 
         [Obsolete("Deprecated: This field will be removed in a future API version. Use the Count property to specify a number of payments instead.")]
         public string EndDate { get; set; }
+
+        [JsonIgnore]
+        public string IdempotencyKey { get; set; }
 
         public int Interval { get; set; }
         public string IntervalUnit { get; set; }

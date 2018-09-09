@@ -1,12 +1,12 @@
+using GoCardlessApi.Core;
+using GoCardlessApi.Mandates;
+using GoCardlessApi.Subscriptions;
+using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
-using System.Threading.Tasks;
-using System.Linq;
 using System;
 using System.Collections.Generic;
-using GoCardlessApi.Subscriptions;
-using GoCardlessApi.Core;
-using GoCardlessApi.Tests.Integration.TestHelpers;
-using GoCardlessApi.Mandates;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GoCardlessApi.Tests.Integration
 {

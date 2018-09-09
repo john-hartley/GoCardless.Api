@@ -48,12 +48,10 @@ namespace GoCardlessApi.Subscriptions
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var idempotencyKey = Guid.NewGuid().ToString();
-
             return PostAsync<CreateSubscriptionResponse>(
                 "subscriptions",
                 new { subscriptions = request },
-                idempotencyKey
+                request.IdempotencyKey
             );
         }
 

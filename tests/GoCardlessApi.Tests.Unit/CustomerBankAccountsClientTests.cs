@@ -101,7 +101,10 @@ namespace GoCardlessApi.Tests.Unit
             // given
             var subject = new CustomerBankAccountsClient(_clientConfiguration);
 
-            var request = new CreateCustomerBankAccountRequest();
+            var request = new CreateCustomerBankAccountRequest
+            {
+                IdempotencyKey = Guid.NewGuid().ToString()
+            };
 
             // when
             await subject.CreateAsync(request);

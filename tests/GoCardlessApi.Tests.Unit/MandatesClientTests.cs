@@ -153,7 +153,10 @@ namespace GoCardlessApi.Tests.Unit
             // given
             var subject = new MandatesClient(_clientConfiguration);
 
-            var request = new CreateMandateRequest();
+            var request = new CreateMandateRequest
+            {
+                IdempotencyKey = Guid.NewGuid().ToString()
+            };
 
             // when
             await subject.CreateAsync(request);

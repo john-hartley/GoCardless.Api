@@ -35,7 +35,7 @@ namespace GoCardlessApi.Tests.Integration
             _customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(_customer);
         }
 
-        [Test]
+        [Test, NonParallelizable]
         public async Task CreatesCancelsAndReinstatesMandate()
         {
             // given

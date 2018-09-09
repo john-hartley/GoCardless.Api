@@ -29,13 +29,11 @@ namespace GoCardlessApi.Refunds
             {
                 throw new ArgumentNullException(nameof(request));
             }
-
-            var idempotencyKey = Guid.NewGuid().ToString();
-
+            
             return PostAsync<CreateRefundResponse>(
                 "refunds",
                 new { refunds = request },
-                idempotencyKey
+                request.IdempotencyKey
             );
         }
 

@@ -1,6 +1,7 @@
 ﻿using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
+using GoCardlessApi.Core.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
@@ -94,8 +95,6 @@ namespace GoCardlessApi.Core
             string idempotencyKey,
             IReadOnlyDictionary<string, string> customHeaders = null)
         {
-            Debug.WriteLine(JsonConvert.SerializeObject(envelope));
-
             var request = BaseRequest();
 
             if (!string.IsNullOrWhiteSpace(idempotencyKey))
@@ -117,11 +116,8 @@ namespace GoCardlessApi.Core
             }
             catch (FlurlHttpException ex)
             {
-                var error = await ex.GetResponseStringAsync();
-                Debug.WriteLine(JsonConvert.SerializeObject(error));
+                throw await ex.CreateApiExceptionAsync();
             }
-
-            return default(TResponse);
         }
 
         private IFlurlRequest BaseRequest()

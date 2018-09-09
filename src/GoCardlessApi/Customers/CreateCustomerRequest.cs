@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace GoCardlessApi.Customers
 {
@@ -14,6 +15,10 @@ namespace GoCardlessApi.Customers
         public string Email { get; set; }
         public string FamilyName { get; set; }
         public string GivenName { get; set; }
+
+        [JsonIgnore]
+        public string IdempotencyKey { get; set; }
+
         public string Language { get; set; }
         public IDictionary<string, string> Metadata { get; set; }
         public string PostalCode { get; set; }

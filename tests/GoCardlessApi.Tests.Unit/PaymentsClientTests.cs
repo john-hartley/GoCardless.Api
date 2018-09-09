@@ -153,7 +153,10 @@ namespace GoCardlessApi.Tests.Unit
             // given
             var subject = new PaymentsClient(_clientConfiguration);
 
-            var request = new CreatePaymentRequest();
+            var request = new CreatePaymentRequest
+            {
+                IdempotencyKey = Guid.NewGuid().ToString()
+            };
 
             // when
             await subject.CreateAsync(request);

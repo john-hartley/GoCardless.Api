@@ -41,6 +41,7 @@ namespace GoCardlessApi.Tests.Integration
             var request = new CreateRefundRequest
             {
                 Amount = 100,
+                IdempotencyKey = Guid.NewGuid().ToString(),
                 Links = new CreateRefundLinks { Payment = payment.Id },
                 Metadata = new Dictionary<string, string>
                 {

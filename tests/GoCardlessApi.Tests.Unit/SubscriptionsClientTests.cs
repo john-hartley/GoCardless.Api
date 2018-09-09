@@ -153,7 +153,10 @@ namespace GoCardlessApi.Tests.Unit
             // given
             var subject = new SubscriptionsClient(_clientConfiguration);
 
-            var request = new CreateSubscriptionRequest();
+            var request = new CreateSubscriptionRequest
+            {
+                IdempotencyKey = Guid.NewGuid().ToString()
+            };
 
             // when
             await subject.CreateAsync(request);

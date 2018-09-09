@@ -48,12 +48,10 @@ namespace GoCardlessApi.Mandates
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var idempotencyKey = Guid.NewGuid().ToString();
-
             return PostAsync<CreateMandateResponse>(
                 "mandates",
                 new { mandates = request },
-                idempotencyKey
+                request.IdempotencyKey
             );
         }
 

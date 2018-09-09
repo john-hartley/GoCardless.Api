@@ -48,12 +48,10 @@ namespace GoCardlessApi.Payments
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var idempotencyKey = Guid.NewGuid().ToString();
-
             return PostAsync<CreatePaymentResponse>(
                 "payments",
                 new { payments = request },
-                idempotencyKey
+                request.IdempotencyKey
             );
         }
 
