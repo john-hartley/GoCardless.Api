@@ -1,0 +1,27 @@
+version: '0.6.{build}'
+image: Visual Studio 2017
+configuration: Release
+skip_tags: true
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  
+environment:
+  GoCardlessAccessToken:
+    secure: TXXkPrAH2llzmiO+qkmAJrPWpYQ+5764Gz6z30AhhxAyc7rMJCDJl5hdRvS4lZKcpVc7wZVi1AiHBXAKjuxeSg==
+ 
+before_build:
+  dotnet restore
+  
+build:
+  verbosity: minimal
+   
+test:
+  assemblies:
+    GoCardless.Api.Tests.Unit.dll
+    GoCardless.Api.Tests.Integration.dll
+
+deploy: off
