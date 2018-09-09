@@ -5,11 +5,11 @@ dotnet_csproj:
   version: '{version}'
   package_version: '{version}'
  
- before_build:
+before_build:
   dotnet restore
   
- build:
-   verbosity: minimal
+build:
+  verbosity: minimal
    
 test: off
 
