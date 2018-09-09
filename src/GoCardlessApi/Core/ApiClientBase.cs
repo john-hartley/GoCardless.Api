@@ -5,7 +5,6 @@ using GoCardlessApi.Core.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace GoCardlessApi.Core
@@ -46,19 +45,14 @@ namespace GoCardlessApi.Core
             }
             catch (FlurlHttpException ex)
             {
-                var error = await ex.GetResponseStringAsync();
-                Debug.WriteLine(JsonConvert.SerializeObject(error));
+                throw await ex.CreateApiExceptionAsync();
             }
-
-            return default(TResponse);
         }
 
         internal async Task<TResponse> PutAsync<TResponse>(
             string relativeEndpoint,
             object envelope)
         {
-            Debug.WriteLine(JsonConvert.SerializeObject(envelope));
-
             try
             {
                 return await BaseRequest()
@@ -68,11 +62,8 @@ namespace GoCardlessApi.Core
             }
             catch (FlurlHttpException ex)
             {
-                var error = await ex.GetResponseStringAsync();
-                Debug.WriteLine(JsonConvert.SerializeObject(error));
+                throw await ex.CreateApiExceptionAsync();
             }
-
-            return default(TResponse);
         }
 
         internal Task<TResponse> PostAsync<TResponse>(
