@@ -22,4 +22,4 @@ The paging mechanisms, mentioned above, also need to be implemented. Expect brea
 
 There is no documentation whatsoever at the moment beyond this readme. 
 
-These are the 3 major areas that need addressing before this client can be considered beta.
+These are the 3 major areas that need addressing before this client can be considered beta. There is also currently no support for partner integrations. However, this will be addressed once the above items have been completed.
