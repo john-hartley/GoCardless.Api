@@ -7,6 +7,10 @@ dotnet_csproj:
   file: '**\*.csproj'
   version: '{version}'
   package_version: '{version}'
+  
+environment:
+  GoCardlessAccessToken:
+    secure: TXXkPrAH2llzmiO+qkmAJrPWpYQ+5764Gz6z30AhhxAyc7rMJCDJl5hdRvS4lZKcpVc7wZVi1AiHBXAKjuxeSg==
  
 before_build:
   dotnet restore
