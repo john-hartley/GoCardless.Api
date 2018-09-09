@@ -1,0 +1,16 @@
+version: '0.0.{build}'
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+ 
+ before_build:
+  dotnet restore
+  
+ build:
+   verbosity: minimal
+   
+test: off
+
+deploy: off
