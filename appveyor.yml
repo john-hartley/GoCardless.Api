@@ -1,4 +1,7 @@
 version: '0.0.{build}'
+image: Visual Studio 2017
+configuration: Release
+
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
