@@ -8,20 +8,11 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class BankDetailsLookupsClientTests : IntegrationTest
     {
-        private readonly ClientConfiguration _configuration;
-        private readonly ResourceFactory _resourceFactory;
-
-        public BankDetailsLookupsClientTests()
-        {
-            _configuration = ClientConfiguration.ForSandbox(_accessToken);
-            _resourceFactory = new ResourceFactory(_configuration);
-        }
-
         [Test]
         public async Task LooksupBankDetails()
         {
             // given
-            var subject = new BankDetailsLookupsClient(_configuration);
+            var subject = new BankDetailsLookupsClient(_clientConfiguration);
 
             var request = new BankDetailsLookupRequest
             {

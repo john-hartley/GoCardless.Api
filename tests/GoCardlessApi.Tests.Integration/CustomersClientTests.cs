@@ -11,15 +11,6 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class CustomersClientTests : IntegrationTest
     {
-        private readonly ClientConfiguration _configuration;
-        private readonly ResourceFactory _resourceFactory;
-
-        public CustomersClientTests()
-        {
-            _configuration = ClientConfiguration.ForSandbox(_accessToken);
-            _resourceFactory = new ResourceFactory(_configuration);
-        }
-
         [Test]
         public async Task CreatesCustomer()
         {
@@ -48,7 +39,7 @@ namespace GoCardless.Api.Tests.Integration
                 },
             };
 
-            var subject = new CustomersClient(_configuration);
+            var subject = new CustomersClient(_clientConfiguration);
 
             // when
             var result = await subject.CreateAsync(request);
@@ -78,7 +69,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsCustomers()
         {
             // given
-            var subject = new CustomersClient(_configuration);
+            var subject = new CustomersClient(_clientConfiguration);
 
             // when
             var result = (await subject.AllAsync()).Customers.ToList();
@@ -108,7 +99,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new CustomersClient(_configuration);
+            var subject = new CustomersClient(_clientConfiguration);
 
             var firstPageRequest = new AllCustomersRequest
             {
@@ -143,7 +134,7 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var customer = await _resourceFactory.CreateForeignCustomer();
-            var subject = new CustomersClient(_configuration);
+            var subject = new CustomersClient(_clientConfiguration);
 
             // when
             var result = await subject.ForIdAsync(customer.Id);
@@ -174,7 +165,7 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var customer = await _resourceFactory.CreateForeignCustomer();
-            var subject = new CustomersClient(_configuration);
+            var subject = new CustomersClient(_clientConfiguration);
 
             var request = new UpdateCustomerRequest
             {
@@ -222,7 +213,7 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var customer = await _resourceFactory.CreateForeignCustomer();
-            var subject = new CustomersClient(_configuration);
+            var subject = new CustomersClient(_clientConfiguration);
 
             var request = new UpdateCustomerRequest
             {

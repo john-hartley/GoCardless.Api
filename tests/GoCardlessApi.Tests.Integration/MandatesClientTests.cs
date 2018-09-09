@@ -1,5 +1,4 @@
-﻿using GoCardless.Api.Core;
-using GoCardless.Api.Creditors;
+﻿using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
 using GoCardless.Api.Customers;
 using GoCardless.Api.Mandates;
@@ -14,18 +13,9 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class MandatesClientTests : IntegrationTest
     {
-        private readonly ClientConfiguration _configuration;
-        private readonly ResourceFactory _resourceFactory;
-
         private Creditor _creditor;
         private Customer _customer;
         private CustomerBankAccount _customerBankAccount;
-
-        public MandatesClientTests()
-        {
-            _configuration = ClientConfiguration.ForSandbox(_accessToken);
-            _resourceFactory = new ResourceFactory(_configuration);
-        }
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()
@@ -56,7 +46,7 @@ namespace GoCardless.Api.Tests.Integration
                 }
             };
 
-            var subject = new MandatesClient(_configuration);
+            var subject = new MandatesClient(_clientConfiguration);
 
             // when
             var creationResult = await subject.CreateAsync(createRequest);
@@ -108,7 +98,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsMandates()
         {
             // given
-            var subject = new MandatesClient(_configuration);
+            var subject = new MandatesClient(_clientConfiguration);
 
             // when
             var result = (await subject.AllAsync()).Mandates.ToList();
@@ -131,7 +121,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new MandatesClient(_configuration);
+            var subject = new MandatesClient(_clientConfiguration);
 
             var firstPageRequest = new AllMandatesRequest
             {
@@ -165,7 +155,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsIndividualMandate()
         {
             // given
-            var subject = new MandatesClient(_configuration);
+            var subject = new MandatesClient(_clientConfiguration);
             var mandate = await _resourceFactory.CreateMandateFor(_creditor, _customer, _customerBankAccount);
 
             // when
@@ -190,7 +180,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task UpdatesMandatePreservingMetadata()
         {
             // given
-            var subject = new MandatesClient(_configuration);
+            var subject = new MandatesClient(_clientConfiguration);
             var mandate = await _resourceFactory.CreateMandateFor(_creditor, _customer, _customerBankAccount);
 
             var request = new UpdateMandateRequest
@@ -212,7 +202,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task UpdatesMandateReplacingMetadata()
         {
             // given
-            var subject = new MandatesClient(_configuration);
+            var subject = new MandatesClient(_clientConfiguration);
             var mandate = await _resourceFactory.CreateMandateFor(_creditor, _customer, _customerBankAccount);
 
             var request = new UpdateMandateRequest

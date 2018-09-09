@@ -9,15 +9,6 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class MandatePdfsClientTests : IntegrationTest
     {
-        private readonly ClientConfiguration _configuration;
-        private readonly ResourceFactory _resourceFactory;
-
-        public MandatePdfsClientTests()
-        {
-            _configuration = ClientConfiguration.ForSandbox(_accessToken);
-            _resourceFactory = new ResourceFactory(_configuration);
-        }
-
         [Test]
         public async Task CreatesMandatePdf()
         {
@@ -26,7 +17,7 @@ namespace GoCardless.Api.Tests.Integration
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
             var mandate = await _resourceFactory.CreateMandateFor(creditor, customer, customerBankAccount);
-            var subject = new MandatePdfsClient(_configuration);
+            var subject = new MandatePdfsClient(_clientConfiguration);
 
             var request = new CreateMandatePdfRequest
             {

@@ -19,18 +19,9 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class ApiClientBaseTests : IntegrationTest
     {
-        private readonly ClientConfiguration _configuration;
-        private readonly ResourceFactory _resourceFactory;
-
         private Creditor _creditor;
         private CustomerBankAccount _customerBankAccount;
         private Mandate _mandate;
-
-        public ApiClientBaseTests()
-        {
-            _configuration = ClientConfiguration.ForSandbox(_accessToken);
-            _resourceFactory = new ResourceFactory(_configuration);
-        }
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()
@@ -70,7 +61,7 @@ namespace GoCardless.Api.Tests.Integration
                 },
             };
 
-            var subject = new CustomersClient(_configuration);
+            var subject = new CustomersClient(_clientConfiguration);
 
             // when
             AsyncTestDelegate test = () => subject.CreateAsync(request);
@@ -110,7 +101,7 @@ namespace GoCardless.Api.Tests.Integration
                 },
             };
 
-            var subject = new CustomersClient(_configuration);
+            var subject = new CustomersClient(_clientConfiguration);
 
             // when
             AsyncTestDelegate test = () => subject.CreateAsync(request);
@@ -154,7 +145,7 @@ namespace GoCardless.Api.Tests.Integration
                 },
             };
 
-            var subject = new CustomersClient(_configuration);
+            var subject = new CustomersClient(_clientConfiguration);
 
             // when
             var result = await subject.CreateAsync(request);
@@ -192,7 +183,7 @@ namespace GoCardless.Api.Tests.Integration
                 }
             };
 
-            var subject = new MandatesClient(_configuration);
+            var subject = new MandatesClient(_clientConfiguration);
 
             // when
             var result = await subject.CreateAsync(request);
@@ -229,7 +220,7 @@ namespace GoCardless.Api.Tests.Integration
                 }
             };
 
-            var subject = new PaymentsClient(_configuration);
+            var subject = new PaymentsClient(_clientConfiguration);
 
             // when
             var result = await subject.CreateAsync(request);
@@ -266,7 +257,7 @@ namespace GoCardless.Api.Tests.Integration
                 TotalAmountConfirmation = 100
             };
 
-            var subject = new RefundsClient(_configuration);
+            var subject = new RefundsClient(_clientConfiguration);
 
             // when
             AsyncTestDelegate test = () => subject.CreateAsync(request);
@@ -308,7 +299,7 @@ namespace GoCardless.Api.Tests.Integration
                 StartDate = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd")
             };
 
-            var subject = new SubscriptionsClient(_configuration);
+            var subject = new SubscriptionsClient(_clientConfiguration);
 
             // when
             var result = await subject.CreateAsync(request);

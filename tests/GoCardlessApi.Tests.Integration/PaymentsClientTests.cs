@@ -13,17 +13,8 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class PaymentsClientTests : IntegrationTest
     {
-        private readonly ClientConfiguration _configuration;
-        private readonly ResourceFactory _resourceFactory;
-
         private Creditor _creditor;
         private Mandate _mandate;
-
-        public PaymentsClientTests()
-        {
-            _configuration = ClientConfiguration.ForSandbox(_accessToken);
-            _resourceFactory = new ResourceFactory(_configuration);
-        }
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()
@@ -55,7 +46,7 @@ namespace GoCardless.Api.Tests.Integration
                 Reference = "REF123456"
             };
 
-            var subject = new PaymentsClient(_configuration);
+            var subject = new PaymentsClient(_clientConfiguration);
 
             // when
             var creationResult = await subject.CreateAsync(createRequest);
@@ -95,7 +86,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsPayments()
         {
             // given
-            var subject = new PaymentsClient(_configuration);
+            var subject = new PaymentsClient(_clientConfiguration);
 
             // when
             var result = (await subject.AllAsync()).Payments.ToList();
@@ -122,7 +113,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new PaymentsClient(_configuration);
+            var subject = new PaymentsClient(_clientConfiguration);
 
             var firstPageRequest = new AllPaymentsRequest
             {
@@ -156,7 +147,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsIndividualPayment()
         {
             // given
-            var subject = new PaymentsClient(_configuration);
+            var subject = new PaymentsClient(_clientConfiguration);
             var payment = await _resourceFactory.CreatePaymentFor(_mandate);
 
             // when
@@ -191,7 +182,7 @@ namespace GoCardless.Api.Tests.Integration
                 Id = payment.Id
             };
 
-            var subject = new PaymentsClient(_configuration);
+            var subject = new PaymentsClient(_clientConfiguration);
 
             // when
             var result = await subject.UpdateAsync(request);
@@ -220,7 +211,7 @@ namespace GoCardless.Api.Tests.Integration
                 },
             };
 
-            var subject = new PaymentsClient(_configuration);
+            var subject = new PaymentsClient(_clientConfiguration);
 
             // when
             var result = await subject.UpdateAsync(request);
@@ -249,7 +240,7 @@ namespace GoCardless.Api.Tests.Integration
                 },
             };
 
-            var subject = new PaymentsClient(_configuration);
+            var subject = new PaymentsClient(_clientConfiguration);
 
             // when
             var result = await subject.RetryAsync(request);

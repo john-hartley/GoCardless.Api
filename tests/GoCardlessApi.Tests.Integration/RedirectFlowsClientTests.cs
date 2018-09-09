@@ -9,21 +9,12 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class RedirectFlowsClientTests : IntegrationTest
     {
-        private readonly ClientConfiguration _configuration;
-        private readonly ResourceFactory _resourceFactory;
-
-        public RedirectFlowsClientTests()
-        {
-            _configuration = ClientConfiguration.ForSandbox(_accessToken);
-            _resourceFactory = new ResourceFactory(_configuration);
-        }
-
         [Test]
         public async Task CreatesAndReturnsRedirectFlow()
         {
             // given
             var creditor = await _resourceFactory.Creditor();
-            var subject = new RedirectFlowsClient(_configuration);
+            var subject = new RedirectFlowsClient(_clientConfiguration);
 
             var createRequest = new CreateRedirectFlowRequest
             {
@@ -93,7 +84,7 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var creditor = await _resourceFactory.Creditor();
             var redirectFlow = await _resourceFactory.CreateRedirectFlowFor(creditor);
-            var subject = new RedirectFlowsClient(_configuration);
+            var subject = new RedirectFlowsClient(_clientConfiguration);
 
             var request = new CompleteRedirectFlowRequest
             {

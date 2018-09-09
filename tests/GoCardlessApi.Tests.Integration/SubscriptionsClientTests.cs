@@ -12,16 +12,7 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class SubscriptionsClientTests : IntegrationTest
     {
-        private readonly ClientConfiguration _configuration;
-        private readonly ResourceFactory _resourceFactory;
-
         private Mandate _mandate;
-
-        public SubscriptionsClientTests()
-        {
-            _configuration = ClientConfiguration.ForSandbox(_accessToken);
-            _resourceFactory = new ResourceFactory(_configuration);
-        }
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()
@@ -61,7 +52,7 @@ namespace GoCardless.Api.Tests.Integration
                     Mandate = _mandate.Id
                 }
             };
-            var subject = new SubscriptionsClient(_configuration);
+            var subject = new SubscriptionsClient(_clientConfiguration);
 
             // when
             var result = await subject.CreateAsync(request);
@@ -91,7 +82,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsAllSubscriptions()
         {
             // given
-            var subject = new SubscriptionsClient(_configuration);
+            var subject = new SubscriptionsClient(_clientConfiguration);
 
             // when
             var result = await subject.AllAsync();
@@ -127,7 +118,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new SubscriptionsClient(_configuration);
+            var subject = new SubscriptionsClient(_clientConfiguration);
 
             var firstPageRequest = new AllSubscriptionsRequest
             {
@@ -163,7 +154,7 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subscription = await _resourceFactory.CreateSubscriptionFor(_mandate);
 
-            var subject = new SubscriptionsClient(_configuration);
+            var subject = new SubscriptionsClient(_clientConfiguration);
 
             // when
             var result = await subject.ForIdAsync(subscription.Id);
@@ -204,7 +195,7 @@ namespace GoCardless.Api.Tests.Integration
                 PaymentReference = "PR456789"
             };
 
-            var subject = new SubscriptionsClient(_configuration);
+            var subject = new SubscriptionsClient(_clientConfiguration);
 
             // when
             var result = await subject.UpdateAsync(request);
@@ -238,7 +229,7 @@ namespace GoCardless.Api.Tests.Integration
                 PaymentReference = "PR456789"
             };
 
-            var subject = new SubscriptionsClient(_configuration);
+            var subject = new SubscriptionsClient(_clientConfiguration);
 
             // when
             var result = await subject.UpdateAsync(request);
@@ -269,7 +260,7 @@ namespace GoCardless.Api.Tests.Integration
                 },
             };
 
-            var subject = new SubscriptionsClient(_configuration);
+            var subject = new SubscriptionsClient(_clientConfiguration);
 
             // when
             var result = await subject.CancelAsync(request);

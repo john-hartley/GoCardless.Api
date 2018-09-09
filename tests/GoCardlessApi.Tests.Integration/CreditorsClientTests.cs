@@ -9,21 +9,12 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class CreditorsClientTests : IntegrationTest
     {
-        private readonly ClientConfiguration _configuration;
-        private readonly ResourceFactory _resourceFactory;
-
-        public CreditorsClientTests()
-        {
-            _configuration = ClientConfiguration.ForSandbox(_accessToken);
-            _resourceFactory = new ResourceFactory(_configuration);
-        }
-
         [Test, NonParallelizable]
         public async Task ReturnsCreditors()
         {
             // given
             var creditor = await _resourceFactory.Creditor();
-            var subject = new CreditorsClient(_configuration);
+            var subject = new CreditorsClient(_clientConfiguration);
 
             // when
             var result = (await subject.AllAsync()).Creditors.ToList();
@@ -67,7 +58,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new CreditorsClient(_configuration);
+            var subject = new CreditorsClient(_clientConfiguration);
 
             var request = new AllCreditorsRequest
             {
@@ -89,7 +80,7 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var creditor = await _resourceFactory.Creditor();
-            var subject = new CreditorsClient(_configuration);
+            var subject = new CreditorsClient(_clientConfiguration);
 
             // when
             var result = await subject.ForIdAsync(creditor.Id);
@@ -154,7 +145,7 @@ namespace GoCardless.Api.Tests.Integration
                 Region = "Essex",
             };
 
-            var subject = new CreditorsClient(_configuration);
+            var subject = new CreditorsClient(_clientConfiguration);
 
             // when
             var result = await subject.UpdateAsync(request);

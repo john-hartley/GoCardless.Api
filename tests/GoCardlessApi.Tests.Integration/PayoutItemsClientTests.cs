@@ -10,16 +10,7 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class PayoutItemsClientTests : IntegrationTest
     {
-        private readonly ClientConfiguration _configuration;
-        private readonly ResourceFactory _resourceFactory;
-
         private Payout _payout;
-
-        public PayoutItemsClientTests()
-        {
-            _configuration = ClientConfiguration.ForSandbox(_accessToken);
-            _resourceFactory = new ResourceFactory(_configuration);
-        }
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()
@@ -31,7 +22,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsPayoutItems()
         {
             // given
-            var subject = new PayoutItemsClient(_configuration);
+            var subject = new PayoutItemsClient(_clientConfiguration);
 
             var request = new PayoutItemsRequest
             {
@@ -54,7 +45,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new PayoutItemsClient(_configuration);
+            var subject = new PayoutItemsClient(_clientConfiguration);
 
             var firstPageRequest = new PayoutItemsRequest
             {

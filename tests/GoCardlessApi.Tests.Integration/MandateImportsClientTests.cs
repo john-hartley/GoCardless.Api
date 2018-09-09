@@ -9,20 +9,11 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class MandateImportsClientTests : IntegrationTest
     {
-        private readonly ClientConfiguration _configuration;
-        private readonly ResourceFactory _resourceFactory;
-
-        public MandateImportsClientTests()
-        {
-            _configuration = ClientConfiguration.ForSandbox(_accessToken);
-            _resourceFactory = new ResourceFactory(_configuration);
-        }
-
         [Test]
         public async Task CancelsMandateImport()
         {
             // given
-            var subject = new MandateImportsClient(_configuration);
+            var subject = new MandateImportsClient(_clientConfiguration);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             // when
@@ -40,7 +31,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task CreatesMandateImport()
         {
             // given
-            var subject = new MandateImportsClient(_configuration);
+            var subject = new MandateImportsClient(_clientConfiguration);
 
             var request = new CreateMandateImportRequest
             {
@@ -62,7 +53,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsIndividualMandateImport()
         {
             // given
-            var subject = new MandateImportsClient(_configuration);
+            var subject = new MandateImportsClient(_clientConfiguration);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             // when
@@ -80,7 +71,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task SubmitsMandateImport()
         {
             // given
-            var subject = new MandateImportsClient(_configuration);
+            var subject = new MandateImportsClient(_clientConfiguration);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             // when

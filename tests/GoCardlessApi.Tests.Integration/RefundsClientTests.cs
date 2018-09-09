@@ -12,16 +12,7 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class RefundsClientTests : IntegrationTest
     {
-        private readonly ClientConfiguration _configuration;
-        private readonly ResourceFactory _resourceFactory;
-
         private Mandate _mandate;
-
-        public RefundsClientTests()
-        {
-            _configuration = ClientConfiguration.ForSandbox(_accessToken);
-            _resourceFactory = new ResourceFactory(_configuration);
-        }
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()
@@ -53,7 +44,7 @@ namespace GoCardless.Api.Tests.Integration
                 TotalAmountConfirmation = 100
             };
 
-            var subject = new RefundsClient(_configuration);
+            var subject = new RefundsClient(_clientConfiguration);
 
             // when
             var result = await subject.CreateAsync(request);
@@ -75,7 +66,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsRefunds()
         {
             // given
-            var subject = new RefundsClient(_configuration);
+            var subject = new RefundsClient(_clientConfiguration);
 
             // when
             var result = (await subject.AllAsync()).Refunds.ToList();
@@ -98,7 +89,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new RefundsClient(_configuration);
+            var subject = new RefundsClient(_clientConfiguration);
 
             var firstPageRequest = new AllRefundsRequest
             {
@@ -132,7 +123,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsIndividualRefund()
         {
             // given
-            var subject = new RefundsClient(_configuration);
+            var subject = new RefundsClient(_clientConfiguration);
             var refund = (await subject.AllAsync()).Refunds.First();
 
             // when
@@ -156,7 +147,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task UpdatesRefundPreservingMetadata()
         {
             // given
-            var subject = new RefundsClient(_configuration);
+            var subject = new RefundsClient(_clientConfiguration);
             var refund = (await subject.AllAsync()).Refunds.First();
 
             var request = new UpdateRefundRequest
@@ -185,7 +176,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task UpdatesRefundReplacingMetadata()
         {
             // given
-            var subject = new RefundsClient(_configuration);
+            var subject = new RefundsClient(_clientConfiguration);
             var refund = (await subject.AllAsync()).Refunds.First();
             var now = DateTime.Now.ToString("yyyyMMdd");
 
