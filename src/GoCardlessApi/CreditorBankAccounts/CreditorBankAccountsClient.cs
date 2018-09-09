@@ -1,8 +1,8 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.CreditorBankAccounts
+namespace GoCardless.Api.CreditorBankAccounts
 {
     public class CreditorBankAccountsClient : ApiClientBase, ICreditorBankAccountsClient
     {

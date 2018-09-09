@@ -1,8 +1,8 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.Mandates
+namespace GoCardless.Api.Mandates
 {
     public class MandatesClient : ApiClientBase, IMandatesClient
     {

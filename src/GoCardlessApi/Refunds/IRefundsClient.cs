@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace GoCardlessApi.Refunds
+namespace GoCardless.Api.Refunds
 {
     public interface IRefundsClient
     {

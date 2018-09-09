@@ -1,7 +1,7 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using System;
 
-namespace GoCardlessApi.CreditorBankAccounts
+namespace GoCardless.Api.CreditorBankAccounts
 {
     public class AllCreditorBankAccountsRequest : IPageRequest
     {

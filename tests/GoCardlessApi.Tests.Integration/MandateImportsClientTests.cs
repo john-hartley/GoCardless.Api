@@ -1,11 +1,11 @@
-﻿using GoCardlessApi.Core;
-using GoCardlessApi.MandateImports;
-using GoCardlessApi.Tests.Integration.TestHelpers;
+﻿using GoCardless.Api.Core;
+using GoCardless.Api.MandateImports;
+using GoCardless.Api.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.Tests.Integration
+namespace GoCardless.Api.Tests.Integration
 {
     public class MandateImportsClientTests : IntegrationTest
     {

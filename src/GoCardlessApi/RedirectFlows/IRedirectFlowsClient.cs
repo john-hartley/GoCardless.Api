@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace GoCardlessApi.RedirectFlows
+namespace GoCardless.Api.RedirectFlows
 {
     public interface IRedirectFlowsClient
     {

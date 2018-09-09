@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace GoCardlessApi.CreditorBankAccounts
+namespace GoCardless.Api.CreditorBankAccounts
 {
     public interface ICreditorBankAccountsClient
     {

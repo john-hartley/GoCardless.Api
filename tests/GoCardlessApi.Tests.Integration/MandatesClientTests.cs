@@ -1,16 +1,16 @@
-﻿using GoCardlessApi.Core;
-using GoCardlessApi.Creditors;
-using GoCardlessApi.CustomerBankAccounts;
-using GoCardlessApi.Customers;
-using GoCardlessApi.Mandates;
-using GoCardlessApi.Tests.Integration.TestHelpers;
+﻿using GoCardless.Api.Core;
+using GoCardless.Api.Creditors;
+using GoCardless.Api.CustomerBankAccounts;
+using GoCardless.Api.Customers;
+using GoCardless.Api.Mandates;
+using GoCardless.Api.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.Tests.Integration
+namespace GoCardless.Api.Tests.Integration
 {
     public class MandatesClientTests : IntegrationTest
     {

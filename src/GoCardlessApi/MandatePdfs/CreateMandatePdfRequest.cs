@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GoCardlessApi.MandatePdfs
+namespace GoCardless.Api.MandatePdfs
 {
     public class CreateMandatePdfRequest
     {

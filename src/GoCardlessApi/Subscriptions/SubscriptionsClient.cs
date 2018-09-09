@@ -1,8 +1,8 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.Subscriptions
+namespace GoCardless.Api.Subscriptions
 {
     public class SubscriptionsClient : ApiClientBase, ISubscriptionsClient
     {

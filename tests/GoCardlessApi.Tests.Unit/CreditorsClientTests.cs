@@ -1,12 +1,12 @@
 ﻿using Flurl.Http.Testing;
-using GoCardlessApi.Core;
-using GoCardlessApi.Creditors;
+using GoCardless.Api.Core;
+using GoCardless.Api.Creditors;
 using NUnit.Framework;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.Tests.Unit
+namespace GoCardless.Api.Tests.Unit
 {
     public class CreditorsClientTests
     {

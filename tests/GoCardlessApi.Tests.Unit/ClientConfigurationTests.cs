@@ -1,8 +1,8 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using NUnit.Framework;
 using System;
 
-namespace GoCardlessApi.Tests.Unit
+namespace GoCardless.Api.Tests.Unit
 {
     public class ClientConfigurationTests
     {

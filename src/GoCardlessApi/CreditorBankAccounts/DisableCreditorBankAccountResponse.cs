@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GoCardlessApi.CreditorBankAccounts
+namespace GoCardless.Api.CreditorBankAccounts
 {
     public class DisableCreditorBankAccountResponse
     {

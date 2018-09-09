@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GoCardlessApi.CustomerBankAccounts
+namespace GoCardless.Api.CustomerBankAccounts
 {
     public class CustomerBankAccount
     {

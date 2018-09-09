@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GoCardlessApi.BankDetailsLookups
+namespace GoCardless.Api.BankDetailsLookups
 {
     public class BankDetailsLookupResponse
     {

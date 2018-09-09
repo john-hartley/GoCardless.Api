@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GoCardlessApi.RedirectFlows
+namespace GoCardless.Api.RedirectFlows
 {
     public class CreateRedirectFlowResponse
     {

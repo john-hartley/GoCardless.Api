@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace GoCardlessApi.Creditors
+namespace GoCardless.Api.Creditors
 {
     public interface ICreditorsClient
     {

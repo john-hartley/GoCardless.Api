@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace GoCardlessApi.Mandates
+namespace GoCardless.Api.Mandates
 {
     public class ReinstateMandateRequest
     {

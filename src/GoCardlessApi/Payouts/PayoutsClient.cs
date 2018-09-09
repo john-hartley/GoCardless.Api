@@ -1,8 +1,8 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.Payouts
+namespace GoCardless.Api.Payouts
 {
     public class PayoutsClient : ApiClientBase, IPayoutsClient
     {

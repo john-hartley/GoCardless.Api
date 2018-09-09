@@ -1,4 +1,4 @@
-﻿namespace GoCardlessApi.Mandates
+﻿namespace GoCardless.Api.Mandates
 {
     public class MandateLinks
     {

@@ -1,10 +1,10 @@
 ﻿using Flurl.Http;
-using GoCardlessApi.Core.Exceptions;
+using GoCardless.Api.Core.Exceptions;
 using Newtonsoft.Json;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.Core.Extensions
+namespace GoCardless.Api.Core.Extensions
 {
     public static class FlurlHttpExceptionExtensions
     {

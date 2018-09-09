@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GoCardlessApi.Mandates
+namespace GoCardless.Api.Mandates
 {
     public class CancelMandateResponse
     {

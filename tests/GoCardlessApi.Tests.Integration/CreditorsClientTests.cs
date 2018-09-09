@@ -1,11 +1,11 @@
 ﻿using NUnit.Framework;
 using System.Threading.Tasks;
 using System.Linq;
-using GoCardlessApi.Creditors;
-using GoCardlessApi.Core;
-using GoCardlessApi.Tests.Integration.TestHelpers;
+using GoCardless.Api.Creditors;
+using GoCardless.Api.Core;
+using GoCardless.Api.Tests.Integration.TestHelpers;
 
-namespace GoCardlessApi.Tests.Integration
+namespace GoCardless.Api.Tests.Integration
 {
     public class CreditorsClientTests : IntegrationTest
     {

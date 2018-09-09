@@ -1,12 +1,12 @@
-﻿using GoCardlessApi.Core;
-using GoCardlessApi.PayoutItems;
-using GoCardlessApi.Payouts;
-using GoCardlessApi.Tests.Integration.TestHelpers;
+﻿using GoCardless.Api.Core;
+using GoCardless.Api.PayoutItems;
+using GoCardless.Api.Payouts;
+using GoCardless.Api.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.Tests.Integration
+namespace GoCardless.Api.Tests.Integration
 {
     public class PayoutItemsClientTests : IntegrationTest
     {

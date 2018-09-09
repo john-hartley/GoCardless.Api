@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace GoCardlessApi.Core
+namespace GoCardless.Api.Core
 {
     public static class PageRequestExtensions
     {

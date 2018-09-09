@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace GoCardlessApi.MandatePdfs
+namespace GoCardless.Api.MandatePdfs
 {
     public interface IMandatePdfsClient
     {

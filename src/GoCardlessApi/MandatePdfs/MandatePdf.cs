@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GoCardlessApi.MandatePdfs
+namespace GoCardless.Api.MandatePdfs
 {
     public class MandatePdf
     {

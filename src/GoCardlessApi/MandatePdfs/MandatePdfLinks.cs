@@ -1,4 +1,4 @@
-﻿namespace GoCardlessApi.MandatePdfs
+﻿namespace GoCardless.Api.MandatePdfs
 {
     public class MandatePdfLinks
     {

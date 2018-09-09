@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace GoCardlessApi.Core.Exceptions
+namespace GoCardless.Api.Core.Exceptions
 {
     public class ResourceAlreadyExistsException : ApiException
     {

@@ -1,7 +1,7 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using System;
 
-namespace GoCardlessApi.Refunds
+namespace GoCardless.Api.Refunds
 {
     public class AllRefundsRequest : IPageRequest
     {

@@ -1,8 +1,8 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.Refunds
+namespace GoCardless.Api.Refunds
 {
     public class RefundsClient : ApiClientBase, IRefundsClient
     {

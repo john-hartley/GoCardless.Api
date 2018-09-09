@@ -1,4 +1,4 @@
-﻿namespace GoCardlessApi.Core
+﻿namespace GoCardless.Api.Core
 {
     public interface IPageRequest
     {

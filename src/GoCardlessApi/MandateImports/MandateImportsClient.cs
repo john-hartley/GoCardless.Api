@@ -1,8 +1,8 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.MandateImports
+namespace GoCardless.Api.MandateImports
 {
     public class MandateImportsClient : ApiClientBase, IMandateImportsClient
     {

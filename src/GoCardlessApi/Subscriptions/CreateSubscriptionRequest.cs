@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GoCardlessApi.Subscriptions
+namespace GoCardless.Api.Subscriptions
 {
     public class CreateSubscriptionRequest
     {

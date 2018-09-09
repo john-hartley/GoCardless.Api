@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GoCardlessApi.Customers
+namespace GoCardless.Api.Customers
 {
     public class UpdateCustomerResponse
     {

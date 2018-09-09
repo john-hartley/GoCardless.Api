@@ -1,11 +1,11 @@
-﻿using GoCardlessApi.Core;
-using GoCardlessApi.MandatePdfs;
-using GoCardlessApi.Tests.Integration.TestHelpers;
+﻿using GoCardless.Api.Core;
+using GoCardless.Api.MandatePdfs;
+using GoCardless.Api.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.Tests.Integration
+namespace GoCardless.Api.Tests.Integration
 {
     public class MandatePdfsClientTests : IntegrationTest
     {

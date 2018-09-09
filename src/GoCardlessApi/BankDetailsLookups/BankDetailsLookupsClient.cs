@@ -1,8 +1,8 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.BankDetailsLookups
+namespace GoCardless.Api.BankDetailsLookups
 {
     public class BankDetailsLookupsClient : ApiClientBase, IBankDetailsLookupsClient
     {

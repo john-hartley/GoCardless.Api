@@ -1,7 +1,7 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using System;
 
-namespace GoCardlessApi.Mandates
+namespace GoCardless.Api.Mandates
 {
     public class AllMandatesRequest : IPageRequest
     {

@@ -1,4 +1,4 @@
-﻿namespace GoCardlessApi.Subscriptions
+﻿namespace GoCardless.Api.Subscriptions
 {
     public class SubscriptionLinks
     {

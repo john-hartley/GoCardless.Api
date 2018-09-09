@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GoCardlessApi.Payouts
+namespace GoCardless.Api.Payouts
 {
     public class PayoutLinks
     {

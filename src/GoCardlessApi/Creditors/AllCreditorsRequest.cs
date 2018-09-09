@@ -1,7 +1,7 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using System;
 
-namespace GoCardlessApi.Creditors
+namespace GoCardless.Api.Creditors
 {
     public class AllCreditorsRequest : IPageRequest
     {

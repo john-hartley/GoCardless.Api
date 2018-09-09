@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace GoCardlessApi.Customers
+namespace GoCardless.Api.Customers
 {
     public class UpdateCustomerRequest
     {

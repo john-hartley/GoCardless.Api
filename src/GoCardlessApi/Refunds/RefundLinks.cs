@@ -1,4 +1,4 @@
-﻿namespace GoCardlessApi.Refunds
+﻿namespace GoCardless.Api.Refunds
 {
     public class RefundLinks
     {

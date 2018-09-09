@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace GoCardlessApi.Customers
+namespace GoCardless.Api.Customers
 {
     public interface ICustomersClient
     {

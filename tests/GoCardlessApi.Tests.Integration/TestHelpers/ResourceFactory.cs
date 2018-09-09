@@ -1,19 +1,19 @@
-﻿using GoCardlessApi.Core;
-using GoCardlessApi.Creditors;
-using GoCardlessApi.CustomerBankAccounts;
-using GoCardlessApi.Customers;
-using GoCardlessApi.MandateImports;
-using GoCardlessApi.Mandates;
-using GoCardlessApi.Payments;
-using GoCardlessApi.Payouts;
-using GoCardlessApi.RedirectFlows;
-using GoCardlessApi.Subscriptions;
+﻿using GoCardless.Api.Core;
+using GoCardless.Api.Creditors;
+using GoCardless.Api.CustomerBankAccounts;
+using GoCardless.Api.Customers;
+using GoCardless.Api.MandateImports;
+using GoCardless.Api.Mandates;
+using GoCardless.Api.Payments;
+using GoCardless.Api.Payouts;
+using GoCardless.Api.RedirectFlows;
+using GoCardless.Api.Subscriptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.Tests.Integration.TestHelpers
+namespace GoCardless.Api.Tests.Integration.TestHelpers
 {
     public class ResourceFactory
     {

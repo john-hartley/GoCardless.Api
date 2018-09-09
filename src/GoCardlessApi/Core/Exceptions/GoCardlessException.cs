@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GoCardlessApi.Core.Exceptions
+namespace GoCardless.Api.Core.Exceptions
 {
     public class GoCardlessException : ApiException
     {

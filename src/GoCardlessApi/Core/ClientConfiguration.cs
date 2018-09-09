@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GoCardlessApi.Core
+namespace GoCardless.Api.Core
 {
     public class ClientConfiguration
     {

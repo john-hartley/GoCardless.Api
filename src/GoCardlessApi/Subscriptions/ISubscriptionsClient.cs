@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace GoCardlessApi.Subscriptions
+namespace GoCardless.Api.Subscriptions
 {
     public interface ISubscriptionsClient
     {

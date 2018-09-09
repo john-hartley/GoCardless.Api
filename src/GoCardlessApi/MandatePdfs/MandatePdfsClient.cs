@@ -1,9 +1,9 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.MandatePdfs
+namespace GoCardless.Api.MandatePdfs
 {
     public class MandatePdfsClient : ApiClientBase, IMandatePdfsClient
     {

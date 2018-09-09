@@ -1,4 +1,4 @@
-﻿namespace GoCardlessApi.PayoutItems
+﻿namespace GoCardless.Api.PayoutItems
 {
     public class PayoutLinks
     {

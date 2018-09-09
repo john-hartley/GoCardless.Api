@@ -1,10 +1,10 @@
-﻿using GoCardlessApi.BankDetailsLookups;
-using GoCardlessApi.Core;
-using GoCardlessApi.Tests.Integration.TestHelpers;
+﻿using GoCardless.Api.BankDetailsLookups;
+using GoCardless.Api.Core;
+using GoCardless.Api.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.Tests.Integration
+namespace GoCardless.Api.Tests.Integration
 {
     public class BankDetailsLookupsClientTests : IntegrationTest
     {

@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\GoCardlessApi\GoCardlessApi.csproj" />
+    <ProjectReference Include="..\..\src\GoCardlessApi\GoCardless.Api.csproj" />
   </ItemGroup>
 
 </Project>

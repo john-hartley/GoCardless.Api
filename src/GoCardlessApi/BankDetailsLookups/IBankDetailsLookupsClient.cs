@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace GoCardlessApi.BankDetailsLookups
+namespace GoCardless.Api.BankDetailsLookups
 {
     public interface IBankDetailsLookupsClient
     {

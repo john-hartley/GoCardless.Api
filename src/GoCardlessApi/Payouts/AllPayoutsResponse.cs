@@ -1,7 +1,7 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using System.Collections.Generic;
 
-namespace GoCardlessApi.Payouts
+namespace GoCardless.Api.Payouts
 {
     public class AllPayoutsResponse
     {

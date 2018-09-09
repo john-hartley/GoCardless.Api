@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GoCardlessApi.RedirectFlows
+namespace GoCardless.Api.RedirectFlows
 {
     public class RedirectFlow
     {

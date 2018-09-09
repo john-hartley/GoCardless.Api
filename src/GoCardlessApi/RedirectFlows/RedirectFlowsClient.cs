@@ -1,8 +1,8 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardlessApi.RedirectFlows
+namespace GoCardless.Api.RedirectFlows
 {
     public class RedirectFlowsClient : ApiClientBase, IRedirectFlowsClient
     {

@@ -1,4 +1,4 @@
-﻿namespace GoCardlessApi.Core
+﻿namespace GoCardless.Api.Core
 {
     public class Cursors
     {

@@ -1,7 +1,7 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 using System;
 
-namespace GoCardlessApi.Payments
+namespace GoCardless.Api.Payments
 {
     public class AllPaymentsRequest : IPageRequest
     {

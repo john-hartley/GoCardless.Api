@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GoCardlessApi.Creditors
+namespace GoCardless.Api.Creditors
 {
     public class CreditorResponse
     {

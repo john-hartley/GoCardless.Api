@@ -1,6 +1,6 @@
-﻿using GoCardlessApi.Core;
+﻿using GoCardless.Api.Core;
 
-namespace GoCardlessApi.PayoutItems
+namespace GoCardless.Api.PayoutItems
 {
     public class PayoutItemsRequest : IPageRequest
     {

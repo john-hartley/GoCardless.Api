@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace GoCardlessApi.PayoutItems
+namespace GoCardless.Api.PayoutItems
 {
     public interface IPayoutItemsClient
     {

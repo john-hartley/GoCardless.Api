@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GoCardlessApi.MandateImports
+namespace GoCardless.Api.MandateImports
 {
     public class MandateImport
     {

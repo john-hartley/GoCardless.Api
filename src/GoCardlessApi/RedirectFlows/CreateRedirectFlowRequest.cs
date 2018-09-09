@@ -1,4 +1,4 @@
-﻿namespace GoCardlessApi.RedirectFlows
+﻿namespace GoCardless.Api.RedirectFlows
 {
     public class CreateRedirectFlowRequest
     {

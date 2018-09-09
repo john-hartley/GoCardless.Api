@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GoCardlessApi.Payments
+namespace GoCardless.Api.Payments
 {
     public class CancelPaymentResponse
     {
