@@ -10,7 +10,7 @@ Currently in alpha, this project aims to improve upon the official client by:
 - Not mixing `sync` and `async` calls
 - Providing simple, predictable mechanisms for paging
 
-# Roadmap
+# Road Map
 
 There are still a few endpoints that I've not yet implemented. These are:
 
