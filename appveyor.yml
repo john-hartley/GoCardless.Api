@@ -1,4 +1,4 @@
-version: '0.6.{build}'
+version: 0.6.{build}
 image: Visual Studio 2017
 configuration: Release
 skip_tags: true
@@ -8,20 +8,32 @@ dotnet_csproj:
   file: '**\*.csproj'
   version: '{version}'
   package_version: '{version}'
-  
+
+nuget:
+  project_feed: true
+
 environment:
   GoCardlessAccessToken:
     secure: TXXkPrAH2llzmiO+qkmAJrPWpYQ+5764Gz6z30AhhxAyc7rMJCDJl5hdRvS4lZKcpVc7wZVi1AiHBXAKjuxeSg==
  
 before_build:
   dotnet restore
-  
+
 build:
+  publish_nuget: true
+  publish_nuget_symbols: true
+  include_nuget_references: true
   verbosity: minimal
-   
+
 test:
   assemblies:
     GoCardless.Api.Tests.Unit.dll
     GoCardless.Api.Tests.Integration.dll
 
 deploy: off
+
+# deploy:
+  # provider: NuGet
+  # api_key:
+    # secure: ut0Sm4daMartMQALEiF1/dwSJ/lZZa8xnQ0+rQ9XTGCjXT/CuIOXtleaRPFyC3Om
+  # skip_symbols: false
