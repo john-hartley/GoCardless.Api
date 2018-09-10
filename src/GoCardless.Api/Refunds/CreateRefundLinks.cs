@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace GoCardless.Api.Refunds
+﻿namespace GoCardless.Api.Refunds
 {
     public class CreateRefundLinks
     {

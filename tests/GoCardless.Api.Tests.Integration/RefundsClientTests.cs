@@ -1,5 +1,4 @@
-﻿using GoCardless.Api.Core;
-using GoCardless.Api.Mandates;
+﻿using GoCardless.Api.Mandates;
 using GoCardless.Api.Refunds;
 using GoCardless.Api.Tests.Integration.TestHelpers;
 using NUnit.Framework;

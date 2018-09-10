@@ -1,5 +1,4 @@
-﻿using GoCardless.Api.Core;
-using GoCardless.Api.CreditorBankAccounts;
+﻿using GoCardless.Api.CreditorBankAccounts;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.Tests.Integration.TestHelpers;
 using NUnit.Framework;

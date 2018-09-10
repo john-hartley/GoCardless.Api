@@ -1,5 +1,4 @@
-﻿using GoCardless.Api.Core;
-using GoCardless.Api.PayoutItems;
+﻿using GoCardless.Api.PayoutItems;
 using GoCardless.Api.Payouts;
 using GoCardless.Api.Tests.Integration.TestHelpers;
 using NUnit.Framework;

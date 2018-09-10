@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Linq;
 using GoCardless.Api.Creditors;
-using GoCardless.Api.Core;
 using GoCardless.Api.Tests.Integration.TestHelpers;
 
 namespace GoCardless.Api.Tests.Integration
