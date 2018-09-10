@@ -3,6 +3,13 @@ image: Visual Studio 2017
 configuration: Release
 skip_tags: true
 
+environment:
+  GoCardlessAccessToken:
+    secure: TXXkPrAH2llzmiO+qkmAJrPWpYQ+5764Gz6z30AhhxAyc7rMJCDJl5hdRvS4lZKcpVc7wZVi1AiHBXAKjuxeSg==
+	
+pull_requests:
+  do_not_increment_build_number: true
+
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
@@ -11,10 +18,6 @@ dotnet_csproj:
 
 nuget:
   project_feed: true
-
-environment:
-  GoCardlessAccessToken:
-    secure: TXXkPrAH2llzmiO+qkmAJrPWpYQ+5764Gz6z30AhhxAyc7rMJCDJl5hdRvS4lZKcpVc7wZVi1AiHBXAKjuxeSg==
  
 before_build:
   dotnet restore
