@@ -1,4 +1,4 @@
-﻿using GoCardless.Api.Core;
+﻿using GoCardless.Api.Core.Configuration;
 using NUnit.Framework;
 using System;
 

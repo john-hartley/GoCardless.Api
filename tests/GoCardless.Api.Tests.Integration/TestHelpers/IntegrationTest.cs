@@ -1,4 +1,4 @@
-﻿using GoCardless.Api.Core;
+﻿using GoCardless.Api.Core.Configuration;
 
 namespace GoCardless.Api.Tests.Integration.TestHelpers
 {

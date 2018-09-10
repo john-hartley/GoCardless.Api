@@ -1,7 +1,8 @@
 ﻿using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
-using GoCardless.Api.Core.Extensions;
+using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;

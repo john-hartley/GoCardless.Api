@@ -1,4 +1,5 @@
 ﻿using GoCardless.Api.Core;
+using GoCardless.Api.Core.Configuration;
 using System;
 using System.Threading.Tasks;
 

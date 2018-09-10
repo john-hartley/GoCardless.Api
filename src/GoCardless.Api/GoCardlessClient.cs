@@ -1,5 +1,5 @@
 ﻿using GoCardless.Api.BankDetailsLookups;
-using GoCardless.Api.Core;
+using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.CreditorBankAccounts;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;

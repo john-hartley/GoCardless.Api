@@ -1,5 +1,5 @@
 using Flurl.Http.Testing;
-using GoCardless.Api.Core;
+using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Subscriptions;
 using NUnit.Framework;
 using System;

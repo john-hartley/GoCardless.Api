@@ -1,6 +1,6 @@
 ﻿using Flurl.Http.Testing;
-using GoCardless.Api.Core;
 using GoCardless.Api.BankDetailsLookups;
+using GoCardless.Api.Core.Configuration;
 using NUnit.Framework;
 using System;
 using System.Net.Http;
