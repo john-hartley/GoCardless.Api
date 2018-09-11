@@ -131,7 +131,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                     Region = "Essex",
                 },
                 RecordIdentifier = recordIdentifier,
-                Links = new MandateImportEntriesLinks
+                Links = new AddMandateImportEntryLinks
                 {
                     MandateImport = mandateImport.Id
                 }
