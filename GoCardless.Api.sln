@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoCardless.Api", "src\GoCardlessApi\GoCardless.Api.csproj", "{DA523352-687A-4F03-BBB5-8522FC6BDD48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoCardless.Api", "src\GoCardless.Api\GoCardless.Api.csproj", "{DA523352-687A-4F03-BBB5-8522FC6BDD48}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoCardless.Api.Tests.Integration", "tests\GoCardlessApi.Tests.Integration\GoCardless.Api.Tests.Integration.csproj", "{2AC6D483-039B-45CD-B268-EBC14DECFA54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoCardless.Api.Tests.Integration", "tests\GoCardless.Api.Tests.Integration\GoCardless.Api.Tests.Integration.csproj", "{2AC6D483-039B-45CD-B268-EBC14DECFA54}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoCardless.Api.Tests.Unit", "tests\GoCardlessApi.Tests.Unit\GoCardless.Api.Tests.Unit.csproj", "{E0C309B6-5FE8-4410-8AC4-291FEF82A254}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoCardless.Api.Tests.Unit", "tests\GoCardless.Api.Tests.Unit\GoCardless.Api.Tests.Unit.csproj", "{E0C309B6-5FE8-4410-8AC4-291FEF82A254}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
