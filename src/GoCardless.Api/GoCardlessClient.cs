@@ -4,6 +4,7 @@ using GoCardless.Api.CreditorBankAccounts;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
 using GoCardless.Api.Customers;
+using GoCardless.Api.MandateImportEntries;
 using GoCardless.Api.MandateImports;
 using GoCardless.Api.MandatePdfs;
 using GoCardless.Api.Mandates;
@@ -29,9 +30,10 @@ namespace GoCardless.Api
             Creditors = new CreditorsClient(configuration);
             Customers = new CustomersClient(configuration);
             CustomerBankAccounts = new CustomerBankAccountsClient(configuration);
-            Mandates = new MandatesClient(configuration);
+            MandateImportEntries = new MandateImportEntriesClient(configuration);
             MandateImports = new MandateImportsClient(configuration);
             MandatePdfs = new MandatePdfsClient(configuration);
+            Mandates = new MandatesClient(configuration);
             Payments = new PaymentsClient(configuration);
             PayoutItems = new PayoutItemsClient(configuration);
             Payouts = new PayoutsClient(configuration);
@@ -45,6 +47,7 @@ namespace GoCardless.Api
         public ICreditorsClient Creditors { get; }
         public ICustomerBankAccountsClient CustomerBankAccounts { get; }
         public ICustomersClient Customers { get; }
+        public IMandateImportEntriesClient MandateImportEntries { get; }
         public IMandateImportsClient MandateImports { get; }
         public IMandatePdfsClient MandatePdfs { get; }
         public IMandatesClient Mandates { get; }

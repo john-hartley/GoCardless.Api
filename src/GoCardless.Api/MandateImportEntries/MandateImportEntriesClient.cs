@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.MandateImportEntries
 {
-    public class MandateImportEntriesClient : ApiClientBase
+    public class MandateImportEntriesClient : ApiClientBase, IMandateImportEntriesClient
     {
         public MandateImportEntriesClient(ClientConfiguration configuration) : base(configuration) { }
 
@@ -19,6 +19,24 @@ namespace GoCardless.Api.MandateImportEntries
             return PostAsync<AddMandateImportEntriesResponse>(
                 "mandate_import_entries",
                 new { mandate_import_entries = request }
+            );
+        }
+
+        public Task<AllMandateImportEntriesResponse> AllAsync(AllMandateImportEntriesRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (string.IsNullOrWhiteSpace(request.MandateImport))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.MandateImport));
+            }
+
+            return GetAsync<AllMandateImportEntriesResponse>(
+                "mandate_import_entries",
+                request.ToReadOnlyDictionary()
             );
         }
     }

@@ -2,6 +2,7 @@
 using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
 using GoCardless.Api.Customers;
+using GoCardless.Api.MandateImportEntries;
 using GoCardless.Api.MandateImports;
 using GoCardless.Api.Mandates;
 using GoCardless.Api.Payments;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Customer = GoCardless.Api.Customers.Customer;
 
 namespace GoCardless.Api.Tests.Integration.TestHelpers
 {
@@ -96,6 +98,47 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 
             var mandateImportsClient = new MandateImportsClient(_clientConfiguration);
             return (await mandateImportsClient.CreateAsync(request)).MandateImport;
+        }
+
+        public async Task<MandateImportEntry> CreateMandateImportEntryFor(
+            MandateImport mandateImport,
+            string recordIdentifier)
+        {
+            var request = new AddMandateImportEntriesRequest
+            {
+                BankAccount = new BankAccount
+                {
+                    AccountHolderName = "Joe Bloggs",
+                    AccountNumber = "55666666",
+                    BranchCode = "200000",
+                    CountryCode = "GB"
+                },
+                Customer = new MandateImportEntries.Customer
+                {
+                    AddressLine1 = "Address Line 1",
+                    AddressLine2 = "Address Line 2",
+                    AddressLine3 = "Address Line 3",
+                    City = "London",
+                    CompanyName = "Company Name",
+                    CountryCode = "DK",
+                    Email = "email@example.com",
+                    FamilyName = "Family Name",
+                    GivenName = "Given Name",
+                    Language = "da",
+                    DanishIdentityNumber = "2205506218",
+                    SwedishIdentityNumber = "5302256218",
+                    PostalCode = "SW1A 1AA",
+                    Region = "Essex",
+                },
+                RecordIdentifier = recordIdentifier,
+                Links = new MandateImportEntriesLinks
+                {
+                    MandateImport = mandateImport.Id
+                }
+            };
+
+            var mandateImportEntriesClient = new MandateImportEntriesClient(_clientConfiguration);
+            return (await mandateImportEntriesClient.AddAsync(request)).MandateImportEntry;
         }
 
         public async Task<Payment> CreatePaymentFor(Mandate mandate)

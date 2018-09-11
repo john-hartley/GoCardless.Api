@@ -56,5 +56,59 @@ namespace GoCardless.Api.Tests.Unit
                 .ShouldHaveCalled("https://api.gocardless.com/mandate_import_entries")
                 .WithVerb(HttpMethod.Post);
         }
+
+        [Test]
+        public void AllMandateImportEntriesRequestIsNullThrows()
+        {
+            // given
+            var subject = new MandateImportEntriesClient(_clientConfiguration);
+            AllMandateImportEntriesRequest request = null;
+
+            // when
+            AsyncTestDelegate test = () => subject.AllAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+        }
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("\t  ")]
+        public void AllMandateImportEntriesRequestMandateImportIsNullOrWhiteSpaceThrows(string mandateImport)
+        {
+            // given
+            var subject = new MandateImportEntriesClient(_clientConfiguration);
+            var request = new AllMandateImportEntriesRequest
+            {
+                MandateImport = mandateImport
+            };
+
+            // when
+            AsyncTestDelegate test = () => subject.AllAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.MandateImport)));
+        }
+
+        [Test]
+        public async Task CallsAllMandateImportEntriesEndpoint()
+        {
+            // given
+            var subject = new MandateImportEntriesClient(_clientConfiguration);
+            var request = new AllMandateImportEntriesRequest
+            {
+                MandateImport = "IM12345678"
+            };
+
+            // when
+            await subject.AllAsync(request);
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/mandate_import_entries?mandate_import=IM12345678")
+                .WithVerb(HttpMethod.Get);
+        }
     }
 }
