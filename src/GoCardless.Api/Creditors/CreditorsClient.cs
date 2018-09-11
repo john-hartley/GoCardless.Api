@@ -1,6 +1,8 @@
 ﻿using GoCardless.Api.Core;
 using GoCardless.Api.Core.Configuration;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Creditors
@@ -22,6 +24,38 @@ namespace GoCardless.Api.Creditors
             }
 
             return GetAsync<AllCreditorsResponse>("creditors", request.ToReadOnlyDictionary());
+        }
+
+        public async Task<IEnumerable<Creditor>> AllBeforeAsync(AllCreditorsRequest request)
+        {
+            var response = await AllAsync(request);
+
+            var results = new List<Creditor>(response.Creditors ?? Enumerable.Empty<Creditor>());
+            while (response.Meta.Cursors.Before != null)
+            {
+                request.Before = response.Meta.Cursors.Before;
+
+                response = await AllAsync(request);
+                results.AddRange(response.Creditors ?? Enumerable.Empty<Creditor>());
+            }
+
+            return results;
+        }
+
+        public async Task<IEnumerable<Creditor>> AllAfterAsync(AllCreditorsRequest request)
+        {
+            var response = await AllAsync(request);
+
+            var results = new List<Creditor>(response.Creditors ?? Enumerable.Empty<Creditor>());
+            while (response.Meta.Cursors.After != null)
+            {
+                request.After = response.Meta.Cursors.After;
+
+                response = await AllAsync(request);
+                results.AddRange(response.Creditors ?? Enumerable.Empty<Creditor>());
+            }
+
+            return results;
         }
 
         public Task<CreditorResponse> ForIdAsync(string creditorId)
