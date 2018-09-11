@@ -18,8 +18,8 @@ There are still a few endpoints that I've not yet implemented. These are:
 - POST /customer_notifications/id/actions/handle 
 - GET /events
 - GET /events/id
-- POST /mandate_import_entries
-- GET /mandate_import_entries?mandate_import=id
+- ~~POST /mandate_import_entries~~ [Done](https://github.com/john-hartley/GoCardless.Api/pull/3)
+- ~~GET /mandate_import_entries?mandate_import=id~~ [Done](https://github.com/john-hartley/GoCardless.Api/pull/3)
 
 The paging mechanisms, mentioned above, also need to be implemented. Expect breaking changes around the `AllAsync` methods for each client that supports them.
 
