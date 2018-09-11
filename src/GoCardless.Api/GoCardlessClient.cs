@@ -14,7 +14,7 @@ using GoCardless.Api.RedirectFlows;
 using GoCardless.Api.Refunds;
 using GoCardless.Api.Subscriptions;
 
-namespace GoCardlessApi
+namespace GoCardless.Api
 {
     public class GoCardlessClient
     {
