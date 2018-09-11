@@ -2,7 +2,7 @@
 
 namespace GoCardless.Api.MandateImportEntries
 {
-    public class AddMandateImportEntriesResponse
+    public class AddMandateImportEntryResponse
     {
         [JsonProperty("mandate_import_entries")]
         public MandateImportEntry MandateImportEntry { get; set; }

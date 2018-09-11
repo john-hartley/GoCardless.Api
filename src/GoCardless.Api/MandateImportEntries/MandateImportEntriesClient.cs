@@ -9,14 +9,14 @@ namespace GoCardless.Api.MandateImportEntries
     {
         public MandateImportEntriesClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<AddMandateImportEntriesResponse> AddAsync(AddMandateImportEntriesRequest request)
+        public Task<AddMandateImportEntryResponse> AddAsync(AddMandateImportEntryRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return PostAsync<AddMandateImportEntriesResponse>(
+            return PostAsync<AddMandateImportEntryResponse>(
                 "mandate_import_entries",
                 new { mandate_import_entries = request }
             );

@@ -104,7 +104,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             MandateImport mandateImport,
             string recordIdentifier)
         {
-            var request = new AddMandateImportEntriesRequest
+            var request = new AddMandateImportEntryRequest
             {
                 BankAccount = new BankAccount
                 {

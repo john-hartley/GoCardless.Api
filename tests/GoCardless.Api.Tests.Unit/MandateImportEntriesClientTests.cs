@@ -27,11 +27,11 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void AddMandateImportEntriesRequestIsNullThrows()
+        public void AddMandateImportEntryRequestIsNullThrows()
         {
             // given
             var subject = new MandateImportEntriesClient(_clientConfiguration);
-            AddMandateImportEntriesRequest request = null;
+            AddMandateImportEntryRequest request = null;
 
             // when
             AsyncTestDelegate test = () => subject.AddAsync(request);
@@ -42,11 +42,11 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public async Task CallsAddMandateImportEntriesEndpoint()
+        public async Task CallsAddMandateImportEntryEndpoint()
         {
             // given
             var subject = new MandateImportEntriesClient(_clientConfiguration);
-            var request = new AddMandateImportEntriesRequest();
+            var request = new AddMandateImportEntryRequest();
 
             // when
             await subject.AddAsync(request);

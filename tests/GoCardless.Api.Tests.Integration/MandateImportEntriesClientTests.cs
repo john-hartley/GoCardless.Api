@@ -17,7 +17,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new MandateImportEntriesClient(_clientConfiguration);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
-            var request = new AddMandateImportEntriesRequest
+            var request = new AddMandateImportEntryRequest
             {
                 BankAccount = new BankAccount
                 {
@@ -44,7 +44,7 @@ namespace GoCardless.Api.Tests.Integration
                     Region = "Essex",
                 },
                 RecordIdentifier = $"import-{DateTime.Now:yyyyMMddhhssmmfff}",
-                Links = new MandateImportEntriesLinks
+                Links = new AddMandateImportEntryLinks
                 {
                     MandateImport = mandateImport.Id
                 }
