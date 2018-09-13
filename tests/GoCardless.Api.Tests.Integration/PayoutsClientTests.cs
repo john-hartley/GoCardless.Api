@@ -65,7 +65,7 @@ namespace GoCardless.Api.Tests.Integration
 
             Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
             Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
-            Assert.That(secondPageResult.Meta.Cursors.After, Is.Null);
+            Assert.That(secondPageResult.Meta.Cursors.After, Is.Not.Null);
             Assert.That(secondPageResult.Payouts.Count(), Is.EqualTo(secondPageRequest.Limit));
         }
 
