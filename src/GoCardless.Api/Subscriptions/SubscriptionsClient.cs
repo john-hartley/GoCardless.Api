@@ -24,7 +24,7 @@ namespace GoCardless.Api.Subscriptions
             return GetAsync<AllSubscriptionsResponse>("subscriptions", request.ToReadOnlyDictionary());
         }
 
-        public Task<CancelSubscriptionResponse> CancelAsync(CancelSubscriptionRequest request)
+        public Task<SubscriptionResponse> CancelAsync(CancelSubscriptionRequest request)
         {
             if (request == null)
             {
@@ -36,20 +36,20 @@ namespace GoCardless.Api.Subscriptions
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PostAsync<CancelSubscriptionResponse>(
+            return PostAsync<SubscriptionResponse>(
                 $"subscriptions/{request.Id}/actions/cancel",
                 new { subscriptions = request }
             );
         }
 
-        public Task<CreateSubscriptionResponse> CreateAsync(CreateSubscriptionRequest request)
+        public Task<SubscriptionResponse> CreateAsync(CreateSubscriptionRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return PostAsync<CreateSubscriptionResponse>(
+            return PostAsync<SubscriptionResponse>(
                 "subscriptions",
                 new { subscriptions = request },
                 request.IdempotencyKey
@@ -66,7 +66,7 @@ namespace GoCardless.Api.Subscriptions
             return GetAsync<SubscriptionResponse>($"subscriptions/{subscriptionId}");
         }
 
-        public Task<UpdateSubscriptionResponse> UpdateAsync(UpdateSubscriptionRequest request)
+        public Task<SubscriptionResponse> UpdateAsync(UpdateSubscriptionRequest request)
         {
             if (request == null)
             {
@@ -78,7 +78,7 @@ namespace GoCardless.Api.Subscriptions
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PutAsync<UpdateSubscriptionResponse>(
+            return PutAsync<SubscriptionResponse>(
                 $"subscriptions/{request.Id}",
                 new { subscriptions = request }
             );

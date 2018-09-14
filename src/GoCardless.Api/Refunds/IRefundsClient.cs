@@ -6,7 +6,7 @@ namespace GoCardless.Api.Refunds
     {
         Task<AllRefundsResponse> AllAsync();
         Task<AllRefundsResponse> AllAsync(AllRefundsRequest request);
-        Task<CreateRefundResponse> CreateAsync(CreateRefundRequest request);
+        Task<RefundResponse> CreateAsync(CreateRefundRequest request);
         Task<RefundResponse> ForIdAsync(string refundId);
         Task<UpdateRefundResponse> UpdateAsync(UpdateRefundRequest request);
     }

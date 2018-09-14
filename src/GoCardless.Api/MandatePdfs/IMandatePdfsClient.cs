@@ -4,6 +4,6 @@ namespace GoCardless.Api.MandatePdfs
 {
     public interface IMandatePdfsClient
     {
-        Task<CreateMandatePdfResponse> CreateAsync(CreateMandatePdfRequest request);
+        Task<MandatePdfResponse> CreateAsync(CreateMandatePdfRequest request);
     }
 }

@@ -9,7 +9,7 @@ namespace GoCardless.Api.RedirectFlows
     {
         public RedirectFlowsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<CompleteRedirectFlowResponse> CompleteAsync(CompleteRedirectFlowRequest request)
+        public Task<RedirectFlowResponse> CompleteAsync(CompleteRedirectFlowRequest request)
         {
             if (request == null)
             {
@@ -21,20 +21,20 @@ namespace GoCardless.Api.RedirectFlows
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PostAsync<CompleteRedirectFlowResponse>(
+            return PostAsync<RedirectFlowResponse>(
                 $"redirect_flows/{request.Id}/actions/complete",
                 new { data = request }
             );
         }
 
-        public Task<CreateRedirectFlowResponse> CreateAsync(CreateRedirectFlowRequest request)
+        public Task<RedirectFlowResponse> CreateAsync(CreateRedirectFlowRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return PostAsync<CreateRedirectFlowResponse>(
+            return PostAsync<RedirectFlowResponse>(
                 "redirect_flows", 
                 new { redirect_flows = request }
             );

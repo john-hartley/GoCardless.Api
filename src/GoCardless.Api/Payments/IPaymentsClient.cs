@@ -6,10 +6,10 @@ namespace GoCardless.Api.Payments
     {
         Task<AllPaymentsResponse> AllAsync();
         Task<AllPaymentsResponse> AllAsync(AllPaymentsRequest request);
-        Task<CancelPaymentResponse> CancelAsync(CancelPaymentRequest request);
-        Task<CreatePaymentResponse> CreateAsync(CreatePaymentRequest request);
+        Task<PaymentResponse> CancelAsync(CancelPaymentRequest request);
+        Task<PaymentResponse> CreateAsync(CreatePaymentRequest request);
         Task<PaymentResponse> ForIdAsync(string paymentId);
-        Task<RetryPaymentResponse> RetryAsync(RetryPaymentRequest request);
-        Task<UpdatePaymentResponse> UpdateAsync(UpdatePaymentRequest request);
+        Task<PaymentResponse> RetryAsync(RetryPaymentRequest request);
+        Task<PaymentResponse> UpdateAsync(UpdatePaymentRequest request);
     }
 }

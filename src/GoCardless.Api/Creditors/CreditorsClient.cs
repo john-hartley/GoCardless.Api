@@ -68,7 +68,7 @@ namespace GoCardless.Api.Creditors
             return GetAsync<CreditorResponse>($"creditors/{creditorId}");
         }
 
-        public Task<UpdateCreditorResponse> UpdateAsync(UpdateCreditorRequest request)
+        public Task<CreditorResponse> UpdateAsync(UpdateCreditorRequest request)
         {
             if (request == null)
             {
@@ -80,7 +80,7 @@ namespace GoCardless.Api.Creditors
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PutAsync<UpdateCreditorResponse>(
+            return PutAsync<CreditorResponse>(
                 $"creditors/{request.Id}",
                 new { creditors = request }
             );

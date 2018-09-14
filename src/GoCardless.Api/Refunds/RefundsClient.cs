@@ -24,14 +24,14 @@ namespace GoCardless.Api.Refunds
             return GetAsync<AllRefundsResponse>("refunds", request.ToReadOnlyDictionary());
         }
 
-        public Task<CreateRefundResponse> CreateAsync(CreateRefundRequest request)
+        public Task<RefundResponse> CreateAsync(CreateRefundRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
             
-            return PostAsync<CreateRefundResponse>(
+            return PostAsync<RefundResponse>(
                 "refunds",
                 new { refunds = request },
                 request.IdempotencyKey

@@ -6,8 +6,8 @@ namespace GoCardless.Api.CreditorBankAccounts
     {
         Task<AllCreditorBankAccountsResponse> AllAsync();
         Task<AllCreditorBankAccountsResponse> AllAsync(AllCreditorBankAccountsRequest request);
-        Task<CreateCreditorBankAccountResponse> CreateAsync(CreateCreditorBankAccountRequest request);
-        Task<DisableCreditorBankAccountResponse> DisableAsync(DisableCreditorBankAccountRequest request);
+        Task<CreditorBankAccountResponse> CreateAsync(CreateCreditorBankAccountRequest request);
+        Task<CreditorBankAccountResponse> DisableAsync(DisableCreditorBankAccountRequest request);
         Task<CreditorBankAccountResponse> ForIdAsync(string creditorBankAccountId);
     }
 }

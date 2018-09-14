@@ -6,8 +6,8 @@ namespace GoCardless.Api.Customers
     {
         Task<AllCustomersResponse> AllAsync();
         Task<AllCustomersResponse> AllAsync(AllCustomersRequest request);
-        Task<CreateCustomerResponse> CreateAsync(CreateCustomerRequest request);
+        Task<CustomerResponse> CreateAsync(CreateCustomerRequest request);
         Task<CustomerResponse> ForIdAsync(string customerId);
-        Task<UpdateCustomerResponse> UpdateAsync(UpdateCustomerRequest request);
+        Task<CustomerResponse> UpdateAsync(UpdateCustomerRequest request);
     }
 }

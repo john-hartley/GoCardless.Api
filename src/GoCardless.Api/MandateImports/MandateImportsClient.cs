@@ -9,26 +9,26 @@ namespace GoCardless.Api.MandateImports
     {
         public MandateImportsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<CancelMandateImportResponse> CancelAsync(string mandateImportId)
+        public Task<MandateImportResponse> CancelAsync(string mandateImportId)
         {
             if (string.IsNullOrWhiteSpace(mandateImportId))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(mandateImportId));
             }
 
-            return PostAsync<CancelMandateImportResponse>(
+            return PostAsync<MandateImportResponse>(
                 $"mandate_imports/{mandateImportId}/actions/cancel"
             );
         }
 
-        public Task<CreateMandateImportResponse> CreateAsync(CreateMandateImportRequest request)
+        public Task<MandateImportResponse> CreateAsync(CreateMandateImportRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return PostAsync<CreateMandateImportResponse>(
+            return PostAsync<MandateImportResponse>(
                 "mandate_imports",
                 new { mandate_imports = request }
             );
@@ -44,14 +44,14 @@ namespace GoCardless.Api.MandateImports
             return GetAsync<MandateImportResponse>($"mandate_imports/{mandateImportId}");
         }
 
-        public Task<SubmitMandateImportResponse> SubmitAsync(string mandateImportId)
+        public Task<MandateImportResponse> SubmitAsync(string mandateImportId)
         {
             if (string.IsNullOrWhiteSpace(mandateImportId))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(mandateImportId));
             }
 
-            return PostAsync<SubmitMandateImportResponse>(
+            return PostAsync<MandateImportResponse>(
                 $"mandate_imports/{mandateImportId}/actions/submit"
             );
         }
