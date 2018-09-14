@@ -33,47 +33,6 @@ namespace GoCardless.Api.Tests.Integration
         }
 
         [Test]
-        public void EncountersGoCardlessErrorThrows()
-        {
-            // given
-            var request = new CreateCustomerRequest
-            {
-                AddressLine1 = "Address Line 1",
-                AddressLine2 = "Address Line 2",
-                AddressLine3 = "Address Line 3",
-                City = "London",
-                CompanyName = "Company Name",
-                CountryCode = "DK",
-                Email = "email@example.com",
-                FamilyName = "Family Name",
-                GivenName = "Given Name",
-                IdempotencyKey = Guid.NewGuid().ToString(),
-                Language = "en",
-                PostalCode = "SW1A 1AA",
-                Region = "Essex",
-                DanishIdentityNumber = "DN02256218", // This triggers the error.
-                SwedishIdentityNumber = "5302256218",
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
-            };
-
-            var subject = new CustomersClient(_clientConfiguration);
-
-            // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
-
-            // then
-            var ex = Assert.ThrowsAsync<GoCardlessException>(test);
-            Assert.That(ex.Code, Is.EqualTo((int)HttpStatusCode.InternalServerError));
-            Assert.That(ex.Message, Is.Not.Null.And.Not.Empty);
-            Assert.That(ex.RawResponse, Is.Not.Null.And.Not.Empty);
-        }
-
-        [Test]
         public void ValidationFailsForRequestThrows()
         {
             // given
