@@ -24,31 +24,31 @@ namespace GoCardless.Api.Customers
             return GetAsync<PagedResponse<Customer>>("customers", request.ToReadOnlyDictionary());
         }
 
-        public Task<CustomerResponse> CreateAsync(CreateCustomerRequest request)
+        public Task<Response<Customer>> CreateAsync(CreateCustomerRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return PostAsync<CustomerResponse>(
+            return PostAsync<Response<Customer>>(
                 "customers",
                 new { customers = request },
                 request.IdempotencyKey
             );
         }
 
-        public Task<CustomerResponse> ForIdAsync(string customerId)
+        public Task<Response<Customer>> ForIdAsync(string customerId)
         {
             if (string.IsNullOrWhiteSpace(customerId))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(customerId));
             }
 
-            return GetAsync<CustomerResponse>($"customers/{customerId}");
+            return GetAsync<Response<Customer>>($"customers/{customerId}");
         }
 
-        public Task<CustomerResponse> UpdateAsync(UpdateCustomerRequest request)
+        public Task<Response<Customer>> UpdateAsync(UpdateCustomerRequest request)
         {
             if (request == null)
             {
@@ -60,7 +60,7 @@ namespace GoCardless.Api.Customers
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PutAsync<CustomerResponse>(
+            return PutAsync<Response<Customer>>(
                 $"customers/{request.Id}",
                 new { customers = request }
             );

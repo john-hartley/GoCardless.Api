@@ -267,7 +267,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             var customersClient = new CustomersClient(_clientConfiguration);
-            return (await customersClient.CreateAsync(request)).Customer;
+            return (await customersClient.CreateAsync(request)).Item;
         }
     }
 }
