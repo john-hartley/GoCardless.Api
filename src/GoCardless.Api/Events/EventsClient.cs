@@ -27,14 +27,14 @@ namespace GoCardless.Api.Events
             );
         }
 
-        public Task<EventResponse> ForIdAsync(string eventId)
+        public Task<Response<Event>> ForIdAsync(string eventId)
         {
             if (string.IsNullOrWhiteSpace(eventId))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(eventId));
             }
 
-            return GetAsync<EventResponse>($"events/{eventId}");
+            return GetAsync<Response<Event>>($"events/{eventId}");
         }
     }
 }

@@ -3,6 +3,7 @@ using GoCardless.Api.CreditorBankAccounts;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
 using GoCardless.Api.Customers;
+using GoCardless.Api.Events;
 using Newtonsoft.Json;
 
 namespace GoCardless.Api.Core
@@ -25,5 +26,8 @@ namespace GoCardless.Api.Core
 
         [JsonProperty("customers")]
         private Customer Customer { set => Item = value as TResource; }
+
+        [JsonProperty("events")]
+        private Event Event { set => Item = value as TResource; }
     }
 }
