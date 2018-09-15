@@ -9,7 +9,7 @@ namespace GoCardless.Api.RedirectFlows
     {
         public RedirectFlowsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<RedirectFlowResponse> CompleteAsync(CompleteRedirectFlowRequest request)
+        public Task<Response<RedirectFlow>> CompleteAsync(CompleteRedirectFlowRequest request)
         {
             if (request == null)
             {
@@ -21,33 +21,33 @@ namespace GoCardless.Api.RedirectFlows
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PostAsync<RedirectFlowResponse>(
+            return PostAsync<Response<RedirectFlow>>(
                 $"redirect_flows/{request.Id}/actions/complete",
                 new { data = request }
             );
         }
 
-        public Task<RedirectFlowResponse> CreateAsync(CreateRedirectFlowRequest request)
+        public Task<Response<RedirectFlow>> CreateAsync(CreateRedirectFlowRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return PostAsync<RedirectFlowResponse>(
+            return PostAsync<Response<RedirectFlow>>(
                 "redirect_flows", 
                 new { redirect_flows = request }
             );
         }
 
-        public Task<RedirectFlowResponse> ForIdAsync(string redirectFlowId)
+        public Task<Response<RedirectFlow>> ForIdAsync(string redirectFlowId)
         {
             if (string.IsNullOrWhiteSpace(redirectFlowId))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(redirectFlowId));
             }
 
-            return GetAsync<RedirectFlowResponse>($"redirect_flows/{redirectFlowId}");
+            return GetAsync<Response<RedirectFlow>>($"redirect_flows/{redirectFlowId}");
         }
     }
 }

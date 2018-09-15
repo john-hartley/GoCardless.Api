@@ -205,7 +205,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 
             // when
             var redirectFlowsClient = new RedirectFlowsClient(_clientConfiguration);
-            return (await redirectFlowsClient.CreateAsync(request)).RedirectFlow;
+            return (await redirectFlowsClient.CreateAsync(request)).Item;
         }
 
         public async Task<Subscription> CreateSubscriptionFor(Mandate mandate)

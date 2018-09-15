@@ -9,6 +9,7 @@ using GoCardless.Api.MandatePdfs;
 using GoCardless.Api.Mandates;
 using GoCardless.Api.Payments;
 using GoCardless.Api.Payouts;
+using GoCardless.Api.RedirectFlows;
 using Newtonsoft.Json;
 using Customer = GoCardless.Api.Customers.Customer;
 
@@ -53,5 +54,8 @@ namespace GoCardless.Api.Core
 
         [JsonProperty("payouts")]
         private Payout Payout { set => Item = value as TResource; }
+
+        [JsonProperty("redirect_flows")]
+        private RedirectFlow RedirectFlow { set => Item = value as TResource; }
     }
 }
