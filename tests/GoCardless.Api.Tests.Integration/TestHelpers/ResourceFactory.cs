@@ -86,7 +86,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             var mandatesClient = new MandatesClient(_clientConfiguration);
-            return (await mandatesClient.CreateAsync(request)).Mandate;
+            return (await mandatesClient.CreateAsync(request)).Item;
         }
 
         public async Task<MandateImport> CreateMandateImport()
