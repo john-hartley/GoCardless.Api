@@ -26,38 +26,6 @@ namespace GoCardless.Api.Creditors
             return GetAsync<PagedResponse<Creditor>>("creditors", request.ToReadOnlyDictionary());
         }
 
-        public async Task<IEnumerable<Creditor>> AllBeforeAsync(AllCreditorsRequest request)
-        {
-            var response = await AllAsync(request);
-
-            var results = new List<Creditor>(response.Items ?? Enumerable.Empty<Creditor>());
-            while (response.Meta.Cursors.Before != null)
-            {
-                request.Before = response.Meta.Cursors.Before;
-
-                response = await AllAsync(request);
-                results.AddRange(response.Items ?? Enumerable.Empty<Creditor>());
-            }
-
-            return results;
-        }
-
-        public async Task<IEnumerable<Creditor>> AllAfterAsync(AllCreditorsRequest request)
-        {
-            var response = await AllAsync(request);
-
-            var results = new List<Creditor>(response.Items ?? Enumerable.Empty<Creditor>());
-            while (response.Meta.Cursors.After != null)
-            {
-                request.After = response.Meta.Cursors.After;
-
-                response = await AllAsync(request);
-                results.AddRange(response.Items ?? Enumerable.Empty<Creditor>());
-            }
-
-            return results;
-        }
-
         public Task<CreditorResponse> ForIdAsync(string creditorId)
         {
             if (string.IsNullOrWhiteSpace(creditorId))
