@@ -8,6 +8,7 @@ using GoCardless.Api.MandateImports;
 using GoCardless.Api.MandatePdfs;
 using GoCardless.Api.Mandates;
 using GoCardless.Api.Payments;
+using GoCardless.Api.Payouts;
 using Newtonsoft.Json;
 using Customer = GoCardless.Api.Customers.Customer;
 
@@ -49,5 +50,8 @@ namespace GoCardless.Api.Core
 
         [JsonProperty("payments")]
         private Payment Payment { set => Item = value as TResource; }
+
+        [JsonProperty("payouts")]
+        private Payout Payout { set => Item = value as TResource; }
     }
 }

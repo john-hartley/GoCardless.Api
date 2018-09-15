@@ -7,6 +7,6 @@ namespace GoCardless.Api.Payouts
     {
         Task<PagedResponse<Payout>> AllAsync();
         Task<PagedResponse<Payout>> AllAsync(AllPayoutsRequest request);
-        Task<PayoutResponse> ForIdAsync(string payoutId);
+        Task<Response<Payout>> ForIdAsync(string payoutId);
     }
 }
