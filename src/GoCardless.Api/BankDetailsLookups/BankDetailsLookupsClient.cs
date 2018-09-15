@@ -9,14 +9,14 @@ namespace GoCardless.Api.BankDetailsLookups
     {
         public BankDetailsLookupsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<BankDetailsLookupResponse> LookupAsync(BankDetailsLookupRequest request)
+        public Task<Response<BankDetailsLookup>> LookupAsync(BankDetailsLookupRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return PostAsync<BankDetailsLookupResponse>(
+            return PostAsync<Response<BankDetailsLookup>>(
                 "bank_details_lookups",
                 new { bank_details_lookups = request }
             );

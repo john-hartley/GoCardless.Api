@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using GoCardless.Api.Core;
+using System.Threading.Tasks;
 
 namespace GoCardless.Api.BankDetailsLookups
 {
     public interface IBankDetailsLookupsClient
     {
-        Task<BankDetailsLookupResponse> LookupAsync(BankDetailsLookupRequest request);
+        Task<Response<BankDetailsLookup>> LookupAsync(BankDetailsLookupRequest request);
     }
 }
