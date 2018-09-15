@@ -233,7 +233,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             var subscriptionsClient = new SubscriptionsClient(_clientConfiguration);
-            return (await subscriptionsClient.CreateAsync(request)).Subscription;
+            return (await subscriptionsClient.CreateAsync(request)).Item;
         }
 
         private async Task<Customer> CreateCustomer(

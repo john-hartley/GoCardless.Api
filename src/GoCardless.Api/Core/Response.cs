@@ -65,5 +65,8 @@ namespace GoCardless.Api.Core
 
         [JsonProperty("refunds")]
         private Refund Refund { set => Item = value as TResource; }
+
+        [JsonProperty("subscriptions")]
+        private Subscription Subscription { set => Item = value as TResource; }
     }
 }

@@ -24,7 +24,7 @@ namespace GoCardless.Api.Subscriptions
             return GetAsync<PagedResponse<Subscription>>("subscriptions", request.ToReadOnlyDictionary());
         }
 
-        public Task<SubscriptionResponse> CancelAsync(CancelSubscriptionRequest request)
+        public Task<Response<Subscription>> CancelAsync(CancelSubscriptionRequest request)
         {
             if (request == null)
             {
@@ -36,37 +36,37 @@ namespace GoCardless.Api.Subscriptions
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PostAsync<SubscriptionResponse>(
+            return PostAsync<Response<Subscription>>(
                 $"subscriptions/{request.Id}/actions/cancel",
                 new { subscriptions = request }
             );
         }
 
-        public Task<SubscriptionResponse> CreateAsync(CreateSubscriptionRequest request)
+        public Task<Response<Subscription>> CreateAsync(CreateSubscriptionRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return PostAsync<SubscriptionResponse>(
+            return PostAsync<Response<Subscription>>(
                 "subscriptions",
                 new { subscriptions = request },
                 request.IdempotencyKey
             );
         }
 
-        public Task<SubscriptionResponse> ForIdAsync(string subscriptionId)
+        public Task<Response<Subscription>> ForIdAsync(string subscriptionId)
         {
             if (string.IsNullOrWhiteSpace(subscriptionId))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(subscriptionId));
             }
 
-            return GetAsync<SubscriptionResponse>($"subscriptions/{subscriptionId}");
+            return GetAsync<Response<Subscription>>($"subscriptions/{subscriptionId}");
         }
 
-        public Task<SubscriptionResponse> UpdateAsync(UpdateSubscriptionRequest request)
+        public Task<Response<Subscription>> UpdateAsync(UpdateSubscriptionRequest request)
         {
             if (request == null)
             {
@@ -78,7 +78,7 @@ namespace GoCardless.Api.Subscriptions
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PutAsync<SubscriptionResponse>(
+            return PutAsync<Response<Subscription>>(
                 $"subscriptions/{request.Id}",
                 new { subscriptions = request }
             );
