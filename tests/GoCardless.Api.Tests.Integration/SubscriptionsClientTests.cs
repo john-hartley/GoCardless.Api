@@ -57,24 +57,24 @@ namespace GoCardless.Api.Tests.Integration
             var result = await subject.CreateAsync(request);
 
             // then
-            Assert.That(result.Subscription.Id, Is.Not.Empty);
-            Assert.That(result.Subscription.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result.Subscription.Amount, Is.EqualTo(request.Amount));
-            Assert.That(result.Subscription.Currency, Is.EqualTo(request.Currency));
-            Assert.That(result.Subscription.Status, Is.EqualTo("active"));
-            Assert.That(result.Subscription.Name, Is.EqualTo(request.Name));
-            Assert.That(result.Subscription.StartDate.ToString("yyyy-MM-dd"), Is.EqualTo(request.StartDate));
-            //Assert.That(result.Subscription.EndDate, Is.EqualTo(request.EndDate));
-            Assert.That(result.Subscription.Interval, Is.EqualTo(request.Interval));
-            Assert.That(result.Subscription.IntervalUnit, Is.EqualTo(request.IntervalUnit));
-            Assert.That(result.Subscription.DayOfMonth, Is.EqualTo(request.DayOfMonth));
-            Assert.That(result.Subscription.Month, Is.EqualTo(request.Month));
-            Assert.That(result.Subscription.Metadata, Is.EqualTo(request.Metadata));
-            Assert.That(result.Subscription.PaymentReference, Is.EqualTo(request.PaymentReference));
-            Assert.That(result.Subscription.UpcomingPayments.Count(), Is.EqualTo(request.Count));
-            Assert.That(result.Subscription.AppFee, Is.EqualTo(request.AppFee));
-            Assert.That(result.Subscription.Links, Is.Not.Null);
-            Assert.That(result.Subscription.Links.Mandate, Is.EqualTo(request.Links.Mandate));
+            Assert.That(result.Item.Id, Is.Not.Empty);
+            Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result.Item.Amount, Is.EqualTo(request.Amount));
+            Assert.That(result.Item.Currency, Is.EqualTo(request.Currency));
+            Assert.That(result.Item.Status, Is.EqualTo("active"));
+            Assert.That(result.Item.Name, Is.EqualTo(request.Name));
+            Assert.That(result.Item.StartDate.ToString("yyyy-MM-dd"), Is.EqualTo(request.StartDate));
+            //Assert.That(result.Item.EndDate, Is.EqualTo(request.EndDate));
+            Assert.That(result.Item.Interval, Is.EqualTo(request.Interval));
+            Assert.That(result.Item.IntervalUnit, Is.EqualTo(request.IntervalUnit));
+            Assert.That(result.Item.DayOfMonth, Is.EqualTo(request.DayOfMonth));
+            Assert.That(result.Item.Month, Is.EqualTo(request.Month));
+            Assert.That(result.Item.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(result.Item.PaymentReference, Is.EqualTo(request.PaymentReference));
+            Assert.That(result.Item.UpcomingPayments.Count(), Is.EqualTo(request.Count));
+            Assert.That(result.Item.AppFee, Is.EqualTo(request.AppFee));
+            Assert.That(result.Item.Links, Is.Not.Null);
+            Assert.That(result.Item.Links.Mandate, Is.EqualTo(request.Links.Mandate));
         }
 
         [Test]
@@ -159,25 +159,25 @@ namespace GoCardless.Api.Tests.Integration
             var result = await subject.ForIdAsync(subscription.Id);
 
             // then
-            Assert.That(result.Subscription.Id, Is.EqualTo(subscription.Id));
-            Assert.That(result.Subscription.Amount, Is.Not.Null.And.EqualTo(subscription.Amount));
-            Assert.That(result.Subscription.AppFee, Is.Null);
-            Assert.That(result.Subscription.Currency, Is.Not.Null.And.EqualTo(subscription.Currency));
-            Assert.That(result.Subscription.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result.Subscription.DayOfMonth, Is.Null);
-            Assert.That(result.Subscription.EndDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
-            Assert.That(result.Subscription.Interval, Is.Not.Null.And.EqualTo(subscription.Interval));
-            Assert.That(result.Subscription.IntervalUnit, Is.Not.Null.And.EqualTo(subscription.IntervalUnit));
-            Assert.That(result.Subscription.Links, Is.Not.Null);
-            Assert.That(result.Subscription.Links.Mandate, Is.Not.Null.And.EqualTo(subscription.Links.Mandate));
-            Assert.That(result.Subscription.Metadata, Is.Not.Null.And.EqualTo(subscription.Metadata));
-            Assert.That(result.Subscription.Month, Is.Null);
-            Assert.That(result.Subscription.Name, Is.Not.Null.And.EqualTo(subscription.Name));
-            Assert.That(result.Subscription.PaymentReference, Is.Not.Null.And.EqualTo(subscription.PaymentReference));
-            Assert.That(result.Subscription.StartDate, Is.Not.Null.And.EqualTo(subscription.StartDate));
-            Assert.That(result.Subscription.Status, Is.Not.Null.And.EqualTo(subscription.Status));
-            Assert.That(result.Subscription.UpcomingPayments, Is.Not.Null);
-            Assert.That(result.Subscription.UpcomingPayments.Count(), Is.EqualTo(subscription.UpcomingPayments.Count()));
+            Assert.That(result.Item.Id, Is.EqualTo(subscription.Id));
+            Assert.That(result.Item.Amount, Is.Not.Null.And.EqualTo(subscription.Amount));
+            Assert.That(result.Item.AppFee, Is.Null);
+            Assert.That(result.Item.Currency, Is.Not.Null.And.EqualTo(subscription.Currency));
+            Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result.Item.DayOfMonth, Is.Null);
+            Assert.That(result.Item.EndDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(result.Item.Interval, Is.Not.Null.And.EqualTo(subscription.Interval));
+            Assert.That(result.Item.IntervalUnit, Is.Not.Null.And.EqualTo(subscription.IntervalUnit));
+            Assert.That(result.Item.Links, Is.Not.Null);
+            Assert.That(result.Item.Links.Mandate, Is.Not.Null.And.EqualTo(subscription.Links.Mandate));
+            Assert.That(result.Item.Metadata, Is.Not.Null.And.EqualTo(subscription.Metadata));
+            Assert.That(result.Item.Month, Is.Null);
+            Assert.That(result.Item.Name, Is.Not.Null.And.EqualTo(subscription.Name));
+            Assert.That(result.Item.PaymentReference, Is.Not.Null.And.EqualTo(subscription.PaymentReference));
+            Assert.That(result.Item.StartDate, Is.Not.Null.And.EqualTo(subscription.StartDate));
+            Assert.That(result.Item.Status, Is.Not.Null.And.EqualTo(subscription.Status));
+            Assert.That(result.Item.UpcomingPayments, Is.Not.Null);
+            Assert.That(result.Item.UpcomingPayments.Count(), Is.EqualTo(subscription.UpcomingPayments.Count()));
         }
 
         [Test]
@@ -200,12 +200,12 @@ namespace GoCardless.Api.Tests.Integration
             var result = await subject.UpdateAsync(request);
 
             // then
-            Assert.That(result.Subscription.Id, Is.EqualTo(request.Id));
-            Assert.That(result.Subscription.Amount, Is.EqualTo(request.Amount));
-            Assert.That(result.Subscription.AppFee, Is.Null);
-            Assert.That(result.Subscription.Metadata, Is.EqualTo(subscription.Metadata));
-            Assert.That(result.Subscription.Name, Is.EqualTo(request.Name));
-            Assert.That(result.Subscription.PaymentReference, Is.EqualTo(request.PaymentReference));
+            Assert.That(result.Item.Id, Is.EqualTo(request.Id));
+            Assert.That(result.Item.Amount, Is.EqualTo(request.Amount));
+            Assert.That(result.Item.AppFee, Is.Null);
+            Assert.That(result.Item.Metadata, Is.EqualTo(subscription.Metadata));
+            Assert.That(result.Item.Name, Is.EqualTo(request.Name));
+            Assert.That(result.Item.PaymentReference, Is.EqualTo(request.PaymentReference));
         }
 
         [Test]
@@ -234,12 +234,12 @@ namespace GoCardless.Api.Tests.Integration
             var result = await subject.UpdateAsync(request);
 
             // then
-            Assert.That(result.Subscription.Id, Is.EqualTo(request.Id));
-            Assert.That(result.Subscription.Amount, Is.EqualTo(request.Amount));
-            Assert.That(result.Subscription.AppFee, Is.Null);
-            Assert.That(result.Subscription.Metadata, Is.EqualTo(request.Metadata));
-            Assert.That(result.Subscription.Name, Is.EqualTo(request.Name));
-            Assert.That(result.Subscription.PaymentReference, Is.EqualTo(request.PaymentReference));
+            Assert.That(result.Item.Id, Is.EqualTo(request.Id));
+            Assert.That(result.Item.Amount, Is.EqualTo(request.Amount));
+            Assert.That(result.Item.AppFee, Is.Null);
+            Assert.That(result.Item.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(result.Item.Name, Is.EqualTo(request.Name));
+            Assert.That(result.Item.PaymentReference, Is.EqualTo(request.PaymentReference));
         }
 
         [Test]
@@ -265,8 +265,8 @@ namespace GoCardless.Api.Tests.Integration
             var result = await subject.CancelAsync(request);
 
             // then
-            Assert.That(result.Subscription.Id, Is.EqualTo(request.Id));
-            Assert.That(result.Subscription.Status, Is.EqualTo("cancelled"));
+            Assert.That(result.Item.Id, Is.EqualTo(request.Id));
+            Assert.That(result.Item.Status, Is.EqualTo("cancelled"));
         }
     }
 }

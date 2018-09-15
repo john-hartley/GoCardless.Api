@@ -7,7 +7,7 @@ namespace GoCardless.Api.Creditors
     {
         Task<PagedResponse<Creditor>> AllAsync();
         Task<PagedResponse<Creditor>> AllAsync(AllCreditorsRequest request);
-        Task<CreditorResponse> ForIdAsync(string creditorId);
-        Task<CreditorResponse> UpdateAsync(UpdateCreditorRequest request);
+        Task<Response<Creditor>> ForIdAsync(string creditorId);
+        Task<Response<Creditor>> UpdateAsync(UpdateCreditorRequest request);
     }
 }

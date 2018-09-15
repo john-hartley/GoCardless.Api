@@ -53,7 +53,7 @@ namespace GoCardless.Api.Tests.Integration
 
             var cancelRequest = new CancelMandateRequest
             {
-                Id = creationResult.Mandate.Id,
+                Id = creationResult.Item.Id,
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key4"] = "Value4",
@@ -66,7 +66,7 @@ namespace GoCardless.Api.Tests.Integration
 
             var reinstateRequest = new ReinstateMandateRequest
             {
-                Id = creationResult.Mandate.Id,
+                Id = creationResult.Item.Id,
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key7"] = "Value7",
@@ -78,20 +78,20 @@ namespace GoCardless.Api.Tests.Integration
             var reinstateResult = (await subject.ReinstateAsync(reinstateRequest));
 
             // then
-            Assert.That(creationResult.Mandate, Is.Not.Null);
-            Assert.That(creationResult.Mandate.Id, Is.Not.Null);
-            Assert.That(creationResult.Mandate.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(creationResult.Mandate.Links.Creditor, Is.EqualTo(_creditor.Id));
-            Assert.That(creationResult.Mandate.Links.CustomerBankAccount, Is.EqualTo(_customerBankAccount.Id));
-            Assert.That(creationResult.Mandate.Metadata, Is.EqualTo(createRequest.Metadata));
-            Assert.That(creationResult.Mandate.NextPossibleChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
-            Assert.That(creationResult.Mandate.Reference, Is.Not.Null.And.EqualTo(createRequest.Reference));
-            Assert.That(creationResult.Mandate.Scheme, Is.EqualTo(createRequest.Scheme));
-            Assert.That(creationResult.Mandate.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
+            Assert.That(creationResult.Item, Is.Not.Null);
+            Assert.That(creationResult.Item.Id, Is.Not.Null);
+            Assert.That(creationResult.Item.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(creationResult.Item.Links.Creditor, Is.EqualTo(_creditor.Id));
+            Assert.That(creationResult.Item.Links.CustomerBankAccount, Is.EqualTo(_customerBankAccount.Id));
+            Assert.That(creationResult.Item.Metadata, Is.EqualTo(createRequest.Metadata));
+            Assert.That(creationResult.Item.NextPossibleChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(creationResult.Item.Reference, Is.Not.Null.And.EqualTo(createRequest.Reference));
+            Assert.That(creationResult.Item.Scheme, Is.EqualTo(createRequest.Scheme));
+            Assert.That(creationResult.Item.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
             
-            Assert.That(cancellationResult.Mandate.Status, Is.EqualTo("cancelled"));
+            Assert.That(cancellationResult.Item.Status, Is.EqualTo("cancelled"));
 
-            Assert.That(reinstateResult.Mandate.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
+            Assert.That(reinstateResult.Item.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
         }
 
         [Test]
@@ -160,7 +160,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.ForIdAsync(mandate.Id);
-            var actual = result.Mandate;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
@@ -190,7 +190,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.UpdateAsync(request);
-            var actual = result.Mandate;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
@@ -218,7 +218,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.UpdateAsync(request);
-            var actual = result.Mandate;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);

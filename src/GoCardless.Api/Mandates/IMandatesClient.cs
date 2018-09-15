@@ -7,10 +7,10 @@ namespace GoCardless.Api.Mandates
     {
         Task<PagedResponse<Mandate>> AllAsync();
         Task<PagedResponse<Mandate>> AllAsync(AllMandatesRequest request);
-        Task<MandateResponse> CancelAsync(CancelMandateRequest request);
-        Task<MandateResponse> CreateAsync(CreateMandateRequest request);
-        Task<MandateResponse> ForIdAsync(string mandateId);
-        Task<MandateResponse> ReinstateAsync(ReinstateMandateRequest request);
-        Task<MandateResponse> UpdateAsync(UpdateMandateRequest request);
+        Task<Response<Mandate>> CancelAsync(CancelMandateRequest request);
+        Task<Response<Mandate>> CreateAsync(CreateMandateRequest request);
+        Task<Response<Mandate>> ForIdAsync(string mandateId);
+        Task<Response<Mandate>> ReinstateAsync(ReinstateMandateRequest request);
+        Task<Response<Mandate>> UpdateAsync(UpdateMandateRequest request);
     }
 }

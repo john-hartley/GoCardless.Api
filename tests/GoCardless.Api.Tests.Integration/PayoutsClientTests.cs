@@ -78,7 +78,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.ForIdAsync(payout.Id);
-            var actual = result.Payout;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);

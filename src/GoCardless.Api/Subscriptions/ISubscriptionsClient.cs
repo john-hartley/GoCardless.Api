@@ -7,9 +7,9 @@ namespace GoCardless.Api.Subscriptions
     {
         Task<PagedResponse<Subscription>> AllAsync();
         Task<PagedResponse<Subscription>> AllAsync(AllSubscriptionsRequest request);
-        Task<SubscriptionResponse> CancelAsync(CancelSubscriptionRequest request);
-        Task<SubscriptionResponse> CreateAsync(CreateSubscriptionRequest request);
-        Task<SubscriptionResponse> ForIdAsync(string subscriptionId);
-        Task<SubscriptionResponse> UpdateAsync(UpdateSubscriptionRequest request);
+        Task<Response<Subscription>> CancelAsync(CancelSubscriptionRequest request);
+        Task<Response<Subscription>> CreateAsync(CreateSubscriptionRequest request);
+        Task<Response<Subscription>> ForIdAsync(string subscriptionId);
+        Task<Response<Subscription>> UpdateAsync(UpdateSubscriptionRequest request);
     }
 }

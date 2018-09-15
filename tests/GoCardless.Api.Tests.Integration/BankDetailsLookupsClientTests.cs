@@ -24,10 +24,10 @@ namespace GoCardless.Api.Tests.Integration
             var result = await subject.LookupAsync(request);
 
             // then
-            Assert.That(result.BankDetailsLookup, Is.Not.Null);
-            Assert.That(result.BankDetailsLookup.AvailableDebitSchemes, Is.Not.Null.And.Not.Empty);
-            Assert.That(result.BankDetailsLookup.BankName, Is.Not.Null);
-            Assert.That(result.BankDetailsLookup.Bic, Is.Not.Null);
+            Assert.That(result.Item, Is.Not.Null);
+            Assert.That(result.Item.AvailableDebitSchemes, Is.Not.Null.And.Not.Empty);
+            Assert.That(result.Item.BankName, Is.Not.Null);
+            Assert.That(result.Item.Bic, Is.Not.Null);
         }
     }
 }

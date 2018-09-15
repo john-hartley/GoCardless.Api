@@ -1,8 +1,6 @@
 ﻿using GoCardless.Api.Core;
 using GoCardless.Api.Core.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Creditors
@@ -26,17 +24,17 @@ namespace GoCardless.Api.Creditors
             return GetAsync<PagedResponse<Creditor>>("creditors", request.ToReadOnlyDictionary());
         }
 
-        public Task<CreditorResponse> ForIdAsync(string creditorId)
+        public Task<Response<Creditor>> ForIdAsync(string creditorId)
         {
             if (string.IsNullOrWhiteSpace(creditorId))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(creditorId));
             }
 
-            return GetAsync<CreditorResponse>($"creditors/{creditorId}");
+            return GetAsync<Response<Creditor>>($"creditors/{creditorId}");
         }
 
-        public Task<CreditorResponse> UpdateAsync(UpdateCreditorRequest request)
+        public Task<Response<Creditor>> UpdateAsync(UpdateCreditorRequest request)
         {
             if (request == null)
             {
@@ -48,7 +46,7 @@ namespace GoCardless.Api.Creditors
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PutAsync<CreditorResponse>(
+            return PutAsync<Response<Creditor>>(
                 $"creditors/{request.Id}",
                 new { creditors = request }
             );

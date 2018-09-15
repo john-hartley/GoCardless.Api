@@ -24,14 +24,14 @@ namespace GoCardless.Api.Payouts
             return GetAsync<PagedResponse<Payout>>("payouts", request.ToReadOnlyDictionary());
         }
 
-        public Task<PayoutResponse> ForIdAsync(string payoutId)
+        public Task<Response<Payout>> ForIdAsync(string payoutId)
         {
             if (string.IsNullOrWhiteSpace(payoutId))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(payoutId));
             }
 
-            return GetAsync<PayoutResponse>($"payouts/{payoutId}");
+            return GetAsync<Response<Payout>>($"payouts/{payoutId}");
         }
     }
 }

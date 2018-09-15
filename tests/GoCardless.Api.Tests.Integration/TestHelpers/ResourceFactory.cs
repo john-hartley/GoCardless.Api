@@ -61,7 +61,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             var customerBankAccountsClient = new CustomerBankAccountsClient(_clientConfiguration);
-            return (await customerBankAccountsClient.CreateAsync(request)).CustomerBankAccount;
+            return (await customerBankAccountsClient.CreateAsync(request)).Item;
         }
 
         public async Task<Mandate> CreateMandateFor(
@@ -86,7 +86,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             var mandatesClient = new MandatesClient(_clientConfiguration);
-            return (await mandatesClient.CreateAsync(request)).Mandate;
+            return (await mandatesClient.CreateAsync(request)).Item;
         }
 
         public async Task<MandateImport> CreateMandateImport()
@@ -97,7 +97,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             var mandateImportsClient = new MandateImportsClient(_clientConfiguration);
-            return (await mandateImportsClient.CreateAsync(request)).MandateImport;
+            return (await mandateImportsClient.CreateAsync(request)).Item;
         }
 
         public async Task<MandateImportEntry> CreateMandateImportEntryFor(
@@ -138,7 +138,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             var mandateImportEntriesClient = new MandateImportEntriesClient(_clientConfiguration);
-            return (await mandateImportEntriesClient.AddAsync(request)).MandateImportEntry;
+            return (await mandateImportEntriesClient.AddAsync(request)).Item;
         }
 
         public async Task<Payment> CreatePaymentFor(Mandate mandate)
@@ -161,7 +161,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             var paymentsClient = new PaymentsClient(_clientConfiguration);
-            return (await paymentsClient.CreateAsync(request)).Payment;
+            return (await paymentsClient.CreateAsync(request)).Item;
         }
 
         public async Task<Payout> Payout()
@@ -205,7 +205,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 
             // when
             var redirectFlowsClient = new RedirectFlowsClient(_clientConfiguration);
-            return (await redirectFlowsClient.CreateAsync(request)).RedirectFlow;
+            return (await redirectFlowsClient.CreateAsync(request)).Item;
         }
 
         public async Task<Subscription> CreateSubscriptionFor(Mandate mandate)
@@ -233,7 +233,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             var subscriptionsClient = new SubscriptionsClient(_clientConfiguration);
-            return (await subscriptionsClient.CreateAsync(request)).Subscription;
+            return (await subscriptionsClient.CreateAsync(request)).Item;
         }
 
         private async Task<Customer> CreateCustomer(
@@ -267,7 +267,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             var customersClient = new CustomersClient(_clientConfiguration);
-            return (await customersClient.CreateAsync(request)).Customer;
+            return (await customersClient.CreateAsync(request)).Item;
         }
     }
 }

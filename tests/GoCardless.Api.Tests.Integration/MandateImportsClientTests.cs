@@ -19,11 +19,11 @@ namespace GoCardless.Api.Tests.Integration
             var result = await subject.CancelAsync(mandateImport.Id);
 
             // then
-            Assert.That(result.MandateImport, Is.Not.Null);
-            Assert.That(result.MandateImport.Id, Is.Not.Null.And.EqualTo(mandateImport.Id));
-            Assert.That(result.MandateImport.CreatedAt, Is.Not.Null.And.EqualTo(mandateImport.CreatedAt));
-            Assert.That(result.MandateImport.Scheme, Is.Not.Null.And.EqualTo(mandateImport.Scheme));
-            Assert.That(result.MandateImport.Status, Is.Not.Null.And.Not.EqualTo(mandateImport.Status));
+            Assert.That(result.Item, Is.Not.Null);
+            Assert.That(result.Item.Id, Is.Not.Null.And.EqualTo(mandateImport.Id));
+            Assert.That(result.Item.CreatedAt, Is.Not.Null.And.EqualTo(mandateImport.CreatedAt));
+            Assert.That(result.Item.Scheme, Is.Not.Null.And.EqualTo(mandateImport.Scheme));
+            Assert.That(result.Item.Status, Is.Not.Null.And.Not.EqualTo(mandateImport.Status));
         }
 
         [Test]
@@ -41,11 +41,11 @@ namespace GoCardless.Api.Tests.Integration
             var result = await subject.CreateAsync(request);
 
             // then
-            Assert.That(result.MandateImport, Is.Not.Null);
-            Assert.That(result.MandateImport.Id, Is.Not.Null);
-            Assert.That(result.MandateImport.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result.MandateImport.Scheme, Is.EqualTo(request.Scheme));
-            Assert.That(result.MandateImport.Status, Is.Not.Null);
+            Assert.That(result.Item, Is.Not.Null);
+            Assert.That(result.Item.Id, Is.Not.Null);
+            Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result.Item.Scheme, Is.EqualTo(request.Scheme));
+            Assert.That(result.Item.Status, Is.Not.Null);
         }
 
         [Test]
@@ -59,11 +59,11 @@ namespace GoCardless.Api.Tests.Integration
             var result = await subject.ForIdAsync(mandateImport.Id);
 
             // then
-            Assert.That(result.MandateImport, Is.Not.Null);
-            Assert.That(result.MandateImport.Id, Is.Not.Null.And.EqualTo(mandateImport.Id));
-            Assert.That(result.MandateImport.CreatedAt, Is.Not.Null.And.EqualTo(mandateImport.CreatedAt));
-            Assert.That(result.MandateImport.Scheme, Is.Not.Null.And.EqualTo(mandateImport.Scheme));
-            Assert.That(result.MandateImport.Status, Is.Not.Null.And.EqualTo(mandateImport.Status));
+            Assert.That(result.Item, Is.Not.Null);
+            Assert.That(result.Item.Id, Is.Not.Null.And.EqualTo(mandateImport.Id));
+            Assert.That(result.Item.CreatedAt, Is.Not.Null.And.EqualTo(mandateImport.CreatedAt));
+            Assert.That(result.Item.Scheme, Is.Not.Null.And.EqualTo(mandateImport.Scheme));
+            Assert.That(result.Item.Status, Is.Not.Null.And.EqualTo(mandateImport.Status));
         }
 
         [Test]
@@ -77,11 +77,11 @@ namespace GoCardless.Api.Tests.Integration
             var result = await subject.SubmitAsync(mandateImport.Id);
 
             // then
-            Assert.That(result.MandateImport, Is.Not.Null);
-            Assert.That(result.MandateImport.Id, Is.Not.Null.And.EqualTo(mandateImport.Id));
-            Assert.That(result.MandateImport.CreatedAt, Is.Not.Null.And.EqualTo(mandateImport.CreatedAt));
-            Assert.That(result.MandateImport.Scheme, Is.Not.Null.And.EqualTo(mandateImport.Scheme));
-            Assert.That(result.MandateImport.Status, Is.Not.Null.And.Not.EqualTo(mandateImport.Status));
+            Assert.That(result.Item, Is.Not.Null);
+            Assert.That(result.Item.Id, Is.Not.Null.And.EqualTo(mandateImport.Id));
+            Assert.That(result.Item.CreatedAt, Is.Not.Null.And.EqualTo(mandateImport.CreatedAt));
+            Assert.That(result.Item.Scheme, Is.Not.Null.And.EqualTo(mandateImport.Scheme));
+            Assert.That(result.Item.Status, Is.Not.Null.And.Not.EqualTo(mandateImport.Status));
         }
     }
 }

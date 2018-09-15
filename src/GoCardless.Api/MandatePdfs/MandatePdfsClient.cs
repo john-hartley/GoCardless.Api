@@ -10,7 +10,7 @@ namespace GoCardless.Api.MandatePdfs
     {
         public MandatePdfsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<MandatePdfResponse> CreateAsync(CreateMandatePdfRequest request)
+        public Task<Response<MandatePdf>> CreateAsync(CreateMandatePdfRequest request)
         {
             if (request == null)
             {
@@ -23,7 +23,7 @@ namespace GoCardless.Api.MandatePdfs
                 customHeaders.Add("Accept-Language", request.Language);
             }
 
-            return PostAsync<MandatePdfResponse>(
+            return PostAsync<Response<MandatePdf>>(
                 "mandate_pdfs",
                 new { mandate_pdfs = request },
                 customHeaders

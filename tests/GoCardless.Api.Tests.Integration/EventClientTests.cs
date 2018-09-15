@@ -267,7 +267,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.ForIdAsync(@event.Id);
-            var actual = result.Event;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);

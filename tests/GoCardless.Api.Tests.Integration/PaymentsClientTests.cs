@@ -52,7 +52,7 @@ namespace GoCardless.Api.Tests.Integration
 
             var cancelRequest = new CancelPaymentRequest
             {
-                Id = creationResult.Payment.Id,
+                Id = creationResult.Item.Id,
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key4"] = "Value4",
@@ -64,21 +64,21 @@ namespace GoCardless.Api.Tests.Integration
             var cancellationResult = await subject.CancelAsync(cancelRequest);
 
             // then
-            Assert.That(creationResult.Payment.Id, Is.Not.Null);
-            Assert.That(creationResult.Payment.Amount, Is.EqualTo(createRequest.Amount));
-            Assert.That(creationResult.Payment.AmountRefunded, Is.Not.Null);
-            //Assert.That(creationResult.Payment.AppFee, Is.EqualTo(createRequest.AppFee));
-            Assert.That(creationResult.Payment.ChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
-            Assert.That(creationResult.Payment.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(creationResult.Payment.Currency, Is.EqualTo(createRequest.Currency));
-            Assert.That(creationResult.Payment.Description, Is.EqualTo(createRequest.Description));
-            Assert.That(creationResult.Payment.Links.Creditor, Is.EqualTo(_creditor.Id));
-            Assert.That(creationResult.Payment.Links.Mandate, Is.EqualTo(_mandate.Id));
-            Assert.That(creationResult.Payment.Metadata, Is.EqualTo(createRequest.Metadata));
-            Assert.That(creationResult.Payment.Reference, Is.EqualTo(createRequest.Reference));
-            Assert.That(creationResult.Payment.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
+            Assert.That(creationResult.Item.Id, Is.Not.Null);
+            Assert.That(creationResult.Item.Amount, Is.EqualTo(createRequest.Amount));
+            Assert.That(creationResult.Item.AmountRefunded, Is.Not.Null);
+            //Assert.That(creationResult.Item.AppFee, Is.EqualTo(createRequest.AppFee));
+            Assert.That(creationResult.Item.ChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(creationResult.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(creationResult.Item.Currency, Is.EqualTo(createRequest.Currency));
+            Assert.That(creationResult.Item.Description, Is.EqualTo(createRequest.Description));
+            Assert.That(creationResult.Item.Links.Creditor, Is.EqualTo(_creditor.Id));
+            Assert.That(creationResult.Item.Links.Mandate, Is.EqualTo(_mandate.Id));
+            Assert.That(creationResult.Item.Metadata, Is.EqualTo(createRequest.Metadata));
+            Assert.That(creationResult.Item.Reference, Is.EqualTo(createRequest.Reference));
+            Assert.That(creationResult.Item.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
 
-            Assert.That(cancellationResult.Payment.Status, Is.EqualTo("cancelled"));
+            Assert.That(cancellationResult.Item.Status, Is.EqualTo("cancelled"));
         }
 
         [Test]
@@ -151,7 +151,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.ForIdAsync(payment.Id);
-            var actual = result.Payment;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
@@ -185,7 +185,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.UpdateAsync(request);
-            var actual = result.Payment;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
@@ -214,7 +214,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.UpdateAsync(request);
-            var actual = result.Payment;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
@@ -237,7 +237,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.RetryAsync(request);
-            var actual = result.Payment;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
