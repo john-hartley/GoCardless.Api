@@ -16,7 +16,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new PayoutsClient(_clientConfiguration);
 
             // when
-            var result = (await subject.AllAsync()).Payouts.ToList();
+            var result = (await subject.AllAsync()).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -58,15 +58,15 @@ namespace GoCardless.Api.Tests.Integration
             var secondPageResult = await subject.AllAsync(secondPageRequest);
 
             // then
+            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
             Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
             Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
             Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
-            Assert.That(firstPageResult.Payouts.Count(), Is.EqualTo(firstPageRequest.Limit));
 
+            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageRequest.Limit));
             Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
             Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
             Assert.That(secondPageResult.Meta.Cursors.After, Is.Not.Null);
-            Assert.That(secondPageResult.Payouts.Count(), Is.EqualTo(secondPageRequest.Limit));
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var subject = new PayoutsClient(_clientConfiguration);
-            var payout = (await subject.AllAsync()).Payouts.First();
+            var payout = (await subject.AllAsync()).Items.First();
 
             // when
             var result = await subject.ForIdAsync(payout.Id);

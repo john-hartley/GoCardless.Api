@@ -9,19 +9,19 @@ namespace GoCardless.Api.Events
     {
         public EventsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<AllEventsResponse> AllAsync()
+        public Task<PagedResponse<Event>> AllAsync()
         {
-            return GetAsync<AllEventsResponse>("events");
+            return GetAsync<PagedResponse<Event>>("events");
         }
 
-        public Task<AllEventsResponse> AllAsync(AllEventsRequest request)
+        public Task<PagedResponse<Event>> AllAsync(AllEventsRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return GetAsync<AllEventsResponse>(
+            return GetAsync<PagedResponse<Event>>(
                 "events",
                 request.ToReadOnlyDictionary()
             );

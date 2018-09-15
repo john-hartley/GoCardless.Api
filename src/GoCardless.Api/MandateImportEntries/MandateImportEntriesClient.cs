@@ -22,7 +22,7 @@ namespace GoCardless.Api.MandateImportEntries
             );
         }
 
-        public Task<AllMandateImportEntriesResponse> AllAsync(AllMandateImportEntriesRequest request)
+        public Task<PagedResponse<MandateImportEntry>> AllAsync(AllMandateImportEntriesRequest request)
         {
             if (request == null)
             {
@@ -34,7 +34,7 @@ namespace GoCardless.Api.MandateImportEntries
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.MandateImport));
             }
 
-            return GetAsync<AllMandateImportEntriesResponse>(
+            return GetAsync<PagedResponse<MandateImportEntry>>(
                 "mandate_import_entries",
                 request.ToReadOnlyDictionary()
             );

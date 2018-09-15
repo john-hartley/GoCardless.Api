@@ -24,7 +24,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
         public async Task<Creditor> Creditor()
         {
             var creditorsClient = new CreditorsClient(_clientConfiguration);
-            return (await creditorsClient.AllAsync()).Creditors.First();
+            return (await creditorsClient.AllAsync()).Items.First();
         }
 
         public ResourceFactory(ClientConfiguration clientConfiguration)
@@ -169,7 +169,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             var request = new AllPayoutsRequest();
 
             var payoutsClient = new PayoutsClient(_clientConfiguration);
-            return (await payoutsClient.AllAsync(request)).Payouts.First();
+            return (await payoutsClient.AllAsync(request)).Items.First();
         }
 
         public async Task<RedirectFlow> CreateRedirectFlowFor(Creditor creditor)

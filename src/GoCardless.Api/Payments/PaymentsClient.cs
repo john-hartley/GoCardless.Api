@@ -9,19 +9,19 @@ namespace GoCardless.Api.Payments
     {
         public PaymentsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<AllPaymentsResponse> AllAsync()
+        public Task<PagedResponse<Payment>> AllAsync()
         {
-            return GetAsync<AllPaymentsResponse>("payments");
+            return GetAsync<PagedResponse<Payment>>("payments");
         }
 
-        public Task<AllPaymentsResponse> AllAsync(AllPaymentsRequest request)
+        public Task<PagedResponse<Payment>> AllAsync(AllPaymentsRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return GetAsync<AllPaymentsResponse>("payments", request.ToReadOnlyDictionary());
+            return GetAsync<PagedResponse<Payment>>("payments", request.ToReadOnlyDictionary());
         }
 
         public Task<PaymentResponse> CancelAsync(CancelPaymentRequest request)

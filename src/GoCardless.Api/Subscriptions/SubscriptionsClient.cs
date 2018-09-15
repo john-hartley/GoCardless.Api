@@ -9,19 +9,19 @@ namespace GoCardless.Api.Subscriptions
     {
         public SubscriptionsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<AllSubscriptionsResponse> AllAsync()
+        public Task<PagedResponse<Subscription>> AllAsync()
         {
-            return GetAsync<AllSubscriptionsResponse>("subscriptions");
+            return GetAsync<PagedResponse<Subscription>>("subscriptions");
         }
 
-        public Task<AllSubscriptionsResponse> AllAsync(AllSubscriptionsRequest request)
+        public Task<PagedResponse<Subscription>> AllAsync(AllSubscriptionsRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return GetAsync<AllSubscriptionsResponse>("subscriptions", request.ToReadOnlyDictionary());
+            return GetAsync<PagedResponse<Subscription>>("subscriptions", request.ToReadOnlyDictionary());
         }
 
         public Task<SubscriptionResponse> CancelAsync(CancelSubscriptionRequest request)

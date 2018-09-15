@@ -9,19 +9,19 @@ namespace GoCardless.Api.Refunds
     {
         public RefundsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<AllRefundsResponse> AllAsync()
+        public Task<PagedResponse<Refund>> AllAsync()
         {
-            return GetAsync<AllRefundsResponse>("refunds");
+            return GetAsync<PagedResponse<Refund>>("refunds");
         }
 
-        public Task<AllRefundsResponse> AllAsync(AllRefundsRequest request)
+        public Task<PagedResponse<Refund>> AllAsync(AllRefundsRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return GetAsync<AllRefundsResponse>("refunds", request.ToReadOnlyDictionary());
+            return GetAsync<PagedResponse<Refund>>("refunds", request.ToReadOnlyDictionary());
         }
 
         public Task<RefundResponse> CreateAsync(CreateRefundRequest request)

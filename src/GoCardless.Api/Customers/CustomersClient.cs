@@ -9,19 +9,19 @@ namespace GoCardless.Api.Customers
     {
         public CustomersClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<AllCustomersResponse> AllAsync()
+        public Task<PagedResponse<Customer>> AllAsync()
         {
-            return GetAsync<AllCustomersResponse>("customers");
+            return GetAsync<PagedResponse<Customer>>("customers");
         }
 
-        public Task<AllCustomersResponse> AllAsync(AllCustomersRequest request)
+        public Task<PagedResponse<Customer>> AllAsync(AllCustomersRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return GetAsync<AllCustomersResponse>("customers", request.ToReadOnlyDictionary());
+            return GetAsync<PagedResponse<Customer>>("customers", request.ToReadOnlyDictionary());
         }
 
         public Task<CustomerResponse> CreateAsync(CreateCustomerRequest request)

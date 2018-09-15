@@ -9,19 +9,19 @@ namespace GoCardless.Api.Mandates
     {
         public MandatesClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<AllMandatesResponse> AllAsync()
+        public Task<PagedResponse<Mandate>> AllAsync()
         {
-            return GetAsync<AllMandatesResponse>("mandates");
+            return GetAsync<PagedResponse<Mandate>>("mandates");
         }
 
-        public Task<AllMandatesResponse> AllAsync(AllMandatesRequest request)
+        public Task<PagedResponse<Mandate>> AllAsync(AllMandatesRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return GetAsync<AllMandatesResponse>("mandates", request.ToReadOnlyDictionary());
+            return GetAsync<PagedResponse<Mandate>>("mandates", request.ToReadOnlyDictionary());
         }
 
         public Task<MandateResponse> CancelAsync(CancelMandateRequest request)

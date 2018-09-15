@@ -9,19 +9,22 @@ namespace GoCardless.Api.CustomerBankAccounts
     {
         public CustomerBankAccountsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<AllCustomerBankAccountsResponse> AllAsync()
+        public Task<PagedResponse<CustomerBankAccount>> AllAsync()
         {
-            return GetAsync<AllCustomerBankAccountsResponse>("customer_bank_accounts");
+            return GetAsync<PagedResponse<CustomerBankAccount>>("customer_bank_accounts");
         }
 
-        public Task<AllCustomerBankAccountsResponse> AllAsync(AllCustomerBankAccountsRequest request)
+        public Task<PagedResponse<CustomerBankAccount>> AllAsync(AllCustomerBankAccountsRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return GetAsync<AllCustomerBankAccountsResponse>("customer_bank_accounts", request.ToReadOnlyDictionary());
+            return GetAsync<PagedResponse<CustomerBankAccount>>(
+                "customer_bank_accounts",
+                request.ToReadOnlyDictionary()
+            );
         }
 
         public Task<CustomerBankAccountResponse> CreateAsync(CreateCustomerBankAccountRequest request)

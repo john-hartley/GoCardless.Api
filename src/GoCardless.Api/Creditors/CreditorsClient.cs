@@ -11,32 +11,32 @@ namespace GoCardless.Api.Creditors
     {
         public CreditorsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<AllCreditorsResponse> AllAsync()
+        public Task<PagedResponse<Creditor>> AllAsync()
         {
-            return GetAsync<AllCreditorsResponse>("creditors");
+            return GetAsync<PagedResponse<Creditor>>("creditors");
         }
 
-        public Task<AllCreditorsResponse> AllAsync(AllCreditorsRequest request)
+        public Task<PagedResponse<Creditor>> AllAsync(AllCreditorsRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return GetAsync<AllCreditorsResponse>("creditors", request.ToReadOnlyDictionary());
+            return GetAsync<PagedResponse<Creditor>>("creditors", request.ToReadOnlyDictionary());
         }
 
         public async Task<IEnumerable<Creditor>> AllBeforeAsync(AllCreditorsRequest request)
         {
             var response = await AllAsync(request);
 
-            var results = new List<Creditor>(response.Creditors ?? Enumerable.Empty<Creditor>());
+            var results = new List<Creditor>(response.Items ?? Enumerable.Empty<Creditor>());
             while (response.Meta.Cursors.Before != null)
             {
                 request.Before = response.Meta.Cursors.Before;
 
                 response = await AllAsync(request);
-                results.AddRange(response.Creditors ?? Enumerable.Empty<Creditor>());
+                results.AddRange(response.Items ?? Enumerable.Empty<Creditor>());
             }
 
             return results;
@@ -46,13 +46,13 @@ namespace GoCardless.Api.Creditors
         {
             var response = await AllAsync(request);
 
-            var results = new List<Creditor>(response.Creditors ?? Enumerable.Empty<Creditor>());
+            var results = new List<Creditor>(response.Items ?? Enumerable.Empty<Creditor>());
             while (response.Meta.Cursors.After != null)
             {
                 request.After = response.Meta.Cursors.After;
 
                 response = await AllAsync(request);
-                results.AddRange(response.Creditors ?? Enumerable.Empty<Creditor>());
+                results.AddRange(response.Items ?? Enumerable.Empty<Creditor>());
             }
 
             return results;
