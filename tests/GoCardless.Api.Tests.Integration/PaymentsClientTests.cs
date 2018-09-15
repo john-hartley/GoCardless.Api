@@ -230,13 +230,7 @@ namespace GoCardless.Api.Tests.Integration
 
             var request = new RetryPaymentRequest
             {
-                Id = payment.Id,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key4"] = "Value4",
-                    ["Key5"] = "Value5",
-                    ["Key6"] = "Value6",
-                },
+                Id = payment.Id
             };
 
             var subject = new PaymentsClient(_clientConfiguration);
