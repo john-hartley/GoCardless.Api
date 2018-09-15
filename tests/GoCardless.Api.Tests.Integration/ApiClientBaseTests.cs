@@ -193,7 +193,7 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(ex.Message, Is.Not.Null.And.Not.Empty);
             Assert.That(ex.RawResponse, Is.Not.Null.And.Not.Empty);
             Assert.That(ex.RequestId, Is.Not.Null.And.Not.Empty);
-            Assert.That(ex.ResourceId, Is.EqualTo(result.Payment.Id));
+            Assert.That(ex.ResourceId, Is.EqualTo(result.Item.Id));
         }
 
         [Test]

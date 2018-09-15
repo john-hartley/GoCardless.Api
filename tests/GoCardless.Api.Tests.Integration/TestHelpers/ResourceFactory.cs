@@ -161,7 +161,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             var paymentsClient = new PaymentsClient(_clientConfiguration);
-            return (await paymentsClient.CreateAsync(request)).Payment;
+            return (await paymentsClient.CreateAsync(request)).Item;
         }
 
         public async Task<Payout> Payout()
