@@ -2,9 +2,10 @@
 using GoCardless.Api.CreditorBankAccounts;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
-using GoCardless.Api.Customers;
 using GoCardless.Api.Events;
+using GoCardless.Api.MandateImportEntries;
 using Newtonsoft.Json;
+using Customer = GoCardless.Api.Customers.Customer;
 
 namespace GoCardless.Api.Core
 {
@@ -29,5 +30,8 @@ namespace GoCardless.Api.Core
 
         [JsonProperty("events")]
         private Event Event { set => Item = value as TResource; }
+
+        [JsonProperty("mandate_import_entries")]
+        private MandateImportEntry MandateImportEntry { set => Item = value as TResource; }
     }
 }

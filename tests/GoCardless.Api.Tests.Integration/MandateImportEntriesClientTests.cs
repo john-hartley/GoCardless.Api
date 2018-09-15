@@ -52,7 +52,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.AddAsync(request);
-            var actual = result.MandateImportEntry;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
