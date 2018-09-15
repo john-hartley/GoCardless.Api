@@ -61,7 +61,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             var customerBankAccountsClient = new CustomerBankAccountsClient(_clientConfiguration);
-            return (await customerBankAccountsClient.CreateAsync(request)).CustomerBankAccount;
+            return (await customerBankAccountsClient.CreateAsync(request)).Item;
         }
 
         public async Task<Mandate> CreateMandateFor(

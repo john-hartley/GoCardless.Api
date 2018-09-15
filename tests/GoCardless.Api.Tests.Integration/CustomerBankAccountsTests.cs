@@ -38,23 +38,23 @@ namespace GoCardless.Api.Tests.Integration
 
             var disableRequest = new DisableCustomerBankAccountRequest
             {
-                Id = creationResult.CustomerBankAccount.Id
+                Id = creationResult.Item.Id
             };
 
             var disabledResult = await subject.DisableAsync(disableRequest);
 
             // then
-            Assert.That(creationResult.CustomerBankAccount.Id, Is.Not.Null);
-            Assert.That(creationResult.CustomerBankAccount.AccountHolderName, Is.EqualTo(createRequest.AccountHolderName));
-            Assert.That(creationResult.CustomerBankAccount.AccountNumberEnding, Is.Not.Null);
-            Assert.That(creationResult.CustomerBankAccount.BankName, Is.Not.Null);
-            Assert.That(creationResult.CustomerBankAccount.CountryCode, Is.EqualTo(createRequest.CountryCode));
-            Assert.That(creationResult.CustomerBankAccount.Currency, Is.EqualTo(createRequest.Currency));
-            Assert.That(creationResult.CustomerBankAccount.Metadata, Is.EqualTo(createRequest.Metadata));
-            Assert.That(creationResult.CustomerBankAccount.Links.Customer, Is.EqualTo(createRequest.Links.Customer));
-            Assert.That(creationResult.CustomerBankAccount.Enabled, Is.True);
+            Assert.That(creationResult.Item.Id, Is.Not.Null);
+            Assert.That(creationResult.Item.AccountHolderName, Is.EqualTo(createRequest.AccountHolderName));
+            Assert.That(creationResult.Item.AccountNumberEnding, Is.Not.Null);
+            Assert.That(creationResult.Item.BankName, Is.Not.Null);
+            Assert.That(creationResult.Item.CountryCode, Is.EqualTo(createRequest.CountryCode));
+            Assert.That(creationResult.Item.Currency, Is.EqualTo(createRequest.Currency));
+            Assert.That(creationResult.Item.Metadata, Is.EqualTo(createRequest.Metadata));
+            Assert.That(creationResult.Item.Links.Customer, Is.EqualTo(createRequest.Links.Customer));
+            Assert.That(creationResult.Item.Enabled, Is.True);
 
-            Assert.That(disabledResult.CustomerBankAccount.Enabled, Is.False);
+            Assert.That(disabledResult.Item.Enabled, Is.False);
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.ForIdAsync(customerBankAccount.Id);
-            var actual = result.CustomerBankAccount;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
@@ -154,7 +154,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.UpdateAsync(request);
-            var actual = result.CustomerBankAccount;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
@@ -184,7 +184,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.UpdateAsync(request);
-            var actual = result.CustomerBankAccount;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);

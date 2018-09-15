@@ -27,21 +27,21 @@ namespace GoCardless.Api.CustomerBankAccounts
             );
         }
 
-        public Task<CustomerBankAccountResponse> CreateAsync(CreateCustomerBankAccountRequest request)
+        public Task<Response<CustomerBankAccount>> CreateAsync(CreateCustomerBankAccountRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return PostAsync<CustomerBankAccountResponse>(
+            return PostAsync<Response<CustomerBankAccount>>(
                 "customer_bank_accounts",
                 new { customer_bank_accounts = request },
                 request.IdempotencyKey
             );
         }
 
-        public Task<CustomerBankAccountResponse> DisableAsync(DisableCustomerBankAccountRequest request)
+        public Task<Response<CustomerBankAccount>> DisableAsync(DisableCustomerBankAccountRequest request)
         {
             if (request == null)
             {
@@ -53,22 +53,22 @@ namespace GoCardless.Api.CustomerBankAccounts
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PostAsync<CustomerBankAccountResponse>(
+            return PostAsync<Response<CustomerBankAccount>>(
                 $"customer_bank_accounts/{request.Id}/actions/disable"
             );
         }
 
-        public Task<CustomerBankAccountResponse> ForIdAsync(string customerBankAccountId)
+        public Task<Response<CustomerBankAccount>> ForIdAsync(string customerBankAccountId)
         {
             if (string.IsNullOrWhiteSpace(customerBankAccountId))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(customerBankAccountId));
             }
             
-            return GetAsync<CustomerBankAccountResponse>($"customer_bank_accounts/{customerBankAccountId}");
+            return GetAsync<Response<CustomerBankAccount>>($"customer_bank_accounts/{customerBankAccountId}");
         }
 
-        public Task<CustomerBankAccountResponse> UpdateAsync(UpdateCustomerBankAccountRequest request)
+        public Task<Response<CustomerBankAccount>> UpdateAsync(UpdateCustomerBankAccountRequest request)
         {
             if (request == null)
             {
@@ -80,7 +80,7 @@ namespace GoCardless.Api.CustomerBankAccounts
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PutAsync<CustomerBankAccountResponse>(
+            return PutAsync<Response<CustomerBankAccount>>(
                 $"customer_bank_accounts/{request.Id}",
                 new { customer_bank_accounts = request }
             );

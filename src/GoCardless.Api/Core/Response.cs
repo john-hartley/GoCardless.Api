@@ -1,6 +1,7 @@
 ﻿using GoCardless.Api.BankDetailsLookups;
 using GoCardless.Api.CreditorBankAccounts;
 using GoCardless.Api.Creditors;
+using GoCardless.Api.CustomerBankAccounts;
 using Newtonsoft.Json;
 
 namespace GoCardless.Api.Core
@@ -17,5 +18,8 @@ namespace GoCardless.Api.Core
 
         [JsonProperty("creditors")]
         private Creditor Creditor { set => Item = value as TResource; }
+
+        [JsonProperty("customer_bank_accounts")]
+        private CustomerBankAccount CustomerBankAccount { set => Item = value as TResource; }
     }
 }
