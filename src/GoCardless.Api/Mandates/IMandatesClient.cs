@@ -1,15 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using GoCardless.Api.Core;
+using System.Threading.Tasks;
 
 namespace GoCardless.Api.Mandates
 {
     public interface IMandatesClient
     {
-        Task<AllMandatesResponse> AllAsync();
-        Task<AllMandatesResponse> AllAsync(AllMandatesRequest request);
-        Task<CancelMandateResponse> CancelAsync(CancelMandateRequest request);
-        Task<CreateMandateResponse> CreateAsync(CreateMandateRequest request);
+        Task<PagedResponse<Mandate>> AllAsync();
+        Task<PagedResponse<Mandate>> AllAsync(AllMandatesRequest request);
+        Task<MandateResponse> CancelAsync(CancelMandateRequest request);
+        Task<MandateResponse> CreateAsync(CreateMandateRequest request);
         Task<MandateResponse> ForIdAsync(string mandateId);
-        Task<ReinstateMandateResponse> ReinstateAsync(ReinstateMandateRequest request);
-        Task<UpdateMandateResponse> UpdateAsync(UpdateMandateRequest request);
+        Task<MandateResponse> ReinstateAsync(ReinstateMandateRequest request);
+        Task<MandateResponse> UpdateAsync(UpdateMandateRequest request);
     }
 }

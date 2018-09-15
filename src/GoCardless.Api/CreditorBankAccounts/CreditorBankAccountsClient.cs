@@ -9,36 +9,39 @@ namespace GoCardless.Api.CreditorBankAccounts
     {
         public CreditorBankAccountsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<AllCreditorBankAccountsResponse> AllAsync()
+        public Task<PagedResponse<CreditorBankAccount>> AllAsync()
         {
-            return GetAsync<AllCreditorBankAccountsResponse>("creditor_bank_accounts");
+            return GetAsync<PagedResponse<CreditorBankAccount>>("creditor_bank_accounts");
         }
 
-        public Task<AllCreditorBankAccountsResponse> AllAsync(AllCreditorBankAccountsRequest request)
+        public Task<PagedResponse<CreditorBankAccount>> AllAsync(AllCreditorBankAccountsRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return GetAsync<AllCreditorBankAccountsResponse>("creditor_bank_accounts", request.ToReadOnlyDictionary());
+            return GetAsync<PagedResponse<CreditorBankAccount>>(
+                "creditor_bank_accounts", 
+                request.ToReadOnlyDictionary()
+            );
         }
 
-        public Task<CreateCreditorBankAccountResponse> CreateAsync(CreateCreditorBankAccountRequest request)
+        public Task<CreditorBankAccountResponse> CreateAsync(CreateCreditorBankAccountRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return PostAsync<CreateCreditorBankAccountResponse>(
+            return PostAsync<CreditorBankAccountResponse>(
                 "creditor_bank_accounts",
                 new { creditor_bank_accounts = request },
                 request.IdempotencyKey
             );
         }
 
-        public Task<DisableCreditorBankAccountResponse> DisableAsync(DisableCreditorBankAccountRequest request)
+        public Task<CreditorBankAccountResponse> DisableAsync(DisableCreditorBankAccountRequest request)
         {
             if (request == null)
             {
@@ -50,7 +53,7 @@ namespace GoCardless.Api.CreditorBankAccounts
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PostAsync<DisableCreditorBankAccountResponse>(
+            return PostAsync<CreditorBankAccountResponse>(
                 $"creditor_bank_accounts/{request.Id}/actions/disable"
             );
         }

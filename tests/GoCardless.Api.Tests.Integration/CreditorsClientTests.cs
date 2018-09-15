@@ -16,7 +16,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new CreditorsClient(_clientConfiguration);
 
             // when
-            var result = (await subject.AllAsync()).Creditors.ToList();
+            var result = (await subject.AllAsync()).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -68,10 +68,10 @@ namespace GoCardless.Api.Tests.Integration
             var result = await subject.AllAsync(request);
 
             // then
+            Assert.That(result.Items.Count(), Is.EqualTo(request.Limit));
             Assert.That(result.Meta.Limit, Is.EqualTo(request.Limit));
             Assert.That(result.Meta.Cursors.Before, Is.Null);
             Assert.That(result.Meta.Cursors.After, Is.Null);
-            Assert.That(result.Creditors.Count(), Is.EqualTo(request.Limit));
         }
 
         [Test, NonParallelizable]

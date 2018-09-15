@@ -4,9 +4,9 @@ namespace GoCardless.Api.MandateImports
 {
     public interface IMandateImportsClient
     {
-        Task<CancelMandateImportResponse> CancelAsync(string mandateImportId);
-        Task<CreateMandateImportResponse> CreateAsync(CreateMandateImportRequest request);
+        Task<MandateImportResponse> CancelAsync(string mandateImportId);
+        Task<MandateImportResponse> CreateAsync(CreateMandateImportRequest request);
         Task<MandateImportResponse> ForIdAsync(string mandateImportId);
-        Task<SubmitMandateImportResponse> SubmitAsync(string mandateImportId);
+        Task<MandateImportResponse> SubmitAsync(string mandateImportId);
     }
 }

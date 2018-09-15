@@ -88,7 +88,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new PaymentsClient(_clientConfiguration);
 
             // when
-            var result = (await subject.AllAsync()).Payments.ToList();
+            var result = (await subject.AllAsync()).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -131,15 +131,15 @@ namespace GoCardless.Api.Tests.Integration
             var secondPageResult = await subject.AllAsync(secondPageRequest);
 
             // then
+            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
             Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
             Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
             Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
-            Assert.That(firstPageResult.Payments.Count(), Is.EqualTo(firstPageRequest.Limit));
 
+            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageRequest.Limit));
             Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
             Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
             Assert.That(secondPageResult.Meta.Cursors.After, Is.Not.Null);
-            Assert.That(secondPageResult.Payments.Count(), Is.EqualTo(secondPageRequest.Limit));
         }
 
         [Test]
@@ -230,13 +230,7 @@ namespace GoCardless.Api.Tests.Integration
 
             var request = new RetryPaymentRequest
             {
-                Id = payment.Id,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key4"] = "Value4",
-                    ["Key5"] = "Value5",
-                    ["Key6"] = "Value6",
-                },
+                Id = payment.Id
             };
 
             var subject = new PaymentsClient(_clientConfiguration);

@@ -85,7 +85,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.AllAsync();
-            var actual = result.Subscriptions.ToList();
+            var actual = result.Items.ToList();
 
             // then
             Assert.That(actual.Any(), Is.True);
@@ -136,15 +136,15 @@ namespace GoCardless.Api.Tests.Integration
             var secondPageResult = await subject.AllAsync(secondPageRequest);
 
             // then
+            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
             Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
             Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
             Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
-            Assert.That(firstPageResult.Subscriptions.Count(), Is.EqualTo(firstPageRequest.Limit));
 
+            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageRequest.Limit));
             Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
             Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
             Assert.That(secondPageResult.Meta.Cursors.After, Is.Not.Null);
-            Assert.That(secondPageResult.Subscriptions.Count(), Is.EqualTo(secondPageRequest.Limit));
         }
 
         [Test]

@@ -2,7 +2,7 @@
 
 namespace GoCardless.Api.MandatePdfs
 {
-    public class CreateMandatePdfResponse
+    public class MandatePdfResponse
     {
         [JsonProperty("mandate_pdfs")]
         public MandatePdf MandatePdf { get; set; }

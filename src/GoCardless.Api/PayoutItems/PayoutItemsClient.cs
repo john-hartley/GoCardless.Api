@@ -9,7 +9,7 @@ namespace GoCardless.Api.PayoutItems
     {
         public PayoutItemsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<PayoutItemsResponse> ForPayoutAsync(PayoutItemsRequest request)
+        public Task<PagedResponse<PayoutItem>> ForPayoutAsync(PayoutItemsRequest request)
         {
             if (request == null)
             {
@@ -21,7 +21,7 @@ namespace GoCardless.Api.PayoutItems
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Payout));
             }
             
-            return GetAsync<PayoutItemsResponse>(
+            return GetAsync<PagedResponse<PayoutItem>>(
                 "payout_items",
                 request.ToReadOnlyDictionary()
             );

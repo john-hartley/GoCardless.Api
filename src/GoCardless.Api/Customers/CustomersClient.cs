@@ -9,29 +9,29 @@ namespace GoCardless.Api.Customers
     {
         public CustomersClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<AllCustomersResponse> AllAsync()
+        public Task<PagedResponse<Customer>> AllAsync()
         {
-            return GetAsync<AllCustomersResponse>("customers");
+            return GetAsync<PagedResponse<Customer>>("customers");
         }
 
-        public Task<AllCustomersResponse> AllAsync(AllCustomersRequest request)
+        public Task<PagedResponse<Customer>> AllAsync(AllCustomersRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return GetAsync<AllCustomersResponse>("customers", request.ToReadOnlyDictionary());
+            return GetAsync<PagedResponse<Customer>>("customers", request.ToReadOnlyDictionary());
         }
 
-        public Task<CreateCustomerResponse> CreateAsync(CreateCustomerRequest request)
+        public Task<CustomerResponse> CreateAsync(CreateCustomerRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return PostAsync<CreateCustomerResponse>(
+            return PostAsync<CustomerResponse>(
                 "customers",
                 new { customers = request },
                 request.IdempotencyKey
@@ -48,7 +48,7 @@ namespace GoCardless.Api.Customers
             return GetAsync<CustomerResponse>($"customers/{customerId}");
         }
 
-        public Task<UpdateCustomerResponse> UpdateAsync(UpdateCustomerRequest request)
+        public Task<CustomerResponse> UpdateAsync(UpdateCustomerRequest request)
         {
             if (request == null)
             {
@@ -60,7 +60,7 @@ namespace GoCardless.Api.Customers
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PutAsync<UpdateCustomerResponse>(
+            return PutAsync<CustomerResponse>(
                 $"customers/{request.Id}",
                 new { customers = request }
             );

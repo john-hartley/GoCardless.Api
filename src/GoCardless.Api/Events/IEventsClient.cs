@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using GoCardless.Api.Core;
+using System.Threading.Tasks;
 
 namespace GoCardless.Api.Events
 {
     public interface IEventsClient
     {
-        Task<AllEventsResponse> AllAsync();
-        Task<AllEventsResponse> AllAsync(AllEventsRequest request);
+        Task<PagedResponse<Event>> AllAsync();
+        Task<PagedResponse<Event>> AllAsync(AllEventsRequest request);
         Task<EventResponse> ForIdAsync(string eventId);
     }
 }
