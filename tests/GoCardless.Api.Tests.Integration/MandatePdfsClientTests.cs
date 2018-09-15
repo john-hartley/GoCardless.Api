@@ -31,9 +31,9 @@ namespace GoCardless.Api.Tests.Integration
             var result = await subject.CreateAsync(request);
 
             // then
-            Assert.That(result.MandatePdf, Is.Not.Null);
-            Assert.That(result.MandatePdf.ExpiresAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result.MandatePdf.Url, Is.Not.Null);
+            Assert.That(result.Item, Is.Not.Null);
+            Assert.That(result.Item.ExpiresAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result.Item.Url, Is.Not.Null);
         }
     }
 }

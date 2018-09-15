@@ -5,6 +5,7 @@ using GoCardless.Api.CustomerBankAccounts;
 using GoCardless.Api.Events;
 using GoCardless.Api.MandateImportEntries;
 using GoCardless.Api.MandateImports;
+using GoCardless.Api.MandatePdfs;
 using GoCardless.Api.Mandates;
 using Newtonsoft.Json;
 using Customer = GoCardless.Api.Customers.Customer;
@@ -38,6 +39,9 @@ namespace GoCardless.Api.Core
 
         [JsonProperty("mandate_imports")]
         private MandateImport MandateImport { set => Item = value as TResource; }
+
+        [JsonProperty("mandate_pdfs")]
+        private MandatePdf MandatePdf { set => Item = value as TResource; }
 
         [JsonProperty("mandates")]
         private Mandate Mandate { set => Item = value as TResource; }
