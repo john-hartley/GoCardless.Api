@@ -47,7 +47,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.CreateAsync(request);
-            var actual = result.Refund;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
@@ -127,7 +127,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.ForIdAsync(refund.Id);
-            var actual = result.Refund;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
@@ -156,7 +156,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.UpdateAsync(request);
-            var actual = result.Refund;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
@@ -192,7 +192,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await subject.UpdateAsync(request);
-            var actual = result.Refund;
+            var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);

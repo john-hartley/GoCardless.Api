@@ -10,6 +10,8 @@ using GoCardless.Api.Mandates;
 using GoCardless.Api.Payments;
 using GoCardless.Api.Payouts;
 using GoCardless.Api.RedirectFlows;
+using GoCardless.Api.Refunds;
+using GoCardless.Api.Subscriptions;
 using Newtonsoft.Json;
 using Customer = GoCardless.Api.Customers.Customer;
 
@@ -57,5 +59,11 @@ namespace GoCardless.Api.Core
 
         [JsonProperty("redirect_flows")]
         private RedirectFlow RedirectFlow { set => Item = value as TResource; }
+
+        [JsonProperty("payment_refunds")]
+        private Refund PaymentRefund { set => Item = value as TResource; }
+
+        [JsonProperty("refunds")]
+        private Refund Refund { set => Item = value as TResource; }
     }
 }

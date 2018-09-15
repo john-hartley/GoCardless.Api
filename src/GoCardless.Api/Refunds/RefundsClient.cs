@@ -24,31 +24,31 @@ namespace GoCardless.Api.Refunds
             return GetAsync<PagedResponse<Refund>>("refunds", request.ToReadOnlyDictionary());
         }
 
-        public Task<RefundResponse> CreateAsync(CreateRefundRequest request)
+        public Task<Response<Refund>> CreateAsync(CreateRefundRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
             
-            return PostAsync<RefundResponse>(
+            return PostAsync<Response<Refund>>(
                 "refunds",
                 new { refunds = request },
                 request.IdempotencyKey
             );
         }
 
-        public Task<RefundResponse> ForIdAsync(string refundId)
+        public Task<Response<Refund>> ForIdAsync(string refundId)
         {
             if (string.IsNullOrWhiteSpace(refundId))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(refundId));
             }
 
-            return GetAsync<RefundResponse>($"refunds/{refundId}");
+            return GetAsync<Response<Refund>>($"refunds/{refundId}");
         }
 
-        public Task<UpdateRefundResponse> UpdateAsync(UpdateRefundRequest request)
+        public Task<Response<Refund>> UpdateAsync(UpdateRefundRequest request)
         {
             if (request == null)
             {
@@ -60,7 +60,7 @@ namespace GoCardless.Api.Refunds
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
             }
 
-            return PutAsync<UpdateRefundResponse>(
+            return PutAsync<Response<Refund>>(
                 $"refunds/{request.Id}",
                 new { refunds = request }
             );
