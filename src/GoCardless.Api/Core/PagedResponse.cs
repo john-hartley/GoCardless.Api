@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.Core
 {
-    public class PagedResponse<TResource>
+    public class PagedResponse<TResource> where TResource : class
     {
         public IReadOnlyList<TResource> Items { get; set; }
 
