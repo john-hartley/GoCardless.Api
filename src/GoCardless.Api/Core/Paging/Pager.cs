@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Core
+namespace GoCardless.Api.Core.Paging
 {
     public class Pager<TRequest, TResource> : IPagerBuilder<TRequest, TResource>, IPager<TRequest, TResource>
         where TRequest : IPageRequest, ICloneable

@@ -12,7 +12,7 @@ using GoCardless.Api.Subscriptions;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Core
+namespace GoCardless.Api.Core.Paging
 {
     public class PagedResponse<TResource>
     {

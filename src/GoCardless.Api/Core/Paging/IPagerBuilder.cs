@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.Core
+﻿namespace GoCardless.Api.Core.Paging
 {
     public interface IPagerBuilder<TRequest, TResource>
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Core
+namespace GoCardless.Api.Core.Paging
 {
     public interface IPager<TRequest, TResource>
     {

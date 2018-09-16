@@ -15,7 +15,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Tests.Integration
+namespace GoCardless.Api.Tests.Integration.Core
 {
     public class ApiClientBaseTests : IntegrationTest
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GoCardless.Api.Core
+namespace GoCardless.Api.Core.Paging
 {
     public class QueryStringKeyAttribute : Attribute
     {
