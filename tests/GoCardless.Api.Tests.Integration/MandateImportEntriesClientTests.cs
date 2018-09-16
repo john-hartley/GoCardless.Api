@@ -73,13 +73,13 @@ namespace GoCardless.Api.Tests.Integration
             var mandateImportsClient = new MandateImportsClient(_clientConfiguration);
             await mandateImportsClient.SubmitAsync(mandateImport.Id);
 
-            var request = new AllMandateImportEntriesRequest
+            var request = new GetMandateImportEntriesRequest
             {
                 MandateImport = mandateImport.Id
             };
 
             // when
-            var result = (await subject.AllAsync(request)).Items.ToList();
+            var result = (await subject.GetPageAsync(request)).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -103,13 +103,13 @@ namespace GoCardless.Api.Tests.Integration
             var secondRecordId = "second-record";
             var secondEntry = await _resourceFactory.CreateMandateImportEntryFor(mandateImport, secondRecordId);
 
-            var request = new AllMandateImportEntriesRequest
+            var request = new GetMandateImportEntriesRequest
             {
                 MandateImport = mandateImport.Id
             };
 
             // when
-            var result = (await subject.AllAsync(request)).Items.ToList();
+            var result = (await subject.GetPageAsync(request)).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -138,28 +138,28 @@ namespace GoCardless.Api.Tests.Integration
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             var firstRecordId = "first-record";
-            var firstEntry = await _resourceFactory.CreateMandateImportEntryFor(mandateImport, firstRecordId);
+            await _resourceFactory.CreateMandateImportEntryFor(mandateImport, firstRecordId);
 
             var secondRecordId = "second-record";
-            var secondEntry = await _resourceFactory.CreateMandateImportEntryFor(mandateImport, secondRecordId);
+            await _resourceFactory.CreateMandateImportEntryFor(mandateImport, secondRecordId);
 
-            var firstPageRequest = new AllMandateImportEntriesRequest
+            var firstPageRequest = new GetMandateImportEntriesRequest
             {
                 Limit = 1,
                 MandateImport = mandateImport.Id
             };
 
             // when
-            var firstPageResult = await subject.AllAsync(firstPageRequest);
+            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
 
-            var secondPageRequest = new AllMandateImportEntriesRequest
+            var secondPageRequest = new GetMandateImportEntriesRequest
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 1,
                 MandateImport = mandateImport.Id
             };
 
-            var secondPageResult = await subject.AllAsync(secondPageRequest);
+            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
 
             // then
             Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
@@ -171,6 +171,37 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
             Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
             Assert.That(secondPageResult.Meta.Cursors.After, Is.Null);
+        }
+
+        [Test]
+        public async Task PagesThroughMandateImportEntries()
+        {
+            // given
+            var subject = new MandateImportEntriesClient(_clientConfiguration);
+            var mandateImport = await _resourceFactory.CreateMandateImport();
+
+            var firstRecordId = "first-record";
+            await _resourceFactory.CreateMandateImportEntryFor(mandateImport, firstRecordId);
+
+            var secondRecordId = "second-record";
+            await _resourceFactory.CreateMandateImportEntryFor(mandateImport, secondRecordId);
+
+            var initialRequest = new GetMandateImportEntriesRequest
+            {
+                Limit = 1,
+                MandateImport = mandateImport.Id
+            };
+
+            // when
+            var result = await subject
+                .BuildPager()
+                .StartFrom(initialRequest)
+                .AndGetAllAfterAsync();
+
+            // then
+            Assert.That(result.Count, Is.GreaterThan(1));
+            Assert.That(result[0].RecordIdentifier, Is.Not.Null.And.Not.EqualTo(result[1].RecordIdentifier));
+            Assert.That(result[1].RecordIdentifier, Is.Not.Null.And.Not.EqualTo(result[0].RecordIdentifier));
         }
     }
 }
