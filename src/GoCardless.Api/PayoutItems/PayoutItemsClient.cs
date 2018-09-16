@@ -10,7 +10,12 @@ namespace GoCardless.Api.PayoutItems
     {
         public PayoutItemsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<PagedResponse<PayoutItem>> ForPayoutAsync(PayoutItemsRequest request)
+        public IPagerBuilder<GetPayoutItemsRequest, PayoutItem> BuildPager()
+        {
+            return new Pager<GetPayoutItemsRequest, PayoutItem>(GetPageAsync);
+        }
+
+        public Task<PagedResponse<PayoutItem>> GetPageAsync(GetPayoutItemsRequest request)
         {
             if (request == null)
             {

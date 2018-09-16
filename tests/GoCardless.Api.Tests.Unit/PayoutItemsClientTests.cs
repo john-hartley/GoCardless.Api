@@ -27,15 +27,15 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void PayoutItemRequestIsNullThrows()
+        public void GetPayoutItemRequestIsNullThrows()
         {
             // given
             var subject = new PayoutItemsClient(_clientConfiguration);
 
-            PayoutItemsRequest request = null;
+            GetPayoutItemsRequest request = null;
 
             // when
-            AsyncTestDelegate test = () => subject.ForPayoutAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(request);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -50,10 +50,10 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PayoutItemsClient(_clientConfiguration);
 
-            var request = new PayoutItemsRequest();
+            var request = new GetPayoutItemsRequest();
 
             // when
-            AsyncTestDelegate test = () => subject.ForPayoutAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(request);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -62,12 +62,12 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public async Task CallsAllPayoutsEndpointUsingRequest()
+        public async Task CallsGetPayoutItemsEndpointUsingRequest()
         {
             // given
             var subject = new PayoutItemsClient(_clientConfiguration);
 
-            var request = new PayoutItemsRequest
+            var request = new GetPayoutItemsRequest
             {
                 Before = "before test",
                 After = "after test",
@@ -76,7 +76,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.ForPayoutAsync(request);
+            await subject.GetPageAsync(request);
 
             // then
             _httpTest
