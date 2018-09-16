@@ -16,7 +16,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new PayoutsClient(_clientConfiguration);
 
             // when
-            var result = (await subject.AllAsync()).Items.ToList();
+            var result = (await subject.GetPageAsync()).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -41,21 +41,21 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new PayoutsClient(_clientConfiguration);
 
-            var firstPageRequest = new AllPayoutsRequest
+            var firstPageRequest = new GetPayoutsRequest
             {
                 Limit = 1
             };
 
             // when
-            var firstPageResult = await subject.AllAsync(firstPageRequest);
+            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
 
-            var secondPageRequest = new AllPayoutsRequest
+            var secondPageRequest = new GetPayoutsRequest
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 1
             };
 
-            var secondPageResult = await subject.AllAsync(secondPageRequest);
+            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
 
             // then
             Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
@@ -74,7 +74,7 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var subject = new PayoutsClient(_clientConfiguration);
-            var payout = (await subject.AllAsync()).Items.First();
+            var payout = (await subject.GetPageAsync()).Items.First();
 
             // when
             var result = await subject.ForIdAsync(payout.Id);
@@ -94,6 +94,79 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(actual.PayoutType, Is.Not.Null.And.EqualTo(payout.PayoutType));
             Assert.That(actual.Reference, Is.Not.Null.And.EqualTo(payout.Reference));
             Assert.That(actual.Status, Is.Not.Null.And.EqualTo(payout.Status));
+        }
+
+        [Test]
+        public async Task ReturnsPagesIncludingAndBeforeInitialRequest()
+        {
+            // given
+            var subject = new PayoutsClient(_clientConfiguration);
+            var lastId = (await subject.GetPageAsync()).Items.Last().Id;
+
+            var initialRequest = new GetPayoutsRequest
+            {
+                Before = lastId,
+                Limit = 1,
+            };
+
+            // when
+            var result = await subject
+                .BuildPager()
+                .StartFrom(initialRequest)
+                .AndGetAllBeforeAsync();
+
+            // then
+            Assert.That(result.Count, Is.GreaterThan(1));
+            Assert.That(result[0].Id, Is.Not.Null.And.Not.EqualTo(result[1].Id));
+            Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
+        }
+
+        [Test]
+        public async Task ReturnsPagesIncludingAndAfterInitialRequest()
+        {
+            // given
+            var subject = new PayoutsClient(_clientConfiguration);
+
+            var initialRequest = new GetPayoutsRequest
+            {
+                Limit = 1,
+            };
+
+            // when
+            var result = await subject
+                .BuildPager()
+                .StartFrom(initialRequest)
+                .AndGetAllAfterAsync();
+
+            // then
+            Assert.That(result.Count, Is.GreaterThan(1));
+            Assert.That(result[0].Id, Is.Not.Null.And.Not.EqualTo(result[1].Id));
+            Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
+        }
+
+        [Test]
+        public async Task ReturnsPagesIncludingAndAfterInitialRequestWhenCursorSpecified()
+        {
+            // given
+            var subject = new PayoutsClient(_clientConfiguration);
+            var firstId = (await subject.GetPageAsync()).Items.First().Id;
+
+            var initialRequest = new GetPayoutsRequest
+            {
+                After = firstId,
+                Limit = 1,
+            };
+
+            // when
+            var result = await subject
+                .BuildPager()
+                .StartFrom(initialRequest)
+                .AndGetAllAfterAsync();
+
+            // then
+            Assert.That(result.Count, Is.GreaterThan(1));
+            Assert.That(result[0].Id, Is.Not.Null.And.Not.EqualTo(result[1].Id));
+            Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
         }
     }
 }

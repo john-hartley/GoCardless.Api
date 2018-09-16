@@ -14,9 +14,10 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.Core
 {
-    public class PagedResponse<TResource> where TResource : class
+    public class PagedResponse<TResource>
     {
         public IReadOnlyList<TResource> Items { get; set; }
+        public Meta Meta { get; set; }
 
         [JsonProperty("creditor_bank_accounts")]
         private IList<CreditorBankAccount> CreditorBankAccounts { set => Items = value as IReadOnlyList<TResource>; }
@@ -53,7 +54,5 @@ namespace GoCardless.Api.Core
 
         [JsonProperty("subscriptions")]
         private IList<Subscription> Subscriptions { set => Items = value as IReadOnlyList<TResource>; }
-
-        public Meta Meta { get; set; }
     }
 }

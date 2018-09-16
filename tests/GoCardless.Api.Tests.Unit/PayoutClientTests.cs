@@ -32,10 +32,10 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PayoutsClient(_clientConfiguration);
 
-            AllPayoutsRequest request = null;
+            GetPayoutsRequest request = null;
 
             // when
-            AsyncTestDelegate test = () => subject.AllAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(request);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -48,7 +48,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PayoutsClient(_clientConfiguration);
 
-            var request = new AllPayoutsRequest
+            var request = new GetPayoutsRequest
             {
                 Before = "before test",
                 After = "after test",
@@ -56,7 +56,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.AllAsync(request);
+            await subject.GetPageAsync(request);
 
             // then
             _httpTest
@@ -71,7 +71,7 @@ namespace GoCardless.Api.Tests.Unit
             var subject = new PayoutsClient(_clientConfiguration);
 
             // when
-            await subject.AllAsync();
+            await subject.GetPageAsync();
 
             // then
             _httpTest

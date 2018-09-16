@@ -9,19 +9,9 @@ namespace GoCardless.Api.Payouts
     {
         public PayoutsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<PagedResponse<Payout>> AllAsync()
+        public IPagerBuilder<GetPayoutsRequest, Payout> BuildPager()
         {
-            return GetAsync<PagedResponse<Payout>>("payouts");
-        }
-
-        public Task<PagedResponse<Payout>> AllAsync(AllPayoutsRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            return GetAsync<PagedResponse<Payout>>("payouts", request.ToReadOnlyDictionary());
+            return new Pager<GetPayoutsRequest, Payout>(GetPageAsync);
         }
 
         public Task<Response<Payout>> ForIdAsync(string payoutId)
@@ -32,6 +22,21 @@ namespace GoCardless.Api.Payouts
             }
 
             return GetAsync<Response<Payout>>($"payouts/{payoutId}");
+        }
+
+        public Task<PagedResponse<Payout>> GetPageAsync()
+        {
+            return GetAsync<PagedResponse<Payout>>("payouts");
+        }
+
+        public Task<PagedResponse<Payout>> GetPageAsync(GetPayoutsRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return GetAsync<PagedResponse<Payout>>("payouts", request.ToReadOnlyDictionary());
         }
     }
 }
