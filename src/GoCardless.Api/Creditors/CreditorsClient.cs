@@ -10,19 +10,9 @@ namespace GoCardless.Api.Creditors
     {
         public CreditorsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<PagedResponse<Creditor>> AllAsync()
+        public IPagerBuilder<GetCreditorsRequest, Creditor> BuildPager()
         {
-            return GetAsync<PagedResponse<Creditor>>("creditors");
-        }
-
-        public Task<PagedResponse<Creditor>> AllAsync(AllCreditorsRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            return GetAsync<PagedResponse<Creditor>>("creditors", request.ToReadOnlyDictionary());
+            return new Pager<GetCreditorsRequest, Creditor>(GetPageAsync);
         }
 
         public Task<Response<Creditor>> ForIdAsync(string creditorId)
@@ -33,6 +23,21 @@ namespace GoCardless.Api.Creditors
             }
 
             return GetAsync<Response<Creditor>>($"creditors/{creditorId}");
+        }
+
+        public Task<PagedResponse<Creditor>> GetPageAsync()
+        {
+            return GetAsync<PagedResponse<Creditor>>("creditors");
+        }
+
+        public Task<PagedResponse<Creditor>> GetPageAsync(GetCreditorsRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return GetAsync<PagedResponse<Creditor>>("creditors", request.ToReadOnlyDictionary());
         }
 
         public Task<Response<Creditor>> UpdateAsync(UpdateCreditorRequest request)

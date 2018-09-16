@@ -24,7 +24,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
         public async Task<Creditor> Creditor()
         {
             var creditorsClient = new CreditorsClient(_clientConfiguration);
-            return (await creditorsClient.AllAsync()).Items.First();
+            return (await creditorsClient.GetPageAsync()).Items.First();
         }
 
         public ResourceFactory(ClientConfiguration clientConfiguration)
