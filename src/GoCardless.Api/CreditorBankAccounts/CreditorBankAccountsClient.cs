@@ -10,22 +10,9 @@ namespace GoCardless.Api.CreditorBankAccounts
     {
         public CreditorBankAccountsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<PagedResponse<CreditorBankAccount>> AllAsync()
+        public IPagerBuilder<GetCreditorBankAccountsRequest, CreditorBankAccount> BuildPager()
         {
-            return GetAsync<PagedResponse<CreditorBankAccount>>("creditor_bank_accounts");
-        }
-
-        public Task<PagedResponse<CreditorBankAccount>> AllAsync(AllCreditorBankAccountsRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            return GetAsync<PagedResponse<CreditorBankAccount>>(
-                "creditor_bank_accounts", 
-                request.ToReadOnlyDictionary()
-            );
+            return new Pager<GetCreditorBankAccountsRequest, CreditorBankAccount>(GetPageAsync);
         }
 
         public Task<Response<CreditorBankAccount>> CreateAsync(CreateCreditorBankAccountRequest request)
@@ -67,6 +54,24 @@ namespace GoCardless.Api.CreditorBankAccounts
             }
 
             return GetAsync<Response<CreditorBankAccount>>($"creditor_bank_accounts/{creditorBankAccountId}");
+        }
+
+        public Task<PagedResponse<CreditorBankAccount>> GetPageAsync()
+        {
+            return GetAsync<PagedResponse<CreditorBankAccount>>("creditor_bank_accounts");
+        }
+
+        public Task<PagedResponse<CreditorBankAccount>> GetPageAsync(GetCreditorBankAccountsRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return GetAsync<PagedResponse<CreditorBankAccount>>(
+                "creditor_bank_accounts",
+                request.ToReadOnlyDictionary()
+            );
         }
     }
 }
