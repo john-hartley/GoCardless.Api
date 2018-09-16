@@ -3,8 +3,13 @@ using System;
 
 namespace GoCardless.Api.Customers
 {
-    public class AllCustomersRequest : IPageRequest
+    public class GetCustomersRequest : IPageRequest, ICloneable
     {
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
+
         public string Before { get; set; }
         public string After { get; set; }
         public int? Limit { get; set; }

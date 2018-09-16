@@ -6,10 +6,11 @@ namespace GoCardless.Api.Customers
 {
     public interface ICustomersClient
     {
-        Task<PagedResponse<Customer>> AllAsync();
-        Task<PagedResponse<Customer>> AllAsync(AllCustomersRequest request);
+        IPagerBuilder<GetCustomersRequest, Customer> BuildPager();
         Task<Response<Customer>> CreateAsync(CreateCustomerRequest request);
         Task<Response<Customer>> ForIdAsync(string customerId);
+        Task<PagedResponse<Customer>> GetPageAsync();
+        Task<PagedResponse<Customer>> GetPageAsync(GetCustomersRequest request);
         Task<Response<Customer>> UpdateAsync(UpdateCustomerRequest request);
     }
 }

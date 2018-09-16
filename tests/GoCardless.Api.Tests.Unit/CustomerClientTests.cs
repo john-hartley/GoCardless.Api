@@ -27,59 +27,6 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public async Task CallsAllCustomersEndpoint()
-        {
-            // given
-            var subject = new CustomersClient(_clientConfiguration);
-
-            // when
-            await subject.AllAsync();
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/customers")
-                .WithVerb(HttpMethod.Get);
-        }
-
-        [Test]
-        public void AllCustomersRequestIsNullThrows()
-        {
-            // given
-            var subject = new CustomersClient(_clientConfiguration);
-
-            AllCustomersRequest request = null;
-
-            // when
-            AsyncTestDelegate test = () => subject.AllAsync(request);
-
-            // then
-            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
-        }
-
-        [Test]
-        public async Task CallsAllCustomersEndpointUsingRequest()
-        {
-            // given
-            var subject = new CustomersClient(_clientConfiguration);
-
-            var request = new AllCustomersRequest
-            {
-                Before = "before test",
-                After = "after test",
-                Limit = 5
-            };
-
-            // when
-            await subject.AllAsync(request);
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/customers?before=before%20test&after=after%20test&limit=5")
-                .WithVerb(HttpMethod.Get);
-        }
-
-        [Test]
         public void CreateCustomerRequestIsNullThrows()
         {
             // given
@@ -146,6 +93,59 @@ namespace GoCardless.Api.Tests.Unit
             // then
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/customers/CU12345678")
+                .WithVerb(HttpMethod.Get);
+        }
+
+        [Test]
+        public async Task CallsGetCustomersEndpoint()
+        {
+            // given
+            var subject = new CustomersClient(_clientConfiguration);
+
+            // when
+            await subject.GetPageAsync();
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/customers")
+                .WithVerb(HttpMethod.Get);
+        }
+
+        [Test]
+        public void GetCustomersRequestIsNullThrows()
+        {
+            // given
+            var subject = new CustomersClient(_clientConfiguration);
+
+            GetCustomersRequest request = null;
+
+            // when
+            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+        }
+
+        [Test]
+        public async Task CallsGetCustomersEndpointUsingRequest()
+        {
+            // given
+            var subject = new CustomersClient(_clientConfiguration);
+
+            var request = new GetCustomersRequest
+            {
+                Before = "before test",
+                After = "after test",
+                Limit = 5
+            };
+
+            // when
+            await subject.GetPageAsync(request);
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/customers?before=before%20test&after=after%20test&limit=5")
                 .WithVerb(HttpMethod.Get);
         }
 
