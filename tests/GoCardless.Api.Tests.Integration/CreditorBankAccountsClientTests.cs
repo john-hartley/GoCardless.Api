@@ -231,7 +231,7 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(actual.Enabled, Is.EqualTo(creditorBankAccount.Enabled));
         }
 
-        [Test, Explicit("Can end up performing 1 <= 49 calls.")]
+        [Test, Explicit("Can end up performing lots of calls.")]
         public async Task PagesThroughCreditorBankAccounts()
         {
             // given
