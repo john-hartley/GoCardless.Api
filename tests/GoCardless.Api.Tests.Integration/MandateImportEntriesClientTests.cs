@@ -138,10 +138,10 @@ namespace GoCardless.Api.Tests.Integration
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             var firstRecordId = "first-record";
-            var firstEntry = await _resourceFactory.CreateMandateImportEntryFor(mandateImport, firstRecordId);
+            await _resourceFactory.CreateMandateImportEntryFor(mandateImport, firstRecordId);
 
             var secondRecordId = "second-record";
-            var secondEntry = await _resourceFactory.CreateMandateImportEntryFor(mandateImport, secondRecordId);
+            await _resourceFactory.CreateMandateImportEntryFor(mandateImport, secondRecordId);
 
             var firstPageRequest = new GetMandateImportEntriesRequest
             {
@@ -181,10 +181,10 @@ namespace GoCardless.Api.Tests.Integration
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             var firstRecordId = "first-record";
-            var firstEntry = await _resourceFactory.CreateMandateImportEntryFor(mandateImport, firstRecordId);
+            await _resourceFactory.CreateMandateImportEntryFor(mandateImport, firstRecordId);
 
             var secondRecordId = "second-record";
-            var secondEntry = await _resourceFactory.CreateMandateImportEntryFor(mandateImport, secondRecordId);
+            await _resourceFactory.CreateMandateImportEntryFor(mandateImport, secondRecordId);
 
             var initialRequest = new GetMandateImportEntriesRequest
             {
