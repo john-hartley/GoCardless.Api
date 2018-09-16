@@ -10,22 +10,9 @@ namespace GoCardless.Api.CustomerBankAccounts
     {
         public CustomerBankAccountsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<PagedResponse<CustomerBankAccount>> AllAsync()
+        public IPagerBuilder<GetCustomerBankAccountsRequest, CustomerBankAccount> BuildPager()
         {
-            return GetAsync<PagedResponse<CustomerBankAccount>>("customer_bank_accounts");
-        }
-
-        public Task<PagedResponse<CustomerBankAccount>> AllAsync(AllCustomerBankAccountsRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            return GetAsync<PagedResponse<CustomerBankAccount>>(
-                "customer_bank_accounts",
-                request.ToReadOnlyDictionary()
-            );
+            return new Pager<GetCustomerBankAccountsRequest, CustomerBankAccount>(GetPageAsync);
         }
 
         public Task<Response<CustomerBankAccount>> CreateAsync(CreateCustomerBankAccountRequest request)
@@ -67,6 +54,24 @@ namespace GoCardless.Api.CustomerBankAccounts
             }
             
             return GetAsync<Response<CustomerBankAccount>>($"customer_bank_accounts/{customerBankAccountId}");
+        }
+
+        public Task<PagedResponse<CustomerBankAccount>> GetPageAsync()
+        {
+            return GetAsync<PagedResponse<CustomerBankAccount>>("customer_bank_accounts");
+        }
+
+        public Task<PagedResponse<CustomerBankAccount>> GetPageAsync(GetCustomerBankAccountsRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return GetAsync<PagedResponse<CustomerBankAccount>>(
+                "customer_bank_accounts",
+                request.ToReadOnlyDictionary()
+            );
         }
 
         public Task<Response<CustomerBankAccount>> UpdateAsync(UpdateCustomerBankAccountRequest request)

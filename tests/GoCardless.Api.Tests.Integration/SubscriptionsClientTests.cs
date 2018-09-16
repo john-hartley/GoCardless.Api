@@ -269,7 +269,7 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(result.Item.Status, Is.EqualTo("cancelled"));
         }
 
-        [Test, Explicit("Can end up performing 1 <= 49 calls.")]
+        [Test, Explicit("Can end up performing lots of calls.")]
         public async Task PagesThroughSubscriptions()
         {
             // given

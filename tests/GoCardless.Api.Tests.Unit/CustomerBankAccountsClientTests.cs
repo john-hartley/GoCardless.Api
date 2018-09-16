@@ -27,59 +27,6 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public async Task CallsAllCustomerBankAccountsEndpoint()
-        {
-            // given
-            var subject = new CustomerBankAccountsClient(_clientConfiguration);
-
-            // when
-            await subject.AllAsync();
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/customer_bank_accounts")
-                .WithVerb(HttpMethod.Get);
-        }
-
-        [Test]
-        public void AllCustomerBankAccountsRequestIsNullThrows()
-        {
-            // given
-            var subject = new CustomerBankAccountsClient(_clientConfiguration);
-
-            AllCustomerBankAccountsRequest request = null;
-
-            // when
-            AsyncTestDelegate test = () => subject.AllAsync(request);
-
-            // then
-            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
-        }
-
-        [Test]
-        public async Task CallsAllCustomerBankAccountsEndpointUsingRequest()
-        {
-            // given
-            var subject = new CustomerBankAccountsClient(_clientConfiguration);
-
-            var request = new AllCustomerBankAccountsRequest
-            {
-                Before = "before test",
-                After = "after test",
-                Limit = 5
-            };
-
-            // when
-            await subject.AllAsync(request);
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/customer_bank_accounts?before=before%20test&after=after%20test&limit=5")
-                .WithVerb(HttpMethod.Get);
-        }
-
-        [Test]
         public void CreateCustomerBankAccountRequestIsNullThrows()
         {
             // given
@@ -199,6 +146,59 @@ namespace GoCardless.Api.Tests.Unit
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/customer_bank_accounts/BA12345678/actions/disable")
                 .WithVerb(HttpMethod.Post);
+        }
+
+        [Test]
+        public async Task CallsGetCustomerBankAccountsEndpoint()
+        {
+            // given
+            var subject = new CustomerBankAccountsClient(_clientConfiguration);
+
+            // when
+            await subject.GetPageAsync();
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/customer_bank_accounts")
+                .WithVerb(HttpMethod.Get);
+        }
+
+        [Test]
+        public void GetCustomerBankAccountsRequestIsNullThrows()
+        {
+            // given
+            var subject = new CustomerBankAccountsClient(_clientConfiguration);
+
+            GetCustomerBankAccountsRequest request = null;
+
+            // when
+            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+        }
+
+        [Test]
+        public async Task CallsGetCustomerBankAccountsEndpointUsingRequest()
+        {
+            // given
+            var subject = new CustomerBankAccountsClient(_clientConfiguration);
+
+            var request = new GetCustomerBankAccountsRequest
+            {
+                Before = "before test",
+                After = "after test",
+                Limit = 5
+            };
+
+            // when
+            await subject.GetPageAsync(request);
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/customer_bank_accounts?before=before%20test&after=after%20test&limit=5")
+                .WithVerb(HttpMethod.Get);
         }
 
         [Test]
