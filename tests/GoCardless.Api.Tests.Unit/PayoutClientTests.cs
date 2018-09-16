@@ -27,7 +27,22 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void AllPayoutsRequestIsNullThrows()
+        public async Task CallsGetPayoutsEndpoint()
+        {
+            // given
+            var subject = new PayoutsClient(_clientConfiguration);
+
+            // when
+            await subject.GetPageAsync();
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/payouts")
+                .WithVerb(HttpMethod.Get);
+        }
+
+        [Test]
+        public void GetPayoutsRequestIsNullThrows()
         {
             // given
             var subject = new PayoutsClient(_clientConfiguration);
@@ -43,7 +58,7 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public async Task CallsAllPayoutsEndpointUsingRequest()
+        public async Task CallsGetPayoutsEndpointUsingRequest()
         {
             // given
             var subject = new PayoutsClient(_clientConfiguration);
@@ -61,21 +76,6 @@ namespace GoCardless.Api.Tests.Unit
             // then
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/payouts?before=before%20test&after=after%20test&limit=5")
-                .WithVerb(HttpMethod.Get);
-        }
-
-        [Test]
-        public async Task CallsAllPayoutsEndpoint()
-        {
-            // given
-            var subject = new PayoutsClient(_clientConfiguration);
-
-            // when
-            await subject.GetPageAsync();
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/payouts")
                 .WithVerb(HttpMethod.Get);
         }
 

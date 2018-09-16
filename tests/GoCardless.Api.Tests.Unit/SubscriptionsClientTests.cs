@@ -27,59 +27,6 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public async Task CallsAllSubscriptionsEndpoint()
-        {
-            // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            // when
-            await subject.AllAsync();
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/subscriptions")
-                .WithVerb(HttpMethod.Get);
-        }
-
-        [Test]
-        public void AllSubscriptionsRequestIsNullThrows()
-        {
-            // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            AllSubscriptionsRequest request = null;
-
-            // when
-            AsyncTestDelegate test = () => subject.AllAsync(request);
-
-            // then
-            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
-        }
-
-        [Test]
-        public async Task CallsAllSubscriptionsEndpointUsingRequest()
-        {
-            // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            var request = new AllSubscriptionsRequest
-            {
-                Before = "before test",
-                After = "after test",
-                Limit = 5
-            };
-
-            // when
-            await subject.AllAsync(request);
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/subscriptions?before=before%20test&after=after%20test&limit=5")
-                .WithVerb(HttpMethod.Get);
-        }
-
-        [Test]
         public void CancelSubscriptionRequestIsNullThrows()
         {
             // given
@@ -198,6 +145,59 @@ namespace GoCardless.Api.Tests.Unit
             // then
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/subscriptions/SB12345678")
+                .WithVerb(HttpMethod.Get);
+        }
+
+        [Test]
+        public async Task CallsGetSubscriptionsEndpoint()
+        {
+            // given
+            var subject = new SubscriptionsClient(_clientConfiguration);
+
+            // when
+            await subject.GetPageAsync();
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/subscriptions")
+                .WithVerb(HttpMethod.Get);
+        }
+
+        [Test]
+        public void GetSubscriptionsRequestIsNullThrows()
+        {
+            // given
+            var subject = new SubscriptionsClient(_clientConfiguration);
+
+            GetSubscriptionsRequest request = null;
+
+            // when
+            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+        }
+
+        [Test]
+        public async Task CallsGetSubscriptionsEndpointUsingRequest()
+        {
+            // given
+            var subject = new SubscriptionsClient(_clientConfiguration);
+
+            var request = new GetSubscriptionsRequest
+            {
+                Before = "before test",
+                After = "after test",
+                Limit = 5
+            };
+
+            // when
+            await subject.GetPageAsync(request);
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/subscriptions?before=before%20test&after=after%20test&limit=5")
                 .WithVerb(HttpMethod.Get);
         }
 

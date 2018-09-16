@@ -6,11 +6,12 @@ namespace GoCardless.Api.Subscriptions
 {
     public interface ISubscriptionsClient
     {
-        Task<PagedResponse<Subscription>> AllAsync();
-        Task<PagedResponse<Subscription>> AllAsync(AllSubscriptionsRequest request);
+        IPagerBuilder<GetSubscriptionsRequest, Subscription> BuildPager();
         Task<Response<Subscription>> CancelAsync(CancelSubscriptionRequest request);
         Task<Response<Subscription>> CreateAsync(CreateSubscriptionRequest request);
         Task<Response<Subscription>> ForIdAsync(string subscriptionId);
+        Task<PagedResponse<Subscription>> GetPageAsync();
+        Task<PagedResponse<Subscription>> GetPageAsync(GetSubscriptionsRequest request);
         Task<Response<Subscription>> UpdateAsync(UpdateSubscriptionRequest request);
     }
 }
