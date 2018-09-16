@@ -68,7 +68,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new RefundsClient(_clientConfiguration);
 
             // when
-            var result = (await subject.AllAsync()).Items.ToList();
+            var result = (await subject.GetPageAsync()).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -90,21 +90,21 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new RefundsClient(_clientConfiguration);
 
-            var firstPageRequest = new AllRefundsRequest
+            var firstPageRequest = new GetRefundsRequest
             {
                 Limit = 1
             };
 
             // when
-            var firstPageResult = await subject.AllAsync(firstPageRequest);
+            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
 
-            var secondPageRequest = new AllRefundsRequest
+            var secondPageRequest = new GetRefundsRequest
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 1
             };
 
-            var secondPageResult = await subject.AllAsync(secondPageRequest);
+            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
 
             // then
             Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
@@ -123,7 +123,7 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var subject = new RefundsClient(_clientConfiguration);
-            var refund = (await subject.AllAsync()).Items.First();
+            var refund = (await subject.GetPageAsync()).Items.First();
 
             // when
             var result = await subject.ForIdAsync(refund.Id);
@@ -147,7 +147,7 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var subject = new RefundsClient(_clientConfiguration);
-            var refund = (await subject.AllAsync()).Items.First();
+            var refund = (await subject.GetPageAsync()).Items.First();
 
             var request = new UpdateRefundRequest
             {
@@ -176,7 +176,7 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var subject = new RefundsClient(_clientConfiguration);
-            var refund = (await subject.AllAsync()).Items.First();
+            var refund = (await subject.GetPageAsync()).Items.First();
             var now = DateTime.Now.ToString("yyyyMMdd");
 
             var request = new UpdateRefundRequest
@@ -205,6 +205,30 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(actual.Links.Payment, Is.Not.Null.And.EqualTo(refund.Links.Payment));
             Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(request.Metadata));
             Assert.That(actual.Reference, Is.Not.Null.And.EqualTo(refund.Reference));
+        }
+
+        [Test]
+        public async Task PagesThroughRefunds()
+        {
+            // given
+            var subject = new RefundsClient(_clientConfiguration);
+            var firstId = (await subject.GetPageAsync()).Items.First().Id;
+
+            var initialRequest = new GetRefundsRequest
+            {
+                Limit = 1,
+            };
+
+            // when
+            var result = await subject
+                .BuildPager()
+                .StartFrom(initialRequest)
+                .AndGetAllAfterAsync();
+
+            // then
+            Assert.That(result.Count, Is.GreaterThan(1));
+            Assert.That(result[0].Id, Is.Not.Null.And.Not.EqualTo(result[1].Id));
+            Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
         }
     }
 }

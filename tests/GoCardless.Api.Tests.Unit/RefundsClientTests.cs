@@ -27,59 +27,6 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public async Task CallsAllRefundsEndpoint()
-        {
-            // given
-            var subject = new RefundsClient(_clientConfiguration);
-
-            // when
-            await subject.AllAsync();
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/refunds")
-                .WithVerb(HttpMethod.Get);
-        }
-
-        [Test]
-        public void AllRefundsRequestIsNullThrows()
-        {
-            // given
-            var subject = new RefundsClient(_clientConfiguration);
-
-            AllRefundsRequest request = null;
-
-            // when
-            AsyncTestDelegate test = () => subject.AllAsync(request);
-
-            // then
-            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
-        }
-
-        [Test]
-        public async Task CallsAllRefundsEndpointUsingRequest()
-        {
-            // given
-            var subject = new RefundsClient(_clientConfiguration);
-
-            var request = new AllRefundsRequest
-            {
-                Before = "before test",
-                After = "after test",
-                Limit = 5
-            };
-
-            // when
-            await subject.AllAsync(request);
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/refunds?before=before%20test&after=after%20test&limit=5")
-                .WithVerb(HttpMethod.Get);
-        }
-
-        [Test]
         public void CreateRefundRequestIsNullThrows()
         {
             // given
@@ -146,6 +93,59 @@ namespace GoCardless.Api.Tests.Unit
             // then
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/refunds/RF12345678")
+                .WithVerb(HttpMethod.Get);
+        }
+
+        [Test]
+        public async Task CallsGetRefundsEndpoint()
+        {
+            // given
+            var subject = new RefundsClient(_clientConfiguration);
+
+            // when
+            await subject.GetPageAsync();
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/refunds")
+                .WithVerb(HttpMethod.Get);
+        }
+
+        [Test]
+        public void GetRefundsRequestIsNullThrows()
+        {
+            // given
+            var subject = new RefundsClient(_clientConfiguration);
+
+            GetRefundsRequest request = null;
+
+            // when
+            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+        }
+
+        [Test]
+        public async Task CallsGetRefundsEndpointUsingRequest()
+        {
+            // given
+            var subject = new RefundsClient(_clientConfiguration);
+
+            var request = new GetRefundsRequest
+            {
+                Before = "before test",
+                After = "after test",
+                Limit = 5
+            };
+
+            // when
+            await subject.GetPageAsync(request);
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/refunds?before=before%20test&after=after%20test&limit=5")
                 .WithVerb(HttpMethod.Get);
         }
 

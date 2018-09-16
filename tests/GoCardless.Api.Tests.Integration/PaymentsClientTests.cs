@@ -245,7 +245,7 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
         }
 
-        [Test]
+        [Test, Explicit("Can end up performing lots of calls.")]
         public async Task PagesThroughPayments()
         {
             // given

@@ -10,19 +10,9 @@ namespace GoCardless.Api.Refunds
     {
         public RefundsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<PagedResponse<Refund>> AllAsync()
+        public IPagerBuilder<GetRefundsRequest, Refund> BuildPager()
         {
-            return GetAsync<PagedResponse<Refund>>("refunds");
-        }
-
-        public Task<PagedResponse<Refund>> AllAsync(AllRefundsRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            return GetAsync<PagedResponse<Refund>>("refunds", request.ToReadOnlyDictionary());
+            return new Pager<GetRefundsRequest, Refund>(GetPageAsync);
         }
 
         public Task<Response<Refund>> CreateAsync(CreateRefundRequest request)
@@ -47,6 +37,21 @@ namespace GoCardless.Api.Refunds
             }
 
             return GetAsync<Response<Refund>>($"refunds/{refundId}");
+        }
+
+        public Task<PagedResponse<Refund>> GetPageAsync()
+        {
+            return GetAsync<PagedResponse<Refund>>("refunds");
+        }
+
+        public Task<PagedResponse<Refund>> GetPageAsync(GetRefundsRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return GetAsync<PagedResponse<Refund>>("refunds", request.ToReadOnlyDictionary());
         }
 
         public Task<Response<Refund>> UpdateAsync(UpdateRefundRequest request)
