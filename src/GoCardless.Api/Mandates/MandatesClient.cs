@@ -10,19 +10,9 @@ namespace GoCardless.Api.Mandates
     {
         public MandatesClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<PagedResponse<Mandate>> AllAsync()
+        public IPagerBuilder<GetMandatesRequest, Mandate> BuildPager()
         {
-            return GetAsync<PagedResponse<Mandate>>("mandates");
-        }
-
-        public Task<PagedResponse<Mandate>> AllAsync(AllMandatesRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            return GetAsync<PagedResponse<Mandate>>("mandates", request.ToReadOnlyDictionary());
+            return new Pager<GetMandatesRequest, Mandate>(GetPageAsync);
         }
 
         public Task<Response<Mandate>> CancelAsync(CancelMandateRequest request)
@@ -65,6 +55,21 @@ namespace GoCardless.Api.Mandates
             }
 
             return GetAsync<Response<Mandate>>($"mandates/{mandateId}");
+        }
+
+        public Task<PagedResponse<Mandate>> GetPageAsync()
+        {
+            return GetAsync<PagedResponse<Mandate>>("mandates");
+        }
+
+        public Task<PagedResponse<Mandate>> GetPageAsync(GetMandatesRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return GetAsync<PagedResponse<Mandate>>("mandates", request.ToReadOnlyDictionary());
         }
 
         public Task<Response<Mandate>> ReinstateAsync(ReinstateMandateRequest request)

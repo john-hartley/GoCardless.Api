@@ -27,59 +27,6 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public async Task CallsAllMandatesEndpoint()
-        {
-            // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            // when
-            await subject.AllAsync();
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/mandates")
-                .WithVerb(HttpMethod.Get);
-        }
-
-        [Test]
-        public void AllMandatesRequestIsNullThrows()
-        {
-            // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            AllMandatesRequest request = null;
-
-            // when
-            AsyncTestDelegate test = () => subject.AllAsync(request);
-
-            // then
-            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
-        }
-
-        [Test]
-        public async Task CallsAllMandatesEndpointUsingRequest()
-        {
-            // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            var request = new AllMandatesRequest
-            {
-                Before = "before test",
-                After = "after test",
-                Limit = 5
-            };
-
-            // when
-            await subject.AllAsync(request);
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/mandates?before=before%20test&after=after%20test&limit=5")
-                .WithVerb(HttpMethod.Get);
-        }
-
-        [Test]
         public void CancelMandateRequestIsNullThrows()
         {
             // given
@@ -202,15 +149,30 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void UpdateMandateRequestIsNullThrows()
+        public async Task CallsGetMandatesEndpoint()
         {
             // given
             var subject = new MandatesClient(_clientConfiguration);
 
-            UpdateMandateRequest request = null;
+            // when
+            await subject.GetPageAsync();
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/mandates")
+                .WithVerb(HttpMethod.Get);
+        }
+
+        [Test]
+        public void GetMandatesRequestIsNullThrows()
+        {
+            // given
+            var subject = new MandatesClient(_clientConfiguration);
+
+            GetMandatesRequest request = null;
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(request);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -218,39 +180,25 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void UpdateMandateRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        public async Task CallsGetMandatesEndpointUsingRequest()
         {
             // given
             var subject = new MandatesClient(_clientConfiguration);
 
-            var request = new UpdateMandateRequest();
-
-            // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
-
-            // then
-            var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
-        }
-
-        [Test]
-        public async Task CallsUpdateMandateEndpoint()
-        {
-            // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            var request = new UpdateMandateRequest
+            var request = new GetMandatesRequest
             {
-                Id = "MD12345678"
+                Before = "before test",
+                After = "after test",
+                Limit = 5
             };
 
             // when
-            await subject.UpdateAsync(request);
+            await subject.GetPageAsync(request);
 
             // then
             _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/mandates")
-                .WithVerb(HttpMethod.Put);
+                .ShouldHaveCalled("https://api.gocardless.com/mandates?before=before%20test&after=after%20test&limit=5")
+                .WithVerb(HttpMethod.Get);
         }
 
         [Test]
@@ -303,6 +251,58 @@ namespace GoCardless.Api.Tests.Unit
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/mandates/MD12345678/actions/reinstate")
                 .WithVerb(HttpMethod.Post);
+        }
+
+        [Test]
+        public void UpdateMandateRequestIsNullThrows()
+        {
+            // given
+            var subject = new MandatesClient(_clientConfiguration);
+
+            UpdateMandateRequest request = null;
+
+            // when
+            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+        }
+
+        [Test]
+        public void UpdateMandateRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        {
+            // given
+            var subject = new MandatesClient(_clientConfiguration);
+
+            var request = new UpdateMandateRequest();
+
+            // when
+            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+        }
+
+        [Test]
+        public async Task CallsUpdateMandateEndpoint()
+        {
+            // given
+            var subject = new MandatesClient(_clientConfiguration);
+
+            var request = new UpdateMandateRequest
+            {
+                Id = "MD12345678"
+            };
+
+            // when
+            await subject.UpdateAsync(request);
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/mandates")
+                .WithVerb(HttpMethod.Put);
         }
     }
 }
