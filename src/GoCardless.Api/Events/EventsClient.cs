@@ -10,22 +10,9 @@ namespace GoCardless.Api.Events
     {
         public EventsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<PagedResponse<Event>> AllAsync()
+        public IPagerBuilder<GetEventsRequest, Event> BuildPager()
         {
-            return GetAsync<PagedResponse<Event>>("events");
-        }
-
-        public Task<PagedResponse<Event>> AllAsync(AllEventsRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            return GetAsync<PagedResponse<Event>>(
-                "events",
-                request.ToReadOnlyDictionary()
-            );
+            return new Pager<GetEventsRequest, Event>(GetPageAsync);
         }
 
         public Task<Response<Event>> ForIdAsync(string eventId)
@@ -36,6 +23,24 @@ namespace GoCardless.Api.Events
             }
 
             return GetAsync<Response<Event>>($"events/{eventId}");
+        }
+
+        public Task<PagedResponse<Event>> GetPageAsync()
+        {
+            return GetAsync<PagedResponse<Event>>("events");
+        }
+
+        public Task<PagedResponse<Event>> GetPageAsync(GetEventsRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return GetAsync<PagedResponse<Event>>(
+                "events",
+                request.ToReadOnlyDictionary()
+            );
         }
     }
 }

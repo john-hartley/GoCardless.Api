@@ -26,59 +26,6 @@ namespace GoCardless.Api.Tests.Unit
             _httpTest.Dispose();
         }
 
-        [Test]
-        public void AllEventsRequestIsNullThrows()
-        {
-            // given
-            var subject = new EventsClient(_clientConfiguration);
-
-            AllEventsRequest request = null;
-
-            // when
-            AsyncTestDelegate test = () => subject.AllAsync(request);
-
-            // then
-            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
-        }
-
-        [Test]
-        public async Task CallsAllEventsEndpointUsingRequest()
-        {
-            // given
-            var subject = new EventsClient(_clientConfiguration);
-
-            var request = new AllEventsRequest
-            {
-                Before = "before test",
-                After = "after test",
-                Limit = 5
-            };
-
-            // when
-            await subject.AllAsync(request);
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/events?before=before%20test&after=after%20test&limit=5")
-                .WithVerb(HttpMethod.Get);
-        }
-
-        [Test]
-        public async Task CallsAllEventsEndpoint()
-        {
-            // given
-            var subject = new EventsClient(_clientConfiguration);
-
-            // when
-            await subject.AllAsync();
-
-            // then
-            _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/events")
-                .WithVerb(HttpMethod.Get);
-        }
-
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
@@ -109,6 +56,59 @@ namespace GoCardless.Api.Tests.Unit
             // then
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/events/EV12345678")
+                .WithVerb(HttpMethod.Get);
+        }
+
+        [Test]
+        public async Task CallsGetEventsEndpoint()
+        {
+            // given
+            var subject = new EventsClient(_clientConfiguration);
+
+            // when
+            await subject.GetPageAsync();
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/events")
+                .WithVerb(HttpMethod.Get);
+        }
+
+        [Test]
+        public void GetEventsRequestIsNullThrows()
+        {
+            // given
+            var subject = new EventsClient(_clientConfiguration);
+
+            GetEventsRequest request = null;
+
+            // when
+            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+        }
+
+        [Test]
+        public async Task CallsGetEventsEndpointUsingRequest()
+        {
+            // given
+            var subject = new EventsClient(_clientConfiguration);
+
+            var request = new GetEventsRequest
+            {
+                Before = "before test",
+                After = "after test",
+                Limit = 5
+            };
+
+            // when
+            await subject.GetPageAsync(request);
+
+            // then
+            _httpTest
+                .ShouldHaveCalled("https://api.gocardless.com/events?before=before%20test&after=after%20test&limit=5")
                 .WithVerb(HttpMethod.Get);
         }
     }

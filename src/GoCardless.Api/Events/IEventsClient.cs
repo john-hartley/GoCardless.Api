@@ -6,8 +6,9 @@ namespace GoCardless.Api.Events
 {
     public interface IEventsClient
     {
-        Task<PagedResponse<Event>> AllAsync();
-        Task<PagedResponse<Event>> AllAsync(AllEventsRequest request);
+        IPagerBuilder<GetEventsRequest, Event> BuildPager();
         Task<Response<Event>> ForIdAsync(string eventId);
+        Task<PagedResponse<Event>> GetPageAsync();
+        Task<PagedResponse<Event>> GetPageAsync(GetEventsRequest request);
     }
 }

@@ -16,7 +16,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new EventsClient(_clientConfiguration);
 
             // when
-            var result = (await subject.AllAsync()).Items.ToList();
+            var result = (await subject.GetPageAsync()).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -39,13 +39,13 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new EventsClient(_clientConfiguration);
 
-            var request = new AllEventsRequest
+            var request = new GetEventsRequest
             {
                 ResourceType = "mandates"
             };
 
             // when
-            var result = (await subject.AllAsync(request)).Items.ToList();
+            var result = (await subject.GetPageAsync(request)).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -69,13 +69,13 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new EventsClient(_clientConfiguration);
 
-            var request = new AllEventsRequest
+            var request = new GetEventsRequest
             {
                 ResourceType = "payments"
             };
 
             // when
-            var result = (await subject.AllAsync(request)).Items.ToList();
+            var result = (await subject.GetPageAsync(request)).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -99,13 +99,13 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new EventsClient(_clientConfiguration);
 
-            var request = new AllEventsRequest
+            var request = new GetEventsRequest
             {
                 ResourceType = "payouts"
             };
 
             // when
-            var result = (await subject.AllAsync(request)).Items.ToList();
+            var result = (await subject.GetPageAsync(request)).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -129,13 +129,13 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new EventsClient(_clientConfiguration);
 
-            var request = new AllEventsRequest
+            var request = new GetEventsRequest
             {
                 ResourceType = "refunds"
             };
 
             // when
-            var result = (await subject.AllAsync(request)).Items.ToList();
+            var result = (await subject.GetPageAsync(request)).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -159,13 +159,13 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new EventsClient(_clientConfiguration);
 
-            var request = new AllEventsRequest
+            var request = new GetEventsRequest
             {
                 ResourceType = "subscriptions"
             };
 
             // when
-            var result = (await subject.AllAsync(request)).Items.ToList();
+            var result = (await subject.GetPageAsync(request)).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -189,21 +189,21 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new EventsClient(_clientConfiguration);
 
-            var firstPageRequest = new AllEventsRequest
+            var firstPageRequest = new GetEventsRequest
             {
                 Limit = 1
             };
 
             // when
-            var firstPageResult = await subject.AllAsync(firstPageRequest);
+            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
 
-            var secondPageRequest = new AllEventsRequest
+            var secondPageRequest = new GetEventsRequest
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 1
             };
 
-            var secondPageResult = await subject.AllAsync(secondPageRequest);
+            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
 
             // then
             Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
@@ -223,14 +223,14 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new EventsClient(_clientConfiguration);
 
-            var request = new AllEventsRequest
+            var request = new GetEventsRequest
             {
                 Action = "paid_out",
                 ResourceType = "payments"
             };
 
             // when
-            var result = (await subject.AllAsync(request)).Items.ToList();
+            var result = (await subject.GetPageAsync(request)).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -256,13 +256,13 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new EventsClient(_clientConfiguration);
 
-            var request = new AllEventsRequest
+            var request = new GetEventsRequest
             {
                 Action = "paid_out",
                 ResourceType = "payments"
             };
             
-            var events = (await subject.AllAsync(request)).Items.ToList();
+            var events = (await subject.GetPageAsync(request)).Items.ToList();
             var @event = events.First();
 
             // when
@@ -284,6 +284,31 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(actual.Links.Payout, Is.Not.Null.And.EqualTo(@event.Links.Payout));
             Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(@event.Metadata));
             Assert.That(actual.ResourceType, Is.Not.Null.And.EqualTo(@event.ResourceType));
+        }
+
+        [Test, Explicit("Can end up performing lots of calls.")]
+        public async Task PagesThroughEvents()
+        {
+            // given
+            var subject = new EventsClient(_clientConfiguration);
+            var firstId = (await subject.GetPageAsync()).Items.First().Id;
+
+            var initialRequest = new GetEventsRequest
+            {
+                After = firstId,
+                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1))
+            };
+
+            // when
+            var result = await subject
+                .BuildPager()
+                .StartFrom(initialRequest)
+                .AndGetAllAfterAsync();
+
+            // then
+            Assert.That(result.Count, Is.GreaterThan(1));
+            Assert.That(result[0].Id, Is.Not.Null.And.Not.EqualTo(result[1].Id));
+            Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
         }
     }
 }
