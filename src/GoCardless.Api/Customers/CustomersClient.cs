@@ -10,19 +10,9 @@ namespace GoCardless.Api.Customers
     {
         public CustomersClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<PagedResponse<Customer>> AllAsync()
+        public IPagerBuilder<GetCustomersRequest, Customer> BuildPager()
         {
-            return GetAsync<PagedResponse<Customer>>("customers");
-        }
-
-        public Task<PagedResponse<Customer>> AllAsync(AllCustomersRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            return GetAsync<PagedResponse<Customer>>("customers", request.ToReadOnlyDictionary());
+            return new Pager<GetCustomersRequest, Customer>(GetPageAsync);
         }
 
         public Task<Response<Customer>> CreateAsync(CreateCustomerRequest request)
@@ -47,6 +37,21 @@ namespace GoCardless.Api.Customers
             }
 
             return GetAsync<Response<Customer>>($"customers/{customerId}");
+        }
+
+        public Task<PagedResponse<Customer>> GetPageAsync()
+        {
+            return GetAsync<PagedResponse<Customer>>("customers");
+        }
+
+        public Task<PagedResponse<Customer>> GetPageAsync(GetCustomersRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return GetAsync<PagedResponse<Customer>>("customers", request.ToReadOnlyDictionary());
         }
 
         public Task<Response<Customer>> UpdateAsync(UpdateCustomerRequest request)
