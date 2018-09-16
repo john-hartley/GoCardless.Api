@@ -16,7 +16,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new CreditorsClient(_clientConfiguration);
 
             // when
-            var result = (await subject.AllAsync()).Items.ToList();
+            var result = (await subject.GetPageAsync()).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -59,13 +59,13 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new CreditorsClient(_clientConfiguration);
 
-            var request = new AllCreditorsRequest
+            var request = new GetCreditorsRequest
             {
                 Limit = 1
             };
 
             // when
-            var result = await subject.AllAsync(request);
+            var result = await subject.GetPageAsync(request);
 
             // then
             Assert.That(result.Items.Count(), Is.EqualTo(request.Limit));
