@@ -3,8 +3,13 @@ using System;
 
 namespace GoCardless.Api.Events
 {
-    public class AllEventsRequest : IPageRequest
+    public class GetEventsRequest : IPageRequest, ICloneable
     {
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
+
         public string Before { get; set; }
         public string After { get; set; }
         public int? Limit { get; set; }
