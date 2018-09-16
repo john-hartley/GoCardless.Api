@@ -84,7 +84,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new SubscriptionsClient(_clientConfiguration);
 
             // when
-            var result = await subject.AllAsync();
+            var result = await subject.GetPageAsync();
             var actual = result.Items.ToList();
 
             // then
@@ -119,21 +119,21 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new SubscriptionsClient(_clientConfiguration);
 
-            var firstPageRequest = new AllSubscriptionsRequest
+            var firstPageRequest = new GetSubscriptionsRequest
             {
                 Limit = 1
             };
 
             // when
-            var firstPageResult = await subject.AllAsync(firstPageRequest);
+            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
 
-            var secondPageRequest = new AllSubscriptionsRequest
+            var secondPageRequest = new GetSubscriptionsRequest
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 2
             };
 
-            var secondPageResult = await subject.AllAsync(secondPageRequest);
+            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
 
             // then
             Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
@@ -267,6 +267,32 @@ namespace GoCardless.Api.Tests.Integration
             // then
             Assert.That(result.Item.Id, Is.EqualTo(request.Id));
             Assert.That(result.Item.Status, Is.EqualTo("cancelled"));
+        }
+
+        [Test, Explicit("Can end up performing 1 <= 49 calls.")]
+        public async Task PagesThroughSubscriptions()
+        {
+            // given
+            var subject = new SubscriptionsClient(_clientConfiguration);
+            var firstId = (await subject.GetPageAsync()).Items.First().Id;
+
+            var initialRequest = new GetSubscriptionsRequest
+            {
+                After = firstId,
+                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1)),
+                Limit = 1,
+            };
+
+            // when
+            var result = await subject
+                .BuildPager()
+                .StartFrom(initialRequest)
+                .AndGetAllAfterAsync();
+
+            // then
+            Assert.That(result.Count, Is.GreaterThan(1));
+            Assert.That(result[0].Id, Is.Not.Null.And.Not.EqualTo(result[1].Id));
+            Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
         }
     }
 }

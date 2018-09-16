@@ -10,19 +10,9 @@ namespace GoCardless.Api.Subscriptions
     {
         public SubscriptionsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<PagedResponse<Subscription>> AllAsync()
+        public IPagerBuilder<GetSubscriptionsRequest, Subscription> BuildPager()
         {
-            return GetAsync<PagedResponse<Subscription>>("subscriptions");
-        }
-
-        public Task<PagedResponse<Subscription>> AllAsync(AllSubscriptionsRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            return GetAsync<PagedResponse<Subscription>>("subscriptions", request.ToReadOnlyDictionary());
+            return new Pager<GetSubscriptionsRequest, Subscription>(GetPageAsync);
         }
 
         public Task<Response<Subscription>> CancelAsync(CancelSubscriptionRequest request)
@@ -65,6 +55,21 @@ namespace GoCardless.Api.Subscriptions
             }
 
             return GetAsync<Response<Subscription>>($"subscriptions/{subscriptionId}");
+        }
+
+        public Task<PagedResponse<Subscription>> GetPageAsync()
+        {
+            return GetAsync<PagedResponse<Subscription>>("subscriptions");
+        }
+
+        public Task<PagedResponse<Subscription>> GetPageAsync(GetSubscriptionsRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return GetAsync<PagedResponse<Subscription>>("subscriptions", request.ToReadOnlyDictionary());
         }
 
         public Task<Response<Subscription>> UpdateAsync(UpdateSubscriptionRequest request)

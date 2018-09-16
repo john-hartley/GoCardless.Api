@@ -3,8 +3,13 @@ using System;
 
 namespace GoCardless.Api.Subscriptions
 {
-    public class AllSubscriptionsRequest : IPageRequest
+    public class GetSubscriptionsRequest : IPageRequest, ICloneable
     {
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
+
         public string Before { get; set; }
         public string After { get; set; }
         public int? Limit { get; set; }
