@@ -23,13 +23,13 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new PayoutItemsClient(_clientConfiguration);
 
-            var request = new PayoutItemsRequest
+            var request = new GetPayoutItemsRequest
             {
                 Payout = _payout.Id
             };
 
             // when
-            var result = await subject.ForPayoutAsync(request);
+            var result = await subject.GetPageAsync(request);
             var actual = result.Items.ToList();
 
             // then
@@ -46,23 +46,23 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new PayoutItemsClient(_clientConfiguration);
 
-            var firstPageRequest = new PayoutItemsRequest
+            var firstPageRequest = new GetPayoutItemsRequest
             {
                 Limit = 1,
                 Payout = _payout.Id
             };
 
             // when
-            var firstPageResult = await subject.ForPayoutAsync(firstPageRequest);
+            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
 
-            var secondPageRequest = new PayoutItemsRequest
+            var secondPageRequest = new GetPayoutItemsRequest
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 1,
                 Payout = _payout.Id
             };
 
-            var secondPageResult = await subject.ForPayoutAsync(secondPageRequest);
+            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
 
             // then
             Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
@@ -74,6 +74,28 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
             Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
             Assert.That(secondPageResult.Meta.Cursors.After, Is.Null);
+        }
+
+        [Test]
+        public async Task ReturnsPagesIncludingAndAfterInitialRequest()
+        {
+            // given
+            var subject = new PayoutItemsClient(_clientConfiguration);
+
+            var initialRequest = new GetPayoutItemsRequest
+            {
+                Limit = 1,
+                Payout = _payout.Id
+            };
+
+            // when
+            var result = await subject
+                .BuildPager()
+                .StartFrom(initialRequest)
+                .AndGetAllAfterAsync();
+
+            // then
+            Assert.That(result.Count, Is.GreaterThan(1));
         }
     }
 }
