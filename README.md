@@ -15,13 +15,13 @@ Currently in alpha, this project aims to improve upon the official client by:
 
 There are still a few endpoints that I've not yet implemented. These are:
 
-- POST /customer_notifications/id/actions/handle 
+- POST /customer_notifications/id/actions/handle (Waiting on being granted access to this by GoCardless)
 - ~~GET /events~~ [Done](https://github.com/john-hartley/GoCardless.Api/pull/4)
 - ~~GET /events/id~~ [Done](https://github.com/john-hartley/GoCardless.Api/pull/4)
 - ~~POST /mandate_import_entries~~ [Done](https://github.com/john-hartley/GoCardless.Api/pull/3)
 - ~~GET /mandate_import_entries?mandate_import=id~~ [Done](https://github.com/john-hartley/GoCardless.Api/pull/3)
 
-The paging mechanisms, mentioned above, also need to be implemented. Expect breaking changes around the `AllAsync` methods for each client that supports them.
+~~The paging mechanisms, mentioned above, also need to be implemented. Expect breaking changes around the `AllAsync` methods for each client that supports them.~~ Done
 
 There is no documentation whatsoever at the moment beyond this readme. 
 
