@@ -23,7 +23,12 @@ namespace GoCardless.Api.MandateImportEntries
             );
         }
 
-        public Task<PagedResponse<MandateImportEntry>> AllAsync(AllMandateImportEntriesRequest request)
+        public IPagerBuilder<GetMandateImportEntriesRequest, MandateImportEntry> BuildPager()
+        {
+            return new Pager<GetMandateImportEntriesRequest, MandateImportEntry>(GetPageAsync);
+        }
+
+        public Task<PagedResponse<MandateImportEntry>> GetPageAsync(GetMandateImportEntriesRequest request)
         {
             if (request == null)
             {

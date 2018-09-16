@@ -58,14 +58,14 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void AllMandateImportEntriesRequestIsNullThrows()
+        public void GetMandateImportEntriesRequestIsNullThrows()
         {
             // given
             var subject = new MandateImportEntriesClient(_clientConfiguration);
-            AllMandateImportEntriesRequest request = null;
+            GetMandateImportEntriesRequest request = null;
 
             // when
-            AsyncTestDelegate test = () => subject.AllAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(request);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -75,17 +75,17 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void AllMandateImportEntriesRequestMandateImportIsNullOrWhiteSpaceThrows(string mandateImport)
+        public void GetMandateImportEntriesRequestMandateImportIsNullOrWhiteSpaceThrows(string mandateImport)
         {
             // given
             var subject = new MandateImportEntriesClient(_clientConfiguration);
-            var request = new AllMandateImportEntriesRequest
+            var request = new GetMandateImportEntriesRequest
             {
                 MandateImport = mandateImport
             };
 
             // when
-            AsyncTestDelegate test = () => subject.AllAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(request);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -93,17 +93,17 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public async Task CallsAllMandateImportEntriesEndpoint()
+        public async Task CallsGetMandateImportEntriesEndpoint()
         {
             // given
             var subject = new MandateImportEntriesClient(_clientConfiguration);
-            var request = new AllMandateImportEntriesRequest
+            var request = new GetMandateImportEntriesRequest
             {
                 MandateImport = "IM12345678"
             };
 
             // when
-            await subject.AllAsync(request);
+            await subject.GetPageAsync(request);
 
             // then
             _httpTest

@@ -7,6 +7,7 @@ namespace GoCardless.Api.MandateImportEntries
     public interface IMandateImportEntriesClient
     {
         Task<Response<MandateImportEntry>> AddAsync(AddMandateImportEntryRequest request);
-        Task<PagedResponse<MandateImportEntry>> AllAsync(AllMandateImportEntriesRequest request);
+        IPagerBuilder<GetMandateImportEntriesRequest, MandateImportEntry> BuildPager();
+        Task<PagedResponse<MandateImportEntry>> GetPageAsync(GetMandateImportEntriesRequest request);
     }
 }
