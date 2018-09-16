@@ -10,19 +10,9 @@ namespace GoCardless.Api.Payments
     {
         public PaymentsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<PagedResponse<Payment>> AllAsync()
+        public IPagerBuilder<GetPaymentsRequest, Payment> BuildPager()
         {
-            return GetAsync<PagedResponse<Payment>>("payments");
-        }
-
-        public Task<PagedResponse<Payment>> AllAsync(AllPaymentsRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            return GetAsync<PagedResponse<Payment>>("payments", request.ToReadOnlyDictionary());
+            return new Pager<GetPaymentsRequest, Payment>(GetPageAsync);
         }
 
         public Task<Response<Payment>> CancelAsync(CancelPaymentRequest request)
@@ -65,6 +55,21 @@ namespace GoCardless.Api.Payments
             }
 
             return GetAsync<Response<Payment>>($"payments/{paymentId}");
+        }
+
+        public Task<PagedResponse<Payment>> GetPageAsync()
+        {
+            return GetAsync<PagedResponse<Payment>>("payments");
+        }
+
+        public Task<PagedResponse<Payment>> GetPageAsync(GetPaymentsRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return GetAsync<PagedResponse<Payment>>("payments", request.ToReadOnlyDictionary());
         }
 
         public Task<Response<Payment>> RetryAsync(RetryPaymentRequest request)

@@ -88,7 +88,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new PaymentsClient(_clientConfiguration);
 
             // when
-            var result = (await subject.AllAsync()).Items.ToList();
+            var result = (await subject.GetPageAsync()).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -114,21 +114,21 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new PaymentsClient(_clientConfiguration);
 
-            var firstPageRequest = new AllPaymentsRequest
+            var firstPageRequest = new GetPaymentsRequest
             {
                 Limit = 1
             };
 
             // when
-            var firstPageResult = await subject.AllAsync(firstPageRequest);
+            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
 
-            var secondPageRequest = new AllPaymentsRequest
+            var secondPageRequest = new GetPaymentsRequest
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 2
             };
 
-            var secondPageResult = await subject.AllAsync(secondPageRequest);
+            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
 
             // then
             Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
@@ -243,6 +243,32 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Id, Is.EqualTo(payment.Id));
             Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
+        }
+
+        [Test]
+        public async Task PagesThroughPayments()
+        {
+            // given
+            var subject = new PaymentsClient(_clientConfiguration);
+            var firstId = (await subject.GetPageAsync()).Items.First().Id;
+
+            var initialRequest = new GetPaymentsRequest
+            {
+                After = firstId,
+                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1)),
+                Limit = 1,
+            };
+
+            // when
+            var result = await subject
+                .BuildPager()
+                .StartFrom(initialRequest)
+                .AndGetAllAfterAsync();
+
+            // then
+            Assert.That(result.Count, Is.GreaterThan(1));
+            Assert.That(result[0].Id, Is.Not.Null.And.Not.EqualTo(result[1].Id));
+            Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
         }
     }
 }
