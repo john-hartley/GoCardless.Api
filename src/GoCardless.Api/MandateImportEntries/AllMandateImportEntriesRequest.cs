@@ -1,7 +1,4 @@
-﻿using GoCardless.Api.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GoCardless.Api.Core.Paging;
 
 namespace GoCardless.Api.MandateImportEntries
 {

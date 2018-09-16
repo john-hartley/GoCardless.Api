@@ -1,4 +1,4 @@
-﻿using GoCardless.Api.Core;
+﻿using GoCardless.Api.Core.Paging;
 using System;
 
 namespace GoCardless.Api.Customers

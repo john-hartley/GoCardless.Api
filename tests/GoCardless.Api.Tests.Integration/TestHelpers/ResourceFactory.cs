@@ -166,10 +166,10 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 
         public async Task<Payout> Payout()
         {
-            var request = new AllPayoutsRequest();
+            var request = new GetPayoutsRequest();
 
             var payoutsClient = new PayoutsClient(_clientConfiguration);
-            return (await payoutsClient.AllAsync(request)).Items.First();
+            return (await payoutsClient.GetPageAsync(request)).Items.First();
         }
 
         public async Task<RedirectFlow> CreateRedirectFlowFor(Creditor creditor)

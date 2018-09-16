@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using System;
 
-namespace GoCardless.Api.Tests.Unit
+namespace GoCardless.Api.Tests.Unit.Core
 {
     public class ClientConfigurationTests
     {
