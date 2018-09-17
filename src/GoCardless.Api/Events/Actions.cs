@@ -44,7 +44,7 @@
         {
             public static readonly string Created = "created";
             public static readonly string Paid = "paid";
-            public static readonly string RefundSettled = "refund_settled";
+            public static readonly string Settled = "refund_settled";
         }
 
         public static class Subscription
