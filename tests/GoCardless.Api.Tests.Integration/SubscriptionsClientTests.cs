@@ -30,7 +30,7 @@ namespace GoCardless.Api.Tests.Integration
             {
                 Amount = 123,
                 Currency = "GBP",
-                IntervalUnit = "weekly",
+                IntervalUnit = IntervalUnit.Weekly,
                 //AppFee = 12,
                 Count = 5,
                 //DayOfMonth = 17,
@@ -61,7 +61,7 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result.Item.Amount, Is.EqualTo(request.Amount));
             Assert.That(result.Item.Currency, Is.EqualTo(request.Currency));
-            Assert.That(result.Item.Status, Is.EqualTo("active"));
+            Assert.That(result.Item.Status, Is.EqualTo(SubscriptionStatus.Active));
             Assert.That(result.Item.Name, Is.EqualTo(request.Name));
             Assert.That(result.Item.StartDate.ToString("yyyy-MM-dd"), Is.EqualTo(request.StartDate));
             //Assert.That(result.Item.EndDate, Is.EqualTo(request.EndDate));
@@ -266,7 +266,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // then
             Assert.That(result.Item.Id, Is.EqualTo(request.Id));
-            Assert.That(result.Item.Status, Is.EqualTo("cancelled"));
+            Assert.That(result.Item.Status, Is.EqualTo(SubscriptionStatus.Cancelled));
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]

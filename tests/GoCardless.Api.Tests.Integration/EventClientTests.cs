@@ -41,7 +41,7 @@ namespace GoCardless.Api.Tests.Integration
 
             var request = new GetEventsRequest
             {
-                ResourceType = "mandates"
+                ResourceType = ResourceType.Mandates
             };
 
             // when
@@ -71,7 +71,7 @@ namespace GoCardless.Api.Tests.Integration
 
             var request = new GetEventsRequest
             {
-                ResourceType = "payments"
+                ResourceType = ResourceType.Payments
             };
 
             // when
@@ -101,7 +101,7 @@ namespace GoCardless.Api.Tests.Integration
 
             var request = new GetEventsRequest
             {
-                ResourceType = "payouts"
+                ResourceType = ResourceType.Payouts
             };
 
             // when
@@ -131,7 +131,7 @@ namespace GoCardless.Api.Tests.Integration
 
             var request = new GetEventsRequest
             {
-                ResourceType = "refunds"
+                ResourceType = ResourceType.Refunds
             };
 
             // when
@@ -161,7 +161,7 @@ namespace GoCardless.Api.Tests.Integration
 
             var request = new GetEventsRequest
             {
-                ResourceType = "subscriptions"
+                ResourceType = ResourceType.Subscriptions
             };
 
             // when
@@ -225,8 +225,8 @@ namespace GoCardless.Api.Tests.Integration
 
             var request = new GetEventsRequest
             {
-                Action = "paid_out",
-                ResourceType = "payments"
+                Action = Actions.Payment.PaidOut,
+                ResourceType = ResourceType.Payments
             };
 
             // when
@@ -258,8 +258,8 @@ namespace GoCardless.Api.Tests.Integration
 
             var request = new GetEventsRequest
             {
-                Action = "paid_out",
-                ResourceType = "payments"
+                Action = Actions.Payment.PaidOut,
+                ResourceType = ResourceType.Payments
             };
             
             var events = (await subject.GetPageAsync(request)).Items.ToList();

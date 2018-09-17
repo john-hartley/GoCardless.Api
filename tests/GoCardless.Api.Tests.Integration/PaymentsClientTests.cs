@@ -76,9 +76,9 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(creationResult.Item.Links.Mandate, Is.EqualTo(_mandate.Id));
             Assert.That(creationResult.Item.Metadata, Is.EqualTo(createRequest.Metadata));
             Assert.That(creationResult.Item.Reference, Is.EqualTo(createRequest.Reference));
-            Assert.That(creationResult.Item.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
+            Assert.That(creationResult.Item.Status, Is.Not.Null.And.Not.EqualTo(PaymentStatus.Cancelled));
 
-            Assert.That(cancellationResult.Item.Status, Is.EqualTo("cancelled"));
+            Assert.That(cancellationResult.Item.Status, Is.EqualTo(PaymentStatus.Cancelled));
         }
 
         [Test]
