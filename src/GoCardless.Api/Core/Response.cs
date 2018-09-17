@@ -2,6 +2,7 @@
 using GoCardless.Api.CreditorBankAccounts;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
+using GoCardless.Api.CustomerNotifications;
 using GoCardless.Api.Events;
 using GoCardless.Api.MandateImportEntries;
 using GoCardless.Api.MandateImports;
@@ -32,6 +33,9 @@ namespace GoCardless.Api.Core
 
         [JsonProperty("customer_bank_accounts")]
         private CustomerBankAccount CustomerBankAccount { set => Item = value as TResource; }
+
+        [JsonProperty("customer_notifications")]
+        private CustomerNotification CustomerNotification { set => Item = value as TResource; }
 
         [JsonProperty("customers")]
         private Customer Customer { set => Item = value as TResource; }
