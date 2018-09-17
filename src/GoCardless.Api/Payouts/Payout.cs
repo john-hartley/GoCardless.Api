@@ -6,7 +6,7 @@ namespace GoCardless.Api.Payouts
     {
         public string Id { get; set; }
         public int Amount { get; set; }
-        public DateTime ArrivalDate { get; set; }
+        public DateTime? ArrivalDate { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public string Currency { get; set; }
         public int DeductedFees { get; set; }
