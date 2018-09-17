@@ -1,4 +1,5 @@
-﻿using GoCardless.Api.RedirectFlows;
+﻿using GoCardless.Api.Models;
+using GoCardless.Api.RedirectFlows;
 using GoCardless.Api.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
@@ -39,7 +40,7 @@ namespace GoCardless.Api.Tests.Integration
                     Region = "Essex",
                     SwedishIdentityNumber = "5302256218",
                 },
-                Scheme = "bacs",
+                Scheme = Scheme.Bacs,
                 SessionToken = Guid.NewGuid().ToString(),
                 SuccessRedirectUrl = "https://localhost",
             };

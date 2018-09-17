@@ -2,6 +2,7 @@
 using GoCardless.Api.CustomerBankAccounts;
 using GoCardless.Api.Customers;
 using GoCardless.Api.Mandates;
+using GoCardless.Api.Models;
 using GoCardless.Api.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
@@ -38,7 +39,7 @@ namespace GoCardless.Api.Tests.Integration
                     ["Key3"] = "Value3",
                 },
                 Reference = DateTime.Now.ToString("yyyyMMddhhmmss"),
-                Scheme = "bacs",
+                Scheme = Scheme.Bacs,
                 Links = new CreateMandateLinks
                 {
                     Creditor = _creditor.Id,
@@ -87,11 +88,11 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(creationResult.Item.NextPossibleChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
             Assert.That(creationResult.Item.Reference, Is.Not.Null.And.EqualTo(createRequest.Reference));
             Assert.That(creationResult.Item.Scheme, Is.EqualTo(createRequest.Scheme));
-            Assert.That(creationResult.Item.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
+            Assert.That(creationResult.Item.Status, Is.Not.Null.And.Not.EqualTo(MandateStatus.Cancelled));
             
-            Assert.That(cancellationResult.Item.Status, Is.EqualTo("cancelled"));
+            Assert.That(cancellationResult.Item.Status, Is.EqualTo(MandateStatus.Cancelled));
 
-            Assert.That(reinstateResult.Item.Status, Is.Not.Null.And.Not.EqualTo("cancelled"));
+            Assert.That(reinstateResult.Item.Status, Is.Not.Null.And.Not.EqualTo(MandateStatus.Cancelled));
         }
 
         [Test]

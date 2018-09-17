@@ -34,20 +34,20 @@ namespace GoCardless.Api.Tests.Integration
                     City = "London",
                     CompanyName = "Company Name",
                     CountryCode = "DK",
+                    DanishIdentityNumber = "2205506218",
                     Email = "email@example.com",
                     FamilyName = "Family Name",
                     GivenName = "Given Name",
                     Language = "da",
-                    DanishIdentityNumber = "2205506218",
-                    SwedishIdentityNumber = "5302256218",
                     PostalCode = "SW1A 1AA",
                     Region = "Essex",
+                    SwedishIdentityNumber = "5302256218",
                 },
-                RecordIdentifier = $"import-{DateTime.Now:yyyyMMddhhssmmfff}",
                 Links = new AddMandateImportEntryLinks
                 {
                     MandateImport = mandateImport.Id
-                }
+                },
+                RecordIdentifier = $"import-{DateTime.Now:yyyyMMddhhssmmfff}"
             };
 
             // when

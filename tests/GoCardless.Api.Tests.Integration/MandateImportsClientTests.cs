@@ -1,4 +1,5 @@
 ﻿using GoCardless.Api.MandateImports;
+using GoCardless.Api.Models;
 using GoCardless.Api.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
@@ -34,7 +35,7 @@ namespace GoCardless.Api.Tests.Integration
 
             var request = new CreateMandateImportRequest
             {
-                Scheme = "bacs",
+                Scheme = Scheme.Bacs,
             };
 
             // when
