@@ -15,7 +15,7 @@ Currently in alpha, this project aims to improve upon the official client by:
 
 There are still a few endpoints that I've not yet implemented. These are:
 
-- POST /customer_notifications/id/actions/handle (Waiting on being granted access to this by GoCardless)
+- ~~POST /customer_notifications/id/actions/handle~~ [Done](https://github.com/john-hartley/GoCardless.Api/pull/20)
 - ~~GET /events~~ [Done](https://github.com/john-hartley/GoCardless.Api/pull/4)
 - ~~GET /events/id~~ [Done](https://github.com/john-hartley/GoCardless.Api/pull/4)
 - ~~POST /mandate_import_entries~~ [Done](https://github.com/john-hartley/GoCardless.Api/pull/3)
