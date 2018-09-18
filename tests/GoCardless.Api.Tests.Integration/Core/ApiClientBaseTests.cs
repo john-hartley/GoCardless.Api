@@ -4,6 +4,7 @@ using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
 using GoCardless.Api.Customers;
 using GoCardless.Api.Mandates;
+using GoCardless.Api.Models;
 using GoCardless.Api.Payments;
 using GoCardless.Api.Refunds;
 using GoCardless.Api.Subscriptions;
@@ -44,20 +45,20 @@ namespace GoCardless.Api.Tests.Integration.Core
                 City = "London",
                 CompanyName = "Company Name",
                 CountryCode = "DK",
+                DanishIdentityNumber = "2205506218",
                 Email = "email@example.com",
                 FamilyName = "Family Name",
                 GivenName = "Given Name",
                 Language = "incorrect language", // This triggers the error.
-                PostalCode = "SW1A 1AA",
-                Region = "Essex",
-                DanishIdentityNumber = "2205506218",
-                SwedishIdentityNumber = "5302256218",
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
                     ["Key2"] = "Value2",
                     ["Key3"] = "Value3",
                 },
+                PostalCode = "SW1A 1AA",
+                Region = "Essex",
+                SwedishIdentityNumber = "5302256218",
             };
 
             var subject = new CustomersClient(_clientConfiguration);
@@ -87,21 +88,21 @@ namespace GoCardless.Api.Tests.Integration.Core
                 City = "London",
                 CompanyName = "Company Name",
                 CountryCode = "DK",
+                DanishIdentityNumber = "2205506218",
                 Email = "email@example.com",
                 FamilyName = "Family Name",
                 GivenName = "Given Name",
                 IdempotencyKey = Guid.NewGuid().ToString(),
                 Language = "da",
-                PostalCode = "SW1A 1AA",
-                Region = "Essex",
-                DanishIdentityNumber = "2205506218",
-                SwedishIdentityNumber = "5302256218",
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
                     ["Key2"] = "Value2",
                     ["Key3"] = "Value3",
                 },
+                PostalCode = "SW1A 1AA",
+                Region = "Essex",
+                SwedishIdentityNumber = "5302256218",
             };
 
             var subject = new CustomersClient(_clientConfiguration);
@@ -134,7 +135,7 @@ namespace GoCardless.Api.Tests.Integration.Core
                     ["Key2"] = "Value2",
                     ["Key3"] = "Value3",
                 },
-                Scheme = "bacs",
+                Scheme = Scheme.Bacs,
                 Links = new CreateMandateLinks
                 {
                     Creditor = _creditor.Id,
@@ -166,7 +167,7 @@ namespace GoCardless.Api.Tests.Integration.Core
             var request = new CreatePaymentRequest
             {
                 Amount = 500,
-                ChargeDate = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd"),
+                ChargeDate = DateTime.Now.AddMonths(1),
                 Description = "Sandbox Payment",
                 Currency = "GBP",
                 IdempotencyKey = Guid.NewGuid().ToString(),
@@ -242,7 +243,7 @@ namespace GoCardless.Api.Tests.Integration.Core
                 Currency = "GBP",
                 IdempotencyKey = Guid.NewGuid().ToString(),
                 Interval = 1,
-                IntervalUnit = "weekly",
+                IntervalUnit = IntervalUnit.Weekly,
                 Links = new SubscriptionLinks
                 {
                     Mandate = _mandate.Id
@@ -255,7 +256,7 @@ namespace GoCardless.Api.Tests.Integration.Core
                 },
                 Name = "Test subscription",
                 PaymentReference = "PR123456",
-                StartDate = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd")
+                StartDate = DateTime.Now.AddMonths(1)
             };
 
             var subject = new SubscriptionsClient(_clientConfiguration);
@@ -283,7 +284,7 @@ namespace GoCardless.Api.Tests.Integration.Core
             {
                 Amount = 123,
                 Currency = "GBP",
-                IntervalUnit = "weekly",
+                IntervalUnit = IntervalUnit.Weekly,
                 Count = 5,
                 Interval = 1,
                 Metadata = new Dictionary<string, string>
@@ -293,7 +294,7 @@ namespace GoCardless.Api.Tests.Integration.Core
                     ["Key3"] = "Value3",
                 },
                 Name = "Test subscription",
-                StartDate = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd"),
+                StartDate = DateTime.Now.AddMonths(1),
                 Links = new SubscriptionLinks
                 {
                     Mandate = _mandate.Id

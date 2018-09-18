@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GoCardless.Api.Core.Serialisation;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -13,7 +14,8 @@ namespace GoCardless.Api.Subscriptions
         public int? DayOfMonth { get; set; }
 
         [Obsolete("Deprecated: This field will be removed in a future API version. Use the Count property to specify a number of payments instead.")]
-        public string EndDate { get; set; }
+        [JsonConverter(typeof(IsoDateJsonConverter), DateFormat.IsoDateFormat)]
+        public DateTime? EndDate { get; set; }
 
         [JsonIgnore]
         public string IdempotencyKey { get; set; }
@@ -25,6 +27,8 @@ namespace GoCardless.Api.Subscriptions
         public string Month { get; set; }
         public string Name { get; set; }
         public string PaymentReference { get; set; }
-        public string StartDate { get; set; }
+
+        [JsonConverter(typeof(IsoDateJsonConverter), DateFormat.IsoDateFormat)]
+        public DateTime? StartDate { get; set; }
     }
 }

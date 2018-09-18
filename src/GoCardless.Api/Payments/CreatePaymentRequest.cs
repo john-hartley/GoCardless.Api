@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using GoCardless.Api.Core.Serialisation;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace GoCardless.Api.Payments
@@ -7,7 +9,9 @@ namespace GoCardless.Api.Payments
     {
         public int Amount { get; set; }
         public int? AppFee { get; set; }
-        public string ChargeDate { get; set; }
+
+        [JsonConverter(typeof(IsoDateJsonConverter), DateFormat.IsoDateFormat)]
+        public DateTime ChargeDate { get; set; }
         public string Currency { get; set; }
         public string Description { get; set; }
 
