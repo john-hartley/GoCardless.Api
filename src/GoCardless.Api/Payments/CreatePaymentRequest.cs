@@ -11,7 +11,7 @@ namespace GoCardless.Api.Payments
         public int? AppFee { get; set; }
 
         [JsonConverter(typeof(IsoDateJsonConverter), DateFormat.IsoDateFormat)]
-        public DateTime ChargeDate { get; set; }
+        public DateTime? ChargeDate { get; set; }
         public string Currency { get; set; }
         public string Description { get; set; }
 
