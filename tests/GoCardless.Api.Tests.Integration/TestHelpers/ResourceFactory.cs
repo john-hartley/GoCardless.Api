@@ -5,6 +5,7 @@ using GoCardless.Api.Customers;
 using GoCardless.Api.MandateImportEntries;
 using GoCardless.Api.MandateImports;
 using GoCardless.Api.Mandates;
+using GoCardless.Api.Models;
 using GoCardless.Api.Payments;
 using GoCardless.Api.Payouts;
 using GoCardless.Api.RedirectFlows;
@@ -71,18 +72,18 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
         {
             var request = new CreateMandateRequest
             {
+                Links = new CreateMandateLinks
+                {
+                    Creditor = creditor.Id,
+                    CustomerBankAccount = customerBankAccount.Id
+                },
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
                     ["Key2"] = "Value2",
                     ["Key3"] = "Value3",
                 },
-                Scheme = "bacs",
-                Links = new CreateMandateLinks
-                {
-                    Creditor = creditor.Id,
-                    CustomerBankAccount = customerBankAccount.Id
-                }
+                Scheme = Scheme.Bacs
             };
 
             var mandatesClient = new MandatesClient(_clientConfiguration);
@@ -121,20 +122,20 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                     City = "London",
                     CompanyName = "Company Name",
                     CountryCode = "DK",
+                    DanishIdentityNumber = "2205506218",
                     Email = "email@example.com",
                     FamilyName = "Family Name",
                     GivenName = "Given Name",
                     Language = "da",
-                    DanishIdentityNumber = "2205506218",
-                    SwedishIdentityNumber = "5302256218",
                     PostalCode = "SW1A 1AA",
                     Region = "Essex",
+                    SwedishIdentityNumber = "5302256218",
                 },
-                RecordIdentifier = recordIdentifier,
                 Links = new AddMandateImportEntryLinks
                 {
                     MandateImport = mandateImport.Id
-                }
+                },
+                RecordIdentifier = recordIdentifier
             };
 
             var mandateImportEntriesClient = new MandateImportEntriesClient(_clientConfiguration);
@@ -147,7 +148,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             {
                 Amount = 500,
                 //AppFee = 50,
-                ChargeDate = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd"),
+                ChargeDate = DateTime.Now.AddMonths(1),
                 Description = "Sandbox Payment",
                 Currency = "GBP",
                 Links = new CreatePaymentLinks { Mandate = mandate.Id },
@@ -166,10 +167,8 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 
         public async Task<Payout> Payout()
         {
-            var request = new GetPayoutsRequest();
-
             var payoutsClient = new PayoutsClient(_clientConfiguration);
-            return (await payoutsClient.GetPageAsync(request)).Items.First();
+            return (await payoutsClient.GetPageAsync()).Items.First();
         }
 
         public async Task<RedirectFlow> CreateRedirectFlowFor(Creditor creditor)
@@ -198,7 +197,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                     Region = "Essex",
                     SwedishIdentityNumber = "5302256218",
                 },
-                Scheme = "bacs",
+                Scheme = Scheme.Bacs,
                 SessionToken = Guid.NewGuid().ToString(),
                 SuccessRedirectUrl = "https://localhost",
             };
@@ -214,9 +213,13 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             {
                 Amount = 123,
                 Currency = "GBP",
-                IntervalUnit = "weekly",
                 Count = 5,
                 Interval = 3,
+                IntervalUnit = IntervalUnit.Weekly,
+                Links = new SubscriptionLinks
+                {
+                    Mandate = mandate.Id
+                },
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
@@ -225,11 +228,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 },
                 Name = "Test subscription",
                 PaymentReference = "PR123456",
-                StartDate = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd"),
-                Links = new SubscriptionLinks
-                {
-                    Mandate = mandate.Id
-                }
+                StartDate = DateTime.Now.AddMonths(1)
             };
 
             var subscriptionsClient = new SubscriptionsClient(_clientConfiguration);
@@ -250,12 +249,11 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 City = "London",
                 CompanyName = "Company Name",
                 CountryCode = countryCode,
+                DanishIdentityNumber = danishIdentityNumber,
                 Email = "email@example.com",
                 FamilyName = "Family Name",
                 GivenName = "Given Name",
                 Language = language,
-                DanishIdentityNumber = danishIdentityNumber,
-                SwedishIdentityNumber = swedishIdentityNumber,
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
@@ -264,6 +262,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 },
                 PostalCode = "SW1A 1AA",
                 Region = "Essex",
+                SwedishIdentityNumber = swedishIdentityNumber
             };
 
             var customersClient = new CustomersClient(_clientConfiguration);

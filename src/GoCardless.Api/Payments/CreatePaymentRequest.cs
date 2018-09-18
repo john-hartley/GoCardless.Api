@@ -1,13 +1,25 @@
-﻿using Newtonsoft.Json;
+﻿using GoCardless.Api.Core.Serialisation;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace GoCardless.Api.Payments
 {
+    /// <summary>
+    /// For up-to-date documentation of this request, see: https://developer.gocardless.com/api-reference/#payments-create-a-payment
+    /// </summary>
     public class CreatePaymentRequest
     {
         public int Amount { get; set; }
         public int? AppFee { get; set; }
-        public string ChargeDate { get; set; }
+
+        /// <summary>
+        /// A calendar date in the ISO-8061 format of yyyy-MM-dd. If a time component is supplied,
+        /// it will be discarded (e.g. 2018-09-18T15:05:06.123Z will become 2018-09-18).
+        /// </summary>
+        [JsonConverter(typeof(IsoDateJsonConverter), DateFormat.IsoDateFormat)]
+        public DateTime? ChargeDate { get; set; }
+
         public string Currency { get; set; }
         public string Description { get; set; }
 

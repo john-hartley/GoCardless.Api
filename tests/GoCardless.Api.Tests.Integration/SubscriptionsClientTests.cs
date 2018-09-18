@@ -45,7 +45,7 @@ namespace GoCardless.Api.Tests.Integration
                 //Month = "september",
                 Name = "Test subscription",
                 PaymentReference = "PR123456",
-                StartDate = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd"),
+                StartDate = DateTime.Now.AddMonths(1),
                 Links = new SubscriptionLinks
                 {
                     Mandate = _mandate.Id
@@ -63,7 +63,7 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(result.Item.Currency, Is.EqualTo(request.Currency));
             Assert.That(result.Item.Status, Is.EqualTo(SubscriptionStatus.Active));
             Assert.That(result.Item.Name, Is.EqualTo(request.Name));
-            Assert.That(result.Item.StartDate.ToString("yyyy-MM-dd"), Is.EqualTo(request.StartDate));
+            Assert.That(result.Item.StartDate.Date, Is.EqualTo(request.StartDate.Value.Date));
             //Assert.That(result.Item.EndDate, Is.EqualTo(request.EndDate));
             Assert.That(result.Item.Interval, Is.EqualTo(request.Interval));
             Assert.That(result.Item.IntervalUnit, Is.EqualTo(request.IntervalUnit));

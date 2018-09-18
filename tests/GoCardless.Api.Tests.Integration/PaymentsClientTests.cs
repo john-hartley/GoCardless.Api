@@ -32,7 +32,7 @@ namespace GoCardless.Api.Tests.Integration
             {
                 Amount = 500,
                 //AppFee = 50,
-                ChargeDate = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd"),
+                ChargeDate = DateTime.Now.AddMonths(1),
                 Description = "Sandbox Payment",
                 Currency = "GBP",
                 Links = new CreatePaymentLinks { Mandate = _mandate.Id },
