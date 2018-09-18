@@ -5,17 +5,15 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.Payments
 {
+    /// <summary>
+    /// For up-to-date documentation of this request, see: https://developer.gocardless.com/api-reference/#payments-create-a-payment
+    /// </summary>
     public class CreatePaymentRequest
     {
         public int Amount { get; set; }
         public int? AppFee { get; set; }
 
         /// <summary>
-        /// A future date on which the payment should be collected. If not specified, 
-        /// the payment will be collected as soon as possible. This must be on or after 
-        /// the mandate’s next possible charge date, and will be rolled-forwards by 
-        /// GoCardless if it is not a working day.
-        /// <para />
         /// A calendar date in the ISO-8061 format of yyyy-MM-dd. If a time component is supplied,
         /// it will be discarded (e.g. 2018-09-18T15:05:06.123Z will become 2018-09-18).
         /// </summary>

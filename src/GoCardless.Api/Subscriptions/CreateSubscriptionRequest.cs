@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.Subscriptions
 {
+    /// <summary>
+    /// For up-to-date documentation of this request, see: https://developer.gocardless.com/api-reference/#subscriptions-create-a-subscription
+    /// </summary>
     public class CreateSubscriptionRequest
     {
         public int Amount { get; set; }
@@ -14,9 +17,6 @@ namespace GoCardless.Api.Subscriptions
         public int? DayOfMonth { get; set; }
 
         /// <summary>
-        /// Date on or after which no further payments should be created. If this field is blank 
-        /// and count is not specified, the subscription will continue indefinitely.
-        /// <para />
         /// A calendar date in the ISO-8061 format of yyyy-MM-dd. If a time component is supplied,
         /// it will be discarded (e.g. 2018-09-18T15:05:06.123Z will become 2018-09-18).
         /// </summary>
@@ -36,10 +36,6 @@ namespace GoCardless.Api.Subscriptions
         public string PaymentReference { get; set; }
 
         /// <summary>
-        /// The date on which the first payment should be charged. Must be within one year of 
-        /// creation and on or after the mandate’s next possible charge date. When blank, this 
-        /// will be set as the mandate’s next possible charge date.
-        /// <para />
         /// A calendar date in the ISO-8061 format of yyyy-MM-dd. If a time component is supplied,
         /// it will be discarded (e.g. 2018-09-18T15:05:06.123Z will become 2018-09-18).
         /// </summary>
