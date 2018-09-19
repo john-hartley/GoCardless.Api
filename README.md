@@ -25,4 +25,4 @@ There are still a few endpoints that I've not yet implemented. These are:
 
 There is no documentation whatsoever at the moment beyond this readme. 
 
-These are the 3 major areas that need addressing before this client can be considered beta. There is also currently no support for partner integrations. However, this will be addressed once the above items have been completed.
+These are the 3 major areas that need addressing before this client can be considered beta.
