@@ -1,4 +1,5 @@
-﻿using GoCardless.Api.Creditors;
+﻿using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Creditors;
 using GoCardless.Api.Mandates;
 using GoCardless.Api.Payments;
 using GoCardless.Api.Tests.Integration.TestHelpers;
@@ -31,7 +32,6 @@ namespace GoCardless.Api.Tests.Integration
             var createRequest = new CreatePaymentRequest
             {
                 Amount = 500,
-                //AppFee = 50,
                 ChargeDate = DateTime.Now.AddMonths(1),
                 Description = "Sandbox Payment",
                 Currency = "GBP",
@@ -67,13 +67,75 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(creationResult.Item.Id, Is.Not.Null);
             Assert.That(creationResult.Item.Amount, Is.EqualTo(createRequest.Amount));
             Assert.That(creationResult.Item.AmountRefunded, Is.Not.Null);
-            //Assert.That(creationResult.Item.AppFee, Is.EqualTo(createRequest.AppFee));
             Assert.That(creationResult.Item.ChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
             Assert.That(creationResult.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(creationResult.Item.Currency, Is.EqualTo(createRequest.Currency));
             Assert.That(creationResult.Item.Description, Is.EqualTo(createRequest.Description));
             Assert.That(creationResult.Item.Links.Creditor, Is.EqualTo(_creditor.Id));
             Assert.That(creationResult.Item.Links.Mandate, Is.EqualTo(_mandate.Id));
+            Assert.That(creationResult.Item.Metadata, Is.EqualTo(createRequest.Metadata));
+            Assert.That(creationResult.Item.Reference, Is.EqualTo(createRequest.Reference));
+            Assert.That(creationResult.Item.Status, Is.Not.Null.And.Not.EqualTo(PaymentStatus.Cancelled));
+
+            Assert.That(cancellationResult.Item.Status, Is.EqualTo(PaymentStatus.Cancelled));
+        }
+
+        [Test, Explicit("Needs a merchant account to be setup, an OAuth access token to have been exchanged, and a mandate setup via a redirect flow.")]
+        public async Task CreatesAndCancelsPaymentForMerchant()
+        {
+            var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
+            var configuration = ClientConfiguration.ForSandbox(accessToken);
+            var resourceFactory = new ResourceFactory(configuration);
+
+            var creditor = await resourceFactory.Creditor();
+            var mandatesClient = new MandatesClient(configuration);
+            var mandate = (await mandatesClient.GetPageAsync()).Items.First();
+
+            // given
+            var createRequest = new CreatePaymentRequest
+            {
+                Amount = 500,
+                AppFee = 12,
+                ChargeDate = DateTime.Now.AddMonths(1),
+                Description = "Sandbox Payment",
+                Currency = "GBP",
+                Links = new CreatePaymentLinks { Mandate = mandate.Id },
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                }
+            };
+
+            var subject = new PaymentsClient(configuration);
+
+            // when
+            var creationResult = await subject.CreateAsync(createRequest);
+
+            var cancelRequest = new CancelPaymentRequest
+            {
+                Id = creationResult.Item.Id,
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key4"] = "Value4",
+                    ["Key5"] = "Value5",
+                    ["Key6"] = "Value6",
+                },
+            };
+
+            var cancellationResult = await subject.CancelAsync(cancelRequest);
+
+            // then
+            Assert.That(creationResult.Item.Id, Is.Not.Null);
+            Assert.That(creationResult.Item.Amount, Is.EqualTo(createRequest.Amount));
+            Assert.That(creationResult.Item.AmountRefunded, Is.Not.Null);
+            Assert.That(creationResult.Item.ChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(creationResult.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(creationResult.Item.Currency, Is.EqualTo(createRequest.Currency));
+            Assert.That(creationResult.Item.Description, Is.EqualTo(createRequest.Description));
+            Assert.That(creationResult.Item.Links.Creditor, Is.EqualTo(creditor.Id));
+            Assert.That(creationResult.Item.Links.Mandate, Is.EqualTo(mandate.Id));
             Assert.That(creationResult.Item.Metadata, Is.EqualTo(createRequest.Metadata));
             Assert.That(creationResult.Item.Reference, Is.EqualTo(createRequest.Reference));
             Assert.That(creationResult.Item.Status, Is.Not.Null.And.Not.EqualTo(PaymentStatus.Cancelled));

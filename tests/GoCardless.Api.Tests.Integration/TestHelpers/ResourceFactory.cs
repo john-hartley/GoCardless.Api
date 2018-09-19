@@ -207,7 +207,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             return (await redirectFlowsClient.CreateAsync(request)).Item;
         }
 
-        public async Task<Subscription> CreateSubscriptionFor(Mandate mandate)
+        public async Task<Subscription> CreateSubscriptionFor(Mandate mandate, string paymentReference = "PR123456")
         {
             var request = new CreateSubscriptionRequest
             {
@@ -227,7 +227,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                     ["Key3"] = "Value3",
                 },
                 Name = "Test subscription",
-                PaymentReference = "PR123456",
+                PaymentReference = paymentReference,
                 StartDate = DateTime.Now.AddMonths(1)
             };
 
