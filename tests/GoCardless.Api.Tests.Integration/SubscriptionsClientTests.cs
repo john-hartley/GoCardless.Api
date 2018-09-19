@@ -32,7 +32,6 @@ namespace GoCardless.Api.Tests.Integration
                 Amount = 123,
                 Currency = "GBP",
                 IntervalUnit = IntervalUnit.Weekly,
-                //AppFee = 12,
                 Count = 5,
                 //DayOfMonth = 17,
                 //EndDate = DateTime.Now.AddMonths(6).ToString("yyyy-MM-dd"),
@@ -52,6 +51,7 @@ namespace GoCardless.Api.Tests.Integration
                     Mandate = _mandate.Id
                 }
             };
+
             var subject = new SubscriptionsClient(_clientConfiguration);
 
             // when
@@ -60,7 +60,6 @@ namespace GoCardless.Api.Tests.Integration
             // then
             Assert.That(result.Item.Id, Is.Not.Empty);
             Assert.That(result.Item.Amount, Is.EqualTo(request.Amount));
-            Assert.That(result.Item.AppFee, Is.EqualTo(request.AppFee));
             Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result.Item.Currency, Is.EqualTo(request.Currency));
             Assert.That(result.Item.DayOfMonth, Is.EqualTo(request.DayOfMonth));
@@ -90,11 +89,15 @@ namespace GoCardless.Api.Tests.Integration
             var request = new CreateSubscriptionRequest
             {
                 Amount = 123,
-                Currency = "GBP",
-                IntervalUnit = IntervalUnit.Weekly,
                 AppFee = 12,
                 Count = 5,
+                Currency = "GBP",
                 Interval = 1,
+                IntervalUnit = IntervalUnit.Weekly,
+                Links = new SubscriptionLinks
+                {
+                    Mandate = mandate.Id
+                },
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
@@ -102,11 +105,7 @@ namespace GoCardless.Api.Tests.Integration
                     ["Key3"] = "Value3",
                 },
                 Name = "Test subscription",
-                StartDate = DateTime.Now.AddMonths(1),
-                Links = new SubscriptionLinks
-                {
-                    Mandate = mandate.Id
-                }
+                StartDate = DateTime.Now.AddMonths(1)
             };
 
             var subject = new SubscriptionsClient(configuration);
