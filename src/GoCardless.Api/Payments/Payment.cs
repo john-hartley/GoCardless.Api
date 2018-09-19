@@ -8,7 +8,6 @@ namespace GoCardless.Api.Payments
         public string Id { get; set; }
         public int Amount { get; set; }
         public int AmountRefunded { get; set; }
-        public int? AppFee { get; set; }
         public DateTime ChargeDate { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public string Currency { get; set; }

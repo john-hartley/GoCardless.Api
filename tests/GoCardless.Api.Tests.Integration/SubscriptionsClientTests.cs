@@ -1,3 +1,4 @@
+using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Mandates;
 using GoCardless.Api.Subscriptions;
 using GoCardless.Api.Tests.Integration.TestHelpers;
@@ -31,7 +32,6 @@ namespace GoCardless.Api.Tests.Integration
                 Amount = 123,
                 Currency = "GBP",
                 IntervalUnit = IntervalUnit.Weekly,
-                //AppFee = 12,
                 Count = 5,
                 //DayOfMonth = 17,
                 //EndDate = DateTime.Now.AddMonths(6).ToString("yyyy-MM-dd"),
@@ -51,6 +51,7 @@ namespace GoCardless.Api.Tests.Integration
                     Mandate = _mandate.Id
                 }
             };
+
             var subject = new SubscriptionsClient(_clientConfiguration);
 
             // when
@@ -58,23 +59,78 @@ namespace GoCardless.Api.Tests.Integration
 
             // then
             Assert.That(result.Item.Id, Is.Not.Empty);
-            Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result.Item.Amount, Is.EqualTo(request.Amount));
+            Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result.Item.Currency, Is.EqualTo(request.Currency));
-            Assert.That(result.Item.Status, Is.EqualTo(SubscriptionStatus.Active));
-            Assert.That(result.Item.Name, Is.EqualTo(request.Name));
-            Assert.That(result.Item.StartDate.Date, Is.EqualTo(request.StartDate.Value.Date));
+            Assert.That(result.Item.DayOfMonth, Is.EqualTo(request.DayOfMonth));
             //Assert.That(result.Item.EndDate, Is.EqualTo(request.EndDate));
             Assert.That(result.Item.Interval, Is.EqualTo(request.Interval));
             Assert.That(result.Item.IntervalUnit, Is.EqualTo(request.IntervalUnit));
-            Assert.That(result.Item.DayOfMonth, Is.EqualTo(request.DayOfMonth));
+            Assert.That(result.Item.Name, Is.EqualTo(request.Name));
+            Assert.That(result.Item.Links, Is.Not.Null);
+            Assert.That(result.Item.Links.Mandate, Is.EqualTo(request.Links.Mandate));
             Assert.That(result.Item.Month, Is.EqualTo(request.Month));
             Assert.That(result.Item.Metadata, Is.EqualTo(request.Metadata));
             Assert.That(result.Item.PaymentReference, Is.EqualTo(request.PaymentReference));
+            Assert.That(result.Item.StartDate.Date, Is.EqualTo(request.StartDate.Value.Date));
+            Assert.That(result.Item.Status, Is.EqualTo(SubscriptionStatus.Active));
             Assert.That(result.Item.UpcomingPayments.Count(), Is.EqualTo(request.Count));
+        }
+        
+        [Test, Explicit("Needs a merchant account to be setup, an OAuth access token to have been exchanged, and a mandate setup via a redirect flow.")]
+        public async Task CreatesSubscriptionForMerchant()
+        {
+            // given
+            var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
+            var configuration = ClientConfiguration.ForSandbox(accessToken);
+            var mandatesClient = new MandatesClient(configuration);
+            var mandate = (await mandatesClient.GetPageAsync()).Items.First();
+
+            var request = new CreateSubscriptionRequest
+            {
+                Amount = 123,
+                AppFee = 12,
+                Count = 5,
+                Currency = "GBP",
+                Interval = 1,
+                IntervalUnit = IntervalUnit.Weekly,
+                Links = new SubscriptionLinks
+                {
+                    Mandate = mandate.Id
+                },
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                },
+                Name = "Test subscription",
+                StartDate = DateTime.Now.AddMonths(1)
+            };
+
+            var subject = new SubscriptionsClient(configuration);
+
+            // when
+            var result = await subject.CreateAsync(request);
+
+            // then
+            Assert.That(result.Item.Id, Is.Not.Empty);
+            Assert.That(result.Item.Amount, Is.EqualTo(request.Amount));
             Assert.That(result.Item.AppFee, Is.EqualTo(request.AppFee));
+            Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result.Item.Currency, Is.EqualTo(request.Currency));
+            Assert.That(result.Item.DayOfMonth, Is.EqualTo(request.DayOfMonth));
+            Assert.That(result.Item.Interval, Is.EqualTo(request.Interval));
+            Assert.That(result.Item.IntervalUnit, Is.EqualTo(request.IntervalUnit));
+            Assert.That(result.Item.Name, Is.EqualTo(request.Name));
             Assert.That(result.Item.Links, Is.Not.Null);
             Assert.That(result.Item.Links.Mandate, Is.EqualTo(request.Links.Mandate));
+            Assert.That(result.Item.Month, Is.EqualTo(request.Month));
+            Assert.That(result.Item.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(result.Item.PaymentReference, Is.EqualTo(request.PaymentReference));
+            Assert.That(result.Item.StartDate.Date, Is.EqualTo(request.StartDate.Value.Date));
+            Assert.That(result.Item.Status, Is.EqualTo(SubscriptionStatus.Active));
+            Assert.That(result.Item.UpcomingPayments.Count(), Is.EqualTo(request.Count));
         }
 
         [Test]
@@ -162,8 +218,8 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(result.Item.Id, Is.EqualTo(subscription.Id));
             Assert.That(result.Item.Amount, Is.Not.Null.And.EqualTo(subscription.Amount));
             Assert.That(result.Item.AppFee, Is.Null);
-            Assert.That(result.Item.Currency, Is.Not.Null.And.EqualTo(subscription.Currency));
             Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result.Item.Currency, Is.Not.Null.And.EqualTo(subscription.Currency));
             Assert.That(result.Item.DayOfMonth, Is.Null);
             Assert.That(result.Item.EndDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
             Assert.That(result.Item.Interval, Is.Not.Null.And.EqualTo(subscription.Interval));
@@ -202,7 +258,6 @@ namespace GoCardless.Api.Tests.Integration
             // then
             Assert.That(result.Item.Id, Is.EqualTo(request.Id));
             Assert.That(result.Item.Amount, Is.EqualTo(request.Amount));
-            Assert.That(result.Item.AppFee, Is.Null);
             Assert.That(result.Item.Metadata, Is.EqualTo(subscription.Metadata));
             Assert.That(result.Item.Name, Is.EqualTo(request.Name));
             Assert.That(result.Item.PaymentReference, Is.EqualTo(request.PaymentReference));
@@ -236,10 +291,48 @@ namespace GoCardless.Api.Tests.Integration
             // then
             Assert.That(result.Item.Id, Is.EqualTo(request.Id));
             Assert.That(result.Item.Amount, Is.EqualTo(request.Amount));
-            Assert.That(result.Item.AppFee, Is.Null);
             Assert.That(result.Item.Metadata, Is.EqualTo(request.Metadata));
             Assert.That(result.Item.Name, Is.EqualTo(request.Name));
             Assert.That(result.Item.PaymentReference, Is.EqualTo(request.PaymentReference));
+        }
+
+        [Test, Explicit("Needs a merchant account to be setup, an OAuth access token to have been exchanged, and a mandate setup via a redirect flow.")]
+        public async Task UpdatesSubscriptionForMerchant()
+        {
+            // given
+            var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
+            var configuration = ClientConfiguration.ForSandbox(accessToken);
+            var resourceFactory = new ResourceFactory(configuration);
+
+            var mandatesClient = new MandatesClient(configuration);
+            var mandate = (await mandatesClient.GetPageAsync()).Items.First();
+            var subscription = await resourceFactory.CreateSubscriptionFor(mandate, paymentReference: null);
+
+            var request = new UpdateSubscriptionRequest
+            {
+                Id = subscription.Id,
+                Amount = 456,
+                AppFee = 34,
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key4"] = "Value4",
+                    ["Key5"] = "Value5",
+                    ["Key6"] = "Value6",
+                },
+                Name = "Updated subscription name"
+            };
+
+            var subject = new SubscriptionsClient(configuration);
+
+            // when
+            var result = await subject.UpdateAsync(request);
+
+            // then
+            Assert.That(result.Item.Id, Is.EqualTo(request.Id));
+            Assert.That(result.Item.Amount, Is.EqualTo(request.Amount));
+            Assert.That(result.Item.AppFee, Is.EqualTo(request.AppFee));
+            Assert.That(result.Item.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(result.Item.Name, Is.EqualTo(request.Name));
         }
 
         [Test]
