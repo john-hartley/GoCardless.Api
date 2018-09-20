@@ -8,7 +8,7 @@ using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Core
+namespace GoCardless.Api.Core.Http
 {
     public abstract class ApiClientBase
     {

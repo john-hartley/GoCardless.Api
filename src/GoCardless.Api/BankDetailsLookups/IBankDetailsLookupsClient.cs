@@ -1,4 +1,4 @@
-﻿using GoCardless.Api.Core;
+﻿using GoCardless.Api.Core.Http;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.BankDetailsLookups

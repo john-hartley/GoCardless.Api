@@ -1,6 +1,5 @@
-﻿using GoCardless.Api.Core;
-using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Paging;
+﻿using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 

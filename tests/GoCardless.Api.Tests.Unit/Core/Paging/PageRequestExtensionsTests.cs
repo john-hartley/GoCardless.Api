@@ -1,4 +1,4 @@
-﻿using GoCardless.Api.Core.Paging;
+﻿using GoCardless.Api.Core.Http;
 using NUnit.Framework;
 using System;
 using System.Linq;

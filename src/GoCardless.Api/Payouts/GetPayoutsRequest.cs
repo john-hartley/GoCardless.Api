@@ -1,4 +1,4 @@
-﻿using GoCardless.Api.Core.Paging;
+﻿using GoCardless.Api.Core.Http;
 using System;
 
 namespace GoCardless.Api.Payouts
