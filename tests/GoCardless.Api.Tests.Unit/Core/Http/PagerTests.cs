@@ -3,7 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Tests.Unit.Core.Paging
+namespace GoCardless.Api.Tests.Unit.Core.Http
 {
     public class PagerTests
     {
