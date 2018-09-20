@@ -3,6 +3,7 @@ using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.CreditorBankAccounts;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
+using GoCardless.Api.CustomerNotifications;
 using GoCardless.Api.Customers;
 using GoCardless.Api.Events;
 using GoCardless.Api.MandateImportEntries;
@@ -29,8 +30,9 @@ namespace GoCardless.Api
             BankDetailsLookups = new BankDetailsLookupsClient(configuration);
             CreditorBankAccounts = new CreditorBankAccountsClient(configuration);
             Creditors = new CreditorsClient(configuration);
-            Customers = new CustomersClient(configuration);
             CustomerBankAccounts = new CustomerBankAccountsClient(configuration);
+            CustomerNotifications = new CustomerNotificationsClient(configuration);
+            Customers = new CustomersClient(configuration);
             Events = new EventsClient(configuration);
             MandateImportEntries = new MandateImportEntriesClient(configuration);
             MandateImports = new MandateImportsClient(configuration);
@@ -48,6 +50,7 @@ namespace GoCardless.Api
         public ICreditorBankAccountsClient CreditorBankAccounts { get; }
         public ICreditorsClient Creditors { get; }
         public ICustomerBankAccountsClient CustomerBankAccounts { get; }
+        public ICustomerNotificationsClient CustomerNotifications { get; }
         public ICustomersClient Customers { get; }
         public IEventsClient Events { get; }
         public IMandateImportEntriesClient MandateImportEntries { get; }
