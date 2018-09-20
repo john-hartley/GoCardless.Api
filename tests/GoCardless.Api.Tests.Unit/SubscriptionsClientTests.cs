@@ -42,13 +42,18 @@ namespace GoCardless.Api.Tests.Unit
             Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
         }
 
-        [Test]
-        public void CancelSubscriptionRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("\t  ")]
+        public void CancelSubscriptionRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new SubscriptionsClient(_clientConfiguration);
 
-            var request = new CancelSubscriptionRequest();
+            var request = new CancelSubscriptionRequest
+            {
+                Id = id
+            };
 
             // when
             AsyncTestDelegate test = () => subject.CancelAsync(request);
@@ -118,18 +123,18 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void SubscriptionIdIsNullOrWhiteSpaceThrows(string subscriptionId)
+        public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new SubscriptionsClient(_clientConfiguration);
 
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(subscriptionId);
+            AsyncTestDelegate test = () => subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
             Assert.That(ex.Message, Is.Not.Null);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(subscriptionId)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(id)));
         }
 
         [Test]
@@ -137,10 +142,10 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new SubscriptionsClient(_clientConfiguration);
-            var subscriptionId = "SB12345678";
+            var id = "SB12345678";
 
             // when
-            await subject.ForIdAsync(subscriptionId);
+            await subject.ForIdAsync(id);
 
             // then
             _httpTest
@@ -217,13 +222,18 @@ namespace GoCardless.Api.Tests.Unit
             Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
         }
 
-        [Test]
-        public void UpdateSubscriptionRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("\t  ")]
+        public void UpdateSubscriptionRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new SubscriptionsClient(_clientConfiguration);
 
-            var request = new UpdateSubscriptionRequest();
+            var request = new UpdateSubscriptionRequest
+            {
+                Id = id
+            };
 
             // when
             AsyncTestDelegate test = () => subject.UpdateAsync(request);

@@ -158,7 +158,6 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(result[0].Id, Is.Not.Null);
             Assert.That(result[0].Amount, Is.Not.EqualTo(default(int)));
             Assert.That(result[0].AmountRefunded, Is.EqualTo(0));
-            //Assert.That(result[0].AppFee, Is.Not.Null);
             Assert.That(result[0].ChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
             Assert.That(result[0].Currency, Is.Not.Null);
             Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
@@ -220,7 +219,6 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(actual.Id, Is.Not.Null);
             Assert.That(actual.Amount, Is.EqualTo(payment.Amount));
             Assert.That(actual.AmountRefunded, Is.EqualTo(0));
-            //Assert.That(actual.AppFee, Is.Not.Null);
             Assert.That(actual.ChargeDate, Is.EqualTo(payment.ChargeDate));
             Assert.That(actual.Currency, Is.EqualTo(payment.Currency));
             Assert.That(actual.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));

@@ -118,18 +118,18 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void MandateIdIsNullOrWhiteSpaceThrows(string mandateId)
+        public void IsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new MandatesClient(_clientConfiguration);
 
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(mandateId);
+            AsyncTestDelegate test = () => subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
             Assert.That(ex.Message, Is.Not.Null);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(mandateId)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(id)));
         }
 
         [Test]
@@ -137,10 +137,10 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new MandatesClient(_clientConfiguration);
-            var mandateId = "MD12345678";
+            var id = "MD12345678";
 
             // when
-            await subject.ForIdAsync(mandateId);
+            await subject.ForIdAsync(id);
 
             // then
             _httpTest
@@ -217,13 +217,18 @@ namespace GoCardless.Api.Tests.Unit
             Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
         }
 
-        [Test]
-        public void ReinstateMandateRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("\t  ")]
+        public void ReinstateMandateRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new MandatesClient(_clientConfiguration);
 
-            var request = new ReinstateMandateRequest();
+            var request = new ReinstateMandateRequest
+            {
+                Id = id
+            };
 
             // when
             AsyncTestDelegate test = () => subject.ReinstateAsync(request);
@@ -269,13 +274,18 @@ namespace GoCardless.Api.Tests.Unit
             Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
         }
 
-        [Test]
-        public void UpdateMandateRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("\t  ")]
+        public void UpdateMandateRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new MandatesClient(_clientConfiguration);
 
-            var request = new UpdateMandateRequest();
+            var request = new UpdateMandateRequest
+            {
+                Id = id
+            };
 
             // when
             AsyncTestDelegate test = () => subject.UpdateAsync(request);

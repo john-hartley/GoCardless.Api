@@ -14,14 +14,14 @@ namespace GoCardless.Api.Events
             return new Pager<GetEventsRequest, Event>(GetPageAsync);
         }
 
-        public Task<Response<Event>> ForIdAsync(string eventId)
+        public Task<Response<Event>> ForIdAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(eventId))
+            if (string.IsNullOrWhiteSpace(id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(eventId));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Event>>($"events/{eventId}");
+            return GetAsync<Response<Event>>($"events/{id}");
         }
 
         public Task<PagedResponse<Event>> GetPageAsync()

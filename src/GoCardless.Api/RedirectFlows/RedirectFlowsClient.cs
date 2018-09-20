@@ -40,14 +40,14 @@ namespace GoCardless.Api.RedirectFlows
             );
         }
 
-        public Task<Response<RedirectFlow>> ForIdAsync(string redirectFlowId)
+        public Task<Response<RedirectFlow>> ForIdAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(redirectFlowId))
+            if (string.IsNullOrWhiteSpace(id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(redirectFlowId));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<RedirectFlow>>($"redirect_flows/{redirectFlowId}");
+            return GetAsync<Response<RedirectFlow>>($"redirect_flows/{id}");
         }
     }
 }

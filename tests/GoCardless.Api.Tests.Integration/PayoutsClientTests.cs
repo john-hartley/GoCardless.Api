@@ -15,8 +15,13 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new PayoutsClient(_clientConfiguration);
 
+            var request = new GetPayoutsRequest
+            {
+                PayoutType = PayoutType.Merchant
+            };
+
             // when
-            var result = (await subject.GetPageAsync()).Items.ToList();
+            var result = (await subject.GetPageAsync(request)).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -25,8 +30,8 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(result[0].Amount, Is.Not.EqualTo(default(int)));
             Assert.That(result[0].ArrivalDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
             Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result[0].Currency, Is.Not.Null);
             Assert.That(result[0].DeductedFees, Is.Not.Null.And.Not.EqualTo(default(int)));
+            Assert.That(result[0].Currency, Is.Not.Null);
             Assert.That(result[0].Links, Is.Not.Null);
             Assert.That(result[0].Links.Creditor, Is.Not.Null);
             Assert.That(result[0].Links.CreditorBankAccount, Is.Not.Null);

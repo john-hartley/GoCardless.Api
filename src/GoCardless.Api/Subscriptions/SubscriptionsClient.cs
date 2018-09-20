@@ -46,14 +46,14 @@ namespace GoCardless.Api.Subscriptions
             );
         }
 
-        public Task<Response<Subscription>> ForIdAsync(string subscriptionId)
+        public Task<Response<Subscription>> ForIdAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(subscriptionId))
+            if (string.IsNullOrWhiteSpace(id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(subscriptionId));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Subscription>>($"subscriptions/{subscriptionId}");
+            return GetAsync<Response<Subscription>>($"subscriptions/{id}");
         }
 
         public Task<PagedResponse<Subscription>> GetPageAsync()

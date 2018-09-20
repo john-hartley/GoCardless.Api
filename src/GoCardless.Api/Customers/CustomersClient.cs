@@ -28,14 +28,14 @@ namespace GoCardless.Api.Customers
             );
         }
 
-        public Task<Response<Customer>> ForIdAsync(string customerId)
+        public Task<Response<Customer>> ForIdAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(customerId))
+            if (string.IsNullOrWhiteSpace(id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(customerId));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Customer>>($"customers/{customerId}");
+            return GetAsync<Response<Customer>>($"customers/{id}");
         }
 
         public Task<PagedResponse<Customer>> GetPageAsync()

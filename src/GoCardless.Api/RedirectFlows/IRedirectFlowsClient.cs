@@ -7,6 +7,6 @@ namespace GoCardless.Api.RedirectFlows
     {
         Task<Response<RedirectFlow>> CompleteAsync(CompleteRedirectFlowRequest request);
         Task<Response<RedirectFlow>> CreateAsync(CreateRedirectFlowRequest request);
-        Task<Response<RedirectFlow>> ForIdAsync(string redirectFlowId);
+        Task<Response<RedirectFlow>> ForIdAsync(string id);
     }
 }

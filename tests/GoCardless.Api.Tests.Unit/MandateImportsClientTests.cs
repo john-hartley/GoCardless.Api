@@ -29,17 +29,17 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void CancelMandateImportIdIsNullEmptyOrWhiteSpaceThrows(string mandateImportId)
+        public void CancelIdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new MandateImportsClient(_clientConfiguration);
 
             // when
-            AsyncTestDelegate test = () => subject.CancelAsync(mandateImportId);
+            AsyncTestDelegate test = () => subject.CancelAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(mandateImportId)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(id)));
         }
 
         [Test]
@@ -47,10 +47,10 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new MandateImportsClient(_clientConfiguration);
-            var mandateImportId = "IM12345678";
+            var id = "IM12345678";
 
             // when
-            await subject.CancelAsync(mandateImportId);
+            await subject.CancelAsync(id);
 
             // then
             _httpTest
@@ -94,17 +94,17 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void MandateImportIdIsNullEmptyOrWhiteSpaceThrows(string mandateImportId)
+        public void IdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new MandateImportsClient(_clientConfiguration);
 
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(mandateImportId);
+            AsyncTestDelegate test = () => subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(mandateImportId)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(id)));
         }
 
         [Test]
@@ -112,10 +112,10 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new MandateImportsClient(_clientConfiguration);
-            var mandateImportId = "IM12345678";
+            var id = "IM12345678";
 
             // when
-            await subject.ForIdAsync(mandateImportId);
+            await subject.ForIdAsync(id);
 
             // then
             _httpTest
@@ -126,17 +126,17 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void SubmitMandateImportIdIsNullEmptyOrWhiteSpaceThrows(string mandateImportId)
+        public void SubmitIdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new MandateImportsClient(_clientConfiguration);
 
             // when
-            AsyncTestDelegate test = () => subject.SubmitAsync(mandateImportId);
+            AsyncTestDelegate test = () => subject.SubmitAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(mandateImportId)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(id)));
         }
 
         [Test]
@@ -144,10 +144,10 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new MandateImportsClient(_clientConfiguration);
-            var mandateImportId = "IM12345678";
+            var id = "IM12345678";
 
             // when
-            await subject.SubmitAsync(mandateImportId);
+            await subject.SubmitAsync(id);
 
             // then
             _httpTest

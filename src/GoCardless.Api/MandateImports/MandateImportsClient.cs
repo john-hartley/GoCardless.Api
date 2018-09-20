@@ -9,15 +9,15 @@ namespace GoCardless.Api.MandateImports
     {
         public MandateImportsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<Response<MandateImport>> CancelAsync(string mandateImportId)
+        public Task<Response<MandateImport>> CancelAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(mandateImportId))
+            if (string.IsNullOrWhiteSpace(id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(mandateImportId));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
             return PostAsync<Response<MandateImport>>(
-                $"mandate_imports/{mandateImportId}/actions/cancel"
+                $"mandate_imports/{id}/actions/cancel"
             );
         }
 
@@ -34,25 +34,25 @@ namespace GoCardless.Api.MandateImports
             );
         }
 
-        public Task<Response<MandateImport>> ForIdAsync(string mandateImportId)
+        public Task<Response<MandateImport>> ForIdAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(mandateImportId))
+            if (string.IsNullOrWhiteSpace(id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(mandateImportId));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<MandateImport>>($"mandate_imports/{mandateImportId}");
+            return GetAsync<Response<MandateImport>>($"mandate_imports/{id}");
         }
 
-        public Task<Response<MandateImport>> SubmitAsync(string mandateImportId)
+        public Task<Response<MandateImport>> SubmitAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(mandateImportId))
+            if (string.IsNullOrWhiteSpace(id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(mandateImportId));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
             return PostAsync<Response<MandateImport>>(
-                $"mandate_imports/{mandateImportId}/actions/submit"
+                $"mandate_imports/{id}/actions/submit"
             );
         }
     }

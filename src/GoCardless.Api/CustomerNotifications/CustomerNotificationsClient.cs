@@ -9,15 +9,15 @@ namespace GoCardless.Api.CustomerNotifications
     {
         public CustomerNotificationsClient(ClientConfiguration configuration) : base(configuration) { }
 
-        public Task<Response<CustomerNotification>> HandleAsync(string customerNotificationId)
+        public Task<Response<CustomerNotification>> HandleAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(customerNotificationId))
+            if (string.IsNullOrWhiteSpace(id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(customerNotificationId));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
             return PostAsync<Response<CustomerNotification>>(
-                $"customer_notifications/{customerNotificationId}/actions/handle"
+                $"customer_notifications/{id}/actions/handle"
             );
         }
     }

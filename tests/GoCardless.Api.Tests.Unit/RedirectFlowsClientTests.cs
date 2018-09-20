@@ -99,18 +99,18 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void RedirectFlowIdIsNullOrWhiteSpaceThrows(string redirectFlowId)
+        public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new RedirectFlowsClient(_clientConfiguration);
 
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(redirectFlowId);
+            AsyncTestDelegate test = () => subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
             Assert.That(ex.Message, Is.Not.Null);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(redirectFlowId)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(id)));
         }
 
         [Test]
@@ -118,10 +118,10 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new RedirectFlowsClient(_clientConfiguration);
-            var RedirectFlowId = "RE12345678";
+            var id = "RE12345678";
 
             // when
-            await subject.ForIdAsync(RedirectFlowId);
+            await subject.ForIdAsync(id);
 
             // then
             _httpTest

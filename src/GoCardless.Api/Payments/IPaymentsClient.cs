@@ -8,7 +8,7 @@ namespace GoCardless.Api.Payments
         IPagerBuilder<GetPaymentsRequest, Payment> BuildPager();
         Task<Response<Payment>> CancelAsync(CancelPaymentRequest request);
         Task<Response<Payment>> CreateAsync(CreatePaymentRequest request);
-        Task<Response<Payment>> ForIdAsync(string paymentId);
+        Task<Response<Payment>> ForIdAsync(string id);
         Task<PagedResponse<Payment>> GetPageAsync();
         Task<PagedResponse<Payment>> GetPageAsync(GetPaymentsRequest request);
         Task<Response<Payment>> RetryAsync(RetryPaymentRequest request);

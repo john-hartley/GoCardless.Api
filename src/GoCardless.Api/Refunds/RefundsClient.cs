@@ -28,14 +28,14 @@ namespace GoCardless.Api.Refunds
             );
         }
 
-        public Task<Response<Refund>> ForIdAsync(string refundId)
+        public Task<Response<Refund>> ForIdAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(refundId))
+            if (string.IsNullOrWhiteSpace(id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(refundId));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Refund>>($"refunds/{refundId}");
+            return GetAsync<Response<Refund>>($"refunds/{id}");
         }
 
         public Task<PagedResponse<Refund>> GetPageAsync()

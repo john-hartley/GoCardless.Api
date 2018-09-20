@@ -29,17 +29,17 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void CustomerNotificationIdIsNullOrWhiteSpaceThrows(string customerNotificationId)
+        public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new CustomerNotificationsClient(_clientConfiguration);
 
             // when
-            AsyncTestDelegate test = () => subject.HandleAsync(customerNotificationId);
+            AsyncTestDelegate test = () => subject.HandleAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(customerNotificationId)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(id)));
         }
 
         [Test]
@@ -47,10 +47,10 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new CustomerNotificationsClient(_clientConfiguration);
-            var customerNotifcationId = "PCN12345678";
+            var id = "PCN12345678";
 
             // when
-            await subject.HandleAsync(customerNotifcationId);
+            await subject.HandleAsync(id);
 
             // then
             _httpTest

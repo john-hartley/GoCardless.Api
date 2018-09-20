@@ -8,7 +8,7 @@ namespace GoCardless.Api.Mandates
         IPagerBuilder<GetMandatesRequest, Mandate> BuildPager();
         Task<Response<Mandate>> CancelAsync(CancelMandateRequest request);
         Task<Response<Mandate>> CreateAsync(CreateMandateRequest request);
-        Task<Response<Mandate>> ForIdAsync(string mandateId);
+        Task<Response<Mandate>> ForIdAsync(string id);
         Task<PagedResponse<Mandate>> GetPageAsync();
         Task<PagedResponse<Mandate>> GetPageAsync(GetMandatesRequest request);
         Task<Response<Mandate>> ReinstateAsync(ReinstateMandateRequest request);

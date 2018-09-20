@@ -45,14 +45,14 @@ namespace GoCardless.Api.CustomerBankAccounts
             );
         }
 
-        public Task<Response<CustomerBankAccount>> ForIdAsync(string customerBankAccountId)
+        public Task<Response<CustomerBankAccount>> ForIdAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(customerBankAccountId))
+            if (string.IsNullOrWhiteSpace(id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(customerBankAccountId));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
             
-            return GetAsync<Response<CustomerBankAccount>>($"customer_bank_accounts/{customerBankAccountId}");
+            return GetAsync<Response<CustomerBankAccount>>($"customer_bank_accounts/{id}");
         }
 
         public Task<PagedResponse<CustomerBankAccount>> GetPageAsync()

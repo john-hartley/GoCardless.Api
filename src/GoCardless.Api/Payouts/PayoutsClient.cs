@@ -14,14 +14,14 @@ namespace GoCardless.Api.Payouts
             return new Pager<GetPayoutsRequest, Payout>(GetPageAsync);
         }
 
-        public Task<Response<Payout>> ForIdAsync(string payoutId)
+        public Task<Response<Payout>> ForIdAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(payoutId))
+            if (string.IsNullOrWhiteSpace(id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(payoutId));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Payout>>($"payouts/{payoutId}");
+            return GetAsync<Response<Payout>>($"payouts/{id}");
         }
 
         public Task<PagedResponse<Payout>> GetPageAsync()
