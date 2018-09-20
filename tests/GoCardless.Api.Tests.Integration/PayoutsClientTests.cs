@@ -30,8 +30,8 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(result[0].Amount, Is.Not.EqualTo(default(int)));
             Assert.That(result[0].ArrivalDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
             Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result[0].DeductedFees, Is.Not.Null.And.Not.EqualTo(default(int)));
             Assert.That(result[0].Currency, Is.Not.Null);
+            Assert.That(result[0].DeductedFees, Is.Not.Null.And.Not.EqualTo(default(int)));
             Assert.That(result[0].Links, Is.Not.Null);
             Assert.That(result[0].Links.Creditor, Is.Not.Null);
             Assert.That(result[0].Links.CreditorBankAccount, Is.Not.Null);
