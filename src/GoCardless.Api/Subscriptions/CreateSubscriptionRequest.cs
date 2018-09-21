@@ -5,14 +5,11 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.Subscriptions
 {
-    /// <summary>
-    /// For up-to-date documentation of this request, see: https://developer.gocardless.com/api-reference/#subscriptions-create-a-subscription
-    /// </summary>
     public class CreateSubscriptionRequest
     {
         public int Amount { get; set; }
         public int? AppFee { get; set; }
-        public int Count { get; set; }
+        public int? Count { get; set; }
         public string Currency { get; set; }
         public int? DayOfMonth { get; set; }
 

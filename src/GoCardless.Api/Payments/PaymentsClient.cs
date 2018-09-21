@@ -1,6 +1,5 @@
-﻿using GoCardless.Api.Core;
-using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Paging;
+﻿using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
@@ -47,14 +46,14 @@ namespace GoCardless.Api.Payments
             );
         }
 
-        public Task<Response<Payment>> ForIdAsync(string paymentId)
+        public Task<Response<Payment>> ForIdAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(paymentId))
+            if (string.IsNullOrWhiteSpace(id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(paymentId));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Payment>>($"payments/{paymentId}");
+            return GetAsync<Response<Payment>>($"payments/{id}");
         }
 
         public Task<PagedResponse<Payment>> GetPageAsync()

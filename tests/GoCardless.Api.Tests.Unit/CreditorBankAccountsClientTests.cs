@@ -118,18 +118,18 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void CreditorBankAccountIdIsNullOrWhiteSpaceThrows(string creditorBankAccountId)
+        public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new CreditorBankAccountsClient(_clientConfiguration);
 
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(creditorBankAccountId);
+            AsyncTestDelegate test = () => subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
             Assert.That(ex.Message, Is.Not.Null);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(creditorBankAccountId)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(id)));
         }
 
         [Test]
@@ -137,10 +137,10 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new CreditorBankAccountsClient(_clientConfiguration);
-            var creditorBankAccountId = "BA12345678";
+            var id = "BA12345678";
 
             // when
-            await subject.ForIdAsync(creditorBankAccountId);
+            await subject.ForIdAsync(id);
 
             // then
             _httpTest

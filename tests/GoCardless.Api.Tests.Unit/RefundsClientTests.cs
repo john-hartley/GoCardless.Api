@@ -66,18 +66,18 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void RefundIdIsNullOrWhiteSpaceThrows(string refundId)
+        public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new RefundsClient(_clientConfiguration);
 
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(refundId);
+            AsyncTestDelegate test = () => subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
             Assert.That(ex.Message, Is.Not.Null);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(refundId)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(id)));
         }
 
         [Test]
@@ -85,10 +85,10 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new RefundsClient(_clientConfiguration);
-            var RefundId = "RF12345678";
+            var id = "RF12345678";
 
             // when
-            await subject.ForIdAsync(RefundId);
+            await subject.ForIdAsync(id);
 
             // then
             _httpTest
@@ -165,13 +165,18 @@ namespace GoCardless.Api.Tests.Unit
             Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
         }
 
-        [Test]
-        public void UpdateRefundRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("\t  ")]
+        public void UpdateRefundRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new RefundsClient(_clientConfiguration);
 
-            var request = new UpdateRefundRequest();
+            var request = new UpdateRefundRequest
+            {
+                Id = id
+            };
 
             // when
             AsyncTestDelegate test = () => subject.UpdateAsync(request);

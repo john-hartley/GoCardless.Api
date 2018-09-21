@@ -1,6 +1,5 @@
-﻿using GoCardless.Api.Core;
-using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Paging;
+﻿using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
@@ -47,14 +46,14 @@ namespace GoCardless.Api.Mandates
             );
         }
 
-        public Task<Response<Mandate>> ForIdAsync(string mandateId)
+        public Task<Response<Mandate>> ForIdAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(mandateId))
+            if (string.IsNullOrWhiteSpace(id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(mandateId));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Mandate>>($"mandates/{mandateId}");
+            return GetAsync<Response<Mandate>>($"mandates/{id}");
         }
 
         public Task<PagedResponse<Mandate>> GetPageAsync()

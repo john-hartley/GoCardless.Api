@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.Tests.Unit
 {
-    public class PayoutClientTests
+    public class PayoutsClientTests
     {
         private ClientConfiguration _clientConfiguration;
         private HttpTest _httpTest;
@@ -82,18 +82,18 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void PayoutIdIsNullOrWhiteSpaceThrows(string payoutId)
+        public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new PayoutsClient(_clientConfiguration);
 
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(payoutId);
+            AsyncTestDelegate test = () => subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
             Assert.That(ex.Message, Is.Not.Null);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(payoutId)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(id)));
         }
 
         [Test]
@@ -101,10 +101,10 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new PayoutsClient(_clientConfiguration);
-            var PayoutId = "PO12345678";
+            var id = "PO12345678";
 
             // when
-            await subject.ForIdAsync(PayoutId);
+            await subject.ForIdAsync(id);
 
             // then
             _httpTest

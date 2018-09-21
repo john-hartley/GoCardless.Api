@@ -147,7 +147,6 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             var request = new CreatePaymentRequest
             {
                 Amount = 500,
-                //AppFee = 50,
                 ChargeDate = DateTime.Now.AddMonths(1),
                 Description = "Sandbox Payment",
                 Currency = "GBP",
@@ -167,8 +166,13 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 
         public async Task<Payout> Payout()
         {
+            var request = new GetPayoutsRequest
+            {
+                PayoutType = PayoutType.Merchant
+            };
+
             var payoutsClient = new PayoutsClient(_clientConfiguration);
-            return (await payoutsClient.GetPageAsync()).Items.First();
+            return (await payoutsClient.GetPageAsync(request)).Items.First();
         }
 
         public async Task<RedirectFlow> CreateRedirectFlowFor(Creditor creditor)

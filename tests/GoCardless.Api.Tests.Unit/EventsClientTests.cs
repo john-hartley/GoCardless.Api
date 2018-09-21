@@ -29,18 +29,18 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void EventIdIsNullOrWhiteSpaceThrows(string eventId)
+        public void EventIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new EventsClient(_clientConfiguration);
 
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(eventId);
+            AsyncTestDelegate test = () => subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
             Assert.That(ex.Message, Is.Not.Null);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(eventId)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(id)));
         }
 
         [Test]
@@ -48,10 +48,10 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new EventsClient(_clientConfiguration);
-            var eventId = "EV12345678";
+            var id = "EV12345678";
 
             // when
-            await subject.ForIdAsync(eventId);
+            await subject.ForIdAsync(id);
 
             // then
             _httpTest

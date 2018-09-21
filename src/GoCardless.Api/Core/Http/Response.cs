@@ -16,7 +16,7 @@ using GoCardless.Api.Subscriptions;
 using Newtonsoft.Json;
 using Customer = GoCardless.Api.Customers.Customer;
 
-namespace GoCardless.Api.Core
+namespace GoCardless.Api.Core.Http
 {
     public class Response<TResource> where TResource : class
     {

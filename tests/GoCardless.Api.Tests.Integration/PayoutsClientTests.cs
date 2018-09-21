@@ -15,8 +15,13 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new PayoutsClient(_clientConfiguration);
 
+            var request = new GetPayoutsRequest
+            {
+                PayoutType = PayoutType.Merchant
+            };
+
             // when
-            var result = (await subject.GetPageAsync()).Items.ToList();
+            var result = (await subject.GetPageAsync(request)).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);

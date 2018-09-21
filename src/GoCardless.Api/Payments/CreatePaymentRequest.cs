@@ -5,9 +5,6 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.Payments
 {
-    /// <summary>
-    /// For up-to-date documentation of this request, see: https://developer.gocardless.com/api-reference/#payments-create-a-payment
-    /// </summary>
     public class CreatePaymentRequest
     {
         public int Amount { get; set; }

@@ -1,9 +1,9 @@
-﻿using GoCardless.Api.Core.Paging;
+﻿using GoCardless.Api.Core.Http;
 using NUnit.Framework;
 using System;
 using System.Linq;
 
-namespace GoCardless.Api.Tests.Unit.Core.Paging
+namespace GoCardless.Api.Tests.Unit.Core.Http
 {
     public class PageRequestExtensionsTests
     {

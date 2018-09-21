@@ -1,5 +1,4 @@
-﻿using GoCardless.Api.Core;
-using GoCardless.Api.Core.Paging;
+﻿using GoCardless.Api.Core.Http;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Refunds
@@ -8,7 +7,7 @@ namespace GoCardless.Api.Refunds
     {
         IPagerBuilder<GetRefundsRequest, Refund> BuildPager();
         Task<Response<Refund>> CreateAsync(CreateRefundRequest request);
-        Task<Response<Refund>> ForIdAsync(string refundId);
+        Task<Response<Refund>> ForIdAsync(string id);
         Task<PagedResponse<Refund>> GetPageAsync();
         Task<PagedResponse<Refund>> GetPageAsync(GetRefundsRequest request);
         Task<Response<Refund>> UpdateAsync(UpdateRefundRequest request);
