@@ -82,7 +82,9 @@ namespace GoCardless.Api.Tests.Integration
                 Amount = 123,
                 Currency = "GBP",
                 DayOfMonth = DateTime.Now.Day,
+#pragma warning disable 618
                 EndDate = DateTime.Now.AddMonths(2),
+#pragma warning restore 618
                 Interval = 2,
                 IntervalUnit = IntervalUnit.Monthly,
                 Links = new SubscriptionLinks
@@ -111,7 +113,9 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result.Item.Currency, Is.EqualTo(request.Currency));
             Assert.That(result.Item.DayOfMonth, Is.EqualTo(request.DayOfMonth));
+#pragma warning disable 618
             Assert.That(result.Item.EndDate.Value.Date, Is.EqualTo(request.EndDate.Value.Date));
+#pragma warning restore 618
             Assert.That(result.Item.Interval, Is.EqualTo(request.Interval));
             Assert.That(result.Item.IntervalUnit, Is.EqualTo(request.IntervalUnit));
             Assert.That(result.Item.Links, Is.Not.Null);
