@@ -7,6 +7,11 @@ namespace GoCardless.Api.Payments
 {
     public class CreatePaymentRequest
     {
+        public CreatePaymentRequest()
+        {
+            IdempotencyKey = Guid.NewGuid().ToString();
+        }
+
         public int Amount { get; set; }
         public int? AppFee { get; set; }
 

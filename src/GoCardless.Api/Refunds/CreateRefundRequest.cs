@@ -1,10 +1,16 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace GoCardless.Api.Refunds
 {
     public class CreateRefundRequest
     {
+        public CreateRefundRequest()
+        {
+            IdempotencyKey = Guid.NewGuid().ToString();
+        }
+
         public int Amount { get; set; }
 
         [JsonIgnore]
