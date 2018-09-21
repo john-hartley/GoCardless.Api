@@ -1,7 +1,35 @@
-﻿namespace GoCardless.Api.Subscriptions
+﻿using System;
+using System.Collections.Generic;
+
+namespace GoCardless.Api.Subscriptions
 {
     public static class Month
     {
+        private static IReadOnlyDictionary<int, string> _monthNameLookup = new Dictionary<int, string>
+        {
+            { 1, January },
+            { 2, February },
+            { 3, March },
+            { 4, April },
+            { 5, May },
+            { 6, June },
+            { 7, July },
+            { 8, August },
+            { 9, September },
+            { 10, October },
+            { 11, November },
+            { 12, December },
+        };
+
+        /// <summary>
+        /// Returns the name of the month for the <see cref="DateTime"/> instance.
+        /// </summary>
+        /// <returns>The name of the month in lowercase, as that's what the API expects.</returns>
+        public static string NameOf(DateTime dateTime)
+        {
+            return _monthNameLookup[dateTime.Month];
+        }
+
         public static readonly string January = "january";
         public static readonly string February = "february";
         public static readonly string March = "march";

@@ -30,26 +30,23 @@ namespace GoCardless.Api.Tests.Integration
             var request = new CreateSubscriptionRequest
             {
                 Amount = 123,
-                Currency = "GBP",
-                IntervalUnit = IntervalUnit.Weekly,
                 Count = 5,
-                //DayOfMonth = 17,
-                //EndDate = DateTime.Now.AddMonths(6).ToString("yyyy-MM-dd"),
+                Currency = "GBP",
                 Interval = 1,
+                IntervalUnit = IntervalUnit.Weekly,
+                Links = new SubscriptionLinks
+                {
+                    Mandate = _mandate.Id
+                },
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
                     ["Key2"] = "Value2",
                     ["Key3"] = "Value3",
                 },
-                //Month = "september",
                 Name = "Test subscription",
                 PaymentReference = "PR123456",
-                StartDate = DateTime.Now.AddMonths(1),
-                Links = new SubscriptionLinks
-                {
-                    Mandate = _mandate.Id
-                }
+                StartDate = DateTime.Now.AddMonths(1)
             };
 
             var subject = new SubscriptionsClient(_clientConfiguration);
@@ -63,20 +60,121 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result.Item.Currency, Is.EqualTo(request.Currency));
             Assert.That(result.Item.DayOfMonth, Is.EqualTo(request.DayOfMonth));
-            //Assert.That(result.Item.EndDate, Is.EqualTo(request.EndDate));
             Assert.That(result.Item.Interval, Is.EqualTo(request.Interval));
             Assert.That(result.Item.IntervalUnit, Is.EqualTo(request.IntervalUnit));
-            Assert.That(result.Item.Name, Is.EqualTo(request.Name));
             Assert.That(result.Item.Links, Is.Not.Null);
             Assert.That(result.Item.Links.Mandate, Is.EqualTo(request.Links.Mandate));
-            Assert.That(result.Item.Month, Is.EqualTo(request.Month));
             Assert.That(result.Item.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(result.Item.Month, Is.EqualTo(request.Month));
+            Assert.That(result.Item.Name, Is.EqualTo(request.Name));
             Assert.That(result.Item.PaymentReference, Is.EqualTo(request.PaymentReference));
             Assert.That(result.Item.StartDate.Date, Is.EqualTo(request.StartDate.Value.Date));
             Assert.That(result.Item.Status, Is.EqualTo(SubscriptionStatus.Active));
             Assert.That(result.Item.UpcomingPayments.Count(), Is.EqualTo(request.Count));
         }
-        
+
+        [Test]
+        public async Task CreatesSubscriptionUsingEndDate()
+        {
+            // given
+            var request = new CreateSubscriptionRequest
+            {
+                Amount = 123,
+                Currency = "GBP",
+                DayOfMonth = DateTime.Now.Day,
+                EndDate = DateTime.Now.AddMonths(2),
+                Interval = 2,
+                IntervalUnit = IntervalUnit.Monthly,
+                Links = new SubscriptionLinks
+                {
+                    Mandate = _mandate.Id
+                },
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                },
+                Name = "Test subscription",
+                PaymentReference = "PR123456",
+                StartDate = DateTime.Now.AddDays(7)
+            };
+
+            var subject = new SubscriptionsClient(_clientConfiguration);
+
+            // when
+            var result = await subject.CreateAsync(request);
+
+            // then
+            Assert.That(result.Item.Id, Is.Not.Empty);
+            Assert.That(result.Item.Amount, Is.EqualTo(request.Amount));
+            Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result.Item.Currency, Is.EqualTo(request.Currency));
+            Assert.That(result.Item.DayOfMonth, Is.EqualTo(request.DayOfMonth));
+            Assert.That(result.Item.EndDate.Value.Date, Is.EqualTo(request.EndDate.Value.Date));
+            Assert.That(result.Item.Interval, Is.EqualTo(request.Interval));
+            Assert.That(result.Item.IntervalUnit, Is.EqualTo(request.IntervalUnit));
+            Assert.That(result.Item.Links, Is.Not.Null);
+            Assert.That(result.Item.Links.Mandate, Is.EqualTo(request.Links.Mandate));
+            Assert.That(result.Item.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(result.Item.Month, Is.EqualTo(request.Month));
+            Assert.That(result.Item.Name, Is.EqualTo(request.Name));
+            Assert.That(result.Item.PaymentReference, Is.EqualTo(request.PaymentReference));
+            Assert.That(result.Item.StartDate.Date, Is.EqualTo(request.StartDate.Value.Date));
+            Assert.That(result.Item.Status, Is.EqualTo(SubscriptionStatus.Active));
+        }
+
+        [Test]
+        public async Task CreatesSubscriptionUsingMonthAndDayOfMonth()
+        {
+            // given
+            var startDate = DateTime.Now.AddDays(7);
+            var request = new CreateSubscriptionRequest
+            {
+                Amount = 123,
+                Currency = "GBP",
+                DayOfMonth = DateTime.Now.Day,
+                Interval = 1,
+                IntervalUnit = IntervalUnit.Yearly,
+                Links = new SubscriptionLinks
+                {
+                    Mandate = _mandate.Id
+                },
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                },
+                Month = Month.NameOf(startDate),
+                Name = "Test subscription",
+                PaymentReference = "PR123456",
+                StartDate = startDate
+            };
+
+            var subject = new SubscriptionsClient(_clientConfiguration);
+
+            // when
+            var result = await subject.CreateAsync(request);
+
+            // then
+            Assert.That(result.Item.Id, Is.Not.Empty);
+            Assert.That(result.Item.Amount, Is.EqualTo(request.Amount));
+            Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result.Item.Currency, Is.EqualTo(request.Currency));
+            Assert.That(result.Item.DayOfMonth, Is.EqualTo(request.DayOfMonth));
+            Assert.That(result.Item.Interval, Is.EqualTo(request.Interval));
+            Assert.That(result.Item.IntervalUnit, Is.EqualTo(request.IntervalUnit));
+            Assert.That(result.Item.Links, Is.Not.Null);
+            Assert.That(result.Item.Links.Mandate, Is.EqualTo(request.Links.Mandate));
+            Assert.That(result.Item.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(result.Item.Month, Is.EqualTo(request.Month));
+            Assert.That(result.Item.Name, Is.EqualTo(request.Name));
+            Assert.That(result.Item.PaymentReference, Is.EqualTo(request.PaymentReference));
+            Assert.That(result.Item.StartDate.Date, Is.EqualTo(request.StartDate.Value.Date));
+            Assert.That(result.Item.Status, Is.EqualTo(SubscriptionStatus.Active));
+        }
+
         [Test, Explicit("Needs a merchant account to be setup, an OAuth access token to have been exchanged, and a mandate setup via a redirect flow.")]
         public async Task CreatesSubscriptionForMerchant()
         {
@@ -122,11 +220,11 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(result.Item.DayOfMonth, Is.EqualTo(request.DayOfMonth));
             Assert.That(result.Item.Interval, Is.EqualTo(request.Interval));
             Assert.That(result.Item.IntervalUnit, Is.EqualTo(request.IntervalUnit));
-            Assert.That(result.Item.Name, Is.EqualTo(request.Name));
             Assert.That(result.Item.Links, Is.Not.Null);
             Assert.That(result.Item.Links.Mandate, Is.EqualTo(request.Links.Mandate));
-            Assert.That(result.Item.Month, Is.EqualTo(request.Month));
             Assert.That(result.Item.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(result.Item.Month, Is.EqualTo(request.Month));
+            Assert.That(result.Item.Name, Is.EqualTo(request.Name));
             Assert.That(result.Item.PaymentReference, Is.EqualTo(request.PaymentReference));
             Assert.That(result.Item.StartDate.Date, Is.EqualTo(request.StartDate.Value.Date));
             Assert.That(result.Item.Status, Is.EqualTo(SubscriptionStatus.Active));
@@ -151,8 +249,8 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(actual[0].Id, Is.Not.Null);
             Assert.That(actual[0].Amount, Is.Not.EqualTo(default(int)));
             Assert.That(actual[0].AppFee, Is.Null);
-            Assert.That(actual[0].Currency, Is.Not.Null);
             Assert.That(actual[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(actual[0].Currency, Is.Not.Null);
             Assert.That(actual[0].DayOfMonth, Is.Null);
             Assert.That(actual[0].EndDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
             Assert.That(actual[0].Interval, Is.Not.Null);

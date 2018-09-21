@@ -9,7 +9,7 @@ namespace GoCardless.Api.Subscriptions
     {
         public int Amount { get; set; }
         public int? AppFee { get; set; }
-        public int Count { get; set; }
+        public int? Count { get; set; }
         public string Currency { get; set; }
         public int? DayOfMonth { get; set; }
 

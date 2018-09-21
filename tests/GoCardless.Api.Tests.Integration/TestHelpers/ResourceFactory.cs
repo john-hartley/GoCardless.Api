@@ -147,7 +147,6 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             var request = new CreatePaymentRequest
             {
                 Amount = 500,
-                //AppFee = 50,
                 ChargeDate = DateTime.Now.AddMonths(1),
                 Description = "Sandbox Payment",
                 Currency = "GBP",
