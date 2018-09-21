@@ -25,7 +25,7 @@ namespace GoCardless.Api.Core.Exceptions
             {
                 var message = "An unexpected problem occurred while parsing the expected JSON response. See the RawResponse property, and the inner exception, for details.";
 
-                return new GoCardlessException(
+                return new ApiException(
                     message,
                     source,
                     new ApiError
@@ -46,7 +46,7 @@ namespace GoCardless.Api.Core.Exceptions
             switch (error.Type)
             {
                 case "gocardless":
-                    return new GoCardlessException(error.Message, error);
+                    return new ApiException($"An internal error occurred. Please contact GoCardless support, quoting '{error.RequestId}' as the id of the request.", error);
                 case "invalid_api_usage":
                     return new InvalidApiUsageException(error.Message, error);
                 case "invalid_state":
