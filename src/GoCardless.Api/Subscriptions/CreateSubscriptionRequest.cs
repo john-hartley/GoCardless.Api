@@ -5,9 +5,6 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.Subscriptions
 {
-    /// <summary>
-    /// For up-to-date documentation of this request, see: https://developer.gocardless.com/api-reference/#subscriptions-create-a-subscription
-    /// </summary>
     public class CreateSubscriptionRequest
     {
         public int Amount { get; set; }
