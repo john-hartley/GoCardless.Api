@@ -59,13 +59,13 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(result.Item.Amount, Is.EqualTo(request.Amount));
             Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result.Item.Currency, Is.EqualTo(request.Currency));
-            Assert.That(result.Item.DayOfMonth, Is.EqualTo(request.DayOfMonth));
+            Assert.That(result.Item.DayOfMonth, Is.Null);
             Assert.That(result.Item.Interval, Is.EqualTo(request.Interval));
             Assert.That(result.Item.IntervalUnit, Is.EqualTo(request.IntervalUnit));
             Assert.That(result.Item.Links, Is.Not.Null);
             Assert.That(result.Item.Links.Mandate, Is.EqualTo(request.Links.Mandate));
             Assert.That(result.Item.Metadata, Is.EqualTo(request.Metadata));
-            Assert.That(result.Item.Month, Is.EqualTo(request.Month));
+            Assert.That(result.Item.Month, Is.Null);
             Assert.That(result.Item.Name, Is.EqualTo(request.Name));
             Assert.That(result.Item.PaymentReference, Is.EqualTo(request.PaymentReference));
             Assert.That(result.Item.StartDate.Date, Is.EqualTo(request.StartDate.Value.Date));
@@ -117,7 +117,7 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(result.Item.Links, Is.Not.Null);
             Assert.That(result.Item.Links.Mandate, Is.EqualTo(request.Links.Mandate));
             Assert.That(result.Item.Metadata, Is.EqualTo(request.Metadata));
-            Assert.That(result.Item.Month, Is.EqualTo(request.Month));
+            Assert.That(result.Item.Month, Is.Null);
             Assert.That(result.Item.Name, Is.EqualTo(request.Name));
             Assert.That(result.Item.PaymentReference, Is.EqualTo(request.PaymentReference));
             Assert.That(result.Item.StartDate.Date, Is.EqualTo(request.StartDate.Value.Date));
@@ -251,14 +251,11 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(actual[0].AppFee, Is.Null);
             Assert.That(actual[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(actual[0].Currency, Is.Not.Null);
-            Assert.That(actual[0].DayOfMonth, Is.Null);
-            Assert.That(actual[0].EndDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
             Assert.That(actual[0].Interval, Is.Not.Null);
             Assert.That(actual[0].IntervalUnit, Is.Not.Null);
             Assert.That(actual[0].Links, Is.Not.Null);
             Assert.That(actual[0].Links.Mandate, Is.Not.Null);
             Assert.That(actual[0].Metadata, Is.Not.Null);
-            Assert.That(actual[0].Month, Is.Null);
             Assert.That(actual[0].Name, Is.Not.Null);
             Assert.That(actual[0].PaymentReference, Is.Not.Null);
             Assert.That(actual[0].StartDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
@@ -315,17 +312,13 @@ namespace GoCardless.Api.Tests.Integration
             // then
             Assert.That(result.Item.Id, Is.EqualTo(subscription.Id));
             Assert.That(result.Item.Amount, Is.Not.Null.And.EqualTo(subscription.Amount));
-            Assert.That(result.Item.AppFee, Is.Null);
             Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result.Item.Currency, Is.Not.Null.And.EqualTo(subscription.Currency));
-            Assert.That(result.Item.DayOfMonth, Is.Null);
-            Assert.That(result.Item.EndDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
             Assert.That(result.Item.Interval, Is.Not.Null.And.EqualTo(subscription.Interval));
             Assert.That(result.Item.IntervalUnit, Is.Not.Null.And.EqualTo(subscription.IntervalUnit));
             Assert.That(result.Item.Links, Is.Not.Null);
             Assert.That(result.Item.Links.Mandate, Is.Not.Null.And.EqualTo(subscription.Links.Mandate));
             Assert.That(result.Item.Metadata, Is.Not.Null.And.EqualTo(subscription.Metadata));
-            Assert.That(result.Item.Month, Is.Null);
             Assert.That(result.Item.Name, Is.Not.Null.And.EqualTo(subscription.Name));
             Assert.That(result.Item.PaymentReference, Is.Not.Null.And.EqualTo(subscription.PaymentReference));
             Assert.That(result.Item.StartDate, Is.Not.Null.And.EqualTo(subscription.StartDate));
