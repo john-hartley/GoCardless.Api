@@ -1,10 +1,16 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace GoCardless.Api.CreditorBankAccounts
 {
     public class CreateCreditorBankAccountRequest
     {
+        public CreateCreditorBankAccountRequest()
+        {
+            IdempotencyKey = Guid.NewGuid().ToString();
+        }
+
         public string AccountHolderName { get; set; }
         public string AccountNumber { get; set; }
         public string BankCode { get; set; }

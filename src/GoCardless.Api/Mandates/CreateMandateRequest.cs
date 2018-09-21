@@ -1,10 +1,16 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace GoCardless.Api.Mandates
 {
     public class CreateMandateRequest
     {
+        public CreateMandateRequest()
+        {
+            IdempotencyKey = Guid.NewGuid().ToString();
+        }
+
         [JsonIgnore]
         public string IdempotencyKey { get; set; }
 
