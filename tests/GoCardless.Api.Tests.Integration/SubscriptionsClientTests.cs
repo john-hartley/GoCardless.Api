@@ -74,61 +74,6 @@ namespace GoCardless.Api.Tests.Integration
         }
 
         [Test]
-        public async Task CreatesSubscriptionUsingEndDate()
-        {
-            // given
-            var request = new CreateSubscriptionRequest
-            {
-                Amount = 123,
-                Currency = "GBP",
-                DayOfMonth = DateTime.Now.Day,
-#pragma warning disable 618
-                EndDate = DateTime.Now.AddMonths(2),
-#pragma warning restore 618
-                Interval = 2,
-                IntervalUnit = IntervalUnit.Monthly,
-                Links = new SubscriptionLinks
-                {
-                    Mandate = _mandate.Id
-                },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
-                Name = "Test subscription",
-                PaymentReference = "PR123456",
-                StartDate = DateTime.Now.AddDays(7)
-            };
-
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            // when
-            var result = await subject.CreateAsync(request);
-
-            // then
-            Assert.That(result.Item.Id, Is.Not.Empty);
-            Assert.That(result.Item.Amount, Is.EqualTo(request.Amount));
-            Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result.Item.Currency, Is.EqualTo(request.Currency));
-            Assert.That(result.Item.DayOfMonth, Is.EqualTo(request.DayOfMonth));
-#pragma warning disable 618
-            Assert.That(result.Item.EndDate.Value.Date, Is.EqualTo(request.EndDate.Value.Date));
-#pragma warning restore 618
-            Assert.That(result.Item.Interval, Is.EqualTo(request.Interval));
-            Assert.That(result.Item.IntervalUnit, Is.EqualTo(request.IntervalUnit));
-            Assert.That(result.Item.Links, Is.Not.Null);
-            Assert.That(result.Item.Links.Mandate, Is.EqualTo(request.Links.Mandate));
-            Assert.That(result.Item.Metadata, Is.EqualTo(request.Metadata));
-            Assert.That(result.Item.Month, Is.Null);
-            Assert.That(result.Item.Name, Is.EqualTo(request.Name));
-            Assert.That(result.Item.PaymentReference, Is.EqualTo(request.PaymentReference));
-            Assert.That(result.Item.StartDate.Date, Is.EqualTo(request.StartDate.Value.Date));
-            Assert.That(result.Item.Status, Is.EqualTo(SubscriptionStatus.Active));
-        }
-
-        [Test]
         public async Task CreatesSubscriptionUsingMonthAndDayOfMonth()
         {
             // given

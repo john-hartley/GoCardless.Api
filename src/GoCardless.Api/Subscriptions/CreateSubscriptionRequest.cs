@@ -18,14 +18,6 @@ namespace GoCardless.Api.Subscriptions
         public string Currency { get; set; }
         public int? DayOfMonth { get; set; }
 
-        /// <summary>
-        /// A calendar date in the ISO-8061 format of yyyy-MM-dd. If a time component is supplied,
-        /// it will be discarded (e.g. 2018-09-18T15:05:06.123Z will become 2018-09-18).
-        /// </summary>
-        [Obsolete("Deprecated: This field will be removed in a future API version. Use the Count property to specify a number of payments instead.")]
-        [JsonConverter(typeof(IsoDateJsonConverter), DateFormat.IsoDateFormat)]
-        public DateTime? EndDate { get; set; }
-
         [JsonIgnore]
         public string IdempotencyKey { get; set; }
 
