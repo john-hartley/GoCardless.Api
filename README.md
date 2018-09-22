@@ -5,24 +5,42 @@
 
 This is an unofficial alternative to the existing GoCardless .NET API client.
 
-Currently in alpha, this project aims to improve upon the official client by:
+Currently in beta, this project aims to improve upon the official client by:
 
 - Being easier to test against
 - Not mixing `sync` and `async` calls
 - Providing simple, predictable mechanisms for paging
 
-# Road Map
+## Features
 
-There are still a few endpoints that I've not yet implemented. These are:
+Includes support for:
 
-- ~~POST /customer_notifications/id/actions/handle~~ [Done](https://github.com/john-hartley/GoCardless.Api/pull/20)
-- ~~GET /events~~ [Done](https://github.com/john-hartley/GoCardless.Api/pull/4)
-- ~~GET /events/id~~ [Done](https://github.com/john-hartley/GoCardless.Api/pull/4)
-- ~~POST /mandate_import_entries~~ [Done](https://github.com/john-hartley/GoCardless.Api/pull/3)
-- ~~GET /mandate_import_entries?mandate_import=id~~ [Done](https://github.com/john-hartley/GoCardless.Api/pull/3)
+- All core endpoints, including those currently in closed beta
+- Partner integrations
 
-~~The paging mechanisms, mentioned above, also need to be implemented. Expect breaking changes around the `AllAsync` methods for each client that supports them.~~ Done
 
-There is no documentation whatsoever at the moment beyond this readme. 
+## Installation
 
-These are the 3 major areas that need addressing before this client can be considered beta.
+    Install-Package GoCardless.Api
+    
+## Versioning
+
+This project respects [Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.html) for all public releases that are pushed to [nuget.org](https://nuget.org).
+
+## Questions
+
+If you have any questions, I'll do my best to answer them. However, please note that if you're asking about _how_ the API works, as opposed to a question about the client, you should raise a [support ticket](https://support.gocardless.com/hc/en-gb) with the GoCardless team.
+    
+## Built With
+
+- [Flurl](https://github.com/tmenier/Flurl) - Fluent URL builder and testable HTTP client for .NET
+
+## Authors
+
+- *Initial work* - [John Hartley](https://github.com/john-hartley)
+
+## Special Mentions
+
+I'd like to say thank you to the GoCardless support team for answering so many of my questions, allowing me to reuse parts of their documentation, and for granting me access to all API endpoints, which allowed me to write integration tests against them.
+
+I'd also like to thank the GoCardless engineering team. Whilst I don't know how much work they had to go through to help me, I do know some of my support tickets were escalated to them, so thank you for any work you did behind the scenes.
