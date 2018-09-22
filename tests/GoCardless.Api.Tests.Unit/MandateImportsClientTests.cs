@@ -29,7 +29,7 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void CancelIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void CancelIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new MandateImportsClient(_clientConfiguration);
@@ -94,7 +94,7 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void IdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new MandateImportsClient(_clientConfiguration);
@@ -126,7 +126,7 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void SubmitIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void SubmitIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new MandateImportsClient(_clientConfiguration);

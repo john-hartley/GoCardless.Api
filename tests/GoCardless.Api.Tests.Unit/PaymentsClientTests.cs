@@ -45,7 +45,7 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void CancelPaymentRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void CancelPaymentRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new PaymentsClient(_clientConfiguration);
@@ -225,7 +225,7 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void RetryPaymentRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void RetryPaymentRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new PaymentsClient(_clientConfiguration);
@@ -282,7 +282,7 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdatePaymentRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void UpdatePaymentRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new PaymentsClient(_clientConfiguration);
