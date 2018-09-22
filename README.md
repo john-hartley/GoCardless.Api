@@ -3,7 +3,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/aowcdofcx48csujf/branch/master?svg=true)](https://ci.appveyor.com/project/john-hartley/gocardless-api)
 [![Nuget.org](https://img.shields.io/nuget/v/GoCardless.Api.svg?style=flat)](https://www.nuget.org/packages/GoCardless.Api)
 
-This is an unofficial alternative to the existing GoCardless .NET API client.
+This is an unofficial alternative to the existing GoCardless .NET API client. To stay up-to-date with the API, please read the [official documentation](https://developer.gocardless.com/api-reference).
 
 Currently in beta, this project aims to improve upon the official client by:
 
