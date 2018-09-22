@@ -15,6 +15,10 @@ namespace GoCardless.Api.Payments
         public PaymentLinks Links { get; set; }
         public IDictionary<string, string> Metadata { get; set; }
         public string Reference { get; set; }
+
+        /// <summary>
+        /// See <see cref="Payments.PaymentStatus"/> for possible values.
+        /// </summary>
         public string Status { get; set; }
     }
 }

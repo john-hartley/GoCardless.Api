@@ -19,6 +19,10 @@ namespace GoCardless.Api.Creditors
         public string PostalCode { get; set; }
         public string Region { get; set; }
         public IReadOnlyList<SchemeIdentifier> SchemeIdentifiers { get; set; }
+
+        /// <summary>
+        /// See <see cref="Creditors.VerificationStatus"/> for possible values.
+        /// </summary>
         public string VerificationStatus { get; set; }
     }
 }

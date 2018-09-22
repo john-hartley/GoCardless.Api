@@ -28,6 +28,10 @@ namespace GoCardless.Api.Subscriptions
 
         public string Customer { get; set; }
         public string Mandate { get; set; }
+
+        /// <summary>
+        /// See <see cref="Subscriptions.SubscriptionStatus"/> for possible values.
+        /// </summary>
         public string Status { get; set; }
     }
 }

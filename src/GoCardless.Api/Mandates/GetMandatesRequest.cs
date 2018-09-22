@@ -33,6 +33,10 @@ namespace GoCardless.Api.Mandates
         public string CustomerBankAccount { get; set; }
 
         public string Reference { get; set; }
+
+        /// <summary>
+        /// See <see cref="Mandates.MandateStatus"/> for possible values.
+        /// </summary>
         public string Status { get; set; }
     }
 }

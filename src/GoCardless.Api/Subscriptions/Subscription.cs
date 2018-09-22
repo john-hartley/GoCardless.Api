@@ -13,14 +13,29 @@ namespace GoCardless.Api.Subscriptions
         public int? DayOfMonth { get; set; }
         public DateTime? EndDate { get; set; }
         public int Interval { get; set; }
+
+        /// <summary>
+        /// See <see cref="Subscriptions.IntervalUnit"/> for possible values.
+        /// </summary>
         public string IntervalUnit { get; set; }
+
         public SubscriptionLinks Links { get; set; }
         public IDictionary<string, string> Metadata { get; set; }
+
+        /// <summary>
+        /// See <see cref="Subscriptions.Month"/> for possible values.
+        /// </summary>
         public string Month { get; set; }
+
         public string Name { get; set; }
         public string PaymentReference { get; set; }
         public DateTime StartDate { get; set; }
+
+        /// <summary>
+        /// See <see cref="Subscriptions.SubscriptionStatus"/> for possible values.
+        /// </summary>
         public string Status { get; set; }
+
         public IEnumerable<UpcomingPayment> UpcomingPayments { get; set; }
     }
 }

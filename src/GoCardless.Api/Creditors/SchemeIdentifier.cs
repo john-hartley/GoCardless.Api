@@ -12,10 +12,14 @@
         public string Email { get; set; }
         public int MinimumAdvanceNotice { get; set; }
         public string Name { get; set; }
-        public string Reference { get; set; }
-        public string Scheme { get; set; }
         public string PhoneNumber { get; set; }
         public string PostalCode { get; set; }
+        public string Reference { get; set; }
         public string Region { get; set; }
+
+        /// <summary>
+        /// See <see cref="Models.Scheme"/> for supported schemes.
+        /// </summary>
+        public string Scheme { get; set; }
     }
 }

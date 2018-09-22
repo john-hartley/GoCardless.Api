@@ -33,10 +33,17 @@ namespace GoCardless.Api.Payouts
 
         public string Currency { get; set; }
 
+        /// <summary>
+        /// See <see cref="Payouts.PayoutType"/> for possible values.
+        /// </summary>
         [QueryStringKey("payout_type")]
         public string PayoutType { get; set; }
 
         public string Reference { get; set; }
+
+        /// <summary>
+        /// See <see cref="Payouts.PayoutStatus"/> for possible values.
+        /// </summary>
         public string Status { get; set; }
     }
 }
