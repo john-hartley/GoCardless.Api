@@ -69,6 +69,12 @@ var customer = response.Item;
 
 Notice how I have imported the `GoCardless.Api.Customers` namespace. Each resource is scoped to its own namespace. For example, all types involved in managing subscriptions can be found in the `GoCardless.Api.Subscriptions` namespace. Similarly, all payments types are in the corresponding `GoCardless.Api.Payments` namespace.
 
+> Note: The client will set idempotency keys automatically when a request object is created, using `Guid.NewGuid().ToString()`, but it's recommended that you set them yourself. Idempotency keys are important, as they prevent duplicate resources from being created. See [the official documentation](https://developer.gocardless.com/api-reference/#making-requests-idempotency-keys) for more information.
+
+### Retries
+
+Retry logic is currently not built into the client. For retry logic, I'd highly-recommend using the [Polly](https://github.com/App-vNext/Polly) resilience and transient-fault-handling library.
+
 ### Paging
 
 GoCardless' API uses what's called cursor-pagination. From a high level, all you need to know is that "before" means records that are newer, and "after" means records that are older. This sounds counter-intuitive, because results returned from the API are in reverse-chronological order, meaning the newest results are returned first.
