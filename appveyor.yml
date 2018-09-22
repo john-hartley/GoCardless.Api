@@ -12,6 +12,10 @@ environment:
 pull_requests:
   do_not_increment_build_number: true
 
+skip_commits:
+  files:
+    - README.md
+
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'

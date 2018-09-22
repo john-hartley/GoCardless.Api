@@ -5,7 +5,7 @@
 
 This is an unofficial alternative to the existing GoCardless .NET API client.
 
-Currently in beta, this project aims to improve upon the official client by:
+This project aims to improve upon the official client by:
 
 - Being easier to test against
 - Not mixing `sync` and `async` calls
@@ -18,7 +18,7 @@ To stay up-to-date with the API, please read the [official documentation](https:
 - Support for all core endpoints, including those currently in closed beta
 - Support for partner integrations
 - `async` all the way down
-- More than 300 tests, with almost 100 of those being integration tests, to give you a measure of confidence when using the client
+- More than 300 tests, with almost 100 of those being integration tests
 
 ## Versioning
 
