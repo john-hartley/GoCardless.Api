@@ -109,6 +109,19 @@ The code above will use `initialRequest` to get the first (i.e. newest) page of 
 
 There is a corresponding `AndGetAllBeforeAsync()` method to page in the opposite direction (i.e. oldest to newest).
 
+### Exception Handling
+
+The GoCardless API can generate several different kinds of error, and so there are a few different types of `Exception` defined in this library. 
+
+- `ApiException` - the base exception type from which all others are derived
+- `InvalidApiUsageException`
+- `InvalidStateException`
+- `ValidationFailedException`
+
+These correspond with the [4 error types](https://developer.gocardless.com/api-reference/#api-usage-errors) defined by the API. I have also defined `ResourceAlreadyExistsException` which provides a `ResourceId` property to allow you to get the id of the conflicting resource easily.
+
+Each exception type exposes a number of properties, matching with those in the official documentation, but I've also added a `RawResponse` property to help diagnose any edge cases.
+
 ## Questions
 
 If you have any questions, I'll do my best to answer them. However, please note that if you're asking about _how_ the API works, as opposed to a question about the client, you should raise a [support ticket](https://support.gocardless.com/hc/en-gb) with the GoCardless team.
