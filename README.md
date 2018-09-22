@@ -97,7 +97,7 @@ var payments = await client.Payments
     .AndGetAllAfterAsync(); // Remember "after" means older than.
 ```
 
-The code above will use `initialRequest` to get the first (i.e. newest) page of payments, and then continue sending requests to get the subsequent (i.e. older) pages, until there are no more left. The results of the initial request will be joined together with all of the subsequent requests, returning the complete list of payments for the subscription `SB12345678`.
+The code above will use `initialRequest` to get the first (i.e. newest) page of payments for a subscription with an id of `SB12345678`, and then continue sending requests to get the subsequent (i.e. older) pages, until there are no more left. The results of the initial request will be joined together with all of the subsequent requests, returning the complete list of payments for the subscription.
 
 There is a corresponding `AndGetAllBeforeAsync()` method to page in the opposite direction (i.e. oldest to newest).
 
