@@ -168,7 +168,7 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateRefundRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void UpdateRefundRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new RefundsClient(_clientConfiguration);

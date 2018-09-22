@@ -50,7 +50,10 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PayoutItemsClient(_clientConfiguration);
 
-            var request = new GetPayoutItemsRequest();
+            var request = new GetPayoutItemsRequest
+            {
+                Payout = payoutId
+            };
 
             // when
             AsyncTestDelegate test = () => subject.GetPageAsync(request);

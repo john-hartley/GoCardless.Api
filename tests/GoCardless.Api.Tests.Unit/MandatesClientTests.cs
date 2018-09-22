@@ -42,13 +42,18 @@ namespace GoCardless.Api.Tests.Unit
             Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
         }
 
-        [Test]
-        public void CancelMandateRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("\t  ")]
+        public void CancelMandateRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new MandatesClient(_clientConfiguration);
 
-            var request = new CancelMandateRequest();
+            var request = new CancelMandateRequest
+            {
+                Id = id
+            };
 
             // when
             AsyncTestDelegate test = () => subject.CancelAsync(request);
@@ -220,7 +225,7 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void ReinstateMandateRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void ReinstateMandateRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new MandatesClient(_clientConfiguration);
@@ -277,7 +282,7 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateMandateRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void UpdateMandateRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new MandatesClient(_clientConfiguration);
