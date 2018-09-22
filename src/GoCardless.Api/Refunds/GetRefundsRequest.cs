@@ -29,6 +29,9 @@ namespace GoCardless.Api.Refunds
         public string Mandate { get; set; }
         public string Payment { get; set; }
 
+        /// <summary>
+        /// See <see cref="Refunds.RefundType"/> for possible values.
+        /// </summary>
         [QueryStringKey("refund_type")]
         public string RefundType { get; set; }
     }

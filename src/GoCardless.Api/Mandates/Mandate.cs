@@ -19,7 +19,15 @@ namespace GoCardless.Api.Mandates
 
         public bool PaymentsRequireApproval { get; set; }
         public string Reference { get; set; }
+
+        /// <summary>
+        /// See <see cref="Models.Scheme"/> for possible values.
+        /// </summary>
         public string Scheme { get; set; }
+
+        /// <summary>
+        /// See <see cref="Mandates.MandateStatus"/> for possible values.
+        /// </summary>
         public string Status { get; set; }
     }
 }

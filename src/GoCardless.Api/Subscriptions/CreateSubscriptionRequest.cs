@@ -30,10 +30,21 @@ namespace GoCardless.Api.Subscriptions
         public string IdempotencyKey { get; set; }
 
         public int Interval { get; set; }
+
+        /// <summary>
+        /// See <see cref="Subscriptions.IntervalUnit"/> for possible values.
+        /// </summary>
         public string IntervalUnit { get; set; }
+
         public SubscriptionLinks Links { get; set; }
         public IDictionary<string, string> Metadata { get; set; }
+
+        /// <summary>
+        /// See <see cref="Subscriptions.Month"/> for possible values.
+        /// <para>Use <see cref="Subscriptions.Month.NameOf(DateTime)"/> to easily get month names for a given date.</para>
+        /// </summary>
         public string Month { get; set; }
+
         public string Name { get; set; }
         public string PaymentReference { get; set; }
 

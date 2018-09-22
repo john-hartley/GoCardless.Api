@@ -26,8 +26,16 @@ namespace GoCardless.Api.Events
         [QueryStringKey("created_at[lte]")]
         public DateTimeOffset? CreatedLessThanOrEqual { get; set; }
 
+        /// <summary>
+        /// See <see cref="Events.Actions"/> for possible values.
+        /// </summary>
         public string Action { get; set; }
+
+        /// <summary>
+        /// See <see cref="Events.Include"/> for possible values.
+        /// </summary>
         public string Include { get; set; }
+
         public string Mandate { get; set; }
 
         [QueryStringKey("parent_event")]
@@ -37,6 +45,9 @@ namespace GoCardless.Api.Events
         public string Payout { get; set; }
         public string Refund { get; set; }
 
+        /// <summary>
+        /// See <see cref="Events.ResourceType"/> for possible values.
+        /// </summary>
         [QueryStringKey("resource_type")]
         public string ResourceType { get; set; }
 
