@@ -22,28 +22,28 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
     {
         private readonly ClientConfiguration _clientConfiguration;
 
-        public async Task<Creditor> Creditor()
+        internal async Task<Creditor> Creditor()
         {
             var creditorsClient = new CreditorsClient(_clientConfiguration);
             return (await creditorsClient.GetPageAsync()).Items.First();
         }
 
-        public ResourceFactory(ClientConfiguration clientConfiguration)
+        internal ResourceFactory(ClientConfiguration clientConfiguration)
         {
             _clientConfiguration = clientConfiguration;
         }
 
-        public Task<Customer> CreateForeignCustomer()
+        internal Task<Customer> CreateForeignCustomer()
         {
             return CreateCustomer("DK", "da", "2205506218", "5302256218");
         }
 
-        public Task<Customer> CreateLocalCustomer()
+        internal Task<Customer> CreateLocalCustomer()
         {
             return CreateCustomer("GB", "en");
         }
 
-        public async Task<CustomerBankAccount> CreateCustomerBankAccountFor(Customer customer)
+        internal async Task<CustomerBankAccount> CreateCustomerBankAccountFor(Customer customer)
         {
             var request = new CreateCustomerBankAccountRequest
             {
@@ -65,7 +65,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             return (await customerBankAccountsClient.CreateAsync(request)).Item;
         }
 
-        public async Task<Mandate> CreateMandateFor(
+        internal async Task<Mandate> CreateMandateFor(
             Creditor creditor,
             Customer customer,
             CustomerBankAccount customerBankAccount)
@@ -90,7 +90,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             return (await mandatesClient.CreateAsync(request)).Item;
         }
 
-        public async Task<MandateImport> CreateMandateImport()
+        internal async Task<MandateImport> CreateMandateImport()
         {
             var request = new CreateMandateImportRequest
             {
@@ -101,7 +101,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             return (await mandateImportsClient.CreateAsync(request)).Item;
         }
 
-        public async Task<MandateImportEntry> CreateMandateImportEntryFor(
+        internal async Task<MandateImportEntry> CreateMandateImportEntryFor(
             MandateImport mandateImport,
             string recordIdentifier)
         {
@@ -142,7 +142,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             return (await mandateImportEntriesClient.AddAsync(request)).Item;
         }
 
-        public async Task<Payment> CreatePaymentFor(Mandate mandate)
+        internal async Task<Payment> CreatePaymentFor(Mandate mandate)
         {
             var request = new CreatePaymentRequest
             {
@@ -164,7 +164,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             return (await paymentsClient.CreateAsync(request)).Item;
         }
 
-        public async Task<Payout> Payout()
+        internal async Task<Payout> Payout()
         {
             var request = new GetPayoutsRequest
             {
@@ -175,7 +175,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             return (await payoutsClient.GetPageAsync(request)).Items.First();
         }
 
-        public async Task<RedirectFlow> CreateRedirectFlowFor(Creditor creditor)
+        internal async Task<RedirectFlow> CreateRedirectFlowFor(Creditor creditor)
         {
             var request = new CreateRedirectFlowRequest
             {
@@ -211,7 +211,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             return (await redirectFlowsClient.CreateAsync(request)).Item;
         }
 
-        public async Task<Subscription> CreateSubscriptionFor(Mandate mandate, string paymentReference = "PR123456")
+        internal async Task<Subscription> CreateSubscriptionFor(Mandate mandate, string paymentReference = "PR123456")
         {
             var request = new CreateSubscriptionRequest
             {
