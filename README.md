@@ -140,7 +140,7 @@ If you notice a problem with the client, please [create an issue](https://github
 
 ## Authors
 
-- *Initial work* - [John Hartley](https://github.com/john-hartley)
+- [John Hartley](https://github.com/john-hartley)
 
 ## Special Mentions
 
