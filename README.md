@@ -31,6 +31,8 @@ This project respects [Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.
 To install from NuGet, use:
 
     Install-Package GoCardless.Api
+    
+### Initialisation
 
 In order to start using the library, you can create a `GoCardlessClient` instance to make requests with:
 
