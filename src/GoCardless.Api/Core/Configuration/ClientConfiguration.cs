@@ -22,11 +22,11 @@ namespace GoCardless.Api.Core.Configuration
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(accessToken));
             }
 
+            AccessToken = accessToken;
+
             BaseUri = live
                 ? "https://api.gocardless.com/"
                 : "https://api-sandbox.gocardless.com/";
-
-            AccessToken = accessToken;
 
             Headers = new Dictionary<string, string>
             {
@@ -37,6 +37,6 @@ namespace GoCardless.Api.Core.Configuration
         
         public string BaseUri { get; }
         public string AccessToken { get; }
-        public IReadOnlyDictionary<string, string> Headers { get; }
+        public IDictionary<string, string> Headers { get; }
     }
 }
