@@ -147,3 +147,5 @@ If you notice a problem with the client, please [create an issue](https://github
 I'd like to say thank you to the GoCardless support team for answering so many of my questions, allowing me to reuse parts of their documentation, and for granting me access to all API endpoints, which allowed me to write integration tests against them.
 
 I'd also like to thank the GoCardless engineering team. Whilst I don't know how much work they had to go through to help me, I do know some of my support tickets were escalated to them, so thank you for any work you did behind the scenes.
+
+Finally, I'd like to thank [Workshop2](https://github.com/Workshop2) for pointing me in the right direection with build configuration.
