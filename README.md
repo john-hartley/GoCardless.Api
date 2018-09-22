@@ -71,7 +71,7 @@ Notice how I have imported the `GoCardless.Api.Customers` namespace. Each resour
 
 GoCardless' API uses what's called cursor-pagination. From a high level, all you need to know is that "before" means records that are newer, and "after" means records that are older. This sounds counter-intuitive, because results returned from the API are in reverse-chronological order, meaning the newest results are returned first.
     
-For each resource that supports paging, there are a few different ways in which you can access paged data.
+For each type of resource that supports paging, there are a few different ways in which you can access paged data.
 
 | Method | Description |
 |:--------:|-----------|
@@ -91,7 +91,7 @@ var initialRequest = new GetPaymentsRequest
     Subscription = "SB12345678"
 };
 
-var payments = client.Payments
+var payments = await client.Payments
     .BuildPager()
     .StartFrom(initialRequest)
     .AndGetAllAfterAsync(); // Remember "after" means older than.
