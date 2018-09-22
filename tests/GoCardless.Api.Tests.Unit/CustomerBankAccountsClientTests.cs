@@ -112,13 +112,18 @@ namespace GoCardless.Api.Tests.Unit
             Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
         }
 
-        [Test]
-        public void DisableCustomerBankAccountRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("\t  ")]
+        public void DisableCustomerBankAccountRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new CustomerBankAccountsClient(_clientConfiguration);
 
-            var request = new DisableCustomerBankAccountRequest();
+            var request = new DisableCustomerBankAccountRequest
+            {
+                Id = id
+            };
 
             // when
             AsyncTestDelegate test = () => subject.DisableAsync(request);
@@ -217,13 +222,18 @@ namespace GoCardless.Api.Tests.Unit
             Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
         }
 
-        [Test]
-        public void UpdateCustomerBankAccountRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("\t  ")]
+        public void UpdateCustomerBankAccountRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new CustomerBankAccountsClient(_clientConfiguration);
 
-            var request = new UpdateCustomerBankAccountRequest();
+            var request = new UpdateCustomerBankAccountRequest
+            {
+                Id = id
+            };
 
             // when
             AsyncTestDelegate test = () => subject.UpdateAsync(request);

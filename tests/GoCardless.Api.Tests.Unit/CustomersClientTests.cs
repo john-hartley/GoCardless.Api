@@ -165,13 +165,18 @@ namespace GoCardless.Api.Tests.Unit
             Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
         }
 
-        [Test]
-        public void UpdateCustomerRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("\t  ")]
+        public void UpdateCustomerRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new CustomersClient(_clientConfiguration);
 
-            var request = new UpdateCustomerRequest();
+            var request = new UpdateCustomerRequest
+            {
+                Id = id
+            };
 
             // when
             AsyncTestDelegate test = () => subject.UpdateAsync(request);

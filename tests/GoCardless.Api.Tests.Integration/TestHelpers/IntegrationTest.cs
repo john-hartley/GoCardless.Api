@@ -8,7 +8,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
         protected readonly ClientConfiguration _clientConfiguration;
         protected readonly ResourceFactory _resourceFactory;
 
-        public IntegrationTest()
+        internal IntegrationTest()
         {
             _accessToken = System.Environment.GetEnvironmentVariable("GoCardlessAccessToken");
             _clientConfiguration = ClientConfiguration.ForSandbox(_accessToken);

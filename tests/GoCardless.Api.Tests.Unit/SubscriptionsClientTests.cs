@@ -45,7 +45,7 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void CancelSubscriptionRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void CancelSubscriptionRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new SubscriptionsClient(_clientConfiguration);
@@ -225,7 +225,7 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateSubscriptionRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void UpdateSubscriptionRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new SubscriptionsClient(_clientConfiguration);

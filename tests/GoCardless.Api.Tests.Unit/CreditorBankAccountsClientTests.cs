@@ -79,13 +79,18 @@ namespace GoCardless.Api.Tests.Unit
             Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
         }
 
-        [Test]
-        public void DisableCreditorBankAccountRequestIdIsNullEmptyOrWhiteSpaceThrows()
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("\t  ")]
+        public void DisableCreditorBankAccountRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
             var subject = new CreditorBankAccountsClient(_clientConfiguration);
 
-            var request = new DisableCreditorBankAccountRequest();
+            var request = new DisableCreditorBankAccountRequest
+            {
+                Id = id
+            };
 
             // when
             AsyncTestDelegate test = () => subject.DisableAsync(request);
