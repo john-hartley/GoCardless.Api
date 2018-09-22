@@ -23,14 +23,16 @@ To stay up-to-date with the API, please read the [official documentation](https:
 ## Versioning
 
 This project respects [Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.html) for all public releases that are pushed to [nuget.org](https://nuget.org).
-
-## Installation
-
-    Install-Package GoCardless.Api
     
 ## Getting Started
 
-In order to get started, you can create a `GoCardlessClient` instance to make requests with:
+### Installation
+
+To install from NuGet, use:
+
+    Install-Package GoCardless.Api
+
+In order to start using the library, you can create a `GoCardlessClient` instance to make requests with:
 
 ```c#
 using GoCardless.Api;
