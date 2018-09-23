@@ -113,6 +113,21 @@ The code above will use `initialRequest` to get the first (i.e. newest) page of 
 
 There is a corresponding `AndGetAllBeforeAsync()` method to page in the opposite direction (i.e. oldest to newest).
 
+#### Advanced Paging
+
+If you find yourself needing to perform more complicated types of paging, that the helper methods above do not cater for, each `GetPageAsync` call returns a `PagedResponse<T>` containing the underlying cursors necessary to page through resources. This means you can page over those resources yourself, adding any additional logic as required. A simple way to achieve this would be:
+
+```c#
+var results = new List<Payment>();
+do
+{
+    var response = await client.Payments.GetPageAsync(request).ConfigureAwait(false);
+    results.AddRange(response.Items ?? Enumerable.Empty<Payment>());
+
+    request.After = response.Meta.Cursors.After;
+} while (request.After != null);
+```
+
 ### Exception Handling
 
 The GoCardless API can generate several different kinds of error, and so there are a few different types of `Exception` defined in this library. 
