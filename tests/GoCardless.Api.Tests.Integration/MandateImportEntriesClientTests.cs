@@ -39,6 +39,7 @@ namespace GoCardless.Api.Tests.Integration
                     FamilyName = "Family Name",
                     GivenName = "Given Name",
                     Language = "da",
+                    PhoneNumber = "+44 1234 567890",
                     PostalCode = "SW1A 1AA",
                     Region = "Essex",
                     SwedishIdentityNumber = "5302256218",
