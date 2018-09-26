@@ -20,6 +20,7 @@ namespace GoCardless.Api.Customers
         public string GivenName { get; set; }
         public string Language { get; set; }
         public IDictionary<string, string> Metadata { get; set; }
+        public string PhoneNumber { get; set; }
         public string PostalCode { get; set; }
         public string Region { get; set; }
     }

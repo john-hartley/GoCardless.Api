@@ -21,21 +21,22 @@ namespace GoCardless.Api.Tests.Integration
                 AddressLine3 = "Address Line 3",
                 City = "London",
                 CompanyName = "Company Name",
-                CountryCode = "DK",
+                CountryCode = "NZ",
+                DanishIdentityNumber = "2205506218",
                 Email = "email@example.com",
                 FamilyName = "Family Name",
                 GivenName = "Given Name",
-                Language = "da",
-                PostalCode = "SW1A 1AA",
-                Region = "Essex",
-                DanishIdentityNumber = "2205506218",
-                SwedishIdentityNumber = "5302256218",
+                Language = "en",
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
                     ["Key2"] = "Value2",
                     ["Key3"] = "Value3",
                 },
+                PhoneNumber = "+44 20 7183 8674",
+                PostalCode = "SW1A 1AA",
+                Region = "Essex",
+                SwedishIdentityNumber = "5302256218",
             };
 
             var subject = new CustomersClient(_clientConfiguration);
@@ -47,21 +48,22 @@ namespace GoCardless.Api.Tests.Integration
             // then
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Id, Is.Not.Null);
-            Assert.That(actual.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(actual.Email, Is.EqualTo(request.Email));
-            Assert.That(actual.GivenName, Is.EqualTo(request.GivenName));
-            Assert.That(actual.FamilyName, Is.EqualTo(request.FamilyName));
             Assert.That(actual.AddressLine1, Is.EqualTo(request.AddressLine1));
             Assert.That(actual.AddressLine2, Is.EqualTo(request.AddressLine2));
             Assert.That(actual.AddressLine3, Is.EqualTo(request.AddressLine3));
             Assert.That(actual.City, Is.EqualTo(request.City));
-            Assert.That(actual.Region, Is.EqualTo(request.Region));
-            Assert.That(actual.PostalCode, Is.EqualTo(request.PostalCode));
             Assert.That(actual.CountryCode, Is.EqualTo(request.CountryCode));
-            Assert.That(actual.Language, Is.EqualTo(request.Language));
+            Assert.That(actual.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(actual.DanishIdentityNumber, Is.EqualTo(request.DanishIdentityNumber));
-            Assert.That(actual.SwedishIdentityNumber, Does.Contain(request.SwedishIdentityNumber));
+            Assert.That(actual.Email, Is.EqualTo(request.Email));
+            Assert.That(actual.FamilyName, Is.EqualTo(request.FamilyName));
+            Assert.That(actual.GivenName, Is.EqualTo(request.GivenName));
+            Assert.That(actual.Language, Is.EqualTo(request.Language));
             Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(actual.PhoneNumber, Is.EqualTo(request.PhoneNumber));
+            Assert.That(actual.PostalCode, Is.EqualTo(request.PostalCode));
+            Assert.That(actual.Region, Is.EqualTo(request.Region));
+            Assert.That(actual.SwedishIdentityNumber, Does.Contain(request.SwedishIdentityNumber));
         }
 
         [Test]
@@ -77,21 +79,22 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(result.Any(), Is.True);
             Assert.That(result[0], Is.Not.Null);
             Assert.That(result[0].Id, Is.Not.Null);
-            Assert.That(result[0].CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result[0].Email, Is.Not.Null);
-            Assert.That(result[0].GivenName, Is.Not.Null);
-            Assert.That(result[0].FamilyName, Is.Not.Null);
             Assert.That(result[0].AddressLine1, Is.Not.Null);
             Assert.That(result[0].AddressLine2, Is.Not.Null);
             Assert.That(result[0].AddressLine3, Is.Not.Null);
             Assert.That(result[0].City, Is.Not.Null);
-            Assert.That(result[0].Region, Is.Not.Null);
-            Assert.That(result[0].PostalCode, Is.Not.Null);
             Assert.That(result[0].CountryCode, Is.Not.Null);
-            Assert.That(result[0].Language, Is.Not.Null);
+            Assert.That(result[0].CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result[0].DanishIdentityNumber, Is.Not.Null);
-            Assert.That(result[0].SwedishIdentityNumber, Is.Not.Null);
+            Assert.That(result[0].Email, Is.Not.Null);
+            Assert.That(result[0].FamilyName, Is.Not.Null);
+            Assert.That(result[0].GivenName, Is.Not.Null);
+            Assert.That(result[0].Language, Is.Not.Null);
             Assert.That(result[0].Metadata, Is.Not.Null);
+            Assert.That(result[0].PhoneNumber, Is.Not.Null);
+            Assert.That(result[0].PostalCode, Is.Not.Null);
+            Assert.That(result[0].Region, Is.Not.Null);
+            Assert.That(result[0].SwedishIdentityNumber, Is.Not.Null);
         }
 
         [Test]
@@ -142,21 +145,52 @@ namespace GoCardless.Api.Tests.Integration
             // then
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Id, Is.Not.Null);
-            Assert.That(actual.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(actual.Email, Is.Not.Null.And.EqualTo(customer.Email));
-            Assert.That(actual.GivenName, Is.Not.Null.And.EqualTo(customer.GivenName));
-            Assert.That(actual.FamilyName, Is.Not.Null.And.EqualTo(customer.FamilyName));
             Assert.That(actual.AddressLine1, Is.Not.Null.And.EqualTo(customer.AddressLine1));
             Assert.That(actual.AddressLine2, Is.Not.Null.And.EqualTo(customer.AddressLine2));
             Assert.That(actual.AddressLine3, Is.Not.Null.And.EqualTo(customer.AddressLine3));
             Assert.That(actual.City, Is.Not.Null.And.EqualTo(customer.City));
-            Assert.That(actual.Region, Is.Not.Null.And.EqualTo(customer.Region));
-            Assert.That(actual.PostalCode, Is.Not.Null.And.EqualTo(customer.PostalCode));
             Assert.That(actual.CountryCode, Is.Not.Null.And.EqualTo(customer.CountryCode));
-            Assert.That(actual.Language, Is.Not.Null.And.EqualTo(customer.Language));
+            Assert.That(actual.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(actual.DanishIdentityNumber, Is.Not.Null.And.EqualTo(customer.DanishIdentityNumber));
-            Assert.That(actual.SwedishIdentityNumber, Is.Not.Null.And.EqualTo(customer.SwedishIdentityNumber));
+            Assert.That(actual.Email, Is.Not.Null.And.EqualTo(customer.Email));
+            Assert.That(actual.FamilyName, Is.Not.Null.And.EqualTo(customer.FamilyName));
+            Assert.That(actual.GivenName, Is.Not.Null.And.EqualTo(customer.GivenName));
+            Assert.That(actual.Language, Is.Not.Null.And.EqualTo(customer.Language));
             Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(customer.Metadata));
+            Assert.That(actual.PhoneNumber, Is.Not.Null.And.EqualTo(customer.PhoneNumber));
+            Assert.That(actual.PostalCode, Is.Not.Null.And.EqualTo(customer.PostalCode));
+            Assert.That(actual.Region, Is.Not.Null.And.EqualTo(customer.Region));
+            Assert.That(actual.SwedishIdentityNumber, Is.Not.Null.And.EqualTo(customer.SwedishIdentityNumber));
+        }
+
+        [Test]
+        public async Task ReturnsIndividualCustomerForNewZealand()
+        {
+            // given
+            var customer = await _resourceFactory.CreateForeignCustomer();
+            var subject = new CustomersClient(_clientConfiguration);
+
+            // when
+            var result = await subject.ForIdAsync(customer.Id);
+            var actual = result.Item;
+
+            // then
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null);
+            Assert.That(actual.AddressLine1, Is.Not.Null.And.EqualTo(customer.AddressLine1));
+            Assert.That(actual.AddressLine2, Is.Not.Null.And.EqualTo(customer.AddressLine2));
+            Assert.That(actual.AddressLine3, Is.Not.Null.And.EqualTo(customer.AddressLine3));
+            Assert.That(actual.City, Is.Not.Null.And.EqualTo(customer.City));
+            Assert.That(actual.CountryCode, Is.Not.Null.And.EqualTo(customer.CountryCode));
+            Assert.That(actual.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(actual.Email, Is.Not.Null.And.EqualTo(customer.Email));
+            Assert.That(actual.FamilyName, Is.Not.Null.And.EqualTo(customer.FamilyName));
+            Assert.That(actual.GivenName, Is.Not.Null.And.EqualTo(customer.GivenName));
+            Assert.That(actual.Language, Is.Not.Null.And.EqualTo(customer.Language));
+            Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(customer.Metadata));
+            Assert.That(actual.PhoneNumber, Is.Not.Null.And.EqualTo(customer.PhoneNumber));
+            Assert.That(actual.PostalCode, Is.Not.Null.And.EqualTo(customer.PostalCode));
+            Assert.That(actual.Region, Is.Not.Null.And.EqualTo(customer.Region));
         }
 
         [Test]
@@ -173,15 +207,16 @@ namespace GoCardless.Api.Tests.Integration
                 AddressLine2 = "Address Line 2",
                 AddressLine3 = "Address Line 3",
                 City = "London",
-                CompanyName = "Company Name",
-                CountryCode = "DK",
+                CompanyName = "Company Name 2",
+                CountryCode = "NZ",
                 DanishIdentityNumber = "2205506218",
                 Email = "email@example.com",
-                FamilyName = "Family Name",
-                GivenName = "Given Name",
-                Language = "da",
+                FamilyName = "Family Name 2",
+                GivenName = "Given Name 2",
+                Language = "en",
+                PhoneNumber = "+44 1235 567890",
                 PostalCode = "SW1A 1AA",
-                Region = "Essex",
+                Region = "Region",
             };
 
             // when
@@ -203,6 +238,7 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(actual.GivenName, Is.EqualTo(request.GivenName));
             Assert.That(actual.Language, Is.EqualTo(request.Language));
             Assert.That(actual.Metadata, Is.EqualTo(customer.Metadata));
+            Assert.That(actual.PhoneNumber, Is.EqualTo(request.PhoneNumber));
             Assert.That(actual.PostalCode, Is.EqualTo(request.PostalCode));
             Assert.That(actual.Region, Is.EqualTo(request.Region));
         }
@@ -221,21 +257,22 @@ namespace GoCardless.Api.Tests.Integration
                 AddressLine2 = "Address Line 2",
                 AddressLine3 = "Address Line 3",
                 City = "London",
-                CompanyName = "Company Name",
-                CountryCode = "DK",
+                CompanyName = "Company Name 2",
+                CountryCode = "NZ",
                 DanishIdentityNumber = "2205506218",
                 Email = "email@example.com",
-                FamilyName = "Family Name",
-                GivenName = "Given Name",
-                Language = "da",
-                PostalCode = "SW1A 1AA",
-                Region = "Essex",
+                FamilyName = "Family Name 2",
+                GivenName = "Given Name 22",
+                Language = "en",
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key4"] = "Value6",
                     ["Key5"] = "Value7",
                     ["Key6"] = "Value8",
                 },
+                PhoneNumber = "+44 2345 567890",
+                PostalCode = "SW1A 1AA",
+                Region = "Essex",
             };
 
             // when
@@ -257,6 +294,7 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(actual.GivenName, Is.EqualTo(request.GivenName));
             Assert.That(actual.Language, Is.EqualTo(request.Language));
             Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(actual.PhoneNumber, Is.EqualTo(request.PhoneNumber));
             Assert.That(actual.PostalCode, Is.EqualTo(request.PostalCode));
             Assert.That(actual.Region, Is.EqualTo(request.Region));
         }
