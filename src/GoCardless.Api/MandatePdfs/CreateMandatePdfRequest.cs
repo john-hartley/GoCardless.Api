@@ -37,7 +37,7 @@ namespace GoCardless.Api.MandatePdfs
         /// it will be discarded (e.g. 2018-09-18T15:05:06.123Z will become 2018-09-18).
         /// </summary>
         [JsonConverter(typeof(IsoDateJsonConverter), DateFormat.IsoDateFormat)]
-        public DateTime SignatureDate { get; set; }
+        public DateTime? SignatureDate { get; set; }
 
         public string SwedishIdentityNumber { get; set; }
     }

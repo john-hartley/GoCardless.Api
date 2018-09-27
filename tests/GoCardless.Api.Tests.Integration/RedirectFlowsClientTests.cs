@@ -41,7 +41,7 @@ namespace GoCardless.Api.Tests.Integration
                     Region = "Essex",
                     SwedishIdentityNumber = "5302256218",
                 },
-                Scheme = Scheme.Bacs,
+                Scheme = Scheme.BecsNz,
                 SessionToken = Guid.NewGuid().ToString(),
                 SuccessRedirectUrl = "https://localhost",
             };
