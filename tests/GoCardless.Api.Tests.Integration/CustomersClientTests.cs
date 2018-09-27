@@ -270,7 +270,7 @@ namespace GoCardless.Api.Tests.Integration
                     ["Key5"] = "Value7",
                     ["Key6"] = "Value8",
                 },
-                PhoneNumber = "+44 2345 567890",
+                PhoneNumber = "+44 1235 567890",
                 PostalCode = "SW1A 1AA",
                 Region = "Essex",
             };
