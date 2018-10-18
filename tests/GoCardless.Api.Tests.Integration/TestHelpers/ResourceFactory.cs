@@ -35,7 +35,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 
         internal Task<Customer> CreateForeignCustomer()
         {
-            return CreateCustomer("DK", "da", "2205506218", "5302256218");
+            return CreateCustomer("NZ", "en", "2205506218", "5302256218");
         }
 
         internal Task<Customer> CreateLocalCustomer()
@@ -264,6 +264,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                     ["Key2"] = "Value2",
                     ["Key3"] = "Value3",
                 },
+                PhoneNumber = "+44 1234 567890",
                 PostalCode = "SW1A 1AA",
                 Region = "Essex",
                 SwedishIdentityNumber = swedishIdentityNumber

@@ -13,6 +13,7 @@
         public string FamilyName { get; set; }
         public string GivenName { get; set; }
         public string Language { get; set; }
+        public string PhoneNumber { get; set; }
         public string PostalCode { get; set; }
         public string Region { get; set; }
         public string SwedishIdentityNumber { get; set; }
