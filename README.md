@@ -81,7 +81,7 @@ Retry logic is currently not built into the client. For retry logic, I'd highly-
 
 #### Conflicting Resources
 
-If you attempt to create a resource that already exists, either the result of retrying a request with an idempotency key, or because a bank account already exists, the client will internally handle the error, returning the existing resource for you.
+If you attempt to create a resource that already exists, either because of retrying a request with an idempotency key, or from trying to create a bank account that already exists, the client will automatically handle the API error response, and will fetch the existing resource for you.
 
 ### Paging
 
