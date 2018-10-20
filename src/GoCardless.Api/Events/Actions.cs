@@ -43,6 +43,7 @@
         public static class Refund
         {
             public static readonly string Created = "created";
+            public static readonly string Failed = "failed";
             public static readonly string Paid = "paid";
             public static readonly string Settled = "refund_settled";
         }
