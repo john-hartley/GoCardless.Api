@@ -52,6 +52,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new SubscriptionsClient(_clientConfiguration);
 
             // when
+            await subject.CreateAsync(request);
             var result = await subject.CreateAsync(request);
 
             // then

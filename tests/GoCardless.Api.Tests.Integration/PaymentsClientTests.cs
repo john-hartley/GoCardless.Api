@@ -26,7 +26,7 @@ namespace GoCardless.Api.Tests.Integration
         }
 
         [Test]
-        public async Task CreatesAndCancelsPayment()
+        public async Task CreatesAndCancelsConflictingPayment()
         {
             // given
             var createRequest = new CreatePaymentRequest
@@ -48,6 +48,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new PaymentsClient(_clientConfiguration);
 
             // when
+            await subject.CreateAsync(createRequest);
             var creationResult = await subject.CreateAsync(createRequest);
 
             var cancelRequest = new CancelPaymentRequest

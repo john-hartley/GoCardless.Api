@@ -11,7 +11,7 @@ namespace GoCardless.Api.Tests.Integration
     public class CustomerBankAccountsTests : IntegrationTest
     {
         [Test]
-        public async Task CreatesAndDisablesCustomerBankAccountUsingBranchCode()
+        public async Task CreatesAndDisablesConflictingCustomerBankAccountUsingBranchCode()
         {
             // given
             var customer = await _resourceFactory.CreateLocalCustomer();
@@ -35,6 +35,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new CustomerBankAccountsClient(_clientConfiguration);
 
             // when
+            await subject.CreateAsync(createRequest);
             var creationResult = await subject.CreateAsync(createRequest);
 
             var disableRequest = new DisableCustomerBankAccountRequest

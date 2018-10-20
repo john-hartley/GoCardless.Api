@@ -108,7 +108,15 @@ namespace GoCardless.Api.Core.Http
             }
             catch (FlurlHttpException ex)
             {
-                throw await ex.CreateApiExceptionAsync();
+                var apiException = await ex.CreateApiExceptionAsync();
+                if (apiException is ResourceAlreadyExistsException resourceAlreadyExistsException &&
+                    !string.IsNullOrWhiteSpace(resourceAlreadyExistsException.ResourceId))
+                {
+                    var endpoint = $"{relativeEndpoint}/{resourceAlreadyExistsException.ResourceId}";
+                    return await GetAsync<TResponse>(endpoint);
+                }
+
+                throw apiException;
             }
         }
 
