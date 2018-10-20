@@ -79,6 +79,10 @@ All `CreateXRequest` types will generate an idempotency key when constructed, us
 
 Retry logic is currently not built into the client. For retry logic, I'd highly-recommend using the [Polly](https://github.com/App-vNext/Polly) resilience and transient-fault-handling library.
 
+#### Conflicting Resources
+
+If you attempt to create a resource that already exists, either the result of retrying a request with an idempotency key, or because a bank account already exists, the client will internally handle the error, returning the existing resource for you.
+
 ### Paging
 
 GoCardless' API uses what's called cursor-pagination. From a high level, all you need to know is that "before" means records that are newer, and "after" means records that are older. This sounds counter-intuitive, because results returned from the API are in reverse-chronological order, meaning the newest results are returned first.
@@ -137,7 +141,7 @@ The GoCardless API can generate several different kinds of error, and so there a
 - `InvalidStateException`
 - `ValidationFailedException`
 
-These correspond with the [4 error types](https://developer.gocardless.com/api-reference/#api-usage-errors) defined by the API. I have also defined `ResourceAlreadyExistsException` which provides a `ResourceId` property to allow you to get the id of the conflicting resource easily.
+These correspond with the [4 error types](https://developer.gocardless.com/api-reference/#api-usage-errors) defined by the API. 
 
 Each exception type exposes a number of properties, matching with those in the official documentation, but I've also added a `RawResponse` property to help diagnose any edge cases.
 
