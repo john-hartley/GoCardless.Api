@@ -6,6 +6,8 @@ using GoCardless.Api.Core.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Core.Http
@@ -109,11 +111,14 @@ namespace GoCardless.Api.Core.Http
             catch (FlurlHttpException ex)
             {
                 var apiException = await ex.CreateApiExceptionAsync();
-                if (apiException is ResourceAlreadyExistsException resourceAlreadyExistsException &&
-                    !string.IsNullOrWhiteSpace(resourceAlreadyExistsException.ResourceId))
+                if (apiException.Code == (int)HttpStatusCode.Conflict)
                 {
-                    var endpoint = $"{relativeEndpoint}/{resourceAlreadyExistsException.ResourceId}";
-                    return await GetAsync<TResponse>(endpoint);
+                    var conflictingResourceId = ConflictingResourceIdFrom(apiException.Errors);
+                    if (!string.IsNullOrWhiteSpace(conflictingResourceId))
+                    {
+                        var endpoint = $"{relativeEndpoint}/{conflictingResourceId}";
+                        return await GetAsync<TResponse>(endpoint);
+                    }
                 }
 
                 throw apiException;
@@ -125,6 +130,27 @@ namespace GoCardless.Api.Core.Http
             return _configuration.BaseUri
                 .WithHeaders(_configuration.Headers)
                 .ConfigureRequest(x => x.JsonSerializer = _newtonsoftJsonSerializer);
+        }
+
+        private string ConflictingResourceIdFrom(IEnumerable<Error> errors)
+        {
+            var bankAccountExists = errors.SingleOrDefault(x => x.Reason == "bank_account_exists");
+            if (bankAccountExists != null)
+            {
+                if (bankAccountExists.Links.ContainsKey("creditor_bank_account"))
+                {
+                    return bankAccountExists.Links["creditor_bank_account"];
+                }
+                if (bankAccountExists.Links.ContainsKey("customer_bank_account"))
+                {
+                    return bankAccountExists.Links["customer_bank_account"];
+                }
+            }
+
+            return errors
+                .SingleOrDefault(x => x.Reason == "idempotent_creation_conflict")
+                ?.Links
+                ?.SingleOrDefault(x => x.Key == "conflicting_resource_id").Value;
         }
     }
 }

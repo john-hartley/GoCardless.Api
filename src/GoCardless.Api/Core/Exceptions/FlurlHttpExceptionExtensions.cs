@@ -1,6 +1,5 @@
 ﻿using Flurl.Http;
 using Newtonsoft.Json;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Core.Exceptions
@@ -43,11 +42,6 @@ namespace GoCardless.Api.Core.Exceptions
             ApiErrorResponse apiErrorResponse)
         {
             var error = apiErrorResponse.Error;
-            if (error.Code == (int)HttpStatusCode.Conflict)
-            {
-                return new ResourceAlreadyExistsException(error.Message, error);
-            }
-
             switch (error.Type)
             {
                 case "gocardless":

@@ -10,23 +10,6 @@ namespace GoCardless.Api.Tests.Unit.Core.Exceptions
 {
     public class FlurlHttpExceptionExtensionsTests
     {
-        [TestCase(null)]
-        [TestCase("")]
-        [TestCase("Test error type")]
-        public async Task HttpConflictReturnsResourceAlreadyExistsException(string type)
-        {
-            // given
-            var apiErrorResponse = ApiErrorResponseFor(409, type);
-            var httpCall = HttpCallFor(apiErrorResponse);
-            var exception = new FlurlHttpException(httpCall);
-
-            // when
-            var result = await exception.CreateApiExceptionAsync();
-
-            // then
-            Assert.That(result, Is.InstanceOf<ResourceAlreadyExistsException>());
-        }
-
         [Test]
         public async Task GoCardlessErrorTypeReturnsApiException()
         {
