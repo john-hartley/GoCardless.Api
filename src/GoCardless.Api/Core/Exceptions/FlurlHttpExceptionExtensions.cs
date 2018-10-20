@@ -43,6 +43,11 @@ namespace GoCardless.Api.Core.Exceptions
             ApiErrorResponse apiErrorResponse)
         {
             var error = apiErrorResponse.Error;
+            if (error.Code == (int)HttpStatusCode.Conflict)
+            {
+                return new ResourceAlreadyExistsException(error.Message, error);
+            }
+
             switch (error.Type)
             {
                 case "gocardless":
@@ -50,9 +55,6 @@ namespace GoCardless.Api.Core.Exceptions
                 case "invalid_api_usage":
                     return new InvalidApiUsageException(error.Message, error);
                 case "invalid_state":
-                    if (error.Code == (int)HttpStatusCode.Conflict)
-                        return new ResourceAlreadyExistsException(error.Message, error);
-
                     return new InvalidStateException(error.Message, error);
                 case "validation_failed":
                     return new ValidationFailedException(error.Message, error);
