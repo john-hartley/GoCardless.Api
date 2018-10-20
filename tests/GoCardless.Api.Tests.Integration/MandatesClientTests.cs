@@ -32,6 +32,11 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var createRequest = new CreateMandateRequest
             {
+                Links = new CreateMandateLinks
+                {
+                    Creditor = _creditor.Id,
+                    CustomerBankAccount = _customerBankAccount.Id
+                },
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
@@ -39,12 +44,7 @@ namespace GoCardless.Api.Tests.Integration
                     ["Key3"] = "Value3",
                 },
                 Reference = DateTime.Now.ToString("yyyyMMddhhmmss"),
-                Scheme = Scheme.Bacs,
-                Links = new CreateMandateLinks
-                {
-                    Creditor = _creditor.Id,
-                    CustomerBankAccount = _customerBankAccount.Id
-                }
+                Scheme = Scheme.Bacs
             };
 
             var subject = new MandatesClient(_clientConfiguration);
@@ -101,6 +101,11 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var request = new CreateMandateRequest
             {
+                Links = new CreateMandateLinks
+                {
+                    Creditor = _creditor.Id,
+                    CustomerBankAccount = _customerBankAccount.Id
+                },
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
@@ -108,11 +113,6 @@ namespace GoCardless.Api.Tests.Integration
                     ["Key3"] = "Value3",
                 },
                 Scheme = Scheme.Bacs,
-                Links = new CreateMandateLinks
-                {
-                    Creditor = _creditor.Id,
-                    CustomerBankAccount = _customerBankAccount.Id
-                }
             };
 
             var subject = new MandatesClient(_clientConfiguration);
