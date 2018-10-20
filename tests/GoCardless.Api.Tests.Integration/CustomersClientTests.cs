@@ -11,7 +11,7 @@ namespace GoCardless.Api.Tests.Integration
     public class CustomersClientTests : IntegrationTest
     {
         [Test]
-        public async Task CreatesCustomer()
+        public async Task CreatesConflictingCustomer()
         {
             // given
             var request = new CreateCustomerRequest
@@ -42,6 +42,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new CustomersClient(_clientConfiguration);
 
             // when
+            await subject.CreateAsync(request);
             var result = await subject.CreateAsync(request);
             var actual = result.Item;
 

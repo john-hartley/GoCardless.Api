@@ -31,7 +31,6 @@ namespace GoCardless.Api.Tests.Integration
             var request = new CreateRefundRequest
             {
                 Amount = 100,
-                IdempotencyKey = Guid.NewGuid().ToString(),
                 Links = new CreateRefundLinks { Payment = payment.Id },
                 Metadata = new Dictionary<string, string>
                 {
@@ -207,7 +206,7 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(actual.Reference, Is.Not.Null.And.EqualTo(refund.Reference));
         }
 
-        [Test]
+        [Test, NonParallelizable]
         public async Task PagesThroughRefunds()
         {
             // given
@@ -216,7 +215,7 @@ namespace GoCardless.Api.Tests.Integration
 
             var initialRequest = new GetRefundsRequest
             {
-                Limit = 1,
+                Limit = 1
             };
 
             // when

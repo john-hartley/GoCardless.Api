@@ -32,6 +32,11 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var createRequest = new CreateMandateRequest
             {
+                Links = new CreateMandateLinks
+                {
+                    Creditor = _creditor.Id,
+                    CustomerBankAccount = _customerBankAccount.Id
+                },
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key1"] = "Value1",
@@ -39,12 +44,7 @@ namespace GoCardless.Api.Tests.Integration
                     ["Key3"] = "Value3",
                 },
                 Reference = DateTime.Now.ToString("yyyyMMddhhmmss"),
-                Scheme = Scheme.Bacs,
-                Links = new CreateMandateLinks
-                {
-                    Creditor = _creditor.Id,
-                    CustomerBankAccount = _customerBankAccount.Id
-                }
+                Scheme = Scheme.Bacs
             };
 
             var subject = new MandatesClient(_clientConfiguration);
@@ -93,6 +93,44 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(cancellationResult.Item.Status, Is.EqualTo(MandateStatus.Cancelled));
 
             Assert.That(reinstateResult.Item.Status, Is.Not.Null.And.Not.EqualTo(MandateStatus.Cancelled));
+        }
+
+        [Test, NonParallelizable]
+        public async Task CreatesConflictingMandate()
+        {
+            // given
+            var request = new CreateMandateRequest
+            {
+                Links = new CreateMandateLinks
+                {
+                    Creditor = _creditor.Id,
+                    CustomerBankAccount = _customerBankAccount.Id
+                },
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                },
+                Scheme = Scheme.Bacs,
+            };
+
+            var subject = new MandatesClient(_clientConfiguration);
+
+            // when
+            await subject.CreateAsync(request);
+            var result = await subject.CreateAsync(request);
+
+            // then
+            Assert.That(result.Item, Is.Not.Null);
+            Assert.That(result.Item.Id, Is.Not.Null);
+            Assert.That(result.Item.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result.Item.Links.Creditor, Is.EqualTo(_creditor.Id));
+            Assert.That(result.Item.Links.CustomerBankAccount, Is.EqualTo(_customerBankAccount.Id));
+            Assert.That(result.Item.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(result.Item.NextPossibleChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(result.Item.Scheme, Is.EqualTo(request.Scheme));
+            Assert.That(result.Item.Status, Is.Not.Null.And.Not.EqualTo(MandateStatus.Cancelled));
         }
 
         [Test]

@@ -19,7 +19,7 @@ namespace GoCardless.Api.Tests.Integration
         }
 
         [Test]
-        public async Task CreatesAndDisablesCreditorBankAccountUsingBankCode()
+        public async Task CreatesAndDisablesConflictingCreditorBankAccountUsingBankCode()
         {
             // given
             var createRequest = new CreateCreditorBankAccountRequest
@@ -42,6 +42,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new CreditorBankAccountsClient(_clientConfiguration);
 
             // when
+            await subject.CreateAsync(createRequest);
             var creationResult = await subject.CreateAsync(createRequest);
 
             var disableRequest = new DisableCreditorBankAccountRequest
