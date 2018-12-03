@@ -64,9 +64,6 @@ namespace GoCardless.Api.Core.Http
         [JsonProperty("redirect_flows")]
         private RedirectFlow RedirectFlow { set => Item = value as TResource; }
 
-        [JsonProperty("payment_refunds")]
-        private Refund PaymentRefund { set => Item = value as TResource; }
-
         [JsonProperty("refunds")]
         private Refund Refund { set => Item = value as TResource; }
 
