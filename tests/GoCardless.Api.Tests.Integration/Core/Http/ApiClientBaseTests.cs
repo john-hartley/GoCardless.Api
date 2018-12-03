@@ -100,7 +100,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
             AsyncTestDelegate test = () => subject.CreateAsync(request);
 
             // then
-            var ex = Assert.ThrowsAsync<InvalidStateException>(test);
+            var ex = Assert.ThrowsAsync<ValidationFailedException>(test);
             Assert.That(ex.Code, Is.EqualTo((int)HttpStatusCode.UnprocessableEntity));
             Assert.That(ex.DocumentationUrl, Is.Not.Null);
             Assert.That(ex.Errors?.Any(), Is.True);
