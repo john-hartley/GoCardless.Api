@@ -92,7 +92,7 @@ For each type of resource that supports paging, there are a few different ways i
 | Method | Description |
 |:--------:|-----------|
 | GetPageAsync() | Returns a single page of the most recently added items. |
-| GetPageAsync(GetXRequest request) | Where `X` is a collection of resources (e.g. `Customers`, `Subscriptions`, etc.), returns a single page of items, allowing you provide additional filtering. The filtering capabilities differ per endpoint. Please refer to the [official documentation](https://developer.gocardless.com/api-reference/) for information on the parameters.
+| GetPageAsync(GetXRequest request) | Where `X` is a collection of resources (e.g. `Customers`, `Subscriptions`, etc.), returns a single page of items, allowing you to provide additional filtering. The filtering capabilities differ per endpoint. Please refer to the [official documentation](https://developer.gocardless.com/api-reference/) for information on the parameters.
 | BuildPager() | Provides a simple abstraction that allows you to get all pages in either direction. |
 
 As an example of `BuildPager()`, let's say you wanted to get all payments for a given subscription. You can do that like so:
