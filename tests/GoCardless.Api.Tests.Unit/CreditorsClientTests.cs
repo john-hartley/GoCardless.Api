@@ -1,5 +1,6 @@
 ﻿using Flurl.Http.Testing;
 using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.Creditors;
 using NUnit.Framework;
 using System;
@@ -10,13 +11,13 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class CreditorsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IApiClient _apiClient;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
             _httpTest = new HttpTest();
         }
 
@@ -32,7 +33,7 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
+            var subject = new CreditorsClient(_apiClient, _apiClient.Configuration);
 
             // when
             AsyncTestDelegate test = () => subject.ForIdAsync(id);
@@ -47,7 +48,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualCreditorsEndpoint()
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
+            var subject = new CreditorsClient(_apiClient, _apiClient.Configuration);
             var id = "CR12345678";
 
             // when
@@ -63,7 +64,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetCreditorsEndpoint()
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
+            var subject = new CreditorsClient(_apiClient, _apiClient.Configuration);
 
             // when
             await subject.GetPageAsync();
@@ -78,23 +79,23 @@ namespace GoCardless.Api.Tests.Unit
         public void GetCreditorsRequestIsNullThrows()
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
+            var subject = new CreditorsClient(_apiClient, _apiClient.Configuration);
 
-            GetCreditorsRequest request = null;
+            GetCreditorsRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsGetCreditorsEndpointUsingRequest()
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
+            var subject = new CreditorsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetCreditorsRequest
             {
@@ -116,7 +117,7 @@ namespace GoCardless.Api.Tests.Unit
         public void UpdateCreditorRequestIsNullThrows()
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
+            var subject = new CreditorsClient(_apiClient, _apiClient.Configuration);
 
             UpdateCreditorRequest request = null;
 
@@ -134,7 +135,7 @@ namespace GoCardless.Api.Tests.Unit
         public void UpdateCreditorRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
+            var subject = new CreditorsClient(_apiClient, _apiClient.Configuration);
 
             var request = new UpdateCreditorRequest
             {
@@ -153,7 +154,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsUpdateCreditorEndpoint()
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
+            var subject = new CreditorsClient(_apiClient, _apiClient.Configuration);
 
             var request = new UpdateCreditorRequest
             {

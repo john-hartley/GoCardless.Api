@@ -1,5 +1,6 @@
 ﻿using Flurl.Http.Testing;
 using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.MandateImports;
 using NUnit.Framework;
 using System;
@@ -10,13 +11,13 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class MandateImportsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IApiClient _apiClient;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
             _httpTest = new HttpTest();
         }
 
@@ -32,7 +33,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CancelIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new MandateImportsClient(_clientConfiguration);
+            var subject = new MandateImportsClient(_apiClient, _apiClient.Configuration);
 
             // when
             AsyncTestDelegate test = () => subject.CancelAsync(id);
@@ -46,7 +47,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCancelMandateImportEndpoint()
         {
             // given
-            var subject = new MandateImportsClient(_clientConfiguration);
+            var subject = new MandateImportsClient(_apiClient, _apiClient.Configuration);
             var id = "IM12345678";
 
             // when
@@ -62,7 +63,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CreateMandateImportRequestIsNullThrows()
         {
             // given
-            var subject = new MandateImportsClient(_clientConfiguration);
+            var subject = new MandateImportsClient(_apiClient, _apiClient.Configuration);
 
             CreateMandateImportRequest request = null;
 
@@ -78,7 +79,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateMandateImportEndpoint()
         {
             // given
-            var subject = new MandateImportsClient(_clientConfiguration);
+            var subject = new MandateImportsClient(_apiClient, _apiClient.Configuration);
 
             var request = new CreateMandateImportRequest();
 
@@ -97,7 +98,7 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new MandateImportsClient(_clientConfiguration);
+            var subject = new MandateImportsClient(_apiClient, _apiClient.Configuration);
 
             // when
             AsyncTestDelegate test = () => subject.ForIdAsync(id);
@@ -111,7 +112,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualMandateImportEndpoint()
         {
             // given
-            var subject = new MandateImportsClient(_clientConfiguration);
+            var subject = new MandateImportsClient(_apiClient, _apiClient.Configuration);
             var id = "IM12345678";
 
             // when
@@ -129,7 +130,7 @@ namespace GoCardless.Api.Tests.Unit
         public void SubmitIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new MandateImportsClient(_clientConfiguration);
+            var subject = new MandateImportsClient(_apiClient, _apiClient.Configuration);
 
             // when
             AsyncTestDelegate test = () => subject.SubmitAsync(id);
@@ -143,7 +144,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsSubmitMandateImportEndpoint()
         {
             // given
-            var subject = new MandateImportsClient(_clientConfiguration);
+            var subject = new MandateImportsClient(_apiClient, _apiClient.Configuration);
             var id = "IM12345678";
 
             // when

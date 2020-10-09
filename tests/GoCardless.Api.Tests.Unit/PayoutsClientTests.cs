@@ -48,14 +48,14 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PayoutsClient(_apiClient);
 
-            GetPayoutsRequest request = null;
+            GetPayoutsRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]

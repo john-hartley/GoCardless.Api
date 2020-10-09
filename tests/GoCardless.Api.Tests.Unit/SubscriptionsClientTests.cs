@@ -1,5 +1,6 @@
 using Flurl.Http.Testing;
 using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.Subscriptions;
 using NUnit.Framework;
 using System;
@@ -10,13 +11,13 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class SubscriptionsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IApiClient _apiClient;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
             _httpTest = new HttpTest();
         }
 
@@ -30,7 +31,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CancelSubscriptionRequestIsNullThrows()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
+            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
 
             CancelSubscriptionRequest request = null;
 
@@ -48,7 +49,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CancelSubscriptionRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
+            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
 
             var request = new CancelSubscriptionRequest
             {
@@ -67,7 +68,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCancelSubscriptionEndpoint()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
+            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
 
             var request = new CancelSubscriptionRequest
             {
@@ -87,7 +88,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CreateSubscriptionRequestIsNullThrows()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
+            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
 
             CreateSubscriptionRequest request = null;
 
@@ -103,7 +104,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateSubscriptionEndpoint()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
+            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
 
             var request = new CreateSubscriptionRequest
             {
@@ -126,7 +127,7 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
+            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
 
             // when
             AsyncTestDelegate test = () => subject.ForIdAsync(id);
@@ -141,7 +142,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualSubscriptionsEndpoint()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
+            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
             var id = "SB12345678";
 
             // when
@@ -157,7 +158,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetSubscriptionsEndpoint()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
+            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
 
             // when
             await subject.GetPageAsync();
@@ -172,23 +173,23 @@ namespace GoCardless.Api.Tests.Unit
         public void GetSubscriptionsRequestIsNullThrows()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
+            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
 
-            GetSubscriptionsRequest request = null;
+            GetSubscriptionsRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsGetSubscriptionsEndpointUsingRequest()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
+            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetSubscriptionsRequest
             {
@@ -210,7 +211,7 @@ namespace GoCardless.Api.Tests.Unit
         public void UpdateSubscriptionRequestIsNullThrows()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
+            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
 
             UpdateSubscriptionRequest request = null;
 
@@ -228,7 +229,7 @@ namespace GoCardless.Api.Tests.Unit
         public void UpdateSubscriptionRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
+            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
 
             var request = new UpdateSubscriptionRequest
             {
@@ -247,7 +248,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsUpdateSubscriptionEndpoint()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
+            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
 
             var request = new UpdateSubscriptionRequest
             {

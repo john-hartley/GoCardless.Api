@@ -1,5 +1,6 @@
 ﻿using Flurl.Http.Testing;
 using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.PayoutItems;
 using NUnit.Framework;
 using System;
@@ -10,13 +11,13 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class PayoutItemsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IApiClient _apiClient;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
             _httpTest = new HttpTest();
         }
 
@@ -30,16 +31,16 @@ namespace GoCardless.Api.Tests.Unit
         public void GetPayoutItemRequestIsNullThrows()
         {
             // given
-            var subject = new PayoutItemsClient(_clientConfiguration);
+            var subject = new PayoutItemsClient(_apiClient, _apiClient.Configuration);
 
-            GetPayoutItemsRequest request = null;
+            GetPayoutItemsRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
@@ -48,7 +49,7 @@ namespace GoCardless.Api.Tests.Unit
         public void PayoutIdIsNullOrWhiteSpaceThrows(string payoutId)
         {
             // given
-            var subject = new PayoutItemsClient(_clientConfiguration);
+            var subject = new PayoutItemsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetPayoutItemsRequest
             {
@@ -68,7 +69,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetPayoutItemsEndpointUsingRequest()
         {
             // given
-            var subject = new PayoutItemsClient(_clientConfiguration);
+            var subject = new PayoutItemsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetPayoutItemsRequest
             {

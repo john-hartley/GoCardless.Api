@@ -30,22 +30,22 @@ namespace GoCardless.Api
             var apiClient = new ApiClient(_configuration);
 
             BankDetailsLookups = new BankDetailsLookupsClient(configuration);
-            CreditorBankAccounts = new CreditorBankAccountsClient(configuration);
-            Creditors = new CreditorsClient(configuration);
-            CustomerBankAccounts = new CustomerBankAccountsClient(configuration);
+            CreditorBankAccounts = new CreditorBankAccountsClient(apiClient, configuration);
+            Creditors = new CreditorsClient(apiClient, configuration);
+            CustomerBankAccounts = new CustomerBankAccountsClient(apiClient, configuration);
             CustomerNotifications = new CustomerNotificationsClient(configuration);
-            Customers = new CustomersClient(configuration);
-            Events = new EventsClient(configuration);
-            MandateImportEntries = new MandateImportEntriesClient(configuration);
-            MandateImports = new MandateImportsClient(configuration);
+            Customers = new CustomersClient(apiClient, configuration);
+            Events = new EventsClient(apiClient, configuration);
+            MandateImportEntries = new MandateImportEntriesClient(apiClient, configuration);
+            MandateImports = new MandateImportsClient(apiClient, configuration);
             MandatePdfs = new MandatePdfsClient(configuration);
-            Mandates = new MandatesClient(configuration);
-            Payments = new PaymentsClient(configuration);
-            PayoutItems = new PayoutItemsClient(configuration);
+            Mandates = new MandatesClient(apiClient, configuration);
+            Payments = new PaymentsClient(apiClient, configuration);
+            PayoutItems = new PayoutItemsClient(apiClient, configuration);
             Payouts = new PayoutsClient(apiClient);
-            RedirectFlows = new RedirectFlowsClient(configuration);
-            Refunds = new RefundsClient(configuration);
-            Subscriptions = new SubscriptionsClient(configuration);
+            RedirectFlows = new RedirectFlowsClient(apiClient, configuration);
+            Refunds = new RefundsClient(apiClient, configuration);
+            Subscriptions = new SubscriptionsClient(apiClient, configuration);
         }
 
         public IBankDetailsLookupsClient BankDetailsLookups { get; }

@@ -1,4 +1,5 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
+using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
@@ -7,7 +8,12 @@ namespace GoCardless.Api.Customers
 {
     public class CustomersClient : ApiClient, ICustomersClient
     {
-        public CustomersClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
+
+        public CustomersClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        {
+            _apiClient = apiClient;
+        }
 
         public IPagerBuilder<GetCustomersRequest, Customer> BuildPager()
         {
@@ -28,29 +34,40 @@ namespace GoCardless.Api.Customers
             );
         }
 
-        public Task<Response<Customer>> ForIdAsync(string id)
+        public async Task<Response<Customer>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Customer>>($"customers/{id}");
-        }
-
-        public Task<PagedResponse<Customer>> GetPageAsync()
-        {
-            return GetAsync<PagedResponse<Customer>>("customers");
-        }
-
-        public Task<PagedResponse<Customer>> GetPageAsync(GetCustomersRequest request)
-        {
-            if (request == null)
+            return await _apiClient.GetAsync<Response<Customer>>(request =>
             {
-                throw new ArgumentNullException(nameof(request));
+                request.AppendPathSegment($"customers/{id}");
+            });
+        }
+
+        public async Task<PagedResponse<Customer>> GetPageAsync()
+        {
+            return await _apiClient.GetAsync<PagedResponse<Customer>>(request =>
+            {
+                request.AppendPathSegment("customers");
+            });
+        }
+
+        public async Task<PagedResponse<Customer>> GetPageAsync(GetCustomersRequest options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<Customer>>("customers", request.ToReadOnlyDictionary());
+            return await _apiClient.GetAsync<PagedResponse<Customer>>(request =>
+            {
+                request
+                    .AppendPathSegment("customers")
+                    .SetQueryParams(options.ToReadOnlyDictionary());
+            });
         }
 
         public Task<Response<Customer>> UpdateAsync(UpdateCustomerRequest request)

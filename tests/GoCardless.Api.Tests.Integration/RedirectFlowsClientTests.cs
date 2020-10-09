@@ -14,7 +14,7 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var creditor = await _resourceFactory.Creditor();
-            var subject = new RedirectFlowsClient(_clientConfiguration);
+            var subject = new RedirectFlowsClient(_apiClient, _apiClient.Configuration);
 
             var createRequest = new CreateRedirectFlowRequest
             {
@@ -85,7 +85,7 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var creditor = await _resourceFactory.Creditor();
             var redirectFlow = await _resourceFactory.CreateRedirectFlowFor(creditor);
-            var subject = new RedirectFlowsClient(_clientConfiguration);
+            var subject = new RedirectFlowsClient(_apiClient, _apiClient.Configuration);
 
             var request = new CompleteRedirectFlowRequest
             {

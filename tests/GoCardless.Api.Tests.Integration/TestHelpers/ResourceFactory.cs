@@ -21,19 +21,19 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 {
     public class ResourceFactory
     {
-        private readonly ClientConfiguration _clientConfiguration;
         private readonly IApiClient _apiClient;
+        private readonly ClientConfiguration _clientConfiguration;
+
+        internal ResourceFactory(IApiClient apiClient)
+        {
+            _apiClient = apiClient;
+            _clientConfiguration = apiClient.Configuration;
+        }
 
         internal async Task<Creditor> Creditor()
         {
-            var creditorsClient = new CreditorsClient(_clientConfiguration);
+            var creditorsClient = new CreditorsClient(_apiClient, _clientConfiguration);
             return (await creditorsClient.GetPageAsync()).Items.First();
-        }
-
-        internal ResourceFactory(ClientConfiguration clientConfiguration)
-        {
-            _clientConfiguration = clientConfiguration;
-            _apiClient = new ApiClient(_clientConfiguration);
         }
 
         internal Task<Customer> CreateForeignCustomer()
@@ -64,7 +64,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 }
             };
 
-            var customerBankAccountsClient = new CustomerBankAccountsClient(_clientConfiguration);
+            var customerBankAccountsClient = new CustomerBankAccountsClient(_apiClient, _clientConfiguration);
             return (await customerBankAccountsClient.CreateAsync(request)).Item;
         }
 
@@ -89,7 +89,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 Scheme = Scheme.Bacs
             };
 
-            var mandatesClient = new MandatesClient(_clientConfiguration);
+            var mandatesClient = new MandatesClient(_apiClient, _clientConfiguration);
             return (await mandatesClient.CreateAsync(request)).Item;
         }
 
@@ -100,7 +100,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 Scheme = "bacs",
             };
 
-            var mandateImportsClient = new MandateImportsClient(_clientConfiguration);
+            var mandateImportsClient = new MandateImportsClient(_apiClient, _clientConfiguration);
             return (await mandateImportsClient.CreateAsync(request)).Item;
         }
 
@@ -141,7 +141,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 RecordIdentifier = recordIdentifier
             };
 
-            var mandateImportEntriesClient = new MandateImportEntriesClient(_clientConfiguration);
+            var mandateImportEntriesClient = new MandateImportEntriesClient(_apiClient, _clientConfiguration);
             return (await mandateImportEntriesClient.AddAsync(request)).Item;
         }
 
@@ -163,7 +163,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 Reference = "REF123456"
             };
 
-            var paymentsClient = new PaymentsClient(_clientConfiguration);
+            var paymentsClient = new PaymentsClient(_apiClient, _clientConfiguration);
             return (await paymentsClient.CreateAsync(request)).Item;
         }
 
@@ -210,7 +210,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             // when
-            var redirectFlowsClient = new RedirectFlowsClient(_clientConfiguration);
+            var redirectFlowsClient = new RedirectFlowsClient(_apiClient, _clientConfiguration);
             return (await redirectFlowsClient.CreateAsync(request)).Item;
         }
 
@@ -238,7 +238,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 StartDate = DateTime.Now.AddMonths(1)
             };
 
-            var subscriptionsClient = new SubscriptionsClient(_clientConfiguration);
+            var subscriptionsClient = new SubscriptionsClient(_apiClient, _clientConfiguration);
             return (await subscriptionsClient.CreateAsync(request)).Item;
         }
 
@@ -273,7 +273,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 SwedishIdentityNumber = swedishIdentityNumber
             };
 
-            var customersClient = new CustomersClient(_clientConfiguration);
+            var customersClient = new CustomersClient(_apiClient, _clientConfiguration);
             return (await customersClient.CreateAsync(request)).Item;
         }
     }

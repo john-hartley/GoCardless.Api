@@ -1,4 +1,5 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
+using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
@@ -7,7 +8,12 @@ namespace GoCardless.Api.Mandates
 {
     public class MandatesClient : ApiClient, IMandatesClient
     {
-        public MandatesClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
+
+        public MandatesClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        {
+            _apiClient = apiClient;
+        }
 
         public IPagerBuilder<GetMandatesRequest, Mandate> BuildPager()
         {
@@ -46,29 +52,40 @@ namespace GoCardless.Api.Mandates
             );
         }
 
-        public Task<Response<Mandate>> ForIdAsync(string id)
+        public async Task<Response<Mandate>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Mandate>>($"mandates/{id}");
-        }
-
-        public Task<PagedResponse<Mandate>> GetPageAsync()
-        {
-            return GetAsync<PagedResponse<Mandate>>("mandates");
-        }
-
-        public Task<PagedResponse<Mandate>> GetPageAsync(GetMandatesRequest request)
-        {
-            if (request == null)
+            return await _apiClient.GetAsync<Response<Mandate>>(request =>
             {
-                throw new ArgumentNullException(nameof(request));
+                request.AppendPathSegment($"mandates/{id}");
+            });
+        }
+
+        public async Task<PagedResponse<Mandate>> GetPageAsync()
+        {
+            return await _apiClient.GetAsync<PagedResponse<Mandate>>(request =>
+            {
+                request.AppendPathSegment("mandates");
+            });
+        }
+
+        public async Task<PagedResponse<Mandate>> GetPageAsync(GetMandatesRequest options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<Mandate>>("mandates", request.ToReadOnlyDictionary());
+            return await _apiClient.GetAsync<PagedResponse<Mandate>>(request =>
+            {
+                request
+                    .AppendPathSegment("mandates")
+                    .SetQueryParams(options.ToReadOnlyDictionary());
+            });
         }
 
         public Task<Response<Mandate>> ReinstateAsync(ReinstateMandateRequest request)

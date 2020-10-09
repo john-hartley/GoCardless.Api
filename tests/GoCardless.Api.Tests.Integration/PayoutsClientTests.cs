@@ -14,7 +14,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsPayouts()
         {
             // given
-            var apiClient = new ApiClient(_clientConfiguration);
+            var apiClient = new ApiClient(_apiClient.Configuration);
             var subject = new PayoutsClient(apiClient);
 
             var request = new GetPayoutsRequest
@@ -46,7 +46,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var apiClient = new ApiClient(_clientConfiguration);
+            var apiClient = new ApiClient(_apiClient.Configuration);
             var subject = new PayoutsClient(apiClient);
 
             var firstPageRequest = new GetPayoutsRequest
@@ -81,7 +81,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsIndividualPayout()
         {
             // given
-            var apiClient = new ApiClient(_clientConfiguration);
+            var apiClient = new ApiClient(_apiClient.Configuration);
             var subject = new PayoutsClient(apiClient);
             var payout = (await subject.GetPageAsync()).Items.First();
 
@@ -109,7 +109,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsPagesIncludingAndBeforeInitialRequest()
         {
             // given
-            var apiClient = new ApiClient(_clientConfiguration);
+            var apiClient = new ApiClient(_apiClient.Configuration);
             var subject = new PayoutsClient(apiClient);
             var lastId = (await subject.GetPageAsync()).Items.Last().Id;
 
@@ -135,7 +135,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsPagesIncludingAndAfterInitialRequest()
         {
             // given
-            var apiClient = new ApiClient(_clientConfiguration);
+            var apiClient = new ApiClient(_apiClient.Configuration);
             var subject = new PayoutsClient(apiClient);
 
             var initialRequest = new GetPayoutsRequest
@@ -159,7 +159,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsPagesIncludingAndAfterInitialRequestWhenCursorSpecified()
         {
             // given
-            var apiClient = new ApiClient(_clientConfiguration);
+            var apiClient = new ApiClient(_apiClient.Configuration);
             var subject = new PayoutsClient(apiClient);
             var firstId = (await subject.GetPageAsync()).Items.First().Id;
 

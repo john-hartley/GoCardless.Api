@@ -1,5 +1,6 @@
 ﻿using Flurl.Http.Testing;
 using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.Mandates;
 using NUnit.Framework;
 using System;
@@ -10,13 +11,13 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class MandatesClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IApiClient _apiClient;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
             _httpTest = new HttpTest();
         }
 
@@ -30,7 +31,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CancelMandateRequestIsNullThrows()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
             CancelMandateRequest request = null;
 
@@ -48,7 +49,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CancelMandateRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
             var request = new CancelMandateRequest
             {
@@ -67,7 +68,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCancelMandateEndpoint()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
             var request = new CancelMandateRequest
             {
@@ -87,7 +88,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CreateMandateRequestIsNullThrows()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
             CreateMandateRequest request = null;
 
@@ -103,7 +104,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateMandateEndpoint()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
             var request = new CreateMandateRequest
             {
@@ -126,7 +127,7 @@ namespace GoCardless.Api.Tests.Unit
         public void IsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
             // when
             AsyncTestDelegate test = () => subject.ForIdAsync(id);
@@ -141,7 +142,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualMandatesEndpoint()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
             var id = "MD12345678";
 
             // when
@@ -157,7 +158,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetMandatesEndpoint()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
             // when
             await subject.GetPageAsync();
@@ -172,23 +173,23 @@ namespace GoCardless.Api.Tests.Unit
         public void GetMandatesRequestIsNullThrows()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
-            GetMandatesRequest request = null;
+            GetMandatesRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsGetMandatesEndpointUsingRequest()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetMandatesRequest
             {
@@ -210,7 +211,7 @@ namespace GoCardless.Api.Tests.Unit
         public void ReinstateMandateRequestIsNullThrows()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
             ReinstateMandateRequest request = null;
 
@@ -228,7 +229,7 @@ namespace GoCardless.Api.Tests.Unit
         public void ReinstateMandateRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
             var request = new ReinstateMandateRequest
             {
@@ -247,7 +248,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsReinstateMandateEndpoint()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
             var request = new ReinstateMandateRequest
             {
@@ -267,7 +268,7 @@ namespace GoCardless.Api.Tests.Unit
         public void UpdateMandateRequestIsNullThrows()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
             UpdateMandateRequest request = null;
 
@@ -285,7 +286,7 @@ namespace GoCardless.Api.Tests.Unit
         public void UpdateMandateRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
             var request = new UpdateMandateRequest
             {
@@ -304,7 +305,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsUpdateMandateEndpoint()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
+            var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
             var request = new UpdateMandateRequest
             {

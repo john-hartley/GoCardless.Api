@@ -1,5 +1,6 @@
 ﻿using Flurl.Http.Testing;
 using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.Refunds;
 using NUnit.Framework;
 using System;
@@ -10,13 +11,13 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class RefundsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IApiClient _apiClient;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
             _httpTest = new HttpTest();
         }
 
@@ -30,7 +31,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CreateRefundRequestIsNullThrows()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
+            var subject = new RefundsClient(_apiClient, _apiClient.Configuration);
 
             CreateRefundRequest request = null;
 
@@ -46,7 +47,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateRefundEndpoint()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
+            var subject = new RefundsClient(_apiClient, _apiClient.Configuration);
 
             var request = new CreateRefundRequest
             {
@@ -69,7 +70,7 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
+            var subject = new RefundsClient(_apiClient, _apiClient.Configuration);
 
             // when
             AsyncTestDelegate test = () => subject.ForIdAsync(id);
@@ -84,7 +85,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualRefundsEndpoint()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
+            var subject = new RefundsClient(_apiClient, _apiClient.Configuration);
             var id = "RF12345678";
 
             // when
@@ -100,7 +101,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetRefundsEndpoint()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
+            var subject = new RefundsClient(_apiClient, _apiClient.Configuration);
 
             // when
             await subject.GetPageAsync();
@@ -115,23 +116,23 @@ namespace GoCardless.Api.Tests.Unit
         public void GetRefundsRequestIsNullThrows()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
+            var subject = new RefundsClient(_apiClient, _apiClient.Configuration);
 
-            GetRefundsRequest request = null;
+            GetRefundsRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsGetRefundsEndpointUsingRequest()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
+            var subject = new RefundsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetRefundsRequest
             {
@@ -153,7 +154,7 @@ namespace GoCardless.Api.Tests.Unit
         public void UpdateRefundRequestIsNullThrows()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
+            var subject = new RefundsClient(_apiClient, _apiClient.Configuration);
 
             UpdateRefundRequest request = null;
 
@@ -171,7 +172,7 @@ namespace GoCardless.Api.Tests.Unit
         public void UpdateRefundRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
+            var subject = new RefundsClient(_apiClient, _apiClient.Configuration);
 
             var request = new UpdateRefundRequest
             {
@@ -190,7 +191,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsUpdateRefundEndpoint()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
+            var subject = new RefundsClient(_apiClient, _apiClient.Configuration);
 
             var request = new UpdateRefundRequest
             {

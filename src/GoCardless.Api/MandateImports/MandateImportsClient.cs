@@ -1,4 +1,5 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
+using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
@@ -7,7 +8,12 @@ namespace GoCardless.Api.MandateImports
 {
     public class MandateImportsClient : ApiClient, IMandateImportsClient
     {
-        public MandateImportsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
+
+        public MandateImportsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        {
+            _apiClient = apiClient;
+        }
 
         public Task<Response<MandateImport>> CancelAsync(string id)
         {
@@ -34,14 +40,17 @@ namespace GoCardless.Api.MandateImports
             );
         }
 
-        public Task<Response<MandateImport>> ForIdAsync(string id)
+        public async Task<Response<MandateImport>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<MandateImport>>($"mandate_imports/{id}");
+            return await _apiClient.GetAsync<Response<MandateImport>>(request =>
+            {
+                request.AppendPathSegment($"mandate_imports/{id}");
+            });
         }
 
         public Task<Response<MandateImport>> SubmitAsync(string id)

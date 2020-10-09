@@ -13,7 +13,7 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var creditor = await _resourceFactory.Creditor();
-            var subject = new CreditorsClient(_clientConfiguration);
+            var subject = new CreditorsClient(_apiClient, _apiClient.Configuration);
 
             // when
             var result = (await subject.GetPageAsync()).Items.ToList();
@@ -57,7 +57,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
+            var subject = new CreditorsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetCreditorsRequest
             {
@@ -79,7 +79,7 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var creditor = await _resourceFactory.Creditor();
-            var subject = new CreditorsClient(_clientConfiguration);
+            var subject = new CreditorsClient(_apiClient, _apiClient.Configuration);
 
             // when
             var result = await subject.ForIdAsync(creditor.Id);
@@ -144,7 +144,7 @@ namespace GoCardless.Api.Tests.Integration
                 Region = "Essex",
             };
 
-            var subject = new CreditorsClient(_clientConfiguration);
+            var subject = new CreditorsClient(_apiClient, _apiClient.Configuration);
 
             // when
             var result = await subject.UpdateAsync(request);

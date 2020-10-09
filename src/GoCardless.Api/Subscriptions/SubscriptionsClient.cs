@@ -1,4 +1,5 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
+using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
@@ -7,7 +8,12 @@ namespace GoCardless.Api.Subscriptions
 {
     public class SubscriptionsClient : ApiClient, ISubscriptionsClient
     {
-        public SubscriptionsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
+
+        public SubscriptionsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        {
+            _apiClient = apiClient;
+        }
 
         public IPagerBuilder<GetSubscriptionsRequest, Subscription> BuildPager()
         {
@@ -46,29 +52,40 @@ namespace GoCardless.Api.Subscriptions
             );
         }
 
-        public Task<Response<Subscription>> ForIdAsync(string id)
+        public async Task<Response<Subscription>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Subscription>>($"subscriptions/{id}");
-        }
-
-        public Task<PagedResponse<Subscription>> GetPageAsync()
-        {
-            return GetAsync<PagedResponse<Subscription>>("subscriptions");
-        }
-
-        public Task<PagedResponse<Subscription>> GetPageAsync(GetSubscriptionsRequest request)
-        {
-            if (request == null)
+            return await _apiClient.GetAsync<Response<Subscription>>(request =>
             {
-                throw new ArgumentNullException(nameof(request));
+                request.AppendPathSegment($"subscriptions/{id}");
+            });
+        }
+
+        public async Task<PagedResponse<Subscription>> GetPageAsync()
+        {
+            return await _apiClient.GetAsync<PagedResponse<Subscription>>(request =>
+            {
+                request.AppendPathSegment("subscriptions");
+            });
+        }
+
+        public async Task<PagedResponse<Subscription>> GetPageAsync(GetSubscriptionsRequest options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<Subscription>>("subscriptions", request.ToReadOnlyDictionary());
+            return await _apiClient.GetAsync<PagedResponse<Subscription>>(request =>
+            {
+                request
+                    .AppendPathSegment("subscriptions")
+                    .SetQueryParams(options.ToReadOnlyDictionary());
+            });
         }
 
         public Task<Response<Subscription>> UpdateAsync(UpdateSubscriptionRequest request)

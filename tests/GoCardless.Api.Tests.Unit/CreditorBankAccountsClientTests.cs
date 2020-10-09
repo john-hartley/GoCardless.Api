@@ -1,5 +1,6 @@
 ﻿using Flurl.Http.Testing;
 using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.CreditorBankAccounts;
 using NUnit.Framework;
 using System;
@@ -10,13 +11,13 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class CreditorBankAccountsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IApiClient _apiClient;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
             _httpTest = new HttpTest();
         }
 
@@ -30,7 +31,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CreateCreditorBankAccountRequestIsNullThrows()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_clientConfiguration);
+            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
 
             CreateCreditorBankAccountRequest request = null;
 
@@ -46,7 +47,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateCreditorBankAccountEndpoint()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_clientConfiguration);
+            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
 
             var request = new CreateCreditorBankAccountRequest
             {
@@ -67,7 +68,7 @@ namespace GoCardless.Api.Tests.Unit
         public void DisableCreditorBankAccountRequestIsNullThrows()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_clientConfiguration);
+            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
 
             DisableCreditorBankAccountRequest request = null;
 
@@ -85,7 +86,7 @@ namespace GoCardless.Api.Tests.Unit
         public void DisableCreditorBankAccountRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CreditorBankAccountsClient(_clientConfiguration);
+            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
 
             var request = new DisableCreditorBankAccountRequest
             {
@@ -104,7 +105,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsDisableCreditorBankAccountEndpoint()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_clientConfiguration);
+            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
 
             var request = new DisableCreditorBankAccountRequest
             {
@@ -126,7 +127,7 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CreditorBankAccountsClient(_clientConfiguration);
+            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
 
             // when
             AsyncTestDelegate test = () => subject.ForIdAsync(id);
@@ -141,7 +142,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualCreditorBankAccountsEndpoint()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_clientConfiguration);
+            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
             var id = "BA12345678";
 
             // when
@@ -157,7 +158,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetCreditorBankAccountsEndpoint()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_clientConfiguration);
+            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
 
             // when
             await subject.GetPageAsync();
@@ -172,23 +173,23 @@ namespace GoCardless.Api.Tests.Unit
         public void GetCreditorBankAccountsRequestIsNullThrows()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_clientConfiguration);
+            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
 
-            GetCreditorBankAccountsRequest request = null;
+            GetCreditorBankAccountsRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsGetCreditorBankAccountsEndpointUsingRequest()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_clientConfiguration);
+            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetCreditorBankAccountsRequest
             {

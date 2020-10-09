@@ -1,5 +1,6 @@
 ﻿using Flurl.Http.Testing;
 using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.Payments;
 using NUnit.Framework;
 using System;
@@ -10,13 +11,13 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class PaymentsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IApiClient _apiClient;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
             _httpTest = new HttpTest();
         }
 
@@ -30,16 +31,16 @@ namespace GoCardless.Api.Tests.Unit
         public void CancelPaymentRequestIsNullThrows()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
 
-            CancelPaymentRequest request = null;
+            CancelPaymentRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CancelAsync(request);
+            AsyncTestDelegate test = () => subject.CancelAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
@@ -48,7 +49,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CancelPaymentRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
 
             var request = new CancelPaymentRequest
             {
@@ -67,7 +68,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCancelPaymentEndpoint()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
 
             var request = new CancelPaymentRequest
             {
@@ -87,23 +88,23 @@ namespace GoCardless.Api.Tests.Unit
         public void CreatePaymentRequestIsNullThrows()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
 
-            CreatePaymentRequest request = null;
+            CreatePaymentRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            AsyncTestDelegate test = () => subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsCreatePaymentEndpoint()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
 
             var request = new CreatePaymentRequest
             {
@@ -126,7 +127,7 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
 
             // when
             AsyncTestDelegate test = () => subject.ForIdAsync(id);
@@ -141,7 +142,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualPaymentsEndpoint()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
             var id = "PM12345678";
 
             // when
@@ -157,7 +158,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetPaymentsEndpoint()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
 
             // when
             await subject.GetPageAsync();
@@ -172,23 +173,23 @@ namespace GoCardless.Api.Tests.Unit
         public void GetPaymentsRequestIsNullThrows()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
 
-            GetPaymentsRequest request = null;
+            GetPaymentsRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsGetPaymentsEndpointUsingRequest()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetPaymentsRequest
             {
@@ -210,16 +211,16 @@ namespace GoCardless.Api.Tests.Unit
         public void RetryPaymentRequestIsNullThrows()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
 
-            RetryPaymentRequest request = null;
+            RetryPaymentRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.RetryAsync(request);
+            AsyncTestDelegate test = () => subject.RetryAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
@@ -228,7 +229,7 @@ namespace GoCardless.Api.Tests.Unit
         public void RetryPaymentRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
 
             var request = new RetryPaymentRequest
             {
@@ -247,7 +248,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsRetryPaymentEndpoint()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
 
             var request = new RetryPaymentRequest
             {
@@ -267,16 +268,16 @@ namespace GoCardless.Api.Tests.Unit
         public void UpdatePaymentRequestIsNullThrows()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
 
-            UpdatePaymentRequest request = null;
+            UpdatePaymentRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
@@ -285,7 +286,7 @@ namespace GoCardless.Api.Tests.Unit
         public void UpdatePaymentRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
 
             var request = new UpdatePaymentRequest
             {
@@ -304,7 +305,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsUpdatePaymentEndpoint()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
+            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
 
             var request = new UpdatePaymentRequest
             {

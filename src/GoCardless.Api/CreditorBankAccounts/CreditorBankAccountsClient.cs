@@ -1,4 +1,5 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
+using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
@@ -7,7 +8,12 @@ namespace GoCardless.Api.CreditorBankAccounts
 {
     public class CreditorBankAccountsClient : ApiClient, ICreditorBankAccountsClient
     {
-        public CreditorBankAccountsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
+
+        public CreditorBankAccountsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        {
+            _apiClient = apiClient;
+        }
 
         public IPagerBuilder<GetCreditorBankAccountsRequest, CreditorBankAccount> BuildPager()
         {
@@ -45,32 +51,40 @@ namespace GoCardless.Api.CreditorBankAccounts
             );
         }
 
-        public Task<Response<CreditorBankAccount>> ForIdAsync(string id)
+        public async Task<Response<CreditorBankAccount>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<CreditorBankAccount>>($"creditor_bank_accounts/{id}");
-        }
-
-        public Task<PagedResponse<CreditorBankAccount>> GetPageAsync()
-        {
-            return GetAsync<PagedResponse<CreditorBankAccount>>("creditor_bank_accounts");
-        }
-
-        public Task<PagedResponse<CreditorBankAccount>> GetPageAsync(GetCreditorBankAccountsRequest request)
-        {
-            if (request == null)
+            return await _apiClient.GetAsync<Response<CreditorBankAccount>>(request =>
             {
-                throw new ArgumentNullException(nameof(request));
+                request.AppendPathSegment($"creditor_bank_accounts/{id}");
+            });
+        }
+
+        public async Task<PagedResponse<CreditorBankAccount>> GetPageAsync()
+        {
+            return await _apiClient.GetAsync<PagedResponse<CreditorBankAccount>>(request =>
+            {
+                request.AppendPathSegment("creditor_bank_accounts");
+            });
+        }
+
+        public async Task<PagedResponse<CreditorBankAccount>> GetPageAsync(GetCreditorBankAccountsRequest options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<CreditorBankAccount>>(
-                "creditor_bank_accounts",
-                request.ToReadOnlyDictionary()
-            );
+            return await _apiClient.GetAsync<PagedResponse<CreditorBankAccount>>(request =>
+            {
+                request
+                    .AppendPathSegment("creditor_bank_accounts")
+                    .SetQueryParams(options.ToReadOnlyDictionary());
+            });
         }
     }
 }

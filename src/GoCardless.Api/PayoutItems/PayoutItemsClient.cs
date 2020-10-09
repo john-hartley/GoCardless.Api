@@ -1,4 +1,5 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
+using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
@@ -7,29 +8,36 @@ namespace GoCardless.Api.PayoutItems
 {
     public class PayoutItemsClient : ApiClient, IPayoutItemsClient
     {
-        public PayoutItemsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
+
+        public PayoutItemsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        {
+            _apiClient = apiClient;
+        }
 
         public IPagerBuilder<GetPayoutItemsRequest, PayoutItem> BuildPager()
         {
             return new Pager<GetPayoutItemsRequest, PayoutItem>(GetPageAsync);
         }
 
-        public Task<PagedResponse<PayoutItem>> GetPageAsync(GetPayoutItemsRequest request)
+        public async Task<PagedResponse<PayoutItem>> GetPageAsync(GetPayoutItemsRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Payout))
+            if (string.IsNullOrWhiteSpace(options.Payout))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Payout));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Payout));
             }
-            
-            return GetAsync<PagedResponse<PayoutItem>>(
-                "payout_items",
-                request.ToReadOnlyDictionary()
-            );
+
+            return await _apiClient.GetAsync<PagedResponse<PayoutItem>>(request =>
+            {
+                request
+                    .AppendPathSegment("payout_items")
+                    .SetQueryParams(options.ToReadOnlyDictionary());
+            });
         }
     }
 }

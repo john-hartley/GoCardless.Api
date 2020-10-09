@@ -1,5 +1,6 @@
 ﻿using Flurl.Http.Testing;
 using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.RedirectFlows;
 using NUnit.Framework;
 using System;
@@ -10,13 +11,13 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class RedirectFlowsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IApiClient _apiClient;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
             _httpTest = new HttpTest();
         }
 
@@ -30,7 +31,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CompleteRedirectFlowRequestIsNullThrows()
         {
             // given
-            var subject = new RedirectFlowsClient(_clientConfiguration);
+            var subject = new RedirectFlowsClient(_apiClient, _apiClient.Configuration);
 
             CompleteRedirectFlowRequest request = null;
 
@@ -46,7 +47,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCompleteRedirectFlowEndpointUsingRequest()
         {
             // given
-            var subject = new RedirectFlowsClient(_clientConfiguration);
+            var subject = new RedirectFlowsClient(_apiClient, _apiClient.Configuration);
 
             var request = new CompleteRedirectFlowRequest
             {
@@ -67,7 +68,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CreateRedirectFlowRequestIsNullThrows()
         {
             // given
-            var subject = new RedirectFlowsClient(_clientConfiguration);
+            var subject = new RedirectFlowsClient(_apiClient, _apiClient.Configuration);
 
             CreateRedirectFlowRequest request = null;
 
@@ -83,7 +84,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateRedirectFlowEndpoint()
         {
             // given
-            var subject = new RedirectFlowsClient(_clientConfiguration);
+            var subject = new RedirectFlowsClient(_apiClient, _apiClient.Configuration);
 
             var request = new CreateRedirectFlowRequest();
 
@@ -102,7 +103,7 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new RedirectFlowsClient(_clientConfiguration);
+            var subject = new RedirectFlowsClient(_apiClient, _apiClient.Configuration);
 
             // when
             AsyncTestDelegate test = () => subject.ForIdAsync(id);
@@ -117,7 +118,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualRedirectFlowsEndpoint()
         {
             // given
-            var subject = new RedirectFlowsClient(_clientConfiguration);
+            var subject = new RedirectFlowsClient(_apiClient, _apiClient.Configuration);
             var id = "RE12345678";
 
             // when

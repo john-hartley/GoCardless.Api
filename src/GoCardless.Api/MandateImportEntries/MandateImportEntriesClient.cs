@@ -1,4 +1,5 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
+using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
@@ -7,7 +8,12 @@ namespace GoCardless.Api.MandateImportEntries
 {
     public class MandateImportEntriesClient : ApiClient, IMandateImportEntriesClient
     {
-        public MandateImportEntriesClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
+
+        public MandateImportEntriesClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        {
+            _apiClient = apiClient;
+        }
 
         public Task<Response<MandateImportEntry>> AddAsync(AddMandateImportEntryRequest request)
         {
@@ -27,22 +33,24 @@ namespace GoCardless.Api.MandateImportEntries
             return new Pager<GetMandateImportEntriesRequest, MandateImportEntry>(GetPageAsync);
         }
 
-        public Task<PagedResponse<MandateImportEntry>> GetPageAsync(GetMandateImportEntriesRequest request)
+        public async Task<PagedResponse<MandateImportEntry>> GetPageAsync(GetMandateImportEntriesRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.MandateImport))
+            if (string.IsNullOrWhiteSpace(options.MandateImport))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.MandateImport));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.MandateImport));
             }
 
-            return GetAsync<PagedResponse<MandateImportEntry>>(
-                "mandate_import_entries",
-                request.ToReadOnlyDictionary()
-            );
+            return await _apiClient.GetAsync<PagedResponse<MandateImportEntry>>(request =>
+            {
+                request
+                    .AppendPathSegment("mandate_import_entries")
+                    .SetQueryParams(options.ToReadOnlyDictionary());
+            });
         }
     }
 }

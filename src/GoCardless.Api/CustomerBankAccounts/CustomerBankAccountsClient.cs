@@ -1,4 +1,5 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
+using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
@@ -7,7 +8,12 @@ namespace GoCardless.Api.CustomerBankAccounts
 {
     public class CustomerBankAccountsClient : ApiClient, ICustomerBankAccountsClient
     {
-        public CustomerBankAccountsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
+
+        public CustomerBankAccountsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        {
+            _apiClient = apiClient;
+        }
 
         public IPagerBuilder<GetCustomerBankAccountsRequest, CustomerBankAccount> BuildPager()
         {
@@ -45,32 +51,40 @@ namespace GoCardless.Api.CustomerBankAccounts
             );
         }
 
-        public Task<Response<CustomerBankAccount>> ForIdAsync(string id)
+        public async Task<Response<CustomerBankAccount>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
-            
-            return GetAsync<Response<CustomerBankAccount>>($"customer_bank_accounts/{id}");
-        }
 
-        public Task<PagedResponse<CustomerBankAccount>> GetPageAsync()
-        {
-            return GetAsync<PagedResponse<CustomerBankAccount>>("customer_bank_accounts");
-        }
-
-        public Task<PagedResponse<CustomerBankAccount>> GetPageAsync(GetCustomerBankAccountsRequest request)
-        {
-            if (request == null)
+            return await _apiClient.GetAsync<Response<CustomerBankAccount>>(request =>
             {
-                throw new ArgumentNullException(nameof(request));
+                request.AppendPathSegment($"customer_bank_accounts/{id}");
+            });
+        }
+
+        public async Task<PagedResponse<CustomerBankAccount>> GetPageAsync()
+        {
+            return await _apiClient.GetAsync<PagedResponse<CustomerBankAccount>>(request =>
+            {
+                request.AppendPathSegment("customer_bank_accounts");
+            });
+        }
+
+        public async Task<PagedResponse<CustomerBankAccount>> GetPageAsync(GetCustomerBankAccountsRequest options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<CustomerBankAccount>>(
-                "customer_bank_accounts",
-                request.ToReadOnlyDictionary()
-            );
+            return await _apiClient.GetAsync<PagedResponse<CustomerBankAccount>>(request =>
+            {
+                request
+                    .AppendPathSegment("customer_bank_accounts")
+                    .SetQueryParams(options.ToReadOnlyDictionary());
+            });
         }
 
         public Task<Response<CustomerBankAccount>> UpdateAsync(UpdateCustomerBankAccountRequest request)

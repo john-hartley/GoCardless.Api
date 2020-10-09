@@ -13,7 +13,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsEvents()
         {
             // given
-            var subject = new EventsClient(_clientConfiguration);
+            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
 
             // when
             var result = (await subject.GetPageAsync()).Items.ToList();
@@ -37,7 +37,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsMandateEvents()
         {
             // given
-            var subject = new EventsClient(_clientConfiguration);
+            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetEventsRequest
             {
@@ -67,7 +67,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsPaymentEvents()
         {
             // given
-            var subject = new EventsClient(_clientConfiguration);
+            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetEventsRequest
             {
@@ -97,7 +97,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsPayoutEvents()
         {
             // given
-            var subject = new EventsClient(_clientConfiguration);
+            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetEventsRequest
             {
@@ -127,7 +127,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsRefundEvents()
         {
             // given
-            var subject = new EventsClient(_clientConfiguration);
+            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetEventsRequest
             {
@@ -157,7 +157,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsSubscriptionEvents()
         {
             // given
-            var subject = new EventsClient(_clientConfiguration);
+            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetEventsRequest
             {
@@ -187,7 +187,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new EventsClient(_clientConfiguration);
+            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
 
             var firstPageRequest = new GetEventsRequest
             {
@@ -221,7 +221,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsParentEvent()
         {
             // given
-            var subject = new EventsClient(_clientConfiguration);
+            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetEventsRequest
             {
@@ -254,7 +254,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsIndividualEvent()
         {
             // given
-            var subject = new EventsClient(_clientConfiguration);
+            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetEventsRequest
             {
@@ -290,7 +290,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task PagesThroughEvents()
         {
             // given
-            var subject = new EventsClient(_clientConfiguration);
+            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
             var firstId = (await subject.GetPageAsync()).Items.First().Id;
 
             var initialRequest = new GetEventsRequest

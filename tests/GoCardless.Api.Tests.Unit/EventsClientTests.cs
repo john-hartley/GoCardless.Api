@@ -1,5 +1,6 @@
 ﻿using Flurl.Http.Testing;
 using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.Events;
 using NUnit.Framework;
 using System;
@@ -10,13 +11,13 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class EventsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IApiClient _apiClient;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
             _httpTest = new HttpTest();
         }
 
@@ -32,7 +33,7 @@ namespace GoCardless.Api.Tests.Unit
         public void EventIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new EventsClient(_clientConfiguration);
+            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
 
             // when
             AsyncTestDelegate test = () => subject.ForIdAsync(id);
@@ -47,7 +48,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualEventsEndpoint()
         {
             // given
-            var subject = new EventsClient(_clientConfiguration);
+            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
             var id = "EV12345678";
 
             // when
@@ -63,7 +64,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetEventsEndpoint()
         {
             // given
-            var subject = new EventsClient(_clientConfiguration);
+            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
 
             // when
             await subject.GetPageAsync();
@@ -78,23 +79,23 @@ namespace GoCardless.Api.Tests.Unit
         public void GetEventsRequestIsNullThrows()
         {
             // given
-            var subject = new EventsClient(_clientConfiguration);
+            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
 
-            GetEventsRequest request = null;
+            GetEventsRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsGetEventsEndpointUsingRequest()
         {
             // given
-            var subject = new EventsClient(_clientConfiguration);
+            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
 
             var request = new GetEventsRequest
             {

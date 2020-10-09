@@ -15,12 +15,11 @@ namespace GoCardless.Api.Core.Http
 {
     public class ApiClient : IApiClient
     {
-        private readonly ClientConfiguration _configuration;
         private readonly NewtonsoftJsonSerializer _newtonsoftJsonSerializer;
 
         public ApiClient(ClientConfiguration configuration)
         {
-            _configuration = configuration;
+            Configuration = configuration;
 
             var jsonSerializerSettings = new JsonSerializerSettings
             {
@@ -35,6 +34,8 @@ namespace GoCardless.Api.Core.Http
             _newtonsoftJsonSerializer = new NewtonsoftJsonSerializer(jsonSerializerSettings);
         }
 
+        public ClientConfiguration Configuration { get; }
+
         public async Task<TResponse> GetAsync<TResponse>(Action<IFlurlRequest> configure)
         {
             try
@@ -43,24 +44,6 @@ namespace GoCardless.Api.Core.Http
                 configure(request);
 
                 return await request
-                    .GetJsonAsync<TResponse>()
-                    .ConfigureAwait(false);
-            }
-            catch (FlurlHttpException ex)
-            {
-                throw await ex.CreateApiExceptionAsync();
-            }
-        }
-
-        public async Task<TResponse> GetAsync<TResponse>(
-            string relativeEndpoint,
-            IReadOnlyDictionary<string, object> queryParams = null)
-        {
-            try
-            {
-                return await BaseRequest()
-                    .AppendPathSegment(relativeEndpoint)
-                    .SetQueryParams(queryParams)
                     .GetJsonAsync<TResponse>()
                     .ConfigureAwait(false);
             }
@@ -135,7 +118,7 @@ namespace GoCardless.Api.Core.Http
                     if (!string.IsNullOrWhiteSpace(conflictingResourceId))
                     {
                         var endpoint = $"{relativeEndpoint}/{conflictingResourceId}";
-                        return await GetAsync<TResponse>(endpoint);
+                        return await GetAsync<TResponse>(req => req.AppendPathSegment(endpoint));
                     }
                 }
 
@@ -145,8 +128,8 @@ namespace GoCardless.Api.Core.Http
 
         private IFlurlRequest BaseRequest()
         {
-            return _configuration.BaseUri
-                .WithHeaders(_configuration.Headers)
+            return Configuration.BaseUri
+                .WithHeaders(Configuration.Headers)
                 .ConfigureRequest(x => x.JsonSerializer = _newtonsoftJsonSerializer);
         }
 
