@@ -1,4 +1,5 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using Flurl.Http;
+using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
@@ -25,22 +26,33 @@ namespace GoCardless.Api.Payouts
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.GetAsync<Response<Payout>>($"payouts/{id}");
+            return await _apiClient.GetAsync<Response<Payout>>(request =>
+            {
+                request.AppendPathSegment($"payouts/{id}");
+            });
         }
 
         public async Task<PagedResponse<Payout>> GetPageAsync()
         {
-            return await _apiClient.GetAsync<PagedResponse<Payout>>("payouts");
+            return await _apiClient.GetAsync<PagedResponse<Payout>>(request =>
+            {
+                request.AppendPathSegment("payouts");
+            });
         }
 
-        public async Task<PagedResponse<Payout>> GetPageAsync(GetPayoutsRequest request)
+        public async Task<PagedResponse<Payout>> GetPageAsync(GetPayoutsRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.GetAsync<PagedResponse<Payout>>("payouts", request.ToReadOnlyDictionary());
+            return await _apiClient.GetAsync<PagedResponse<Payout>>(request =>
+            {
+                request
+                    .AppendPathSegment("payouts")
+                    .SetQueryParams(options.ToReadOnlyDictionary());
+            });
         }
     }
 }

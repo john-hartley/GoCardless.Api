@@ -5,6 +5,7 @@ using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -32,6 +33,23 @@ namespace GoCardless.Api.Core.Http
             };
 
             _newtonsoftJsonSerializer = new NewtonsoftJsonSerializer(jsonSerializerSettings);
+        }
+
+        public async Task<TResponse> GetAsync<TResponse>(Action<IFlurlRequest> configure)
+        {
+            try
+            {
+                var request = BaseRequest();
+                configure(request);
+
+                return await request
+                    .GetJsonAsync<TResponse>()
+                    .ConfigureAwait(false);
+            }
+            catch (FlurlHttpException ex)
+            {
+                throw await ex.CreateApiExceptionAsync();
+            }
         }
 
         public async Task<TResponse> GetAsync<TResponse>(
