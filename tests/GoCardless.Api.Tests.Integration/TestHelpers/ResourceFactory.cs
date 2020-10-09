@@ -1,4 +1,5 @@
 ﻿using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
 using GoCardless.Api.Customers;
@@ -21,6 +22,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
     public class ResourceFactory
     {
         private readonly ClientConfiguration _clientConfiguration;
+        private readonly IApiClient _apiClient;
 
         internal async Task<Creditor> Creditor()
         {
@@ -31,6 +33,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
         internal ResourceFactory(ClientConfiguration clientConfiguration)
         {
             _clientConfiguration = clientConfiguration;
+            _apiClient = new ApiClient(_clientConfiguration);
         }
 
         internal Task<Customer> CreateForeignCustomer()
@@ -171,7 +174,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 PayoutType = PayoutType.Merchant
             };
 
-            var payoutsClient = new PayoutsClient(_clientConfiguration);
+            var payoutsClient = new PayoutsClient(_apiClient);
             return (await payoutsClient.GetPageAsync(request)).Items.First();
         }
 

@@ -1,5 +1,6 @@
 ﻿using GoCardless.Api.BankDetailsLookups;
 using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.CreditorBankAccounts;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
@@ -26,6 +27,7 @@ namespace GoCardless.Api
         public GoCardlessClient(ClientConfiguration configuration)
         {
             _configuration = configuration;
+            var apiClient = new ApiClient(_configuration);
 
             BankDetailsLookups = new BankDetailsLookupsClient(configuration);
             CreditorBankAccounts = new CreditorBankAccountsClient(configuration);
@@ -40,7 +42,7 @@ namespace GoCardless.Api
             Mandates = new MandatesClient(configuration);
             Payments = new PaymentsClient(configuration);
             PayoutItems = new PayoutItemsClient(configuration);
-            Payouts = new PayoutsClient(configuration);
+            Payouts = new PayoutsClient(apiClient);
             RedirectFlows = new RedirectFlowsClient(configuration);
             Refunds = new RefundsClient(configuration);
             Subscriptions = new SubscriptionsClient(configuration);

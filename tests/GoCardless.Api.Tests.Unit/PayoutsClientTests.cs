@@ -1,5 +1,6 @@
 ﻿using Flurl.Http.Testing;
 using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.Payouts;
 using NUnit.Framework;
 using System;
@@ -10,13 +11,13 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class PayoutsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IApiClient _apiClient;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
             _httpTest = new HttpTest();
         }
 
@@ -30,7 +31,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetPayoutsEndpoint()
         {
             // given
-            var subject = new PayoutsClient(_clientConfiguration);
+            var subject = new PayoutsClient(_apiClient);
 
             // when
             await subject.GetPageAsync();
@@ -45,7 +46,7 @@ namespace GoCardless.Api.Tests.Unit
         public void GetPayoutsRequestIsNullThrows()
         {
             // given
-            var subject = new PayoutsClient(_clientConfiguration);
+            var subject = new PayoutsClient(_apiClient);
 
             GetPayoutsRequest request = null;
 
@@ -61,7 +62,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetPayoutsEndpointUsingRequest()
         {
             // given
-            var subject = new PayoutsClient(_clientConfiguration);
+            var subject = new PayoutsClient(_apiClient);
 
             var request = new GetPayoutsRequest
             {
@@ -85,7 +86,7 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new PayoutsClient(_clientConfiguration);
+            var subject = new PayoutsClient(_apiClient);
 
             // when
             AsyncTestDelegate test = () => subject.ForIdAsync(id);
@@ -100,7 +101,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualPayoutsEndpoint()
         {
             // given
-            var subject = new PayoutsClient(_clientConfiguration);
+            var subject = new PayoutsClient(_apiClient);
             var id = "PO12345678";
 
             // when
