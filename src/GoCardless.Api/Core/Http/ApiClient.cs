@@ -76,6 +76,37 @@ namespace GoCardless.Api.Core.Http
             return PostAsync<TResponse>(relativeEndpoint, null, null, null);
         }
 
+        public async Task<TResponse> PostAsync<TResponse>(
+            string relativeEndpoint,
+            object envelope, 
+            Action<IFlurlRequest> configure)
+        {
+            var request = BaseRequest();
+            configure(request);
+
+            try
+            {
+                return await request
+                    .PostJsonAsync(envelope ?? new { })
+                    .ReceiveJson<TResponse>();
+            }
+            catch (FlurlHttpException ex)
+            {
+                var apiException = await ex.CreateApiExceptionAsync();
+                if (apiException.Code == (int)HttpStatusCode.Conflict)
+                {
+                    var conflictingResourceId = ConflictingResourceIdFrom(apiException.Errors);
+                    if (!string.IsNullOrWhiteSpace(conflictingResourceId))
+                    {
+                        var endpoint = $"{relativeEndpoint}/{conflictingResourceId}";
+                        return await GetAsync<TResponse>(req => req.AppendPathSegment(endpoint));
+                    }
+                }
+
+                throw apiException;
+            }
+        }
+
         public Task<TResponse> PostAsync<TResponse>(
             string relativeEndpoint,
             object envelope,

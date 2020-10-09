@@ -11,6 +11,7 @@ namespace GoCardless.Api.Core.Http
         ClientConfiguration Configuration { get; }
 
         Task<TResponse> GetAsync<TResponse>(Action<IFlurlRequest> action);
+        Task<TResponse> PostAsync<TResponse>(string relativeEndpoint, object envelope, Action<IFlurlRequest> action);
         Task<TResponse> PostAsync<TResponse>(string relativeEndpoint);
         Task<TResponse> PostAsync<TResponse>(string relativeEndpoint, object envelope, IReadOnlyDictionary<string, string> customHeaders = null);
         Task<TResponse> PostAsync<TResponse>(string relativeEndpoint, object envelope, string idempotencyKey, IReadOnlyDictionary<string, string> customHeaders = null);

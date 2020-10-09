@@ -1,33 +1,38 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
+using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.MandatePdfs
 {
     public class MandatePdfsClient : ApiClient, IMandatePdfsClient
     {
-        public MandatePdfsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
 
-        public Task<Response<MandatePdf>> CreateAsync(CreateMandatePdfRequest request)
+        public MandatePdfsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
         {
-            if (request == null)
+            _apiClient = apiClient;
+        }
+
+        public async Task<Response<MandatePdf>> CreateAsync(CreateMandatePdfRequest options)
+        {
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            var customHeaders = new Dictionary<string, string>();
-            if (!string.IsNullOrWhiteSpace(request.Language))
-            {
-                customHeaders.Add("Accept-Language", request.Language);
-            }
-
-            return PostAsync<Response<MandatePdf>>(
+            return await _apiClient.PostAsync<Response<MandatePdf>>(
                 "mandate_pdfs",
-                new { mandate_pdfs = request },
-                customHeaders
-            );
+                new { mandate_pdfs = options },
+                request =>
+                {
+                    request.AppendPathSegment("mandate_pdfs");
+                    if (!string.IsNullOrWhiteSpace(options.Language))
+                    {
+                        request.WithHeader("Accept-Language", options.Language);
+                    }
+                });
         }
     }
 }

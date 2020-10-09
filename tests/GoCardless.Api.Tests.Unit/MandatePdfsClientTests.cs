@@ -1,5 +1,6 @@
 ﻿using Flurl.Http.Testing;
 using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.MandatePdfs;
 using NUnit.Framework;
 using System;
@@ -10,13 +11,13 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class MandatePdfsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IApiClient _apiClient;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
             _httpTest = new HttpTest();
         }
 
@@ -30,7 +31,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CreateMandatePdfRequestIsNullThrows()
         {
             // given
-            var subject = new MandatePdfsClient(_clientConfiguration);
+            var subject = new MandatePdfsClient(_apiClient, _apiClient.Configuration);
 
             CreateMandatePdfRequest request = null;
 
@@ -46,7 +47,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateMandatePdfEndpointWithoutAcceptsLanguageHeader()
         {
             // given
-            var subject = new MandatePdfsClient(_clientConfiguration);
+            var subject = new MandatePdfsClient(_apiClient, _apiClient.Configuration);
 
             var request = new CreateMandatePdfRequest
             {
@@ -70,7 +71,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateMandatePdfEndpointWithAcceptsLanguageHeader()
         {
             // given
-            var subject = new MandatePdfsClient(_clientConfiguration);
+            var subject = new MandatePdfsClient(_apiClient, _apiClient.Configuration);
 
             var request = new CreateMandatePdfRequest
             {

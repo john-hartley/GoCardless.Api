@@ -38,7 +38,7 @@ namespace GoCardless.Api
             Events = new EventsClient(apiClient, configuration);
             MandateImportEntries = new MandateImportEntriesClient(apiClient, configuration);
             MandateImports = new MandateImportsClient(apiClient, configuration);
-            MandatePdfs = new MandatePdfsClient(configuration);
+            MandatePdfs = new MandatePdfsClient(apiClient, configuration);
             Mandates = new MandatesClient(apiClient, configuration);
             Payments = new PaymentsClient(apiClient, configuration);
             PayoutItems = new PayoutItemsClient(apiClient, configuration);

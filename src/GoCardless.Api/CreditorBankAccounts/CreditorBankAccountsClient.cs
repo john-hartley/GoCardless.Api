@@ -20,17 +20,17 @@ namespace GoCardless.Api.CreditorBankAccounts
             return new Pager<GetCreditorBankAccountsRequest, CreditorBankAccount>(GetPageAsync);
         }
 
-        public Task<Response<CreditorBankAccount>> CreateAsync(CreateCreditorBankAccountRequest request)
+        public Task<Response<CreditorBankAccount>> CreateAsync(CreateCreditorBankAccountRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
             return PostAsync<Response<CreditorBankAccount>>(
                 "creditor_bank_accounts",
-                new { creditor_bank_accounts = request },
-                request.IdempotencyKey
+                new { creditor_bank_accounts = options },
+                options.IdempotencyKey
             );
         }
 
