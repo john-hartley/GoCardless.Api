@@ -20,18 +20,22 @@ namespace GoCardless.Api.Refunds
             return new Pager<GetRefundsRequest, Refund>(GetPageAsync);
         }
 
-        public Task<Response<Refund>> CreateAsync(CreateRefundRequest request)
+        public async Task<Response<Refund>> CreateAsync(CreateRefundRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
-            
-            return PostAsync<Response<Refund>>(
+
+            return await _apiClient.PostAsync<Response<Refund>>(
                 "refunds",
-                new { refunds = request },
-                request.IdempotencyKey
-            );
+                new { refunds = options },
+                request =>
+                {
+                    request
+                        .AppendPathSegment("refunds")
+                        .WithHeader("Idempotency-Key", options.IdempotencyKey);
+                });
         }
 
         public async Task<Response<Refund>> ForIdAsync(string id)

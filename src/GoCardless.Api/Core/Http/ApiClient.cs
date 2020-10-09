@@ -101,7 +101,7 @@ namespace GoCardless.Api.Core.Http
             }
         }
 
-        public async Task<TResponse> PostAsync<TResponse>(
+        private async Task<TResponse> PostAsync<TResponse>(
             string relativeEndpoint,
             object envelope,
             string idempotencyKey,

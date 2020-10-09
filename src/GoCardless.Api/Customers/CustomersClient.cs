@@ -20,18 +20,22 @@ namespace GoCardless.Api.Customers
             return new Pager<GetCustomersRequest, Customer>(GetPageAsync);
         }
 
-        public Task<Response<Customer>> CreateAsync(CreateCustomerRequest request)
+        public async Task<Response<Customer>> CreateAsync(CreateCustomerRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return PostAsync<Response<Customer>>(
+            return await _apiClient.PostAsync<Response<Customer>>(
                 "customers",
-                new { customers = request },
-                request.IdempotencyKey
-            );
+                new { customers = options },
+                request =>
+                {
+                    request
+                        .AppendPathSegment("customers")
+                        .WithHeader("Idempotency-Key", options.IdempotencyKey);
+                });
         }
 
         public async Task<Response<Customer>> ForIdAsync(string id)

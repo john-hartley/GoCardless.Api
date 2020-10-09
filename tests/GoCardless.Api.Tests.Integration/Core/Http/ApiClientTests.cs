@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.Tests.Integration.Core.Http
 {
-    public class ApiClientBaseTests : IntegrationTest
+    public class ApiClientTests : IntegrationTest
     {
         private Creditor _creditor;
         private CustomerBankAccount _customerBankAccount;
