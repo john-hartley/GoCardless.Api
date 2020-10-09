@@ -101,48 +101,6 @@ namespace GoCardless.Api.Core.Http
             }
         }
 
-        private async Task<TResponse> PostAsync<TResponse>(
-            string relativeEndpoint,
-            object envelope,
-            string idempotencyKey,
-            IReadOnlyDictionary<string, string> customHeaders = null)
-        {
-            var request = BaseRequest();
-
-            if (!string.IsNullOrWhiteSpace(idempotencyKey))
-            {
-                request.WithHeader("Idempotency-Key", idempotencyKey);
-            }
-
-            if (customHeaders?.Count > 0)
-            {
-                request.WithHeaders(customHeaders);
-            }
-
-            try
-            {
-                return await request
-                    .AppendPathSegment(relativeEndpoint)
-                    .PostJsonAsync(envelope ?? new { })
-                    .ReceiveJson<TResponse>();
-            }
-            catch (FlurlHttpException ex)
-            {
-                var apiException = await ex.CreateApiExceptionAsync();
-                if (apiException.Code == (int)HttpStatusCode.Conflict)
-                {
-                    var conflictingResourceId = ConflictingResourceIdFrom(apiException.Errors);
-                    if (!string.IsNullOrWhiteSpace(conflictingResourceId))
-                    {
-                        var endpoint = $"{relativeEndpoint}/{conflictingResourceId}";
-                        return await GetAsync<TResponse>(req => req.AppendPathSegment(endpoint));
-                    }
-                }
-
-                throw apiException;
-            }
-        }
-
         private IFlurlRequest BaseRequest()
         {
             return Configuration.BaseUri
