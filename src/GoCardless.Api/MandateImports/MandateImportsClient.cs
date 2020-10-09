@@ -1,43 +1,49 @@
 ﻿using Flurl.Http;
-using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.MandateImports
 {
-    public class MandateImportsClient : ApiClient, IMandateImportsClient
+    public class MandateImportsClient : IMandateImportsClient
     {
         private readonly IApiClient _apiClient;
 
-        public MandateImportsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        public MandateImportsClient(IApiClient apiClient)
         {
             _apiClient = apiClient;
         }
 
-        public Task<Response<MandateImport>> CancelAsync(string id)
+        public async Task<Response<MandateImport>> CancelAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return PostAsync<Response<MandateImport>>(
-                $"mandate_imports/{id}/actions/cancel"
-            );
+            return await _apiClient.PostAsync<Response<MandateImport>>(
+                "mandate_imports",
+                null,
+                request =>
+                {
+                    request.AppendPathSegment($"mandate_imports/{id}/actions/cancel");
+                });
         }
 
-        public Task<Response<MandateImport>> CreateAsync(CreateMandateImportRequest request)
+        public async Task<Response<MandateImport>> CreateAsync(CreateMandateImportRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return PostAsync<Response<MandateImport>>(
+            return await _apiClient.PostAsync<Response<MandateImport>>(
                 "mandate_imports",
-                new { mandate_imports = request }
-            );
+                new { mandate_imports = options },
+                request =>
+                {
+                    request.AppendPathSegment("mandate_imports");
+                });
         }
 
         public async Task<Response<MandateImport>> ForIdAsync(string id)
@@ -53,16 +59,20 @@ namespace GoCardless.Api.MandateImports
             });
         }
 
-        public Task<Response<MandateImport>> SubmitAsync(string id)
+        public async Task<Response<MandateImport>> SubmitAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return PostAsync<Response<MandateImport>>(
-                $"mandate_imports/{id}/actions/submit"
-            );
+            return await _apiClient.PostAsync<Response<MandateImport>>(
+                "mandate_imports",
+                null,
+                request =>
+                {
+                    request.AppendPathSegment($"mandate_imports/{id}/actions/submit");
+                });
         }
     }
 }

@@ -6,44 +6,50 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.RedirectFlows
 {
-    public class RedirectFlowsClient : ApiClient, IRedirectFlowsClient
+    public class RedirectFlowsClient : IRedirectFlowsClient
     {
         private readonly IApiClient _apiClient;
 
-        public RedirectFlowsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        public RedirectFlowsClient(IApiClient apiClient)
         {
             _apiClient = apiClient;
         }
 
-        public Task<Response<RedirectFlow>> CompleteAsync(CompleteRedirectFlowRequest request)
+        public async Task<Response<RedirectFlow>> CompleteAsync(CompleteRedirectFlowRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PostAsync<Response<RedirectFlow>>(
-                $"redirect_flows/{request.Id}/actions/complete",
-                new { data = request }
-            );
+            return await _apiClient.PostAsync<Response<RedirectFlow>>(
+                "redirect_flows",
+                new { data = options },
+                request =>
+                {
+                    request.AppendPathSegment($"redirect_flows/{options.Id}/actions/complete");
+                });
         }
 
-        public Task<Response<RedirectFlow>> CreateAsync(CreateRedirectFlowRequest request)
+        public async Task<Response<RedirectFlow>> CreateAsync(CreateRedirectFlowRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return PostAsync<Response<RedirectFlow>>(
-                "redirect_flows", 
-                new { redirect_flows = request }
-            );
+            return await _apiClient.PostAsync<Response<RedirectFlow>>(
+                "redirect_flows",
+                new { redirect_flows = options },
+                request =>
+                {
+                    request.AppendPathSegment("redirect_flows");
+                });
         }
 
         public async Task<Response<RedirectFlow>> ForIdAsync(string id)

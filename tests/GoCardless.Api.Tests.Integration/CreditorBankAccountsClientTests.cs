@@ -39,7 +39,7 @@ namespace GoCardless.Api.Tests.Integration
                 SetAsDefaultPayoutAccount = true
             };
 
-            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CreditorBankAccountsClient(_apiClient);
 
             // when
             await subject.CreateAsync(createRequest);
@@ -86,7 +86,7 @@ namespace GoCardless.Api.Tests.Integration
                 }
             };
 
-            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CreditorBankAccountsClient(_apiClient);
 
             // when
             var creationResult = await subject.CreateAsync(createRequest);
@@ -129,7 +129,7 @@ namespace GoCardless.Api.Tests.Integration
                 }
             };
 
-            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CreditorBankAccountsClient(_apiClient);
 
             // when
             var creationResult = await subject.CreateAsync(createRequest);
@@ -159,7 +159,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsCreditorBankAccounts()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CreditorBankAccountsClient(_apiClient);
 
             // when
             var result = (await subject.GetPageAsync()).Items.ToList();
@@ -179,7 +179,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CreditorBankAccountsClient(_apiClient);
 
             var firstPageRequest = new GetCreditorBankAccountsRequest
             {
@@ -213,7 +213,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsIndividualCreditorBankAccount()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CreditorBankAccountsClient(_apiClient);
             var creditorBankAccount = (await subject.GetPageAsync()).Items.First();
 
             // when
@@ -236,7 +236,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task PagesThroughCreditorBankAccounts()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CreditorBankAccountsClient(_apiClient);
             var firstId = (await subject.GetPageAsync()).Items.First().Id;
 
             var initialRequest = new GetCreditorBankAccountsRequest

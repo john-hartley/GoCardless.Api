@@ -1,5 +1,6 @@
 ﻿using Flurl.Http.Testing;
 using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.CustomerNotifications;
 using NUnit.Framework;
 using System;
@@ -10,13 +11,13 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class CustomerNotificationsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IApiClient _apiClient;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
             _httpTest = new HttpTest();
         }
 
@@ -32,7 +33,7 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CustomerNotificationsClient(_clientConfiguration);
+            var subject = new CustomerNotificationsClient(_apiClient, _apiClient.Configuration);
 
             // when
             AsyncTestDelegate test = () => subject.HandleAsync(id);
@@ -46,7 +47,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsHandleCustomerNotificationsEndpoint()
         {
             // given
-            var subject = new CustomerNotificationsClient(_clientConfiguration);
+            var subject = new CustomerNotificationsClient(_apiClient, _apiClient.Configuration);
             var id = "PCN12345678";
 
             // when

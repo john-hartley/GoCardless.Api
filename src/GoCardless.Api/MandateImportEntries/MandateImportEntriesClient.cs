@@ -15,17 +15,20 @@ namespace GoCardless.Api.MandateImportEntries
             _apiClient = apiClient;
         }
 
-        public Task<Response<MandateImportEntry>> AddAsync(AddMandateImportEntryRequest request)
+        public async Task<Response<MandateImportEntry>> AddAsync(AddMandateImportEntryRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return PostAsync<Response<MandateImportEntry>>(
+            return await _apiClient.PostAsync<Response<MandateImportEntry>>(
                 "mandate_import_entries",
-                new { mandate_import_entries = request }
-            );
+                new { mandate_import_entries = options },
+                request =>
+                {
+                    request.AppendPathSegment("mandate_import_entries");
+                });
         }
 
         public IPagerBuilder<GetMandateImportEntriesRequest, MandateImportEntry> BuildPager()

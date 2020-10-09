@@ -33,14 +33,14 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
-            CancelMandateRequest request = null;
+            CancelMandateRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CancelAsync(request);
+            AsyncTestDelegate test = () => subject.CancelAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
@@ -90,14 +90,14 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
-            CreateMandateRequest request = null;
+            CreateMandateRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            AsyncTestDelegate test = () => subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
@@ -213,14 +213,14 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new MandatesClient(_apiClient, _apiClient.Configuration);
 
-            ReinstateMandateRequest request = null;
+            ReinstateMandateRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.ReinstateAsync(request);
+            AsyncTestDelegate test = () => subject.ReinstateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]

@@ -70,12 +70,6 @@ namespace GoCardless.Api.Core.Http
             }
         }
 
-        public Task<TResponse> PostAsync<TResponse>(
-            string relativeEndpoint)
-        {
-            return PostAsync<TResponse>(relativeEndpoint, null, null, null);
-        }
-
         public async Task<TResponse> PostAsync<TResponse>(
             string relativeEndpoint,
             object envelope, 
@@ -105,14 +99,6 @@ namespace GoCardless.Api.Core.Http
 
                 throw apiException;
             }
-        }
-
-        public Task<TResponse> PostAsync<TResponse>(
-            string relativeEndpoint,
-            object envelope,
-            IReadOnlyDictionary<string, string> customHeaders = null)
-        {
-            return PostAsync<TResponse>(relativeEndpoint, envelope, null, customHeaders);
         }
 
         public async Task<TResponse> PostAsync<TResponse>(

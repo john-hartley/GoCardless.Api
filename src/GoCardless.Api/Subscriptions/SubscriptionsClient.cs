@@ -20,36 +20,43 @@ namespace GoCardless.Api.Subscriptions
             return new Pager<GetSubscriptionsRequest, Subscription>(GetPageAsync);
         }
 
-        public Task<Response<Subscription>> CancelAsync(CancelSubscriptionRequest request)
+        public async Task<Response<Subscription>> CancelAsync(CancelSubscriptionRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PostAsync<Response<Subscription>>(
-                $"subscriptions/{request.Id}/actions/cancel",
-                new { subscriptions = request }
-            );
+            return await _apiClient.PostAsync<Response<Subscription>>(
+                "subscriptions",
+                new { subscriptions = options },
+                request =>
+                {
+                    request.AppendPathSegment($"subscriptions/{options.Id}/actions/cancel");
+                });
         }
 
-        public Task<Response<Subscription>> CreateAsync(CreateSubscriptionRequest request)
+        public async Task<Response<Subscription>> CreateAsync(CreateSubscriptionRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return PostAsync<Response<Subscription>>(
+            return await _apiClient.PostAsync<Response<Subscription>>(
                 "subscriptions",
-                new { subscriptions = request },
-                request.IdempotencyKey
-            );
+                new { subscriptions = options },
+                request =>
+                {
+                    request
+                        .AppendPathSegment("subscriptions")
+                        .WithHeader("Idempotency-Key", options.IdempotencyKey);
+                });
         }
 
         public async Task<Response<Subscription>> ForIdAsync(string id)

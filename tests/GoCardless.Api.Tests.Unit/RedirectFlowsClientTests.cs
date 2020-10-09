@@ -31,23 +31,23 @@ namespace GoCardless.Api.Tests.Unit
         public void CompleteRedirectFlowRequestIsNullThrows()
         {
             // given
-            var subject = new RedirectFlowsClient(_apiClient, _apiClient.Configuration);
+            var subject = new RedirectFlowsClient(_apiClient);
 
-            CompleteRedirectFlowRequest request = null;
+            CompleteRedirectFlowRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CompleteAsync(request);
+            AsyncTestDelegate test = () => subject.CompleteAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsCompleteRedirectFlowEndpointUsingRequest()
         {
             // given
-            var subject = new RedirectFlowsClient(_apiClient, _apiClient.Configuration);
+            var subject = new RedirectFlowsClient(_apiClient);
 
             var request = new CompleteRedirectFlowRequest
             {
@@ -68,23 +68,23 @@ namespace GoCardless.Api.Tests.Unit
         public void CreateRedirectFlowRequestIsNullThrows()
         {
             // given
-            var subject = new RedirectFlowsClient(_apiClient, _apiClient.Configuration);
+            var subject = new RedirectFlowsClient(_apiClient);
 
-            CreateRedirectFlowRequest request = null;
+            CreateRedirectFlowRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            AsyncTestDelegate test = () => subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsCreateRedirectFlowEndpoint()
         {
             // given
-            var subject = new RedirectFlowsClient(_apiClient, _apiClient.Configuration);
+            var subject = new RedirectFlowsClient(_apiClient);
 
             var request = new CreateRedirectFlowRequest();
 
@@ -103,7 +103,7 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new RedirectFlowsClient(_apiClient, _apiClient.Configuration);
+            var subject = new RedirectFlowsClient(_apiClient);
 
             // when
             AsyncTestDelegate test = () => subject.ForIdAsync(id);
@@ -118,7 +118,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualRedirectFlowsEndpoint()
         {
             // given
-            var subject = new RedirectFlowsClient(_apiClient, _apiClient.Configuration);
+            var subject = new RedirectFlowsClient(_apiClient);
             var id = "RE12345678";
 
             // when

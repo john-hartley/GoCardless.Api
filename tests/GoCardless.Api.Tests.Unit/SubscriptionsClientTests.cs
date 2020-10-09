@@ -33,14 +33,14 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
 
-            CancelSubscriptionRequest request = null;
+            CancelSubscriptionRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CancelAsync(request);
+            AsyncTestDelegate test = () => subject.CancelAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
@@ -90,14 +90,14 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
 
-            CreateSubscriptionRequest request = null;
+            CreateSubscriptionRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            AsyncTestDelegate test = () => subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]

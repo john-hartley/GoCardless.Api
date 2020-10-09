@@ -33,14 +33,14 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
 
-            CreateCustomerBankAccountRequest request = null;
+            CreateCustomerBankAccountRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            AsyncTestDelegate test = () => subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
@@ -103,14 +103,14 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
 
-            DisableCustomerBankAccountRequest request = null;
+            DisableCustomerBankAccountRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.DisableAsync(request);
+            AsyncTestDelegate test = () => subject.DisableAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]

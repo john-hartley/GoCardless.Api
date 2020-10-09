@@ -1,5 +1,6 @@
 ﻿using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Exceptions;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
 using GoCardless.Api.Customers;
@@ -134,7 +135,8 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
                 }
             };
 
-            var subject = new SubscriptionsClient(_apiClient, ClientConfiguration.ForSandbox("invalid token"));
+            var apiClient = new ApiClient(ClientConfiguration.ForSandbox("invalid token"));
+            var subject = new SubscriptionsClient(apiClient, apiClient.Configuration);
 
             // when
             AsyncTestDelegate test = () => subject.CreateAsync(request);

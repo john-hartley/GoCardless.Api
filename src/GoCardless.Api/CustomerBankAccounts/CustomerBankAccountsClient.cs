@@ -20,35 +20,43 @@ namespace GoCardless.Api.CustomerBankAccounts
             return new Pager<GetCustomerBankAccountsRequest, CustomerBankAccount>(GetPageAsync);
         }
 
-        public Task<Response<CustomerBankAccount>> CreateAsync(CreateCustomerBankAccountRequest request)
+        public async Task<Response<CustomerBankAccount>> CreateAsync(CreateCustomerBankAccountRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return PostAsync<Response<CustomerBankAccount>>(
+            return await _apiClient.PostAsync<Response<CustomerBankAccount>>(
                 "customer_bank_accounts",
-                new { customer_bank_accounts = request },
-                request.IdempotencyKey
-            );
+                new { customer_bank_accounts = options },
+                request =>
+                {
+                    request
+                        .AppendPathSegment("customer_bank_accounts")
+                        .WithHeader("Idempotency-Key", options.IdempotencyKey);
+                });
         }
 
-        public Task<Response<CustomerBankAccount>> DisableAsync(DisableCustomerBankAccountRequest request)
+        public async Task<Response<CustomerBankAccount>> DisableAsync(DisableCustomerBankAccountRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
             
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PostAsync<Response<CustomerBankAccount>>(
-                $"customer_bank_accounts/{request.Id}/actions/disable"
-            );
+            return await _apiClient.PostAsync<Response<CustomerBankAccount>>(
+                "customer_bank_accounts",
+                null,
+                request =>
+                {
+                    request.AppendPathSegment($"customer_bank_accounts/{options.Id}/actions/disable");
+                });
         }
 
         public async Task<Response<CustomerBankAccount>> ForIdAsync(string id)

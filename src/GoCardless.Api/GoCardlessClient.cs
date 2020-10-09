@@ -29,21 +29,21 @@ namespace GoCardless.Api
             _configuration = configuration;
             var apiClient = new ApiClient(_configuration);
 
-            BankDetailsLookups = new BankDetailsLookupsClient(configuration);
-            CreditorBankAccounts = new CreditorBankAccountsClient(apiClient, configuration);
+            BankDetailsLookups = new BankDetailsLookupsClient(apiClient, configuration);
+            CreditorBankAccounts = new CreditorBankAccountsClient(apiClient);
             Creditors = new CreditorsClient(apiClient, configuration);
             CustomerBankAccounts = new CustomerBankAccountsClient(apiClient, configuration);
-            CustomerNotifications = new CustomerNotificationsClient(configuration);
+            CustomerNotifications = new CustomerNotificationsClient(apiClient, configuration);
             Customers = new CustomersClient(apiClient, configuration);
             Events = new EventsClient(apiClient, configuration);
             MandateImportEntries = new MandateImportEntriesClient(apiClient, configuration);
-            MandateImports = new MandateImportsClient(apiClient, configuration);
+            MandateImports = new MandateImportsClient(apiClient);
             MandatePdfs = new MandatePdfsClient(apiClient, configuration);
             Mandates = new MandatesClient(apiClient, configuration);
             Payments = new PaymentsClient(apiClient, configuration);
             PayoutItems = new PayoutItemsClient(apiClient, configuration);
             Payouts = new PayoutsClient(apiClient);
-            RedirectFlows = new RedirectFlowsClient(apiClient, configuration);
+            RedirectFlows = new RedirectFlowsClient(apiClient);
             Refunds = new RefundsClient(apiClient, configuration);
             Subscriptions = new SubscriptionsClient(apiClient, configuration);
         }

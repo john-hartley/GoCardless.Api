@@ -100,7 +100,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 Scheme = "bacs",
             };
 
-            var mandateImportsClient = new MandateImportsClient(_apiClient, _clientConfiguration);
+            var mandateImportsClient = new MandateImportsClient(_apiClient);
             return (await mandateImportsClient.CreateAsync(request)).Item;
         }
 
@@ -210,7 +210,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             // when
-            var redirectFlowsClient = new RedirectFlowsClient(_apiClient, _clientConfiguration);
+            var redirectFlowsClient = new RedirectFlowsClient(_apiClient);
             return (await redirectFlowsClient.CreateAsync(request)).Item;
         }
 

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.CreditorBankAccounts
 {
-    public class CreditorBankAccountsClient : ApiClient, ICreditorBankAccountsClient
+    public class CreditorBankAccountsClient : ICreditorBankAccountsClient
     {
         private readonly IApiClient _apiClient;
 
-        public CreditorBankAccountsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        public CreditorBankAccountsClient(IApiClient apiClient)
         {
             _apiClient = apiClient;
         }
@@ -20,35 +20,43 @@ namespace GoCardless.Api.CreditorBankAccounts
             return new Pager<GetCreditorBankAccountsRequest, CreditorBankAccount>(GetPageAsync);
         }
 
-        public Task<Response<CreditorBankAccount>> CreateAsync(CreateCreditorBankAccountRequest options)
+        public async Task<Response<CreditorBankAccount>> CreateAsync(CreateCreditorBankAccountRequest options)
         {
             if (options == null)
             {
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return PostAsync<Response<CreditorBankAccount>>(
+            return await _apiClient.PostAsync<Response<CreditorBankAccount>>(
                 "creditor_bank_accounts",
                 new { creditor_bank_accounts = options },
-                options.IdempotencyKey
-            );
+                request =>
+                {
+                    request
+                        .AppendPathSegment("creditor_bank_accounts")
+                        .WithHeader("Idempotency-Key", options.IdempotencyKey);
+                });
         }
 
-        public Task<Response<CreditorBankAccount>> DisableAsync(DisableCreditorBankAccountRequest request)
+        public async Task<Response<CreditorBankAccount>> DisableAsync(DisableCreditorBankAccountRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PostAsync<Response<CreditorBankAccount>>(
-                $"creditor_bank_accounts/{request.Id}/actions/disable"
-            );
+            return await _apiClient.PostAsync<Response<CreditorBankAccount>>(
+                "creditor_bank_accounts",
+                new { creditor_bank_accounts = options },
+                request =>
+                {
+                    request.AppendPathSegment($"creditor_bank_accounts/{options.Id}/actions/disable");
+                });
         }
 
         public async Task<Response<CreditorBankAccount>> ForIdAsync(string id)

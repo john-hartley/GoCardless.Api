@@ -20,36 +20,43 @@ namespace GoCardless.Api.Payments
             return new Pager<GetPaymentsRequest, Payment>(GetPageAsync);
         }
 
-        public Task<Response<Payment>> CancelAsync(CancelPaymentRequest request)
+        public async Task<Response<Payment>> CancelAsync(CancelPaymentRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PostAsync<Response<Payment>>(
-                $"payments/{request.Id}/actions/cancel",
-                new { payments = request }
-            );
+            return await _apiClient.PostAsync<Response<Payment>>(
+                "payments",
+                new { payments = options },
+                request =>
+                {
+                    request.AppendPathSegment($"payments/{options.Id}/actions/cancel");
+                });
         }
 
-        public Task<Response<Payment>> CreateAsync(CreatePaymentRequest request)
+        public async Task<Response<Payment>> CreateAsync(CreatePaymentRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return PostAsync<Response<Payment>>(
+            return await _apiClient.PostAsync<Response<Payment>>(
                 "payments",
-                new { payments = request },
-                request.IdempotencyKey
-            );
+                new { payments = options },
+                request =>
+                {
+                    request
+                        .AppendPathSegment("payments")
+                        .WithHeader("Idempotency-Key", options.IdempotencyKey);
+                });
         }
 
         public async Task<Response<Payment>> ForIdAsync(string id)
@@ -88,22 +95,25 @@ namespace GoCardless.Api.Payments
             });
         }
 
-        public Task<Response<Payment>> RetryAsync(RetryPaymentRequest request)
+        public async Task<Response<Payment>> RetryAsync(RetryPaymentRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PostAsync<Response<Payment>>(
-                $"payments/{request.Id}/actions/retry",
-                new { payments = request }
-            );
+            return await _apiClient.PostAsync<Response<Payment>>(
+                "payments",
+                new { payments = options },
+                request =>
+                {
+                    request.AppendPathSegment($"payments/{options.Id}/actions/retry");
+                });
         }
 
         public Task<Response<Payment>> UpdateAsync(UpdatePaymentRequest request)

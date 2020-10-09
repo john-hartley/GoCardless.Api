@@ -33,14 +33,14 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new MandatePdfsClient(_apiClient, _apiClient.Configuration);
 
-            CreateMandatePdfRequest request = null;
+            CreateMandatePdfRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            AsyncTestDelegate test = () => subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
