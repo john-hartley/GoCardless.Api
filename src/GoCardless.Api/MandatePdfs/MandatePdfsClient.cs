@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.MandatePdfs
 {
-    public class MandatePdfsClient : ApiClientBase, IMandatePdfsClient
+    public class MandatePdfsClient : ApiClient, IMandatePdfsClient
     {
         public MandatePdfsClient(ClientConfiguration configuration) : base(configuration) { }
 

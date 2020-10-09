@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.Payments
 {
-    public class PaymentsClient : ApiClientBase, IPaymentsClient
+    public class PaymentsClient : ApiClient, IPaymentsClient
     {
         public PaymentsClient(ClientConfiguration configuration) : base(configuration) { }
 

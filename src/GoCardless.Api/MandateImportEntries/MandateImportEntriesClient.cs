@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.MandateImportEntries
 {
-    public class MandateImportEntriesClient : ApiClientBase, IMandateImportEntriesClient
+    public class MandateImportEntriesClient : ApiClient, IMandateImportEntriesClient
     {
         public MandateImportEntriesClient(ClientConfiguration configuration) : base(configuration) { }
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.BankDetailsLookups
 {
-    public class BankDetailsLookupsClient : ApiClientBase, IBankDetailsLookupsClient
+    public class BankDetailsLookupsClient : ApiClient, IBankDetailsLookupsClient
     {
         public BankDetailsLookupsClient(ClientConfiguration configuration) : base(configuration) { }
 

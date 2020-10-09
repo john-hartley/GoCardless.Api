@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.Subscriptions
 {
-    public class SubscriptionsClient : ApiClientBase, ISubscriptionsClient
+    public class SubscriptionsClient : ApiClient, ISubscriptionsClient
     {
         public SubscriptionsClient(ClientConfiguration configuration) : base(configuration) { }
 

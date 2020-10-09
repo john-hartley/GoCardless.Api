@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.CustomerNotifications
 {
-    public class CustomerNotificationsClient : ApiClientBase, ICustomerNotificationsClient
+    public class CustomerNotificationsClient : ApiClient, ICustomerNotificationsClient
     {
         public CustomerNotificationsClient(ClientConfiguration configuration) : base(configuration) { }
 

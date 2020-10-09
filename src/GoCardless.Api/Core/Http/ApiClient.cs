@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.Core.Http
 {
-    public abstract class ApiClientBase
+    public class ApiClient : IApiClient
     {
         private readonly ClientConfiguration _configuration;
         private readonly NewtonsoftJsonSerializer _newtonsoftJsonSerializer;
 
-        internal ApiClientBase(ClientConfiguration configuration)
+        public ApiClient(ClientConfiguration configuration)
         {
             _configuration = configuration;
 
@@ -34,7 +34,7 @@ namespace GoCardless.Api.Core.Http
             _newtonsoftJsonSerializer = new NewtonsoftJsonSerializer(jsonSerializerSettings);
         }
 
-        internal async Task<TResponse> GetAsync<TResponse>(
+        public async Task<TResponse> GetAsync<TResponse>(
             string relativeEndpoint,
             IReadOnlyDictionary<string, object> queryParams = null)
         {
@@ -52,7 +52,7 @@ namespace GoCardless.Api.Core.Http
             }
         }
 
-        internal async Task<TResponse> PutAsync<TResponse>(
+        public async Task<TResponse> PutAsync<TResponse>(
             string relativeEndpoint,
             object envelope)
         {
@@ -69,13 +69,13 @@ namespace GoCardless.Api.Core.Http
             }
         }
 
-        internal Task<TResponse> PostAsync<TResponse>(
+        public Task<TResponse> PostAsync<TResponse>(
             string relativeEndpoint)
         {
             return PostAsync<TResponse>(relativeEndpoint, null, null, null);
         }
 
-        internal Task<TResponse> PostAsync<TResponse>(
+        public Task<TResponse> PostAsync<TResponse>(
             string relativeEndpoint,
             object envelope,
             IReadOnlyDictionary<string, string> customHeaders = null)
@@ -83,7 +83,7 @@ namespace GoCardless.Api.Core.Http
             return PostAsync<TResponse>(relativeEndpoint, envelope, null, customHeaders);
         }
 
-        internal async Task<TResponse> PostAsync<TResponse>(
+        public async Task<TResponse> PostAsync<TResponse>(
             string relativeEndpoint,
             object envelope,
             string idempotencyKey,

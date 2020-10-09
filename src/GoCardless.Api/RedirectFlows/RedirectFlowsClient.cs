@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.RedirectFlows
 {
-    public class RedirectFlowsClient : ApiClientBase, IRedirectFlowsClient
+    public class RedirectFlowsClient : ApiClient, IRedirectFlowsClient
     {
         public RedirectFlowsClient(ClientConfiguration configuration) : base(configuration) { }
 

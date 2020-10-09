@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.CreditorBankAccounts
 {
-    public class CreditorBankAccountsClient : ApiClientBase, ICreditorBankAccountsClient
+    public class CreditorBankAccountsClient : ApiClient, ICreditorBankAccountsClient
     {
         public CreditorBankAccountsClient(ClientConfiguration configuration) : base(configuration) { }
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.Events
 {
-    public class EventsClient : ApiClientBase, IEventsClient
+    public class EventsClient : ApiClient, IEventsClient
     {
         public EventsClient(ClientConfiguration configuration) : base(configuration) { }
 
