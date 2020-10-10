@@ -101,6 +101,11 @@ namespace GoCardless.Api.CustomerBankAccounts
             });
         }
 
+        public IPager<GetCustomerBankAccountsOptions, CustomerBankAccount> PageFrom(GetCustomerBankAccountsOptions options)
+        {
+            return new Pager<GetCustomerBankAccountsOptions, CustomerBankAccount>(GetPageAsync, options);
+        }
+
         public async Task<Response<CustomerBankAccount>> UpdateAsync(UpdateCustomerBankAccountOptions options)
         {
             if (options == null)
