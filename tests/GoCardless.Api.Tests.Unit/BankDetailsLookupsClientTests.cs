@@ -28,6 +28,20 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
+        public void ApiClientConfigurationIsNullThrows()
+        {
+            // given
+            ApiClientConfiguration apiClientConfiguration = null;
+
+            // when
+            TestDelegate test = () => new BankDetailsLookupsClient(apiClientConfiguration);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClientConfiguration)));
+        }
+
+        [Test]
         public void BankDetailsLookupOptionsIsNullThrows()
         {
             // given
