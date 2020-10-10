@@ -11,13 +11,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class MandatePdfsClientTests
     {
-        private IApiClient _apiClient;
+        private IMandatePdfsClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            var apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            _subject = new MandatePdfsClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -28,15 +29,13 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void CreateMandatePdfRequestIsNullThrows()
+        public void CreateMandatePdfOptionsIsNullThrows()
         {
             // given
-            var subject = new MandatePdfsClient(_apiClient);
-
-            CreateMandatePdfRequest options = null;
+            CreateMandatePdfOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(options);
+            AsyncTestDelegate test = () => _subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -47,9 +46,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateMandatePdfEndpointWithoutAcceptsLanguageHeader()
         {
             // given
-            var subject = new MandatePdfsClient(_apiClient);
-
-            var request = new CreateMandatePdfRequest
+            var options = new CreateMandatePdfOptions
             {
                 Links = new MandatePdfLinks
                 {
@@ -58,7 +55,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.CreateAsync(request);
+            await _subject.CreateAsync(options);
 
             // then
             _httpTest
@@ -71,9 +68,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateMandatePdfEndpointWithAcceptsLanguageHeader()
         {
             // given
-            var subject = new MandatePdfsClient(_apiClient);
-
-            var request = new CreateMandatePdfRequest
+            var options = new CreateMandatePdfOptions
             {
                 Language = "en",
                 Links = new MandatePdfLinks
@@ -83,12 +78,12 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.CreateAsync(request);
+            await _subject.CreateAsync(options);
 
             // then
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/mandate_pdfs")
-                .WithHeader("Accept-Language", request.Language)
+                .WithHeader("Accept-Language", options.Language)
                 .WithVerb(HttpMethod.Post);
         }
     }

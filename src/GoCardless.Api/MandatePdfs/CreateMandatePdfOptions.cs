@@ -4,7 +4,7 @@ using System;
 
 namespace GoCardless.Api.MandatePdfs
 {
-    public class CreateMandatePdfRequest
+    public class CreateMandatePdfOptions
     {
         public string AccountHolderName { get; set; }
         public string AccountNumber { get; set; }

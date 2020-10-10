@@ -14,7 +14,7 @@ namespace GoCardless.Api.MandatePdfs
             _apiClient = apiClient;
         }
 
-        public async Task<Response<MandatePdf>> CreateAsync(CreateMandatePdfRequest options)
+        public async Task<Response<MandatePdf>> CreateAsync(CreateMandatePdfOptions options)
         {
             if (options == null)
             {
