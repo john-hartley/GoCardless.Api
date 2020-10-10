@@ -1,4 +1,3 @@
-using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using GoCardless.Api.Mandates;
 using GoCardless.Api.Subscriptions;
@@ -135,8 +134,8 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
-            var configuration = ClientConfiguration.ForSandbox(accessToken);
-            var apiClient = new ApiClient(configuration);
+            var apiClientConfiguration= ApiClientConfiguration.ForSandbox(accessToken);
+            var apiClient = new ApiClient(apiClientConfiguration);
             var mandatesClient = new MandatesClient(apiClient);
             var mandate = (await mandatesClient.GetPageAsync()).Items.First();
 
@@ -338,10 +337,10 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
-            var configuration = ClientConfiguration.ForSandbox(accessToken);
-            var resourceFactory = new ResourceFactory(new ApiClient(configuration));
+            var apiClientConfiguration = ApiClientConfiguration.ForSandbox(accessToken);
+            var resourceFactory = new ResourceFactory(new ApiClient(apiClientConfiguration));
 
-            var apiClient = new ApiClient(configuration);
+            var apiClient = new ApiClient(apiClientConfiguration);
             var mandatesClient = new MandatesClient(apiClient);
             var mandate = (await mandatesClient.GetPageAsync()).Items.First();
             var subscription = await resourceFactory.CreateSubscriptionFor(mandate, paymentReference: null);

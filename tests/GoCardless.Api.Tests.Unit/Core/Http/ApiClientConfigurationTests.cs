@@ -1,14 +1,14 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using GoCardless.Api.Core.Http;
 using NUnit.Framework;
 using System;
 
-namespace GoCardless.Api.Tests.Unit.Core.Configuration
+namespace GoCardless.Api.Tests.Unit.Core.Http
 {
-    public class ClientConfigurationTests
+    public class ApiClientConfigurationTests
     {
         private readonly string _accessToken;
 
-        public ClientConfigurationTests()
+        public ApiClientConfigurationTests()
         {
             _accessToken = "accesstoken";
         }
@@ -20,7 +20,7 @@ namespace GoCardless.Api.Tests.Unit.Core.Configuration
         {
             // given
             // when
-            TestDelegate test = () => ClientConfiguration.ForLive(accessToken);
+            TestDelegate test = () => ApiClientConfiguration.ForLive(accessToken);
 
             // then
             var ex = Assert.Throws<ArgumentException>(test);
@@ -31,7 +31,7 @@ namespace GoCardless.Api.Tests.Unit.Core.Configuration
         public void BaseUriIsLiveUriWhenUsingLiveConfiguration()
         {
             // given
-            var subject = ClientConfiguration.ForLive(_accessToken);
+            var subject = ApiClientConfiguration.ForLive(_accessToken);
 
             // when
             var result = subject.BaseUri;
@@ -47,7 +47,7 @@ namespace GoCardless.Api.Tests.Unit.Core.Configuration
         {
             // given
             // when
-            TestDelegate test = () => ClientConfiguration.ForSandbox(accessToken);
+            TestDelegate test = () => ApiClientConfiguration.ForSandbox(accessToken);
 
             // then
             var ex = Assert.Throws<ArgumentException>(test);
@@ -58,7 +58,7 @@ namespace GoCardless.Api.Tests.Unit.Core.Configuration
         public void BaseUriIsSandboxUriWhenUsingSandboxConfiguration()
         {
             // given
-            var subject = ClientConfiguration.ForSandbox(_accessToken);
+            var subject = ApiClientConfiguration.ForSandbox(_accessToken);
 
             // when
             var result = subject.BaseUri;

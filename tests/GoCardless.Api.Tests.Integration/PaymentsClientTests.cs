@@ -1,5 +1,4 @@
-﻿using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Http;
+﻿using GoCardless.Api.Core.Http;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.Mandates;
 using GoCardless.Api.Payments;
@@ -91,8 +90,8 @@ namespace GoCardless.Api.Tests.Integration
         public async Task CreatesAndCancelsPaymentForMerchant()
         {
             var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
-            var configuration = ClientConfiguration.ForSandbox(accessToken);
-            var apiClient = new ApiClient(configuration);
+            var apiClientConfiguration= ApiClientConfiguration.ForSandbox(accessToken);
+            var apiClient = new ApiClient(apiClientConfiguration);
             var resourceFactory = new ResourceFactory(apiClient);
 
             var creditor = await resourceFactory.Creditor();

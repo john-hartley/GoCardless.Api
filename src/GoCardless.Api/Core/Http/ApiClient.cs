@@ -1,7 +1,6 @@
 ﻿using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
-using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -16,9 +15,9 @@ namespace GoCardless.Api.Core.Http
     public class ApiClient : IApiClient
     {
         private readonly NewtonsoftJsonSerializer _newtonsoftJsonSerializer;
-        private readonly ClientConfiguration _configuration;
+        private readonly ApiClientConfiguration _apiClientConfiguration;
 
-        public ApiClient(ClientConfiguration configuration)
+        public ApiClient(ApiClientConfiguration apiClientConfiguration)
         {
             var jsonSerializerSettings = new JsonSerializerSettings
             {
@@ -31,7 +30,7 @@ namespace GoCardless.Api.Core.Http
             };
 
             _newtonsoftJsonSerializer = new NewtonsoftJsonSerializer(jsonSerializerSettings);
-            _configuration = configuration;
+            _apiClientConfiguration = apiClientConfiguration;
         }
 
         public async Task<TResponse> GetAsync<TResponse>(Action<IFlurlRequest> configure)
@@ -107,8 +106,8 @@ namespace GoCardless.Api.Core.Http
 
         private IFlurlRequest BaseRequest()
         {
-            return _configuration.BaseUri
-                .WithHeaders(_configuration.Headers)
+            return _apiClientConfiguration.BaseUri
+                .WithHeaders(_apiClientConfiguration.Headers)
                 .ConfigureRequest(x => x.JsonSerializer = _newtonsoftJsonSerializer);
         }
 

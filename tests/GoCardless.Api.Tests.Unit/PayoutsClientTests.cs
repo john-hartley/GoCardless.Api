@@ -1,5 +1,4 @@
 ﻿using Flurl.Http.Testing;
-using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using GoCardless.Api.Payouts;
 using NUnit.Framework;
@@ -17,7 +16,7 @@ namespace GoCardless.Api.Tests.Unit
         [SetUp]
         public void Setup()
         {
-            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            _apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken"));
             _httpTest = new HttpTest();
         }
 

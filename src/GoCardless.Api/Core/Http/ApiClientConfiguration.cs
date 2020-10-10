@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Core.Configuration
+namespace GoCardless.Api.Core.Http
 {
-    public class ClientConfiguration
+    public class ApiClientConfiguration
     {
-        public static ClientConfiguration ForLive(string accessToken)
+        public static ApiClientConfiguration ForLive(string accessToken)
         {
-            return new ClientConfiguration(true, accessToken);
+            return new ApiClientConfiguration(true, accessToken);
         }
 
-        public static ClientConfiguration ForSandbox(string accessToken)
+        public static ApiClientConfiguration ForSandbox(string accessToken)
         {
-            return new ClientConfiguration(false, accessToken);
+            return new ApiClientConfiguration(false, accessToken);
         }
 
-        private ClientConfiguration(bool live, string accessToken)
+        private ApiClientConfiguration(bool live, string accessToken)
         {
             if (string.IsNullOrWhiteSpace(accessToken))
             {
@@ -34,7 +34,7 @@ namespace GoCardless.Api.Core.Configuration
                 ["GoCardless-Version"] = "2015-07-06",
             };
         }
-        
+
         public string BaseUri { get; }
         public string AccessToken { get; }
         public IDictionary<string, string> Headers { get; }

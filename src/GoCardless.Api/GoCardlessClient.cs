@@ -1,5 +1,4 @@
 ﻿using GoCardless.Api.BankDetailsLookups;
-using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using GoCardless.Api.CreditorBankAccounts;
 using GoCardless.Api.Creditors;
@@ -22,12 +21,12 @@ namespace GoCardless.Api
 {
     public class GoCardlessClient
     {
-        private readonly ClientConfiguration _configuration;
+        private readonly ApiClientConfiguration _apiClientConfiguration;
 
-        public GoCardlessClient(ClientConfiguration configuration)
+        public GoCardlessClient(ApiClientConfiguration apiClientConfiguration)
         {
-            _configuration = configuration;
-            var apiClient = new ApiClient(_configuration);
+            _apiClientConfiguration = apiClientConfiguration;
+            var apiClient = new ApiClient(_apiClientConfiguration);
 
             BankDetailsLookups = new BankDetailsLookupsClient(apiClient);
             CreditorBankAccounts = new CreditorBankAccountsClient(apiClient);

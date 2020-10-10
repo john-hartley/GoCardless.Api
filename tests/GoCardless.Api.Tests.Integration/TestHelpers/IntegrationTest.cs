@@ -1,5 +1,4 @@
-﻿using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Http;
+﻿using GoCardless.Api.Core.Http;
 
 namespace GoCardless.Api.Tests.Integration.TestHelpers
 {
@@ -12,8 +11,8 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
         internal IntegrationTest()
         {
             _accessToken = System.Environment.GetEnvironmentVariable("GoCardlessAccessToken");
-            var configuration = ClientConfiguration.ForSandbox(_accessToken);
-            _apiClient = new ApiClient(configuration);
+            var apiClientConfiguration= ApiClientConfiguration.ForSandbox(_accessToken);
+            _apiClient = new ApiClient(apiClientConfiguration);
             _resourceFactory = new ResourceFactory(_apiClient);
         }
     }
