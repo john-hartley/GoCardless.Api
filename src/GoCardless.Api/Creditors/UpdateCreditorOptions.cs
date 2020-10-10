@@ -2,7 +2,7 @@
 
 namespace GoCardless.Api.Creditors
 {
-    public class UpdateCreditorRequest
+    public class UpdateCreditorOptions
     {
         [JsonIgnore]
         public string Id { get; set; }

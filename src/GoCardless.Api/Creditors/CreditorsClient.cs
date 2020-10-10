@@ -14,9 +14,9 @@ namespace GoCardless.Api.Creditors
             _apiClient = apiClient;
         }
 
-        public IPagerBuilder<GetCreditorsRequest, Creditor> BuildPager()
+        public IPagerBuilder<GetCreditorsOptions, Creditor> BuildPager()
         {
-            return new Pager<GetCreditorsRequest, Creditor>(GetPageAsync);
+            return new Pager<GetCreditorsOptions, Creditor>(GetPageAsync);
         }
 
         public async Task<Response<Creditor>> ForIdAsync(string id)
@@ -40,7 +40,7 @@ namespace GoCardless.Api.Creditors
             });
         }
 
-        public async Task<PagedResponse<Creditor>> GetPageAsync(GetCreditorsRequest options)
+        public async Task<PagedResponse<Creditor>> GetPageAsync(GetCreditorsOptions options)
         {
             if (options == null)
             {
@@ -55,7 +55,7 @@ namespace GoCardless.Api.Creditors
             });
         }
 
-        public async Task<Response<Creditor>> UpdateAsync(UpdateCreditorRequest options)
+        public async Task<Response<Creditor>> UpdateAsync(UpdateCreditorOptions options)
         {
             if (options == null)
             {

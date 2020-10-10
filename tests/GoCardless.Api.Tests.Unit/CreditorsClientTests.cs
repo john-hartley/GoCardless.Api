@@ -11,13 +11,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class CreditorsClientTests
     {
-        private IApiClient _apiClient;
+        private ICreditorsClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            var apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            _subject = new CreditorsClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -33,10 +34,8 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CreditorsClient(_apiClient);
-
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(id);
+            AsyncTestDelegate test = () => _subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -48,11 +47,10 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualCreditorsEndpoint()
         {
             // given
-            var subject = new CreditorsClient(_apiClient);
             var id = "CR12345678";
 
             // when
-            await subject.ForIdAsync(id);
+            await _subject.ForIdAsync(id);
 
             // then
             _httpTest
@@ -64,10 +62,8 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetCreditorsEndpoint()
         {
             // given
-            var subject = new CreditorsClient(_apiClient);
-
             // when
-            await subject.GetPageAsync();
+            await _subject.GetPageAsync();
 
             // then
             _httpTest
@@ -76,15 +72,13 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void GetCreditorsRequestIsNullThrows()
+        public void GetCreditorsOptionsIsNullThrows()
         {
             // given
-            var subject = new CreditorsClient(_apiClient);
-
-            GetCreditorsRequest options = null;
+            GetCreditorsOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(options);
+            AsyncTestDelegate test = () => _subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -92,12 +86,10 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public async Task CallsGetCreditorsEndpointUsingRequest()
+        public async Task CallsGetCreditorsEndpointUsingOptions()
         {
             // given
-            var subject = new CreditorsClient(_apiClient);
-
-            var request = new GetCreditorsRequest
+            var options = new GetCreditorsOptions
             {
                 Before = "before test",
                 After = "after test",
@@ -105,7 +97,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.GetPageAsync(request);
+            await _subject.GetPageAsync(options);
 
             // then
             _httpTest
@@ -114,15 +106,13 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void UpdateCreditorRequestIsNullThrows()
+        public void UpdateCreditorOptionsIsNullThrows()
         {
             // given
-            var subject = new CreditorsClient(_apiClient);
-
-            UpdateCreditorRequest options = null;
+            UpdateCreditorOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(options);
+            AsyncTestDelegate test = () => _subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -132,18 +122,16 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateCreditorRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void UpdateCreditorOptionsIdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CreditorsClient(_apiClient);
-
-            var options = new UpdateCreditorRequest
+            var options = new UpdateCreditorOptions
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(options);
+            AsyncTestDelegate test = () => _subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -154,15 +142,13 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsUpdateCreditorEndpoint()
         {
             // given
-            var subject = new CreditorsClient(_apiClient);
-
-            var request = new UpdateCreditorRequest
+            var options = new UpdateCreditorOptions
             {
                 Id = "CR12345678"
             };
 
             // when
-            await subject.UpdateAsync(request);
+            await _subject.UpdateAsync(options);
 
             // then
             _httpTest
