@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.Subscriptions
 {
-    public interface ISubscriptionsClient
+    public interface ISubscriptionsClient : IPageable<GetSubscriptionsOptions, Subscription>
     {
-        IPagerBuilder<GetSubscriptionsOptions, Subscription> BuildPager();
         Task<Response<Subscription>> CancelAsync(CancelSubscriptionOptions options);
         Task<Response<Subscription>> CreateAsync(CreateSubscriptionOptions options);
         Task<Response<Subscription>> ForIdAsync(string id);

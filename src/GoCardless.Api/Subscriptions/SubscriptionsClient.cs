@@ -24,11 +24,6 @@ namespace GoCardless.Api.Subscriptions
             _apiClient = new ApiClient(apiClientConfiguration);
         }
 
-        public IPagerBuilder<GetSubscriptionsOptions, Subscription> BuildPager()
-        {
-            return new Pager<GetSubscriptionsOptions, Subscription>(GetPageAsync);
-        }
-
         public async Task<Response<Subscription>> CancelAsync(CancelSubscriptionOptions options)
         {
             if (options == null)
@@ -100,6 +95,11 @@ namespace GoCardless.Api.Subscriptions
                     .AppendPathSegment("subscriptions")
                     .SetQueryParams(options.ToReadOnlyDictionary());
             });
+        }
+
+        public IPager<GetSubscriptionsOptions, Subscription> PageFrom(GetSubscriptionsOptions options)
+        {
+            return new Pager<GetSubscriptionsOptions, Subscription>(GetPageAsync, options);
         }
 
         public async Task<Response<Subscription>> UpdateAsync(UpdateSubscriptionOptions options)
