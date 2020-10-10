@@ -10,14 +10,21 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class MandateImportEntriesClientTests : IntegrationTest
     {
+        private IMandateImportEntriesClient _subject;
+
+        [SetUp]
+        public void Setup()
+        {
+            _subject = new MandateImportEntriesClient(_apiClient);
+        }
+
         [Test]
         public async Task CreatesMandateImportEntries()
         {
             // given
-            var subject = new MandateImportEntriesClient(_apiClient);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
-            var request = new AddMandateImportEntryOptions
+            var options = new AddMandateImportEntryOptions
             {
                 BankAccount = new BankAccount
                 {
@@ -52,7 +59,7 @@ namespace GoCardless.Api.Tests.Integration
             };
 
             // when
-            var result = await subject.AddAsync(request);
+            var result = await _subject.AddAsync(options);
             var actual = result.Item;
 
             // then
@@ -67,20 +74,19 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsAllLinksAfterMandateImportHasBeenSubmitted()
         {
             // given
-            var subject = new MandateImportEntriesClient(_apiClient);
             var mandateImport = await _resourceFactory.CreateMandateImport();
             var mandateImportEntry = await _resourceFactory.CreateMandateImportEntryFor(mandateImport, "first-record");
 
             var mandateImportsClient = new MandateImportsClient(_apiClient);
             await mandateImportsClient.SubmitAsync(mandateImport.Id);
 
-            var request = new GetMandateImportEntriesOptions
+            var options = new GetMandateImportEntriesOptions
             {
                 MandateImport = mandateImport.Id
             };
 
             // when
-            var result = (await subject.GetPageAsync(request)).Items.ToList();
+            var result = (await _subject.GetPageAsync(options)).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -95,7 +101,6 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsAllMandateImportEntries()
         {
             // given
-            var subject = new MandateImportEntriesClient(_apiClient);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             var firstRecordId = "first-record";
@@ -104,13 +109,13 @@ namespace GoCardless.Api.Tests.Integration
             var secondRecordId = "second-record";
             var secondEntry = await _resourceFactory.CreateMandateImportEntryFor(mandateImport, secondRecordId);
 
-            var request = new GetMandateImportEntriesOptions
+            var options = new GetMandateImportEntriesOptions
             {
                 MandateImport = mandateImport.Id
             };
 
             // when
-            var result = (await subject.GetPageAsync(request)).Items.ToList();
+            var result = (await _subject.GetPageAsync(options)).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -135,7 +140,6 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new MandateImportEntriesClient(_apiClient);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             var firstRecordId = "first-record";
@@ -144,32 +148,32 @@ namespace GoCardless.Api.Tests.Integration
             var secondRecordId = "second-record";
             await _resourceFactory.CreateMandateImportEntryFor(mandateImport, secondRecordId);
 
-            var firstPageRequest = new GetMandateImportEntriesOptions
+            var firstPageOptions = new GetMandateImportEntriesOptions
             {
                 Limit = 1,
                 MandateImport = mandateImport.Id
             };
 
             // when
-            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
+            var firstPageResult = await _subject.GetPageAsync(firstPageOptions);
 
-            var secondPageRequest = new GetMandateImportEntriesOptions
+            var secondPageOptions = new GetMandateImportEntriesOptions
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 1,
                 MandateImport = mandateImport.Id
             };
 
-            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
+            var secondPageResult = await _subject.GetPageAsync(secondPageOptions);
 
             // then
-            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
-            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
+            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageOptions.Limit));
+            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageOptions.Limit));
             Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
             Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
 
-            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageRequest.Limit));
-            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
+            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageOptions.Limit));
+            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageOptions.Limit));
             Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
             Assert.That(secondPageResult.Meta.Cursors.After, Is.Null);
         }
@@ -178,7 +182,6 @@ namespace GoCardless.Api.Tests.Integration
         public async Task PagesThroughMandateImportEntries()
         {
             // given
-            var subject = new MandateImportEntriesClient(_apiClient);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             var firstRecordId = "first-record";
@@ -187,16 +190,16 @@ namespace GoCardless.Api.Tests.Integration
             var secondRecordId = "second-record";
             await _resourceFactory.CreateMandateImportEntryFor(mandateImport, secondRecordId);
 
-            var initialRequest = new GetMandateImportEntriesOptions
+            var initialOptions = new GetMandateImportEntriesOptions
             {
                 Limit = 1,
                 MandateImport = mandateImport.Id
             };
 
             // when
-            var result = await subject
+            var result = await _subject
                 .BuildPager()
-                .StartFrom(initialRequest)
+                .StartFrom(initialOptions)
                 .AndGetAllAfterAsync();
 
             // then
