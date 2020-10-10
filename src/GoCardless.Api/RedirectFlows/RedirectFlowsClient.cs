@@ -14,7 +14,7 @@ namespace GoCardless.Api.RedirectFlows
             _apiClient = apiClient;
         }
 
-        public async Task<Response<RedirectFlow>> CompleteAsync(CompleteRedirectFlowRequest options)
+        public async Task<Response<RedirectFlow>> CompleteAsync(CompleteRedirectFlowOptions options)
         {
             if (options == null)
             {
@@ -34,7 +34,7 @@ namespace GoCardless.Api.RedirectFlows
                 new { data = options });
         }
 
-        public async Task<Response<RedirectFlow>> CreateAsync(CreateRedirectFlowRequest options)
+        public async Task<Response<RedirectFlow>> CreateAsync(CreateRedirectFlowOptions options)
         {
             if (options == null)
             {

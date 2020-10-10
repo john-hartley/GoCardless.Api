@@ -1,6 +1,6 @@
 ﻿namespace GoCardless.Api.RedirectFlows
 {
-    public class CreateRedirectFlowRequest
+    public class CreateRedirectFlowOptions
     {
         public string Description { get; set; }
         public CreateRedirectFlowLinks Links { get; set; }

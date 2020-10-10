@@ -2,7 +2,7 @@
 
 namespace GoCardless.Api.RedirectFlows
 {
-    public class CompleteRedirectFlowRequest
+    public class CompleteRedirectFlowOptions
     {
         [JsonIgnore]
         public string Id { get; set; }

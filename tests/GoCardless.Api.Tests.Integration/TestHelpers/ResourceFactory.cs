@@ -176,7 +176,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 
         internal async Task<RedirectFlow> CreateRedirectFlowFor(Creditor creditor)
         {
-            var request = new CreateRedirectFlowRequest
+            var request = new CreateRedirectFlowOptions
             {
                 Description = "First redirect flow",
                 Links = new CreateRedirectFlowLinks
