@@ -24,11 +24,6 @@ namespace GoCardless.Api.Mandates
             _apiClient = new ApiClient(apiClientConfiguration);
         }
 
-        public IPagerBuilder<GetMandatesOptions, Mandate> BuildPager()
-        {
-            return new Pager<GetMandatesOptions, Mandate>(GetPageAsync);
-        }
-
         public async Task<Response<Mandate>> CancelAsync(CancelMandateOptions options)
         {
             if (options == null)
@@ -100,6 +95,11 @@ namespace GoCardless.Api.Mandates
                     .AppendPathSegment("mandates")
                     .SetQueryParams(options.ToReadOnlyDictionary());
             });
+        }
+
+        public IPager<GetMandatesOptions, Mandate> PageFrom(GetMandatesOptions options)
+        {
+            return new Pager<GetMandatesOptions, Mandate>(GetPageAsync, options);
         }
 
         public async Task<Response<Mandate>> ReinstateAsync(ReinstateMandateOptions options)

@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.Mandates
 {
-    public interface IMandatesClient
+    public interface IMandatesClient : IPageable<GetMandatesOptions, Mandate>
     {
-        IPagerBuilder<GetMandatesOptions, Mandate> BuildPager();
         Task<Response<Mandate>> CancelAsync(CancelMandateOptions options);
         Task<Response<Mandate>> CreateAsync(CreateMandateOptions options);
         Task<Response<Mandate>> ForIdAsync(string id);
