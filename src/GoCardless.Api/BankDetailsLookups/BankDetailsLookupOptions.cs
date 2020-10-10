@@ -1,6 +1,6 @@
 ﻿namespace GoCardless.Api.BankDetailsLookups
 {
-    public class BankDetailsLookupRequest
+    public class BankDetailsLookupOptions
     {
         public string AccountNumber { get; set; }
         public string BankCode { get; set; }

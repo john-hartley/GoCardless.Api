@@ -13,7 +13,7 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var subject = new BankDetailsLookupsClient(_apiClient);
 
-            var request = new BankDetailsLookupRequest
+            var options = new BankDetailsLookupOptions
             {
                 AccountNumber = "55779911",
                 BranchCode = "200000",
@@ -21,7 +21,7 @@ namespace GoCardless.Api.Tests.Integration
             };
 
             // when
-            var result = await subject.LookupAsync(request);
+            var result = await subject.LookupAsync(options);
 
             // then
             Assert.That(result.Item, Is.Not.Null);

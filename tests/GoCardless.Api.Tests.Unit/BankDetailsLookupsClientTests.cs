@@ -11,13 +11,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class BankDetailsLookupsClientTests
     {
-        private IApiClient _apiClient;
+        private IBankDetailsLookupsClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            var apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            _subject = new BankDetailsLookupsClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -31,12 +32,10 @@ namespace GoCardless.Api.Tests.Unit
         public void BankDetailsLookupRequestIsNullThrows()
         {
             // given
-            var subject = new BankDetailsLookupsClient(_apiClient);
-
-            BankDetailsLookupRequest options = null;
+            BankDetailsLookupOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.LookupAsync(options);
+            AsyncTestDelegate test = () => _subject.LookupAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -47,12 +46,10 @@ namespace GoCardless.Api.Tests.Unit
         public async Task BankDetailsLookupEndpoint()
         {
             // given
-            var subject = new BankDetailsLookupsClient(_apiClient);
-
-            var request = new BankDetailsLookupRequest();
+            var options = new BankDetailsLookupOptions();
 
             // when
-            await subject.LookupAsync(request);
+            await _subject.LookupAsync(options);
 
             // then
             _httpTest

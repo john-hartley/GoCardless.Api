@@ -14,7 +14,7 @@ namespace GoCardless.Api.BankDetailsLookups
             _apiClient = apiClient;
         }
 
-        public async Task<Response<BankDetailsLookup>> LookupAsync(BankDetailsLookupRequest options)
+        public async Task<Response<BankDetailsLookup>> LookupAsync(BankDetailsLookupOptions options)
         {
             if (options == null)
             {
