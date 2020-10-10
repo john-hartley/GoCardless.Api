@@ -14,12 +14,12 @@ namespace GoCardless.Api.Refunds
             _apiClient = apiClient;
         }
 
-        public IPagerBuilder<GetRefundsRequest, Refund> BuildPager()
+        public IPagerBuilder<GetRefundsOptions, Refund> BuildPager()
         {
-            return new Pager<GetRefundsRequest, Refund>(GetPageAsync);
+            return new Pager<GetRefundsOptions, Refund>(GetPageAsync);
         }
 
-        public async Task<Response<Refund>> CreateAsync(CreateRefundRequest options)
+        public async Task<Response<Refund>> CreateAsync(CreateRefundOptions options)
         {
             if (options == null)
             {
@@ -57,7 +57,7 @@ namespace GoCardless.Api.Refunds
             });
         }
 
-        public async Task<PagedResponse<Refund>> GetPageAsync(GetRefundsRequest options)
+        public async Task<PagedResponse<Refund>> GetPageAsync(GetRefundsOptions options)
         {
             if (options == null)
             {
@@ -72,7 +72,7 @@ namespace GoCardless.Api.Refunds
             });
         }
 
-        public async Task<Response<Refund>> UpdateAsync(UpdateRefundRequest options)
+        public async Task<Response<Refund>> UpdateAsync(UpdateRefundOptions options)
         {
             if (options == null)
             {

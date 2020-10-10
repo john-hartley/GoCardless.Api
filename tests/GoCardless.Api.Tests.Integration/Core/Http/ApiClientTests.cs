@@ -81,7 +81,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
             // given
             var payment = await _resourceFactory.CreatePaymentFor(_mandate);
 
-            var request = new CreateRefundRequest
+            var request = new CreateRefundOptions
             {
                 Amount = 100,
                 IdempotencyKey = Guid.NewGuid().ToString(),

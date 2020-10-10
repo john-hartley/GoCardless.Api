@@ -5,11 +5,11 @@ namespace GoCardless.Api.Refunds
 {
     public interface IRefundsClient
     {
-        IPagerBuilder<GetRefundsRequest, Refund> BuildPager();
-        Task<Response<Refund>> CreateAsync(CreateRefundRequest request);
+        IPagerBuilder<GetRefundsOptions, Refund> BuildPager();
+        Task<Response<Refund>> CreateAsync(CreateRefundOptions options);
         Task<Response<Refund>> ForIdAsync(string id);
         Task<PagedResponse<Refund>> GetPageAsync();
-        Task<PagedResponse<Refund>> GetPageAsync(GetRefundsRequest request);
-        Task<Response<Refund>> UpdateAsync(UpdateRefundRequest request);
+        Task<PagedResponse<Refund>> GetPageAsync(GetRefundsOptions options);
+        Task<Response<Refund>> UpdateAsync(UpdateRefundOptions options);
     }
 }

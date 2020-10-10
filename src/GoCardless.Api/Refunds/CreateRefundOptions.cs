@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.Refunds
 {
-    public class CreateRefundRequest
+    public class CreateRefundOptions
     {
-        public CreateRefundRequest()
+        public CreateRefundOptions()
         {
             IdempotencyKey = Guid.NewGuid().ToString();
         }

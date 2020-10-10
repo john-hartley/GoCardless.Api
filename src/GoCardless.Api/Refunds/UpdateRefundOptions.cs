@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.Refunds
 {
-    public class UpdateRefundRequest
+    public class UpdateRefundOptions
     {
         [JsonIgnore]
         public string Id { get; set; }
