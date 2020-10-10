@@ -28,7 +28,7 @@ namespace GoCardless.Api.MandateImports
                 });
         }
 
-        public async Task<Response<MandateImport>> CreateAsync(CreateMandateImportRequest options)
+        public async Task<Response<MandateImport>> CreateAsync(CreateMandateImportOptions options)
         {
             if (options == null)
             {

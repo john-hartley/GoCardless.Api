@@ -11,13 +11,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class MandateImportsClientTests
     {
-        private IApiClient _apiClient;
+        private IMandateImportsClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            var apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            _subject = new MandateImportsClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -33,10 +34,8 @@ namespace GoCardless.Api.Tests.Unit
         public void CancelIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new MandateImportsClient(_apiClient);
-
             // when
-            AsyncTestDelegate test = () => subject.CancelAsync(id);
+            AsyncTestDelegate test = () => _subject.CancelAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -47,11 +46,10 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCancelMandateImportEndpoint()
         {
             // given
-            var subject = new MandateImportsClient(_apiClient);
             var id = "IM12345678";
 
             // when
-            await subject.CancelAsync(id);
+            await _subject.CancelAsync(id);
 
             // then
             _httpTest
@@ -60,15 +58,13 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void CreateMandateImportRequestIsNullThrows()
+        public void CreateMandateImportOptionsIsNullThrows()
         {
             // given
-            var subject = new MandateImportsClient(_apiClient);
-
-            CreateMandateImportRequest options = null;
+            CreateMandateImportOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(options);
+            AsyncTestDelegate test = () => _subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -79,12 +75,10 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateMandateImportEndpoint()
         {
             // given
-            var subject = new MandateImportsClient(_apiClient);
-
-            var request = new CreateMandateImportRequest();
+            var options = new CreateMandateImportOptions();
 
             // when
-            await subject.CreateAsync(request);
+            await _subject.CreateAsync(options);
 
             // then
             _httpTest
@@ -98,10 +92,8 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new MandateImportsClient(_apiClient);
-
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(id);
+            AsyncTestDelegate test = () => _subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -112,11 +104,10 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualMandateImportEndpoint()
         {
             // given
-            var subject = new MandateImportsClient(_apiClient);
             var id = "IM12345678";
 
             // when
-            await subject.ForIdAsync(id);
+            await _subject.ForIdAsync(id);
 
             // then
             _httpTest
@@ -130,10 +121,8 @@ namespace GoCardless.Api.Tests.Unit
         public void SubmitIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new MandateImportsClient(_apiClient);
-
             // when
-            AsyncTestDelegate test = () => subject.SubmitAsync(id);
+            AsyncTestDelegate test = () => _subject.SubmitAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -144,11 +133,10 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsSubmitMandateImportEndpoint()
         {
             // given
-            var subject = new MandateImportsClient(_apiClient);
             var id = "IM12345678";
 
             // when
-            await subject.SubmitAsync(id);
+            await _subject.SubmitAsync(id);
 
             // then
             _httpTest

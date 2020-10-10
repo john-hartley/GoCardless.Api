@@ -1,6 +1,6 @@
 ﻿namespace GoCardless.Api.MandateImports
 {
-    public class CreateMandateImportRequest
+    public class CreateMandateImportOptions
     {
         /// <summary>
         /// See <see cref="Models.Scheme"/> for possible values.

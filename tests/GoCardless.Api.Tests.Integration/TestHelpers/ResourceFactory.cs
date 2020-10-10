@@ -91,7 +91,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 
         internal async Task<MandateImport> CreateMandateImport()
         {
-            var request = new CreateMandateImportRequest
+            var request = new CreateMandateImportOptions
             {
                 Scheme = "bacs",
             };

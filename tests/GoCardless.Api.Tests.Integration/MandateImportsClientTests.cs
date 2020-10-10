@@ -9,15 +9,22 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class MandateImportsClientTests : IntegrationTest
     {
+        private IMandateImportsClient _subject;
+
+        [SetUp]
+        public void Setup()
+        {
+            _subject = new MandateImportsClient(_apiClient);
+        }
+
         [Test]
         public async Task CancelsMandateImport()
         {
             // given
-            var subject = new MandateImportsClient(_apiClient);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             // when
-            var result = await subject.CancelAsync(mandateImport.Id);
+            var result = await _subject.CancelAsync(mandateImport.Id);
 
             // then
             Assert.That(result.Item, Is.Not.Null);
@@ -31,21 +38,19 @@ namespace GoCardless.Api.Tests.Integration
         public async Task CreatesMandateImport()
         {
             // given
-            var subject = new MandateImportsClient(_apiClient);
-
-            var request = new CreateMandateImportRequest
+            var options = new CreateMandateImportOptions
             {
                 Scheme = Scheme.Bacs,
             };
 
             // when
-            var result = await subject.CreateAsync(request);
+            var result = await _subject.CreateAsync(options);
 
             // then
             Assert.That(result.Item, Is.Not.Null);
             Assert.That(result.Item.Id, Is.Not.Null);
             Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result.Item.Scheme, Is.EqualTo(request.Scheme));
+            Assert.That(result.Item.Scheme, Is.EqualTo(options.Scheme));
             Assert.That(result.Item.Status, Is.Not.Null);
         }
 
@@ -53,11 +58,10 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsIndividualMandateImport()
         {
             // given
-            var subject = new MandateImportsClient(_apiClient);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             // when
-            var result = await subject.ForIdAsync(mandateImport.Id);
+            var result = await _subject.ForIdAsync(mandateImport.Id);
 
             // then
             Assert.That(result.Item, Is.Not.Null);
@@ -71,11 +75,10 @@ namespace GoCardless.Api.Tests.Integration
         public async Task SubmitsMandateImport()
         {
             // given
-            var subject = new MandateImportsClient(_apiClient);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             // when
-            var result = await subject.SubmitAsync(mandateImport.Id);
+            var result = await _subject.SubmitAsync(mandateImport.Id);
 
             // then
             Assert.That(result.Item, Is.Not.Null);
