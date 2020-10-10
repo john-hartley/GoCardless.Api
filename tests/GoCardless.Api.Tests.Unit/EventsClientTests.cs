@@ -27,6 +27,34 @@ namespace GoCardless.Api.Tests.Unit
             _httpTest.Dispose();
         }
 
+        [Test]
+        public void ApiClientIsNullThrows()
+        {
+            // given
+            IApiClient apiClient = null;
+
+            // when
+            TestDelegate test = () => new EventsClient(apiClient);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClient)));
+        }
+
+        [Test]
+        public void ApiClientConfigurationIsNullThrows()
+        {
+            // given
+            ApiClientConfiguration apiClientConfiguration = null;
+
+            // when
+            TestDelegate test = () => new EventsClient(apiClientConfiguration);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClientConfiguration)));
+        }
+
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
