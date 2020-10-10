@@ -6,18 +6,11 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.Core.Http
 {
-    public class Pager<TOptions, TResource> 
-        : IPagerBuilder<TOptions, TResource>, IPager<TOptions, TResource>
+    public class Pager<TOptions, TResource> : IPager<TOptions, TResource>
         where TOptions : IPageOptions, ICloneable
     {
         private readonly Func<TOptions, Task<PagedResponse<TResource>>> _source;
-
-        private TOptions _options;
-
-        public Pager(Func<TOptions, Task<PagedResponse<TResource>>> source)
-        {
-            _source = source ?? throw new ArgumentNullException(nameof(source));
-        }
+        private readonly TOptions _options;
 
         public Pager(Func<TOptions, Task<PagedResponse<TResource>>> source, TOptions options)
         {
@@ -31,24 +24,8 @@ namespace GoCardless.Api.Core.Http
             _options = (TOptions)options.Clone();
         }
 
-        public IPager<TOptions, TResource> StartFrom(TOptions options)
-        {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            _options = (TOptions)options.Clone();
-            return this;
-        }
-
         public async Task<IReadOnlyList<TResource>> AndGetAllBeforeAsync(CancellationToken cancellationToken = default)
         {
-            if (_options == null)
-            {
-                throw new InvalidOperationException($"{nameof(_options)} was null when attempting paging. You must call the {nameof(Pager<TOptions, TResource>.StartFrom)} method first.");
-            }
-
             var results = new List<TResource>();
             do
             {
@@ -65,11 +42,6 @@ namespace GoCardless.Api.Core.Http
 
         public async Task<IReadOnlyList<TResource>> AndGetAllAfterAsync(CancellationToken cancellationToken = default)
         {
-            if (_options == null)
-            {
-                throw new InvalidOperationException($"{nameof(_options)} was null when attempting paging. You must call the {nameof(Pager<TOptions, TResource>.StartFrom)} method first.");
-            }
-
             var results = new List<TResource>();
             do
             {

@@ -24,11 +24,6 @@ namespace GoCardless.Api.CustomerBankAccounts
             _apiClient = new ApiClient(apiClientConfiguration);
         }
 
-        public IPagerBuilder<GetCustomerBankAccountsOptions, CustomerBankAccount> BuildPager()
-        {
-            return new Pager<GetCustomerBankAccountsOptions, CustomerBankAccount>(GetPageAsync);
-        }
-
         public async Task<Response<CustomerBankAccount>> CreateAsync(CreateCustomerBankAccountOptions options)
         {
             if (options == null)
