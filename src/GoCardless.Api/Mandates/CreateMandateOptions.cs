@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.Mandates
 {
-    public class CreateMandateRequest
+    public class CreateMandateOptions
     {
-        public CreateMandateRequest()
+        public CreateMandateOptions()
         {
             IdempotencyKey = Guid.NewGuid().ToString();
         }

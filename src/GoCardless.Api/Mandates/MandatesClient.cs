@@ -14,12 +14,12 @@ namespace GoCardless.Api.Mandates
             _apiClient = apiClient;
         }
 
-        public IPagerBuilder<GetMandatesRequest, Mandate> BuildPager()
+        public IPagerBuilder<GetMandatesOptions, Mandate> BuildPager()
         {
-            return new Pager<GetMandatesRequest, Mandate>(GetPageAsync);
+            return new Pager<GetMandatesOptions, Mandate>(GetPageAsync);
         }
 
-        public async Task<Response<Mandate>> CancelAsync(CancelMandateRequest options)
+        public async Task<Response<Mandate>> CancelAsync(CancelMandateOptions options)
         {
             if (options == null)
             {
@@ -39,7 +39,7 @@ namespace GoCardless.Api.Mandates
                 new { mandates = options });
         }
 
-        public async Task<Response<Mandate>> CreateAsync(CreateMandateRequest options)
+        public async Task<Response<Mandate>> CreateAsync(CreateMandateOptions options)
         {
             if (options == null)
             {
@@ -77,7 +77,7 @@ namespace GoCardless.Api.Mandates
             });
         }
 
-        public async Task<PagedResponse<Mandate>> GetPageAsync(GetMandatesRequest options)
+        public async Task<PagedResponse<Mandate>> GetPageAsync(GetMandatesOptions options)
         {
             if (options == null)
             {
@@ -92,7 +92,7 @@ namespace GoCardless.Api.Mandates
             });
         }
 
-        public async Task<Response<Mandate>> ReinstateAsync(ReinstateMandateRequest options)
+        public async Task<Response<Mandate>> ReinstateAsync(ReinstateMandateOptions options)
         {
             if (options == null)
             {
@@ -112,7 +112,7 @@ namespace GoCardless.Api.Mandates
                 new { mandates = options });
         }
 
-        public async Task<Response<Mandate>> UpdateAsync(UpdateMandateRequest options)
+        public async Task<Response<Mandate>> UpdateAsync(UpdateMandateOptions options)
         {
             if (options == null)
             {

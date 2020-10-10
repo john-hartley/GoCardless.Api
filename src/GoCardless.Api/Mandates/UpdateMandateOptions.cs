@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.Mandates
 {
-    public class ReinstateMandateRequest
+    public class UpdateMandateOptions
     {
         [JsonIgnore]
         public string Id { get; set; }

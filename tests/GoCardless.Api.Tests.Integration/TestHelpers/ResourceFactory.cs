@@ -69,7 +69,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             Creditor creditor,
             CustomerBankAccount customerBankAccount)
         {
-            var request = new CreateMandateRequest
+            var request = new CreateMandateOptions
             {
                 Links = new CreateMandateLinks
                 {

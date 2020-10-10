@@ -3,7 +3,7 @@ using System;
 
 namespace GoCardless.Api.Mandates
 {
-    public class GetMandatesRequest : IPageRequest, ICloneable
+    public class GetMandatesOptions : IPageRequest, ICloneable
     {
         public object Clone()
         {
