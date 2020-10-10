@@ -11,7 +11,17 @@ namespace GoCardless.Api.MandatePdfs
 
         public MandatePdfsClient(IApiClient apiClient)
         {
-            _apiClient = apiClient;
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
+        }
+
+        public MandatePdfsClient(ApiClientConfiguration apiClientConfiguration)
+        {
+            if (apiClientConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(apiClientConfiguration));
+            }
+
+            _apiClient = new ApiClient(apiClientConfiguration);
         }
 
         public async Task<Response<MandatePdf>> CreateAsync(CreateMandatePdfOptions options)
