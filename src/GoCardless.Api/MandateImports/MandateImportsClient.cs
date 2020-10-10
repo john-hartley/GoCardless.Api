@@ -23,7 +23,6 @@ namespace GoCardless.Api.MandateImports
 
             return await _apiClient.PostAsync<Response<MandateImport>>(
                 "mandate_imports",
-                null,
                 request =>
                 {
                     request.AppendPathSegment($"mandate_imports/{id}/actions/cancel");
@@ -39,11 +38,11 @@ namespace GoCardless.Api.MandateImports
 
             return await _apiClient.PostAsync<Response<MandateImport>>(
                 "mandate_imports",
-                new { mandate_imports = options },
                 request =>
                 {
                     request.AppendPathSegment("mandate_imports");
-                });
+                },
+                new { mandate_imports = options });
         }
 
         public async Task<Response<MandateImport>> ForIdAsync(string id)
@@ -68,7 +67,6 @@ namespace GoCardless.Api.MandateImports
 
             return await _apiClient.PostAsync<Response<MandateImport>>(
                 "mandate_imports",
-                null,
                 request =>
                 {
                     request.AppendPathSegment($"mandate_imports/{id}/actions/submit");

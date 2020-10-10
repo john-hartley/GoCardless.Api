@@ -28,11 +28,11 @@ namespace GoCardless.Api.RedirectFlows
 
             return await _apiClient.PostAsync<Response<RedirectFlow>>(
                 "redirect_flows",
-                new { data = options },
                 request =>
                 {
                     request.AppendPathSegment($"redirect_flows/{options.Id}/actions/complete");
-                });
+                },
+                new { data = options });
         }
 
         public async Task<Response<RedirectFlow>> CreateAsync(CreateRedirectFlowRequest options)
@@ -44,11 +44,11 @@ namespace GoCardless.Api.RedirectFlows
 
             return await _apiClient.PostAsync<Response<RedirectFlow>>(
                 "redirect_flows",
-                new { redirect_flows = options },
                 request =>
                 {
                     request.AppendPathSegment("redirect_flows");
-                });
+                },
+                new { redirect_flows = options });
         }
 
         public async Task<Response<RedirectFlow>> ForIdAsync(string id)

@@ -23,7 +23,6 @@ namespace GoCardless.Api.MandatePdfs
 
             return await _apiClient.PostAsync<Response<MandatePdf>>(
                 "mandate_pdfs",
-                new { mandate_pdfs = options },
                 request =>
                 {
                     request.AppendPathSegment("mandate_pdfs");
@@ -31,7 +30,8 @@ namespace GoCardless.Api.MandatePdfs
                     {
                         request.WithHeader("Accept-Language", options.Language);
                     }
-                });
+                },
+                new { mandate_pdfs = options });
         }
     }
 }

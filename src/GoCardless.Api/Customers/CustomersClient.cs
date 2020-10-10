@@ -28,13 +28,13 @@ namespace GoCardless.Api.Customers
 
             return await _apiClient.PostAsync<Response<Customer>>(
                 "customers",
-                new { customers = options },
                 request =>
                 {
                     request
                         .AppendPathSegment("customers")
                         .WithHeader("Idempotency-Key", options.IdempotencyKey);
-                });
+                },
+                new { customers = options });
         }
 
         public async Task<Response<Customer>> ForIdAsync(string id)

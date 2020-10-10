@@ -71,9 +71,10 @@ namespace GoCardless.Api.Core.Http
         }
 
         public async Task<TResponse> PostAsync<TResponse>(
+            // Todo: Check if I can use Uri in place of this.
             string relativeEndpoint,
-            object envelope, 
-            Action<IFlurlRequest> configure)
+            Action<IFlurlRequest> configure,
+            object envelope = null)
         {
             var request = BaseRequest();
             configure(request);

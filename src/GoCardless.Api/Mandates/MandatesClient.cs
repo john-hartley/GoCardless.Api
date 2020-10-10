@@ -33,11 +33,11 @@ namespace GoCardless.Api.Mandates
 
             return await _apiClient.PostAsync<Response<Mandate>>(
                 "mandates",
-                new { mandates = options },
                 request =>
                 {
                     request.AppendPathSegment($"mandates/{options.Id}/actions/cancel");
-                });
+                },
+                new { mandates = options });
         }
 
         public async Task<Response<Mandate>> CreateAsync(CreateMandateRequest options)
@@ -49,13 +49,13 @@ namespace GoCardless.Api.Mandates
 
             return await _apiClient.PostAsync<Response<Mandate>>(
                 "mandates",
-                new { mandates = options },
                 request =>
                 {
                     request
                         .AppendPathSegment("mandates")
                         .WithHeader("Idempotency-Key", options.IdempotencyKey);
-                });
+                },
+                new { mandates = options });
         }
 
         public async Task<Response<Mandate>> ForIdAsync(string id)
@@ -108,11 +108,11 @@ namespace GoCardless.Api.Mandates
 
             return await _apiClient.PostAsync<Response<Mandate>>(
                 "mandates",
-                new { mandates = options },
                 request =>
                 {
                     request.AppendPathSegment($"mandates/{options.Id}/actions/reinstate");
-                });
+                },
+                new { mandates = options });
         }
 
         public async Task<Response<Mandate>> UpdateAsync(UpdateMandateRequest options)

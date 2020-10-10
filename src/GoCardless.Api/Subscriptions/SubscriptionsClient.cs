@@ -33,11 +33,11 @@ namespace GoCardless.Api.Subscriptions
 
             return await _apiClient.PostAsync<Response<Subscription>>(
                 "subscriptions",
-                new { subscriptions = options },
                 request =>
                 {
                     request.AppendPathSegment($"subscriptions/{options.Id}/actions/cancel");
-                });
+                },
+                new { subscriptions = options });
         }
 
         public async Task<Response<Subscription>> CreateAsync(CreateSubscriptionRequest options)
@@ -49,13 +49,13 @@ namespace GoCardless.Api.Subscriptions
 
             return await _apiClient.PostAsync<Response<Subscription>>(
                 "subscriptions",
-                new { subscriptions = options },
                 request =>
                 {
                     request
                         .AppendPathSegment("subscriptions")
                         .WithHeader("Idempotency-Key", options.IdempotencyKey);
-                });
+                },
+                new { subscriptions = options });
         }
 
         public async Task<Response<Subscription>> ForIdAsync(string id)

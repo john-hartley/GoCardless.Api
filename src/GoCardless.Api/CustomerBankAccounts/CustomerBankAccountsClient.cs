@@ -28,13 +28,13 @@ namespace GoCardless.Api.CustomerBankAccounts
 
             return await _apiClient.PostAsync<Response<CustomerBankAccount>>(
                 "customer_bank_accounts",
-                new { customer_bank_accounts = options },
                 request =>
                 {
                     request
                         .AppendPathSegment("customer_bank_accounts")
                         .WithHeader("Idempotency-Key", options.IdempotencyKey);
-                });
+                },
+                new { customer_bank_accounts = options });
         }
 
         public async Task<Response<CustomerBankAccount>> DisableAsync(DisableCustomerBankAccountRequest options)
@@ -51,7 +51,6 @@ namespace GoCardless.Api.CustomerBankAccounts
 
             return await _apiClient.PostAsync<Response<CustomerBankAccount>>(
                 "customer_bank_accounts",
-                null,
                 request =>
                 {
                     request.AppendPathSegment($"customer_bank_accounts/{options.Id}/actions/disable");

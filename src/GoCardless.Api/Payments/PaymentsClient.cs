@@ -33,11 +33,11 @@ namespace GoCardless.Api.Payments
 
             return await _apiClient.PostAsync<Response<Payment>>(
                 "payments",
-                new { payments = options },
                 request =>
                 {
                     request.AppendPathSegment($"payments/{options.Id}/actions/cancel");
-                });
+                },
+                new { payments = options });
         }
 
         public async Task<Response<Payment>> CreateAsync(CreatePaymentRequest options)
@@ -49,13 +49,13 @@ namespace GoCardless.Api.Payments
 
             return await _apiClient.PostAsync<Response<Payment>>(
                 "payments",
-                new { payments = options },
                 request =>
                 {
                     request
                         .AppendPathSegment("payments")
                         .WithHeader("Idempotency-Key", options.IdempotencyKey);
-                });
+                },
+                new { payments = options });
         }
 
         public async Task<Response<Payment>> ForIdAsync(string id)
@@ -108,11 +108,11 @@ namespace GoCardless.Api.Payments
 
             return await _apiClient.PostAsync<Response<Payment>>(
                 "payments",
-                new { payments = options },
                 request =>
                 {
                     request.AppendPathSegment($"payments/{options.Id}/actions/retry");
-                });
+                },
+                new { payments = options });
         }
 
         public async Task<Response<Payment>> UpdateAsync(UpdatePaymentRequest options)
