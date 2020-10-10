@@ -16,7 +16,7 @@ namespace GoCardless.Api.Tests.Integration
             var creditor = await _resourceFactory.Creditor();
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
-            var mandate = await _resourceFactory.CreateMandateFor(creditor, customer, customerBankAccount);
+            var mandate = await _resourceFactory.CreateMandateFor(creditor, customerBankAccount);
             var subject = new MandatePdfsClient(_apiClient);
 
             var request = new CreateMandatePdfRequest
@@ -44,7 +44,7 @@ namespace GoCardless.Api.Tests.Integration
             var creditor = await _resourceFactory.Creditor();
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
-            var mandate = await _resourceFactory.CreateMandateFor(creditor, customer, customerBankAccount);
+            var mandate = await _resourceFactory.CreateMandateFor(creditor, customerBankAccount);
             var subject = new MandatePdfsClient(_apiClient);
 
             var request = new CreateMandatePdfRequest

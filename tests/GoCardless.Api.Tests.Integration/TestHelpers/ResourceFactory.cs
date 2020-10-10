@@ -68,7 +68,6 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 
         internal async Task<Mandate> CreateMandateFor(
             Creditor creditor,
-            Customer customer,
             CustomerBankAccount customerBankAccount)
         {
             var request = new CreateMandateRequest

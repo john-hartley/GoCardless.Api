@@ -51,25 +51,6 @@ namespace GoCardless.Api.Core.Http
             }
         }
 
-        public async Task<TResponse> PutAsync<TResponse>(
-            Action<IFlurlRequest> configure,
-            object envelope)
-        {
-            var request = BaseRequest();
-            configure(request);
-
-            try
-            {
-                return await request
-                    .PutJsonAsync(envelope)
-                    .ReceiveJson<TResponse>();
-            }
-            catch (FlurlHttpException ex)
-            {
-                throw await ex.CreateApiExceptionAsync();
-            }
-        }
-
         public async Task<TResponse> PostAsync<TResponse>(
             // Todo: Check if I can use Uri in place of this.
             string relativeEndpoint,
@@ -99,6 +80,25 @@ namespace GoCardless.Api.Core.Http
                 }
 
                 throw apiException;
+            }
+        }
+
+        public async Task<TResponse> PutAsync<TResponse>(
+            Action<IFlurlRequest> configure,
+            object envelope)
+        {
+            var request = BaseRequest();
+            configure(request);
+
+            try
+            {
+                return await request
+                    .PutJsonAsync(envelope)
+                    .ReceiveJson<TResponse>();
+            }
+            catch (FlurlHttpException ex)
+            {
+                throw await ex.CreateApiExceptionAsync();
             }
         }
 
