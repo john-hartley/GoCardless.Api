@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.Events
 {
-    public interface IEventsClient
+    public interface IEventsClient : IPageable<GetEventsOptions, Event>
     {
-        IPagerBuilder<GetEventsOptions, Event> BuildPager();
         Task<Response<Event>> ForIdAsync(string id);
         Task<PagedResponse<Event>> GetPageAsync();
         Task<PagedResponse<Event>> GetPageAsync(GetEventsOptions options);

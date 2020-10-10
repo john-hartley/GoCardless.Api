@@ -196,7 +196,7 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var firstId = (await _subject.GetPageAsync()).Items.First().Id;
 
-            var initialOptions = new GetCustomerBankAccountsOptions
+            var options = new GetCustomerBankAccountsOptions
             {
                 After = firstId,
                 CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1)),
@@ -205,8 +205,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await _subject
-                .BuildPager()
-                .StartFrom(initialOptions)
+                .PageFrom(options)
                 .AndGetAllAfterAsync();
 
             // then

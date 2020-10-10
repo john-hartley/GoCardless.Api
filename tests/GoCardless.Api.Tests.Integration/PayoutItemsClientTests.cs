@@ -77,15 +77,14 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsPagesIncludingAndAfterInitialOptions()
         {
             // given
-            var initialOptions = new GetPayoutItemsOptions
+            var options = new GetPayoutItemsOptions
             {
                 Payout = _payout.Id
             };
 
             // when
             var result = await _subject
-                .BuildPager()
-                .StartFrom(initialOptions)
+                .PageFrom(options)
                 .AndGetAllAfterAsync();
 
             // then

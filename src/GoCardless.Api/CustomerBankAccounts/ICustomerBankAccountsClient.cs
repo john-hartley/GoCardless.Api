@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.CustomerBankAccounts
 {
-    public interface ICustomerBankAccountsClient
+    public interface ICustomerBankAccountsClient : IPageable<GetCustomerBankAccountsOptions, CustomerBankAccount>
     {
-        IPagerBuilder<GetCustomerBankAccountsOptions, CustomerBankAccount> BuildPager();
         Task<Response<CustomerBankAccount>> CreateAsync(CreateCustomerBankAccountOptions options);
         Task<Response<CustomerBankAccount>> DisableAsync(DisableCustomerBankAccountOptions options);
         Task<Response<CustomerBankAccount>> ForIdAsync(string id);

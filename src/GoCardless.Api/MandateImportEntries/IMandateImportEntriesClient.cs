@@ -3,10 +3,9 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.MandateImportEntries
 {
-    public interface IMandateImportEntriesClient
+    public interface IMandateImportEntriesClient : IPageable<GetMandateImportEntriesOptions, MandateImportEntry>
     {
         Task<Response<MandateImportEntry>> AddAsync(AddMandateImportEntryOptions options);
-        IPagerBuilder<GetMandateImportEntriesOptions, MandateImportEntry> BuildPager();
         Task<PagedResponse<MandateImportEntry>> GetPageAsync(GetMandateImportEntriesOptions options);
     }
 }

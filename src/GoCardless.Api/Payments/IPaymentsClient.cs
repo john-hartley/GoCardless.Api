@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.Payments
 {
-    public interface IPaymentsClient
+    public interface IPaymentsClient : IPageable<GetPaymentsOptions, Payment>
     {
-        IPagerBuilder<GetPaymentsOptions, Payment> BuildPager();
         Task<Response<Payment>> CancelAsync(CancelPaymentOptions options);
         Task<Response<Payment>> CreateAsync(CreatePaymentOptions options);
         Task<Response<Payment>> ForIdAsync(string id);

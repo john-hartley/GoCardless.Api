@@ -12,57 +12,41 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         public void PagerIsNullThrows()
         {
             // given
-            Func<FakePageOptions, Task<PagedResponse<string>>> pager = null;
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = null;
+            var options = new FakePageOptions();
 
             // when
-            TestDelegate test = () => new Pager<FakePageOptions, string>(pager);
+            TestDelegate test = () => new Pager<FakePageOptions, string>(source, options);
 
             // then
             var ex = Assert.Throws<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(pager)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(source)));
         }
 
         [Test]
-        public void InitialRequestIsNullThrows()
+        public void OptionsIsNullThrows()
         {
             // given
-            Func<FakePageOptions, Task<PagedResponse<string>>> pager = _ => Task.FromResult(new PagedResponse<string>());
-            var subject = new Pager<FakePageOptions, string>(pager);
-
-            FakePageOptions initialRequest = null;
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = _ => Task.FromResult(new PagedResponse<string>());
+            FakePageOptions options = null;
 
             // when
-            TestDelegate test = () => subject.StartFrom(initialRequest);
+            TestDelegate test = () => new Pager<FakePageOptions, string>(source, options);
 
             // then
             var ex = Assert.Throws<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(initialRequest)));
-        }
-
-        [Test]
-        public void InitialRequestIsNullWhenPagingBeforeThrows()
-        {
-            // given
-            Func<FakePageOptions, Task<PagedResponse<string>>> pager = _ => Task.FromResult(new PagedResponse<string>());
-            var subject = new Pager<FakePageOptions, string>(pager);
-
-            // when
-            AsyncTestDelegate test = () => subject.AndGetAllBeforeAsync();
-
-            // then
-            var ex = Assert.ThrowsAsync<InvalidOperationException>(test);
-            Assert.That(ex.Message, Is.Not.Null.And.Not.Empty);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public void PagingBeforeThrowsOnCancel()
         {
             // given
-            var source = new CancellationTokenSource();
+            var cancellationSource = new CancellationTokenSource();
 
-            Func<FakePageOptions, Task<PagedResponse<string>>> pager = _ =>
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = _ =>
             {
-                source.Cancel();
+                cancellationSource.Cancel();
                 return Task.FromResult(new PagedResponse<string>
                 {
                     Meta = new Meta
@@ -75,42 +59,26 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
                     }
                 });
             };
+            var options = new FakePageOptions();
 
-            var subject = new Pager<FakePageOptions, string>(pager);
-
-            subject.StartFrom(new FakePageOptions());
+            var subject = new Pager<FakePageOptions, string>(source, options);
 
             // when
-            AsyncTestDelegate test = () => subject.AndGetAllBeforeAsync(source.Token);
+            AsyncTestDelegate test = () => subject.AndGetAllBeforeAsync(cancellationSource.Token);
 
             // then
             Assert.That(test, Throws.InstanceOf<OperationCanceledException>());
         }
 
         [Test]
-        public void InitialRequestIsNullWhenPagingAfterThrows()
-        {
-            // given
-            Func<FakePageOptions, Task<PagedResponse<string>>> pager = _ => Task.FromResult(new PagedResponse<string>());
-            var subject = new Pager<FakePageOptions, string>(pager);
-
-            // when
-            AsyncTestDelegate test = () => subject.AndGetAllAfterAsync();
-
-            // then
-            var ex = Assert.ThrowsAsync<InvalidOperationException>(test);
-            Assert.That(ex.Message, Is.Not.Null.And.Not.Empty);
-        }
-
-        [Test]
         public void PagingAfterThrowsOnCancel()
         {
             // given
-            var source = new CancellationTokenSource();
+            var cancellationSource = new CancellationTokenSource();
 
-            Func<FakePageOptions, Task<PagedResponse<string>>> pager = _ =>
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = _ =>
             {
-                source.Cancel();
+                cancellationSource.Cancel();
                 return Task.FromResult(new PagedResponse<string>
                 {
                     Meta = new Meta
@@ -123,13 +91,12 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
                     }
                 });
             };
+            var options = new FakePageOptions();
 
-            var subject = new Pager<FakePageOptions, string>(pager);
-
-            subject.StartFrom(new FakePageOptions());
+            var subject = new Pager<FakePageOptions, string>(source, options);
 
             // when
-            AsyncTestDelegate test = () => subject.AndGetAllAfterAsync(source.Token);
+            AsyncTestDelegate test = () => subject.AndGetAllAfterAsync(cancellationSource.Token);
 
             // then
             Assert.That(test, Throws.InstanceOf<OperationCanceledException>());

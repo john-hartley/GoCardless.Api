@@ -24,11 +24,6 @@ namespace GoCardless.Api.CustomerBankAccounts
             _apiClient = new ApiClient(apiClientConfiguration);
         }
 
-        public IPagerBuilder<GetCustomerBankAccountsOptions, CustomerBankAccount> BuildPager()
-        {
-            return new Pager<GetCustomerBankAccountsOptions, CustomerBankAccount>(GetPageAsync);
-        }
-
         public async Task<Response<CustomerBankAccount>> CreateAsync(CreateCustomerBankAccountOptions options)
         {
             if (options == null)
@@ -99,6 +94,11 @@ namespace GoCardless.Api.CustomerBankAccounts
                     .AppendPathSegment("customer_bank_accounts")
                     .SetQueryParams(options.ToReadOnlyDictionary());
             });
+        }
+
+        public IPager<GetCustomerBankAccountsOptions, CustomerBankAccount> PageFrom(GetCustomerBankAccountsOptions options)
+        {
+            return new Pager<GetCustomerBankAccountsOptions, CustomerBankAccount>(GetPageAsync, options);
         }
 
         public async Task<Response<CustomerBankAccount>> UpdateAsync(UpdateCustomerBankAccountOptions options)

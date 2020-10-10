@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.Creditors
 {
-    public interface ICreditorsClient
+    public interface ICreditorsClient : IPageable<GetCreditorsOptions, Creditor>
     {
-        IPagerBuilder<GetCreditorsOptions, Creditor> BuildPager();
         Task<Response<Creditor>> ForIdAsync(string id);
         Task<PagedResponse<Creditor>> GetPageAsync();
         Task<PagedResponse<Creditor>> GetPageAsync(GetCreditorsOptions options);

@@ -24,11 +24,6 @@ namespace GoCardless.Api.Events
             _apiClient = new ApiClient(apiClientConfiguration);
         }
 
-        public IPagerBuilder<GetEventsOptions, Event> BuildPager()
-        {
-            return new Pager<GetEventsOptions, Event>(GetPageAsync);
-        }
-
         public async Task<Response<Event>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -63,6 +58,11 @@ namespace GoCardless.Api.Events
                     .AppendPathSegment("events")
                     .SetQueryParams(options.ToReadOnlyDictionary());
             });
+        }
+
+        public IPager<GetEventsOptions, Event> PageFrom(GetEventsOptions options)
+        {
+            return new Pager<GetEventsOptions, Event>(GetPageAsync, options);
         }
     }
 }

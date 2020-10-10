@@ -24,11 +24,6 @@ namespace GoCardless.Api.Payments
             _apiClient = new ApiClient(apiClientConfiguration);
         }
 
-        public IPagerBuilder<GetPaymentsOptions, Payment> BuildPager()
-        {
-            return new Pager<GetPaymentsOptions, Payment>(GetPageAsync);
-        }
-
         public async Task<Response<Payment>> CancelAsync(CancelPaymentOptions options)
         {
             if (options == null)
@@ -100,6 +95,11 @@ namespace GoCardless.Api.Payments
                     .AppendPathSegment("payments")
                     .SetQueryParams(options.ToReadOnlyDictionary());
             });
+        }
+
+        public IPager<GetPaymentsOptions, Payment> PageFrom(GetPaymentsOptions options)
+        {
+            return new Pager<GetPaymentsOptions, Payment>(GetPageAsync, options);
         }
 
         public async Task<Response<Payment>> RetryAsync(RetryPaymentOptions options)

@@ -24,11 +24,6 @@ namespace GoCardless.Api.Refunds
             _apiClient = new ApiClient(apiClientConfiguration);
         }
 
-        public IPagerBuilder<GetRefundsOptions, Refund> BuildPager()
-        {
-            return new Pager<GetRefundsOptions, Refund>(GetPageAsync);
-        }
-
         public async Task<Response<Refund>> CreateAsync(CreateRefundOptions options)
         {
             if (options == null)
@@ -80,6 +75,11 @@ namespace GoCardless.Api.Refunds
                     .AppendPathSegment("refunds")
                     .SetQueryParams(options.ToReadOnlyDictionary());
             });
+        }
+
+        public IPager<GetRefundsOptions, Refund> PageFrom(GetRefundsOptions options)
+        {
+            return new Pager<GetRefundsOptions, Refund>(GetPageAsync, options);
         }
 
         public async Task<Response<Refund>> UpdateAsync(UpdateRefundOptions options)
