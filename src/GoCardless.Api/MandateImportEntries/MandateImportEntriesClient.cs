@@ -11,7 +11,17 @@ namespace GoCardless.Api.MandateImportEntries
 
         public MandateImportEntriesClient(IApiClient apiClient)
         {
-            _apiClient = apiClient;
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
+        }
+
+        public MandateImportEntriesClient(ApiClientConfiguration apiClientConfiguration)
+        {
+            if (apiClientConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(apiClientConfiguration));
+            }
+
+            _apiClient = new ApiClient(apiClientConfiguration);
         }
 
         public async Task<Response<MandateImportEntry>> AddAsync(AddMandateImportEntryOptions options)
