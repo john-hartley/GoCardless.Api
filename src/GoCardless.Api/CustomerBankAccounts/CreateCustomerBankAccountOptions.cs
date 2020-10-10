@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.CustomerBankAccounts
 {
-    public class CreateCustomerBankAccountRequest
+    public class CreateCustomerBankAccountOptions
     {
-        public CreateCustomerBankAccountRequest()
+        public CreateCustomerBankAccountOptions()
         {
             IdempotencyKey = Guid.NewGuid().ToString();
         }

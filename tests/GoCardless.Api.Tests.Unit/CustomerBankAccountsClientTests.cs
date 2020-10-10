@@ -11,13 +11,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class CustomerBankAccountsClientTests
     {
-        private IApiClient _apiClient;
+        private ICustomerBankAccountsClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            var apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            _subject = new CustomerBankAccountsClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -28,15 +29,13 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void CreateCustomerBankAccountRequestIsNullThrows()
+        public void CreateCustomerBankAccountOptionsIsNullThrows()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
-            CreateCustomerBankAccountRequest options = null;
+            CreateCustomerBankAccountOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(options);
+            AsyncTestDelegate test = () => _subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -47,15 +46,13 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateCustomerBankAccountEndpoint()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
-            var request = new CreateCustomerBankAccountRequest
+            var options = new CreateCustomerBankAccountOptions
             {
                 IdempotencyKey = Guid.NewGuid().ToString()
             };
 
             // when
-            await subject.CreateAsync(request);
+            await _subject.CreateAsync(options);
 
             // then
             _httpTest
@@ -70,10 +67,8 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(id);
+            AsyncTestDelegate test = () => _subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -85,11 +80,10 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualCustomerBankAccountsEndpoint()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
             var id = "BA12345678";
 
             // when
-            await subject.ForIdAsync(id);
+            await _subject.ForIdAsync(id);
 
             // then
             _httpTest
@@ -98,15 +92,13 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void DisableCustomerBankAccountRequestIsNullThrows()
+        public void DisableCustomerBankAccountOptionsIsNullThrows()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
-            DisableCustomerBankAccountRequest options = null;
+            DisableCustomerBankAccountOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.DisableAsync(options);
+            AsyncTestDelegate test = () => _subject.DisableAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -116,18 +108,16 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void DisableCustomerBankAccountRequestIdIsNullOrWhiteSpaceThrows(string id)
+        public void DisableCustomerBankAccountOptionsIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
-            var options = new DisableCustomerBankAccountRequest
+            var options = new DisableCustomerBankAccountOptions
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.DisableAsync(options);
+            AsyncTestDelegate test = () => _subject.DisableAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -138,15 +128,13 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsDisableCustomerBankAccountEndpoint()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
-            var request = new DisableCustomerBankAccountRequest
+            var options = new DisableCustomerBankAccountOptions
             {
                 Id = "BA12345678"
             };
 
             // when
-            await subject.DisableAsync(request);
+            await _subject.DisableAsync(options);
 
             // then
             _httpTest
@@ -158,10 +146,8 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetCustomerBankAccountsEndpoint()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
             // when
-            await subject.GetPageAsync();
+            await _subject.GetPageAsync();
 
             // then
             _httpTest
@@ -170,15 +156,13 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void GetCustomerBankAccountsRequestIsNullThrows()
+        public void GetCustomerBankAccountsOptionsIsNullThrows()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
-            GetCustomerBankAccountsRequest options = null;
+            GetCustomerBankAccountsOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(options);
+            AsyncTestDelegate test = () => _subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -186,12 +170,10 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public async Task CallsGetCustomerBankAccountsEndpointUsingRequest()
+        public async Task CallsGetCustomerBankAccountsEndpointUsingOptions()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
-            var request = new GetCustomerBankAccountsRequest
+            var options = new GetCustomerBankAccountsOptions
             {
                 Before = "before test",
                 After = "after test",
@@ -199,7 +181,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.GetPageAsync(request);
+            await _subject.GetPageAsync(options);
 
             // then
             _httpTest
@@ -208,15 +190,13 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void UpdateCustomerBankAccountRequestIsNullThrows()
+        public void UpdateCustomerBankAccountOptionsIsNullThrows()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
-            UpdateCustomerBankAccountRequest options = null;
+            UpdateCustomerBankAccountOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(options);
+            AsyncTestDelegate test = () => _subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -226,18 +206,16 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateCustomerBankAccountRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void UpdateCustomerBankAccountOptionsIdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
-            var options = new UpdateCustomerBankAccountRequest
+            var options = new UpdateCustomerBankAccountOptions
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(options);
+            AsyncTestDelegate test = () => _subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -248,15 +226,13 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsUpdateCustomerBankAccountEndpoint()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
-            var request = new UpdateCustomerBankAccountRequest
+            var options = new UpdateCustomerBankAccountOptions
             {
                 Id = "BA12345678"
             };
 
             // when
-            await subject.UpdateAsync(request);
+            await _subject.UpdateAsync(options);
 
             // then
             _httpTest

@@ -14,12 +14,12 @@ namespace GoCardless.Api.CustomerBankAccounts
             _apiClient = apiClient;
         }
 
-        public IPagerBuilder<GetCustomerBankAccountsRequest, CustomerBankAccount> BuildPager()
+        public IPagerBuilder<GetCustomerBankAccountsOptions, CustomerBankAccount> BuildPager()
         {
-            return new Pager<GetCustomerBankAccountsRequest, CustomerBankAccount>(GetPageAsync);
+            return new Pager<GetCustomerBankAccountsOptions, CustomerBankAccount>(GetPageAsync);
         }
 
-        public async Task<Response<CustomerBankAccount>> CreateAsync(CreateCustomerBankAccountRequest options)
+        public async Task<Response<CustomerBankAccount>> CreateAsync(CreateCustomerBankAccountOptions options)
         {
             if (options == null)
             {
@@ -36,7 +36,7 @@ namespace GoCardless.Api.CustomerBankAccounts
                 new { customer_bank_accounts = options });
         }
 
-        public async Task<Response<CustomerBankAccount>> DisableAsync(DisableCustomerBankAccountRequest options)
+        public async Task<Response<CustomerBankAccount>> DisableAsync(DisableCustomerBankAccountOptions options)
         {
             if (options == null)
             {
@@ -76,7 +76,7 @@ namespace GoCardless.Api.CustomerBankAccounts
             });
         }
 
-        public async Task<PagedResponse<CustomerBankAccount>> GetPageAsync(GetCustomerBankAccountsRequest options)
+        public async Task<PagedResponse<CustomerBankAccount>> GetPageAsync(GetCustomerBankAccountsOptions options)
         {
             if (options == null)
             {
@@ -91,7 +91,7 @@ namespace GoCardless.Api.CustomerBankAccounts
             });
         }
 
-        public async Task<Response<CustomerBankAccount>> UpdateAsync(UpdateCustomerBankAccountRequest options)
+        public async Task<Response<CustomerBankAccount>> UpdateAsync(UpdateCustomerBankAccountOptions options)
         {
             if (options == null)
             {

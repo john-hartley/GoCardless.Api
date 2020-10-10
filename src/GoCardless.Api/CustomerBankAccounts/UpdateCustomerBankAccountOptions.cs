@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.CustomerBankAccounts
 {
-    public class UpdateCustomerBankAccountRequest
+    public class UpdateCustomerBankAccountOptions
     {
         [JsonIgnore]
         public string Id { get; set; }

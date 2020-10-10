@@ -10,13 +10,21 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class CustomerBankAccountsTests : IntegrationTest
     {
+        private ICustomerBankAccountsClient _subject;
+
+        [SetUp]
+        public void Setup()
+        {
+            _subject = new CustomerBankAccountsClient(_apiClient);
+        }
+
         [Test]
         public async Task CreatesAndDisablesConflictingCustomerBankAccountUsingBranchCode()
         {
             // given
             var customer = await _resourceFactory.CreateLocalCustomer();
 
-            var createRequest = new CreateCustomerBankAccountRequest
+            var createOptions = new CreateCustomerBankAccountOptions
             {
                 AccountHolderName = "API BANK ACCOUNT",
                 AccountNumber = "55666666",
@@ -32,41 +40,37 @@ namespace GoCardless.Api.Tests.Integration
                 }
             };
 
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
             // when
-            await subject.CreateAsync(createRequest);
-            var creationResult = await subject.CreateAsync(createRequest);
+            await _subject.CreateAsync(createOptions);
+            var createResult = await _subject.CreateAsync(createOptions);
 
-            var disableRequest = new DisableCustomerBankAccountRequest
+            var disableOptions = new DisableCustomerBankAccountOptions
             {
-                Id = creationResult.Item.Id
+                Id = createResult.Item.Id
             };
 
-            var disabledResult = await subject.DisableAsync(disableRequest);
+            var disableResult = await _subject.DisableAsync(disableOptions);
 
             // then
-            Assert.That(creationResult.Item.Id, Is.Not.Null);
-            Assert.That(creationResult.Item.AccountHolderName, Is.EqualTo(createRequest.AccountHolderName));
-            Assert.That(creationResult.Item.AccountNumberEnding, Is.Not.Null);
-            Assert.That(creationResult.Item.BankName, Is.Not.Null);
-            Assert.That(creationResult.Item.CountryCode, Is.EqualTo(createRequest.CountryCode));
-            Assert.That(creationResult.Item.Currency, Is.EqualTo(createRequest.Currency));
-            Assert.That(creationResult.Item.Metadata, Is.EqualTo(createRequest.Metadata));
-            Assert.That(creationResult.Item.Links.Customer, Is.EqualTo(createRequest.Links.Customer));
-            Assert.That(creationResult.Item.Enabled, Is.True);
+            Assert.That(createResult.Item.Id, Is.Not.Null);
+            Assert.That(createResult.Item.AccountHolderName, Is.EqualTo(createOptions.AccountHolderName));
+            Assert.That(createResult.Item.AccountNumberEnding, Is.Not.Null);
+            Assert.That(createResult.Item.BankName, Is.Not.Null);
+            Assert.That(createResult.Item.CountryCode, Is.EqualTo(createOptions.CountryCode));
+            Assert.That(createResult.Item.Currency, Is.EqualTo(createOptions.Currency));
+            Assert.That(createResult.Item.Metadata, Is.EqualTo(createOptions.Metadata));
+            Assert.That(createResult.Item.Links.Customer, Is.EqualTo(createOptions.Links.Customer));
+            Assert.That(createResult.Item.Enabled, Is.True);
 
-            Assert.That(disabledResult.Item.Enabled, Is.False);
+            Assert.That(disableResult.Item.Enabled, Is.False);
         }
 
         [Test]
         public async Task ReturnsCustomerBankAccounts()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
             // when
-            var result = (await subject.GetPageAsync()).Items.ToList();
+            var result = (await _subject.GetPageAsync()).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -84,32 +88,30 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
-            var firstPageRequest = new GetCustomerBankAccountsRequest
+            var firstPageOptions = new GetCustomerBankAccountsOptions
             {
                 Limit = 1
             };
 
             // when
-            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
+            var firstPageResult = await _subject.GetPageAsync(firstPageOptions);
 
-            var secondPageRequest = new GetCustomerBankAccountsRequest
+            var secondPageOptions = new GetCustomerBankAccountsOptions
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 2
             };
 
-            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
+            var secondPageResult = await _subject.GetPageAsync(secondPageOptions);
 
             // then
-            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
-            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
+            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageOptions.Limit));
+            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageOptions.Limit));
             Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
             Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
 
-            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageRequest.Limit));
-            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
+            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageOptions.Limit));
+            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageOptions.Limit));
             Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
             Assert.That(secondPageResult.Meta.Cursors.After, Is.Not.Null);
         }
@@ -121,10 +123,8 @@ namespace GoCardless.Api.Tests.Integration
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
 
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
             // when
-            var result = await subject.ForIdAsync(customerBankAccount.Id);
+            var result = await _subject.ForIdAsync(customerBankAccount.Id);
             var actual = result.Item;
 
             // then
@@ -147,15 +147,13 @@ namespace GoCardless.Api.Tests.Integration
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
 
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
-            var request = new UpdateCustomerBankAccountRequest
+            var options = new UpdateCustomerBankAccountOptions
             {
                 Id = customerBankAccount.Id
             };
 
             // when
-            var result = await subject.UpdateAsync(request);
+            var result = await _subject.UpdateAsync(options);
             var actual = result.Item;
 
             // then
@@ -171,9 +169,7 @@ namespace GoCardless.Api.Tests.Integration
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
 
-            var subject = new CustomerBankAccountsClient(_apiClient);
-
-            var request = new UpdateCustomerBankAccountRequest
+            var options = new UpdateCustomerBankAccountOptions
             {
                 Id = customerBankAccount.Id,
                 Metadata = new Dictionary<string, string>
@@ -185,23 +181,22 @@ namespace GoCardless.Api.Tests.Integration
             };
 
             // when
-            var result = await subject.UpdateAsync(request);
+            var result = await _subject.UpdateAsync(options);
             var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Id, Is.Not.Null);
-            Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
         public async Task PagesThroughCustomerBankAccounts()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient);
-            var firstId = (await subject.GetPageAsync()).Items.First().Id;
+            var firstId = (await _subject.GetPageAsync()).Items.First().Id;
 
-            var initialRequest = new GetCustomerBankAccountsRequest
+            var initialOptions = new GetCustomerBankAccountsOptions
             {
                 After = firstId,
                 CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1)),
@@ -209,9 +204,9 @@ namespace GoCardless.Api.Tests.Integration
             };
 
             // when
-            var result = await subject
+            var result = await _subject
                 .BuildPager()
-                .StartFrom(initialRequest)
+                .StartFrom(initialOptions)
                 .AndGetAllAfterAsync();
 
             // then

@@ -45,7 +45,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 
         internal async Task<CustomerBankAccount> CreateCustomerBankAccountFor(Customer customer)
         {
-            var request = new CreateCustomerBankAccountRequest
+            var request = new CreateCustomerBankAccountOptions
             {
                 AccountHolderName = "API BANK ACCOUNT",
                 AccountNumber = "55666666",

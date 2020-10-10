@@ -2,7 +2,7 @@
 
 namespace GoCardless.Api.CustomerBankAccounts
 {
-    public class DisableCustomerBankAccountRequest
+    public class DisableCustomerBankAccountOptions
     {
         [JsonIgnore]
         public string Id { get; set; }
