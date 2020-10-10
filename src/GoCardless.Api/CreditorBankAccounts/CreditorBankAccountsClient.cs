@@ -11,7 +11,17 @@ namespace GoCardless.Api.CreditorBankAccounts
 
         public CreditorBankAccountsClient(IApiClient apiClient)
         {
-            _apiClient = apiClient;
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
+        }
+
+        public CreditorBankAccountsClient(ApiClientConfiguration apiClientConfiguration)
+        {
+            if (apiClientConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(apiClientConfiguration));
+            }
+
+            _apiClient = new ApiClient(apiClientConfiguration);
         }
 
         public IPagerBuilder<GetCreditorBankAccountsOptions, CreditorBankAccount> BuildPager()
