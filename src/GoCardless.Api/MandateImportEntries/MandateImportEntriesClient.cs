@@ -39,11 +39,6 @@ namespace GoCardless.Api.MandateImportEntries
                 new { mandate_import_entries = options });
         }
 
-        public IPagerBuilder<GetMandateImportEntriesOptions, MandateImportEntry> BuildPager()
-        {
-            return new Pager<GetMandateImportEntriesOptions, MandateImportEntry>(GetPageAsync);
-        }
-
         public async Task<PagedResponse<MandateImportEntry>> GetPageAsync(GetMandateImportEntriesOptions options)
         {
             if (options == null)
@@ -62,6 +57,11 @@ namespace GoCardless.Api.MandateImportEntries
                     .AppendPathSegment("mandate_import_entries")
                     .SetQueryParams(options.ToReadOnlyDictionary());
             });
+        }
+
+        public IPager<GetMandateImportEntriesOptions, MandateImportEntry> PageFrom(GetMandateImportEntriesOptions options)
+        {
+            return new Pager<GetMandateImportEntriesOptions, MandateImportEntry>(GetPageAsync, options);
         }
     }
 }

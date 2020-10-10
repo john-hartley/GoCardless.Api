@@ -190,7 +190,7 @@ namespace GoCardless.Api.Tests.Integration
             var secondRecordId = "second-record";
             await _resourceFactory.CreateMandateImportEntryFor(mandateImport, secondRecordId);
 
-            var initialOptions = new GetMandateImportEntriesOptions
+            var options = new GetMandateImportEntriesOptions
             {
                 Limit = 1,
                 MandateImport = mandateImport.Id
@@ -198,8 +198,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await _subject
-                .BuildPager()
-                .StartFrom(initialOptions)
+                .PageFrom(options)
                 .AndGetAllAfterAsync();
 
             // then
