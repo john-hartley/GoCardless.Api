@@ -1,16 +1,15 @@
 ﻿using Flurl.Http;
-using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.CustomerNotifications
 {
-    public class CustomerNotificationsClient : ApiClient, ICustomerNotificationsClient
+    public class CustomerNotificationsClient : ICustomerNotificationsClient
     {
         private readonly IApiClient _apiClient;
 
-        public CustomerNotificationsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        public CustomerNotificationsClient(IApiClient apiClient)
         {
             _apiClient = apiClient;
         }

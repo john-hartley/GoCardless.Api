@@ -1,16 +1,15 @@
 ﻿using Flurl.Http;
-using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.MandatePdfs
 {
-    public class MandatePdfsClient : ApiClient, IMandatePdfsClient
+    public class MandatePdfsClient : IMandatePdfsClient
     {
         private readonly IApiClient _apiClient;
 
-        public MandatePdfsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        public MandatePdfsClient(IApiClient apiClient)
         {
             _apiClient = apiClient;
         }

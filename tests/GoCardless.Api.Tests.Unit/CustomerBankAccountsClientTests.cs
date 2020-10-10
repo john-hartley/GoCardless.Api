@@ -31,7 +31,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CreateCustomerBankAccountRequestIsNullThrows()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             CreateCustomerBankAccountRequest options = null;
 
@@ -47,7 +47,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateCustomerBankAccountEndpoint()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             var request = new CreateCustomerBankAccountRequest
             {
@@ -70,7 +70,7 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             // when
             AsyncTestDelegate test = () => subject.ForIdAsync(id);
@@ -85,7 +85,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualCustomerBankAccountsEndpoint()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
             var id = "BA12345678";
 
             // when
@@ -101,7 +101,7 @@ namespace GoCardless.Api.Tests.Unit
         public void DisableCustomerBankAccountRequestIsNullThrows()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             DisableCustomerBankAccountRequest options = null;
 
@@ -119,7 +119,7 @@ namespace GoCardless.Api.Tests.Unit
         public void DisableCustomerBankAccountRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             var request = new DisableCustomerBankAccountRequest
             {
@@ -138,7 +138,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsDisableCustomerBankAccountEndpoint()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             var request = new DisableCustomerBankAccountRequest
             {
@@ -158,7 +158,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetCustomerBankAccountsEndpoint()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             // when
             await subject.GetPageAsync();
@@ -173,7 +173,7 @@ namespace GoCardless.Api.Tests.Unit
         public void GetCustomerBankAccountsRequestIsNullThrows()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             GetCustomerBankAccountsRequest options = null;
 
@@ -189,7 +189,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetCustomerBankAccountsEndpointUsingRequest()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             var request = new GetCustomerBankAccountsRequest
             {
@@ -211,7 +211,7 @@ namespace GoCardless.Api.Tests.Unit
         public void UpdateCustomerBankAccountRequestIsNullThrows()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             UpdateCustomerBankAccountRequest request = null;
 
@@ -229,7 +229,7 @@ namespace GoCardless.Api.Tests.Unit
         public void UpdateCustomerBankAccountRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             var request = new UpdateCustomerBankAccountRequest
             {
@@ -248,7 +248,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsUpdateCustomerBankAccountEndpoint()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             var request = new UpdateCustomerBankAccountRequest
             {

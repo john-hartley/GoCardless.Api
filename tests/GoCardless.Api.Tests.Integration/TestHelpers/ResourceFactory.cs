@@ -22,17 +22,15 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
     public class ResourceFactory
     {
         private readonly IApiClient _apiClient;
-        private readonly ClientConfiguration _clientConfiguration;
 
         internal ResourceFactory(IApiClient apiClient)
         {
             _apiClient = apiClient;
-            _clientConfiguration = apiClient.Configuration;
         }
 
         internal async Task<Creditor> Creditor()
         {
-            var creditorsClient = new CreditorsClient(_apiClient, _clientConfiguration);
+            var creditorsClient = new CreditorsClient(_apiClient);
             return (await creditorsClient.GetPageAsync()).Items.First();
         }
 
@@ -64,7 +62,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 }
             };
 
-            var customerBankAccountsClient = new CustomerBankAccountsClient(_apiClient, _clientConfiguration);
+            var customerBankAccountsClient = new CustomerBankAccountsClient(_apiClient);
             return (await customerBankAccountsClient.CreateAsync(request)).Item;
         }
 
@@ -89,7 +87,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 Scheme = Scheme.Bacs
             };
 
-            var mandatesClient = new MandatesClient(_apiClient, _clientConfiguration);
+            var mandatesClient = new MandatesClient(_apiClient);
             return (await mandatesClient.CreateAsync(request)).Item;
         }
 
@@ -141,7 +139,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 RecordIdentifier = recordIdentifier
             };
 
-            var mandateImportEntriesClient = new MandateImportEntriesClient(_apiClient, _clientConfiguration);
+            var mandateImportEntriesClient = new MandateImportEntriesClient(_apiClient);
             return (await mandateImportEntriesClient.AddAsync(request)).Item;
         }
 
@@ -163,7 +161,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 Reference = "REF123456"
             };
 
-            var paymentsClient = new PaymentsClient(_apiClient, _clientConfiguration);
+            var paymentsClient = new PaymentsClient(_apiClient);
             return (await paymentsClient.CreateAsync(request)).Item;
         }
 
@@ -238,7 +236,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 StartDate = DateTime.Now.AddMonths(1)
             };
 
-            var subscriptionsClient = new SubscriptionsClient(_apiClient, _clientConfiguration);
+            var subscriptionsClient = new SubscriptionsClient(_apiClient);
             return (await subscriptionsClient.CreateAsync(request)).Item;
         }
 
@@ -273,7 +271,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 SwedishIdentityNumber = swedishIdentityNumber
             };
 
-            var customersClient = new CustomersClient(_apiClient, _clientConfiguration);
+            var customersClient = new CustomersClient(_apiClient);
             return (await customersClient.CreateAsync(request)).Item;
         }
     }

@@ -31,7 +31,7 @@ namespace GoCardless.Api.Tests.Unit
         public void BankDetailsLookupRequestIsNullThrows()
         {
             // given
-            var subject = new BankDetailsLookupsClient(_apiClient, _apiClient.Configuration);
+            var subject = new BankDetailsLookupsClient(_apiClient);
 
             BankDetailsLookupRequest options = null;
 
@@ -47,7 +47,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task BankDetailsLookupEndpoint()
         {
             // given
-            var subject = new BankDetailsLookupsClient(_apiClient, _apiClient.Configuration);
+            var subject = new BankDetailsLookupsClient(_apiClient);
 
             var request = new BankDetailsLookupRequest();
 

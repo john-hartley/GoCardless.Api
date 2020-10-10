@@ -16,11 +16,10 @@ namespace GoCardless.Api.Core.Http
     public class ApiClient : IApiClient
     {
         private readonly NewtonsoftJsonSerializer _newtonsoftJsonSerializer;
+        private readonly ClientConfiguration _configuration;
 
         public ApiClient(ClientConfiguration configuration)
         {
-            Configuration = configuration;
-
             var jsonSerializerSettings = new JsonSerializerSettings
             {
                 ContractResolver = new DefaultContractResolver
@@ -32,9 +31,8 @@ namespace GoCardless.Api.Core.Http
             };
 
             _newtonsoftJsonSerializer = new NewtonsoftJsonSerializer(jsonSerializerSettings);
+            _configuration = configuration;
         }
-
-        public ClientConfiguration Configuration { get; }
 
         public async Task<TResponse> GetAsync<TResponse>(Action<IFlurlRequest> configure)
         {
@@ -105,8 +103,8 @@ namespace GoCardless.Api.Core.Http
 
         private IFlurlRequest BaseRequest()
         {
-            return Configuration.BaseUri
-                .WithHeaders(Configuration.Headers)
+            return _configuration.BaseUri
+                .WithHeaders(_configuration.Headers)
                 .ConfigureRequest(x => x.JsonSerializer = _newtonsoftJsonSerializer);
         }
 

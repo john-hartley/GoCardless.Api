@@ -31,7 +31,7 @@ namespace GoCardless.Api.Tests.Unit
         public void GetPayoutItemRequestIsNullThrows()
         {
             // given
-            var subject = new PayoutItemsClient(_apiClient, _apiClient.Configuration);
+            var subject = new PayoutItemsClient(_apiClient);
 
             GetPayoutItemsRequest options = null;
 
@@ -49,7 +49,7 @@ namespace GoCardless.Api.Tests.Unit
         public void PayoutIdIsNullOrWhiteSpaceThrows(string payoutId)
         {
             // given
-            var subject = new PayoutItemsClient(_apiClient, _apiClient.Configuration);
+            var subject = new PayoutItemsClient(_apiClient);
 
             var request = new GetPayoutItemsRequest
             {
@@ -69,7 +69,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetPayoutItemsEndpointUsingRequest()
         {
             // given
-            var subject = new PayoutItemsClient(_apiClient, _apiClient.Configuration);
+            var subject = new PayoutItemsClient(_apiClient);
 
             var request = new GetPayoutItemsRequest
             {

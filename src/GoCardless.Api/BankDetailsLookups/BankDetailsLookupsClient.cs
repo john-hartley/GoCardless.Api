@@ -1,16 +1,15 @@
 ﻿using Flurl.Http;
-using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.BankDetailsLookups
 {
-    public class BankDetailsLookupsClient : ApiClient, IBankDetailsLookupsClient
+    public class BankDetailsLookupsClient : IBankDetailsLookupsClient
     {
         private readonly IApiClient _apiClient;
 
-        public BankDetailsLookupsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        public BankDetailsLookupsClient(IApiClient apiClient)
         {
             _apiClient = apiClient;
         }

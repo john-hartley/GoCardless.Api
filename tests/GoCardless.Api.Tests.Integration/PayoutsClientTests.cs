@@ -1,5 +1,4 @@
-﻿using GoCardless.Api.Core.Http;
-using GoCardless.Api.Payouts;
+﻿using GoCardless.Api.Payouts;
 using GoCardless.Api.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
@@ -14,8 +13,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsPayouts()
         {
             // given
-            var apiClient = new ApiClient(_apiClient.Configuration);
-            var subject = new PayoutsClient(apiClient);
+            var subject = new PayoutsClient(_apiClient);
 
             var request = new GetPayoutsRequest
             {
@@ -46,8 +44,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var apiClient = new ApiClient(_apiClient.Configuration);
-            var subject = new PayoutsClient(apiClient);
+            var subject = new PayoutsClient(_apiClient);
 
             var firstPageRequest = new GetPayoutsRequest
             {
@@ -81,8 +78,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsIndividualPayout()
         {
             // given
-            var apiClient = new ApiClient(_apiClient.Configuration);
-            var subject = new PayoutsClient(apiClient);
+            var subject = new PayoutsClient(_apiClient);
             var payout = (await subject.GetPageAsync()).Items.First();
 
             // when
@@ -109,8 +105,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsPagesIncludingAndBeforeInitialRequest()
         {
             // given
-            var apiClient = new ApiClient(_apiClient.Configuration);
-            var subject = new PayoutsClient(apiClient);
+            var subject = new PayoutsClient(_apiClient);
             var lastId = (await subject.GetPageAsync()).Items.Last().Id;
 
             var initialRequest = new GetPayoutsRequest
@@ -135,8 +130,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsPagesIncludingAndAfterInitialRequest()
         {
             // given
-            var apiClient = new ApiClient(_apiClient.Configuration);
-            var subject = new PayoutsClient(apiClient);
+            var subject = new PayoutsClient(_apiClient);
 
             var initialRequest = new GetPayoutsRequest
             {
@@ -159,8 +153,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsPagesIncludingAndAfterInitialRequestWhenCursorSpecified()
         {
             // given
-            var apiClient = new ApiClient(_apiClient.Configuration);
-            var subject = new PayoutsClient(apiClient);
+            var subject = new PayoutsClient(_apiClient);
             var firstId = (await subject.GetPageAsync()).Items.First().Id;
 
             var initialRequest = new GetPayoutsRequest

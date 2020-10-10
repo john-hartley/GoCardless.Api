@@ -31,7 +31,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CreateMandatePdfRequestIsNullThrows()
         {
             // given
-            var subject = new MandatePdfsClient(_apiClient, _apiClient.Configuration);
+            var subject = new MandatePdfsClient(_apiClient);
 
             CreateMandatePdfRequest options = null;
 
@@ -47,7 +47,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateMandatePdfEndpointWithoutAcceptsLanguageHeader()
         {
             // given
-            var subject = new MandatePdfsClient(_apiClient, _apiClient.Configuration);
+            var subject = new MandatePdfsClient(_apiClient);
 
             var request = new CreateMandatePdfRequest
             {
@@ -71,7 +71,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateMandatePdfEndpointWithAcceptsLanguageHeader()
         {
             // given
-            var subject = new MandatePdfsClient(_apiClient, _apiClient.Configuration);
+            var subject = new MandatePdfsClient(_apiClient);
 
             var request = new CreateMandatePdfRequest
             {

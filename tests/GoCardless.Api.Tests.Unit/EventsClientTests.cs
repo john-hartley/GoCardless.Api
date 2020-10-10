@@ -33,7 +33,7 @@ namespace GoCardless.Api.Tests.Unit
         public void EventIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
+            var subject = new EventsClient(_apiClient);
 
             // when
             AsyncTestDelegate test = () => subject.ForIdAsync(id);
@@ -48,7 +48,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualEventsEndpoint()
         {
             // given
-            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
+            var subject = new EventsClient(_apiClient);
             var id = "EV12345678";
 
             // when
@@ -64,7 +64,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetEventsEndpoint()
         {
             // given
-            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
+            var subject = new EventsClient(_apiClient);
 
             // when
             await subject.GetPageAsync();
@@ -79,7 +79,7 @@ namespace GoCardless.Api.Tests.Unit
         public void GetEventsRequestIsNullThrows()
         {
             // given
-            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
+            var subject = new EventsClient(_apiClient);
 
             GetEventsRequest options = null;
 
@@ -95,7 +95,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetEventsEndpointUsingRequest()
         {
             // given
-            var subject = new EventsClient(_apiClient, _apiClient.Configuration);
+            var subject = new EventsClient(_apiClient);
 
             var request = new GetEventsRequest
             {

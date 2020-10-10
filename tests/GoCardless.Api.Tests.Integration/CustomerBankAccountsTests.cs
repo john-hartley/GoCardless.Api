@@ -32,7 +32,7 @@ namespace GoCardless.Api.Tests.Integration
                 }
             };
 
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             // when
             await subject.CreateAsync(createRequest);
@@ -63,7 +63,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsCustomerBankAccounts()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             // when
             var result = (await subject.GetPageAsync()).Items.ToList();
@@ -84,7 +84,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             var firstPageRequest = new GetCustomerBankAccountsRequest
             {
@@ -121,7 +121,7 @@ namespace GoCardless.Api.Tests.Integration
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
 
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             // when
             var result = await subject.ForIdAsync(customerBankAccount.Id);
@@ -147,7 +147,7 @@ namespace GoCardless.Api.Tests.Integration
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
 
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             var request = new UpdateCustomerBankAccountRequest
             {
@@ -171,7 +171,7 @@ namespace GoCardless.Api.Tests.Integration
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
 
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
 
             var request = new UpdateCustomerBankAccountRequest
             {
@@ -198,7 +198,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task PagesThroughCustomerBankAccounts()
         {
             // given
-            var subject = new CustomerBankAccountsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerBankAccountsClient(_apiClient);
             var firstId = (await subject.GetPageAsync()).Items.First().Id;
 
             var initialRequest = new GetCustomerBankAccountsRequest

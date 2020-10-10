@@ -1,16 +1,15 @@
 ﻿using Flurl.Http;
-using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Refunds
 {
-    public class RefundsClient : ApiClient, IRefundsClient
+    public class RefundsClient : IRefundsClient
     {
         private readonly IApiClient _apiClient;
 
-        public RefundsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        public RefundsClient(IApiClient apiClient)
         {
             _apiClient = apiClient;
         }

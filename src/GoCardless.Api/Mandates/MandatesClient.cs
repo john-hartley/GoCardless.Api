@@ -1,16 +1,15 @@
 ﻿using Flurl.Http;
-using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Mandates
 {
-    public class MandatesClient : ApiClient, IMandatesClient
+    public class MandatesClient : IMandatesClient
     {
         private readonly IApiClient _apiClient;
 
-        public MandatesClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        public MandatesClient(IApiClient apiClient)
         {
             _apiClient = apiClient;
         }

@@ -14,7 +14,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task CreatesMandateImportEntries()
         {
             // given
-            var subject = new MandateImportEntriesClient(_apiClient, _apiClient.Configuration);
+            var subject = new MandateImportEntriesClient(_apiClient);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             var request = new AddMandateImportEntryRequest
@@ -67,7 +67,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsAllLinksAfterMandateImportHasBeenSubmitted()
         {
             // given
-            var subject = new MandateImportEntriesClient(_apiClient, _apiClient.Configuration);
+            var subject = new MandateImportEntriesClient(_apiClient);
             var mandateImport = await _resourceFactory.CreateMandateImport();
             var mandateImportEntry = await _resourceFactory.CreateMandateImportEntryFor(mandateImport, "first-record");
 
@@ -95,7 +95,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsAllMandateImportEntries()
         {
             // given
-            var subject = new MandateImportEntriesClient(_apiClient, _apiClient.Configuration);
+            var subject = new MandateImportEntriesClient(_apiClient);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             var firstRecordId = "first-record";
@@ -135,7 +135,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new MandateImportEntriesClient(_apiClient, _apiClient.Configuration);
+            var subject = new MandateImportEntriesClient(_apiClient);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             var firstRecordId = "first-record";
@@ -178,7 +178,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task PagesThroughMandateImportEntries()
         {
             // given
-            var subject = new MandateImportEntriesClient(_apiClient, _apiClient.Configuration);
+            var subject = new MandateImportEntriesClient(_apiClient);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
             var firstRecordId = "first-record";

@@ -45,7 +45,7 @@ namespace GoCardless.Api.Tests.Integration
                 Reference = "REF123456"
             };
 
-            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
+            var subject = new PaymentsClient(_apiClient);
 
             // when
             await subject.CreateAsync(createRequest);
@@ -89,7 +89,7 @@ namespace GoCardless.Api.Tests.Integration
             var resourceFactory = new ResourceFactory(_apiClient);
 
             var creditor = await resourceFactory.Creditor();
-            var mandatesClient = new MandatesClient(_apiClient, _apiClient.Configuration);
+            var mandatesClient = new MandatesClient(_apiClient);
             var mandate = (await mandatesClient.GetPageAsync()).Items.First();
 
             // given
@@ -109,7 +109,7 @@ namespace GoCardless.Api.Tests.Integration
                 }
             };
 
-            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
+            var subject = new PaymentsClient(_apiClient);
 
             // when
             var creationResult = await subject.CreateAsync(createRequest);
@@ -148,7 +148,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsPayments()
         {
             // given
-            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
+            var subject = new PaymentsClient(_apiClient);
 
             // when
             var result = (await subject.GetPageAsync()).Items.ToList();
@@ -174,7 +174,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
+            var subject = new PaymentsClient(_apiClient);
 
             var firstPageRequest = new GetPaymentsRequest
             {
@@ -208,7 +208,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsIndividualPayment()
         {
             // given
-            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
+            var subject = new PaymentsClient(_apiClient);
             var payment = await _resourceFactory.CreatePaymentFor(_mandate);
 
             // when
@@ -242,7 +242,7 @@ namespace GoCardless.Api.Tests.Integration
                 Id = payment.Id
             };
 
-            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
+            var subject = new PaymentsClient(_apiClient);
 
             // when
             var result = await subject.UpdateAsync(request);
@@ -271,7 +271,7 @@ namespace GoCardless.Api.Tests.Integration
                 },
             };
 
-            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
+            var subject = new PaymentsClient(_apiClient);
 
             // when
             var result = await subject.UpdateAsync(request);
@@ -294,7 +294,7 @@ namespace GoCardless.Api.Tests.Integration
                 Id = payment.Id
             };
 
-            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
+            var subject = new PaymentsClient(_apiClient);
 
             // when
             var result = await subject.RetryAsync(request);
@@ -310,7 +310,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task PagesThroughPayments()
         {
             // given
-            var subject = new PaymentsClient(_apiClient, _apiClient.Configuration);
+            var subject = new PaymentsClient(_apiClient);
             var firstId = (await subject.GetPageAsync()).Items.First().Id;
 
             var initialRequest = new GetPaymentsRequest

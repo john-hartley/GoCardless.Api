@@ -1,16 +1,15 @@
 ﻿using Flurl.Http;
-using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Subscriptions
 {
-    public class SubscriptionsClient : ApiClient, ISubscriptionsClient
+    public class SubscriptionsClient : ISubscriptionsClient
     {
         private readonly IApiClient _apiClient;
 
-        public SubscriptionsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        public SubscriptionsClient(IApiClient apiClient)
         {
             _apiClient = apiClient;
         }

@@ -1,16 +1,15 @@
 ﻿using Flurl.Http;
-using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Events
 {
-    public class EventsClient : ApiClient, IEventsClient
+    public class EventsClient : IEventsClient
     {
         private readonly IApiClient _apiClient;
 
-        public EventsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        public EventsClient(IApiClient apiClient)
         {
             _apiClient = apiClient;
         }

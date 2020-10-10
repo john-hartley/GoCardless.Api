@@ -1,16 +1,15 @@
 ﻿using Flurl.Http;
-using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.MandateImportEntries
 {
-    public class MandateImportEntriesClient : ApiClient, IMandateImportEntriesClient
+    public class MandateImportEntriesClient : IMandateImportEntriesClient
     {
         private readonly IApiClient _apiClient;
 
-        public MandateImportEntriesClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        public MandateImportEntriesClient(IApiClient apiClient)
         {
             _apiClient = apiClient;
         }

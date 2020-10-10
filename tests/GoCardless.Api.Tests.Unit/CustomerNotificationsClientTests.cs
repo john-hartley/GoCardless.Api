@@ -33,7 +33,7 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CustomerNotificationsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerNotificationsClient(_apiClient);
 
             // when
             AsyncTestDelegate test = () => subject.HandleAsync(id);
@@ -47,7 +47,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsHandleCustomerNotificationsEndpoint()
         {
             // given
-            var subject = new CustomerNotificationsClient(_apiClient, _apiClient.Configuration);
+            var subject = new CustomerNotificationsClient(_apiClient);
             var id = "PCN12345678";
 
             // when

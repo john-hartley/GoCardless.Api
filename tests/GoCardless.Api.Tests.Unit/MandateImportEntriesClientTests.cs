@@ -31,7 +31,7 @@ namespace GoCardless.Api.Tests.Unit
         public void AddMandateImportEntryRequestIsNullThrows()
         {
             // given
-            var subject = new MandateImportEntriesClient(_apiClient, _apiClient.Configuration);
+            var subject = new MandateImportEntriesClient(_apiClient);
             AddMandateImportEntryRequest options = null;
 
             // when
@@ -46,7 +46,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsAddMandateImportEntryEndpoint()
         {
             // given
-            var subject = new MandateImportEntriesClient(_apiClient, _apiClient.Configuration);
+            var subject = new MandateImportEntriesClient(_apiClient);
             var request = new AddMandateImportEntryRequest();
 
             // when
@@ -62,7 +62,7 @@ namespace GoCardless.Api.Tests.Unit
         public void GetMandateImportEntriesRequestIsNullThrows()
         {
             // given
-            var subject = new MandateImportEntriesClient(_apiClient, _apiClient.Configuration);
+            var subject = new MandateImportEntriesClient(_apiClient);
             GetMandateImportEntriesRequest options = null;
 
             // when
@@ -79,7 +79,7 @@ namespace GoCardless.Api.Tests.Unit
         public void GetMandateImportEntriesRequestMandateImportIsNullOrWhiteSpaceThrows(string mandateImport)
         {
             // given
-            var subject = new MandateImportEntriesClient(_apiClient, _apiClient.Configuration);
+            var subject = new MandateImportEntriesClient(_apiClient);
             var request = new GetMandateImportEntriesRequest
             {
                 MandateImport = mandateImport
@@ -97,7 +97,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetMandateImportEntriesEndpoint()
         {
             // given
-            var subject = new MandateImportEntriesClient(_apiClient, _apiClient.Configuration);
+            var subject = new MandateImportEntriesClient(_apiClient);
             var request = new GetMandateImportEntriesRequest
             {
                 MandateImport = "IM12345678"

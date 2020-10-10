@@ -1,16 +1,15 @@
 ﻿using Flurl.Http;
-using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.PayoutItems
 {
-    public class PayoutItemsClient : ApiClient, IPayoutItemsClient
+    public class PayoutItemsClient : IPayoutItemsClient
     {
         private readonly IApiClient _apiClient;
 
-        public PayoutItemsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        public PayoutItemsClient(IApiClient apiClient)
         {
             _apiClient = apiClient;
         }

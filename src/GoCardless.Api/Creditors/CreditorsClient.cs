@@ -1,16 +1,15 @@
 ﻿using Flurl.Http;
-using GoCardless.Api.Core.Configuration;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Creditors
 {
-    public class CreditorsClient : ApiClient, ICreditorsClient
+    public class CreditorsClient : ICreditorsClient
     {
         private readonly IApiClient _apiClient;
 
-        public CreditorsClient(IApiClient apiClient, ClientConfiguration configuration) : base(configuration)
+        public CreditorsClient(IApiClient apiClient)
         {
             _apiClient = apiClient;
         }

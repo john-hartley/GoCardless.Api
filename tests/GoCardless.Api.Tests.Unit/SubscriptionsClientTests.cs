@@ -31,7 +31,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CancelSubscriptionRequestIsNullThrows()
         {
             // given
-            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
+            var subject = new SubscriptionsClient(_apiClient);
 
             CancelSubscriptionRequest options = null;
 
@@ -49,7 +49,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CancelSubscriptionRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
+            var subject = new SubscriptionsClient(_apiClient);
 
             var request = new CancelSubscriptionRequest
             {
@@ -68,7 +68,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCancelSubscriptionEndpoint()
         {
             // given
-            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
+            var subject = new SubscriptionsClient(_apiClient);
 
             var request = new CancelSubscriptionRequest
             {
@@ -88,7 +88,7 @@ namespace GoCardless.Api.Tests.Unit
         public void CreateSubscriptionRequestIsNullThrows()
         {
             // given
-            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
+            var subject = new SubscriptionsClient(_apiClient);
 
             CreateSubscriptionRequest options = null;
 
@@ -104,7 +104,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateSubscriptionEndpoint()
         {
             // given
-            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
+            var subject = new SubscriptionsClient(_apiClient);
 
             var request = new CreateSubscriptionRequest
             {
@@ -127,7 +127,7 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
+            var subject = new SubscriptionsClient(_apiClient);
 
             // when
             AsyncTestDelegate test = () => subject.ForIdAsync(id);
@@ -142,7 +142,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualSubscriptionsEndpoint()
         {
             // given
-            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
+            var subject = new SubscriptionsClient(_apiClient);
             var id = "SB12345678";
 
             // when
@@ -158,7 +158,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetSubscriptionsEndpoint()
         {
             // given
-            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
+            var subject = new SubscriptionsClient(_apiClient);
 
             // when
             await subject.GetPageAsync();
@@ -173,7 +173,7 @@ namespace GoCardless.Api.Tests.Unit
         public void GetSubscriptionsRequestIsNullThrows()
         {
             // given
-            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
+            var subject = new SubscriptionsClient(_apiClient);
 
             GetSubscriptionsRequest options = null;
 
@@ -189,7 +189,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetSubscriptionsEndpointUsingRequest()
         {
             // given
-            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
+            var subject = new SubscriptionsClient(_apiClient);
 
             var request = new GetSubscriptionsRequest
             {
@@ -211,7 +211,7 @@ namespace GoCardless.Api.Tests.Unit
         public void UpdateSubscriptionRequestIsNullThrows()
         {
             // given
-            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
+            var subject = new SubscriptionsClient(_apiClient);
 
             UpdateSubscriptionRequest request = null;
 
@@ -229,7 +229,7 @@ namespace GoCardless.Api.Tests.Unit
         public void UpdateSubscriptionRequestIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
+            var subject = new SubscriptionsClient(_apiClient);
 
             var request = new UpdateSubscriptionRequest
             {
@@ -248,7 +248,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsUpdateSubscriptionEndpoint()
         {
             // given
-            var subject = new SubscriptionsClient(_apiClient, _apiClient.Configuration);
+            var subject = new SubscriptionsClient(_apiClient);
 
             var request = new UpdateSubscriptionRequest
             {
