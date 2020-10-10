@@ -3,7 +3,7 @@ using System;
 
 namespace GoCardless.Api.Events
 {
-    public class GetEventsRequest : IPageRequest, ICloneable
+    public class GetEventsOptions : IPageRequest, ICloneable
     {
         public object Clone()
         {

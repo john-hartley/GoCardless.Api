@@ -11,13 +11,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class EventsClientTests
     {
-        private IApiClient _apiClient;
+        private IEventsClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            var apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            _subject = new EventsClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -33,10 +34,8 @@ namespace GoCardless.Api.Tests.Unit
         public void EventIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new EventsClient(_apiClient);
-
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(id);
+            AsyncTestDelegate test = () => _subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -48,11 +47,10 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualEventsEndpoint()
         {
             // given
-            var subject = new EventsClient(_apiClient);
             var id = "EV12345678";
 
             // when
-            await subject.ForIdAsync(id);
+            await _subject.ForIdAsync(id);
 
             // then
             _httpTest
@@ -64,10 +62,8 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetEventsEndpoint()
         {
             // given
-            var subject = new EventsClient(_apiClient);
-
             // when
-            await subject.GetPageAsync();
+            await _subject.GetPageAsync();
 
             // then
             _httpTest
@@ -76,15 +72,13 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void GetEventsRequestIsNullThrows()
+        public void GetEventsOptionsIsNullThrows()
         {
             // given
-            var subject = new EventsClient(_apiClient);
-
-            GetEventsRequest options = null;
+            GetEventsOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(options);
+            AsyncTestDelegate test = () => _subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -92,12 +86,10 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public async Task CallsGetEventsEndpointUsingRequest()
+        public async Task CallsGetEventsEndpointUsingOptions()
         {
             // given
-            var subject = new EventsClient(_apiClient);
-
-            var request = new GetEventsRequest
+            var options = new GetEventsOptions
             {
                 Before = "before test",
                 After = "after test",
@@ -105,7 +97,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.GetPageAsync(request);
+            await _subject.GetPageAsync(options);
 
             // then
             _httpTest

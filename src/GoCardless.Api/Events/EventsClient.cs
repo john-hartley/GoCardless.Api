@@ -14,9 +14,9 @@ namespace GoCardless.Api.Events
             _apiClient = apiClient;
         }
 
-        public IPagerBuilder<GetEventsRequest, Event> BuildPager()
+        public IPagerBuilder<GetEventsOptions, Event> BuildPager()
         {
-            return new Pager<GetEventsRequest, Event>(GetPageAsync);
+            return new Pager<GetEventsOptions, Event>(GetPageAsync);
         }
 
         public async Task<Response<Event>> ForIdAsync(string id)
@@ -40,7 +40,7 @@ namespace GoCardless.Api.Events
             });
         }
 
-        public async Task<PagedResponse<Event>> GetPageAsync(GetEventsRequest options)
+        public async Task<PagedResponse<Event>> GetPageAsync(GetEventsOptions options)
         {
             if (options == null)
             {
