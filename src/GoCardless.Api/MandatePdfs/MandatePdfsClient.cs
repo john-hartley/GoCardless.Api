@@ -22,7 +22,6 @@ namespace GoCardless.Api.MandatePdfs
             }
 
             return await _apiClient.PostAsync<Response<MandatePdf>>(
-                "mandate_pdfs",
                 request =>
                 {
                     request.AppendPathSegment("mandate_pdfs");

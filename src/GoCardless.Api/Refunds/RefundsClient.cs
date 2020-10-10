@@ -27,7 +27,6 @@ namespace GoCardless.Api.Refunds
             }
 
             return await _apiClient.PostAsync<Response<Refund>>(
-                "refunds",
                 request =>
                 {
                     request

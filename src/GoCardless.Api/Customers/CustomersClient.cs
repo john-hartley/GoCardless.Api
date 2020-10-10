@@ -27,7 +27,6 @@ namespace GoCardless.Api.Customers
             }
 
             return await _apiClient.PostAsync<Response<Customer>>(
-                "customers",
                 request =>
                 {
                     request

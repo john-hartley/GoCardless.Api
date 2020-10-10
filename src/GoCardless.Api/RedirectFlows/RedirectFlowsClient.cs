@@ -27,7 +27,6 @@ namespace GoCardless.Api.RedirectFlows
             }
 
             return await _apiClient.PostAsync<Response<RedirectFlow>>(
-                "redirect_flows",
                 request =>
                 {
                     request.AppendPathSegment($"redirect_flows/{options.Id}/actions/complete");
@@ -43,7 +42,6 @@ namespace GoCardless.Api.RedirectFlows
             }
 
             return await _apiClient.PostAsync<Response<RedirectFlow>>(
-                "redirect_flows",
                 request =>
                 {
                     request.AppendPathSegment("redirect_flows");

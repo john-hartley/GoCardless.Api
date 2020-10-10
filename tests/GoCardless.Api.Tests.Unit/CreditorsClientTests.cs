@@ -119,14 +119,14 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new CreditorsClient(_apiClient);
 
-            UpdateCreditorRequest request = null;
+            UpdateCreditorRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
@@ -137,17 +137,17 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new CreditorsClient(_apiClient);
 
-            var request = new UpdateCreditorRequest
+            var options = new UpdateCreditorRequest
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]

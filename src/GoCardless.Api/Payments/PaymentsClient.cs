@@ -32,7 +32,6 @@ namespace GoCardless.Api.Payments
             }
 
             return await _apiClient.PostAsync<Response<Payment>>(
-                "payments",
                 request =>
                 {
                     request.AppendPathSegment($"payments/{options.Id}/actions/cancel");
@@ -48,7 +47,6 @@ namespace GoCardless.Api.Payments
             }
 
             return await _apiClient.PostAsync<Response<Payment>>(
-                "payments",
                 request =>
                 {
                     request
@@ -107,7 +105,6 @@ namespace GoCardless.Api.Payments
             }
 
             return await _apiClient.PostAsync<Response<Payment>>(
-                "payments",
                 request =>
                 {
                     request.AppendPathSegment($"payments/{options.Id}/actions/retry");

@@ -51,17 +51,17 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new MandatesClient(_apiClient);
 
-            var request = new CancelMandateRequest
+            var options = new CancelMandateRequest
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.CancelAsync(request);
+            AsyncTestDelegate test = () => subject.CancelAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]
@@ -231,17 +231,17 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new MandatesClient(_apiClient);
 
-            var request = new ReinstateMandateRequest
+            var options = new ReinstateMandateRequest
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.ReinstateAsync(request);
+            AsyncTestDelegate test = () => subject.ReinstateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]
@@ -270,14 +270,14 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new MandatesClient(_apiClient);
 
-            UpdateMandateRequest request = null;
+            UpdateMandateRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
@@ -288,17 +288,17 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new MandatesClient(_apiClient);
 
-            var request = new UpdateMandateRequest
+            var options = new UpdateMandateRequest
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]

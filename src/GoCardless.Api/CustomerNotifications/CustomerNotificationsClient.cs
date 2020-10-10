@@ -22,7 +22,6 @@ namespace GoCardless.Api.CustomerNotifications
             }
 
             return await _apiClient.PostAsync<Response<CustomerNotification>>(
-                "customer_notifications",
                 request =>
                 {
                     request.AppendPathSegment($"customer_notifications/{id}/actions/handle");

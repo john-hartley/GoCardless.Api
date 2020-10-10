@@ -32,7 +32,6 @@ namespace GoCardless.Api.Subscriptions
             }
 
             return await _apiClient.PostAsync<Response<Subscription>>(
-                "subscriptions",
                 request =>
                 {
                     request.AppendPathSegment($"subscriptions/{options.Id}/actions/cancel");
@@ -48,7 +47,6 @@ namespace GoCardless.Api.Subscriptions
             }
 
             return await _apiClient.PostAsync<Response<Subscription>>(
-                "subscriptions",
                 request =>
                 {
                     request

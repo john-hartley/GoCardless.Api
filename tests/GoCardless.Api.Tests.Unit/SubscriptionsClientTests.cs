@@ -51,17 +51,17 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new SubscriptionsClient(_apiClient);
 
-            var request = new CancelSubscriptionRequest
+            var options = new CancelSubscriptionRequest
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.CancelAsync(request);
+            AsyncTestDelegate test = () => subject.CancelAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]
@@ -213,14 +213,14 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new SubscriptionsClient(_apiClient);
 
-            UpdateSubscriptionRequest request = null;
+            UpdateSubscriptionRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
@@ -231,17 +231,17 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new SubscriptionsClient(_apiClient);
 
-            var request = new UpdateSubscriptionRequest
+            var options = new UpdateSubscriptionRequest
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]

@@ -22,7 +22,6 @@ namespace GoCardless.Api.MandateImportEntries
             }
 
             return await _apiClient.PostAsync<Response<MandateImportEntry>>(
-                "mandate_import_entries",
                 request =>
                 {
                     request.AppendPathSegment("mandate_import_entries");

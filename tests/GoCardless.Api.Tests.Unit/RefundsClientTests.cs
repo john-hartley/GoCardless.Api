@@ -33,14 +33,14 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new RefundsClient(_apiClient);
 
-            CreateRefundRequest request = null;
+            CreateRefundRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            AsyncTestDelegate test = () => subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
@@ -156,14 +156,14 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new RefundsClient(_apiClient);
 
-            UpdateRefundRequest request = null;
+            UpdateRefundRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
@@ -174,17 +174,17 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new RefundsClient(_apiClient);
 
-            var request = new UpdateRefundRequest
+            var options = new UpdateRefundRequest
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]

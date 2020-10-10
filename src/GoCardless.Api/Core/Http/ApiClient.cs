@@ -52,8 +52,6 @@ namespace GoCardless.Api.Core.Http
         }
 
         public async Task<TResponse> PostAsync<TResponse>(
-            // Todo: Check if I can use Uri in place of this.
-            string relativeEndpoint,
             Action<IFlurlRequest> configure,
             object envelope = null)
         {
@@ -71,11 +69,16 @@ namespace GoCardless.Api.Core.Http
                 var apiException = await ex.CreateApiExceptionAsync();
                 if (apiException.Code == (int)HttpStatusCode.Conflict)
                 {
+                    var uri = ex.Call.Request.RequestUri;
                     var conflictingResourceId = ConflictingResourceIdFrom(apiException.Errors);
-                    if (!string.IsNullOrWhiteSpace(conflictingResourceId))
+
+                    if (!string.IsNullOrWhiteSpace(conflictingResourceId) 
+                        && uri.Segments.Length >= 2)
                     {
-                        var endpoint = $"{relativeEndpoint}/{conflictingResourceId}";
-                        return await GetAsync<TResponse>(req => req.AppendPathSegment(endpoint));
+                        return await GetAsync<TResponse>(req =>
+                        {
+                            req.AppendPathSegments(uri.Segments[1], conflictingResourceId);
+                        });
                     }
                 }
 

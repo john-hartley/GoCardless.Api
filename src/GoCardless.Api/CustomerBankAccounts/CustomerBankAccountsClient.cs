@@ -27,7 +27,6 @@ namespace GoCardless.Api.CustomerBankAccounts
             }
 
             return await _apiClient.PostAsync<Response<CustomerBankAccount>>(
-                "customer_bank_accounts",
                 request =>
                 {
                     request
@@ -50,7 +49,6 @@ namespace GoCardless.Api.CustomerBankAccounts
             }
 
             return await _apiClient.PostAsync<Response<CustomerBankAccount>>(
-                "customer_bank_accounts",
                 request =>
                 {
                     request.AppendPathSegment($"customer_bank_accounts/{options.Id}/actions/disable");

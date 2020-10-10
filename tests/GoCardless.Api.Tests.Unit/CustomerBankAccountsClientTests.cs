@@ -121,17 +121,17 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new CustomerBankAccountsClient(_apiClient);
 
-            var request = new DisableCustomerBankAccountRequest
+            var options = new DisableCustomerBankAccountRequest
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.DisableAsync(request);
+            AsyncTestDelegate test = () => subject.DisableAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]
@@ -213,14 +213,14 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new CustomerBankAccountsClient(_apiClient);
 
-            UpdateCustomerBankAccountRequest request = null;
+            UpdateCustomerBankAccountRequest options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
@@ -231,17 +231,17 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new CustomerBankAccountsClient(_apiClient);
 
-            var request = new UpdateCustomerBankAccountRequest
+            var options = new UpdateCustomerBankAccountRequest
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]

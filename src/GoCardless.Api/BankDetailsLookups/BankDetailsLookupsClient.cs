@@ -22,7 +22,6 @@ namespace GoCardless.Api.BankDetailsLookups
             }
 
             return await _apiClient.PostAsync<Response<BankDetailsLookup>>(
-                "bank_details_lookups",
                 request =>
                 {
                     request.AppendPathSegment("bank_details_lookups");

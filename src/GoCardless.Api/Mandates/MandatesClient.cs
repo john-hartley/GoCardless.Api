@@ -32,7 +32,6 @@ namespace GoCardless.Api.Mandates
             }
 
             return await _apiClient.PostAsync<Response<Mandate>>(
-                "mandates",
                 request =>
                 {
                     request.AppendPathSegment($"mandates/{options.Id}/actions/cancel");
@@ -48,7 +47,6 @@ namespace GoCardless.Api.Mandates
             }
 
             return await _apiClient.PostAsync<Response<Mandate>>(
-                "mandates",
                 request =>
                 {
                     request
@@ -107,7 +105,6 @@ namespace GoCardless.Api.Mandates
             }
 
             return await _apiClient.PostAsync<Response<Mandate>>(
-                "mandates",
                 request =>
                 {
                     request.AppendPathSegment($"mandates/{options.Id}/actions/reinstate");
