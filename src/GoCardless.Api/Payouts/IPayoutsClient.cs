@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.Payouts
 {
-    public interface IPayoutsClient
+    public interface IPayoutsClient : IPageable<GetPayoutsOptions, Payout>
     {
-        IPagerBuilder<GetPayoutsOptions, Payout> BuildPager();
         Task<Response<Payout>> ForIdAsync(string id);
         Task<PagedResponse<Payout>> GetPageAsync();
         Task<PagedResponse<Payout>> GetPageAsync(GetPayoutsOptions options);

@@ -110,7 +110,7 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var lastId = (await _subject.GetPageAsync()).Items.Last().Id;
 
-            var initialOptions = new GetPayoutsOptions
+            var options = new GetPayoutsOptions
             {
                 Before = lastId,
                 Limit = 1,
@@ -118,8 +118,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await _subject
-                .BuildPager()
-                .StartFrom(initialOptions)
+                .PageFrom(options)
                 .AndGetAllBeforeAsync();
 
             // then
@@ -132,15 +131,14 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsPagesIncludingAndAfterInitialOptions()
         {
             // given
-            var initialOptions = new GetPayoutsOptions
+            var options = new GetPayoutsOptions
             {
                 Limit = 1,
             };
 
             // when
             var result = await _subject
-                .BuildPager()
-                .StartFrom(initialOptions)
+                .PageFrom(options)
                 .AndGetAllAfterAsync();
 
             // then
@@ -155,7 +153,7 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var firstId = (await _subject.GetPageAsync()).Items.First().Id;
 
-            var initialOptions = new GetPayoutsOptions
+            var options = new GetPayoutsOptions
             {
                 After = firstId,
                 Limit = 1,
@@ -163,8 +161,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await _subject
-                .BuildPager()
-                .StartFrom(initialOptions)
+                .PageFrom(options)
                 .AndGetAllAfterAsync();
 
             // then
