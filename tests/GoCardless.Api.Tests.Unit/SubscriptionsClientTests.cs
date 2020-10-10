@@ -1,5 +1,5 @@
 using Flurl.Http.Testing;
-using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.Subscriptions;
 using NUnit.Framework;
 using System;
@@ -10,13 +10,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class SubscriptionsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private ISubscriptionsClient subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            var apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken"));
+            subject = new SubscriptionsClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -27,55 +28,77 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void CancelSubscriptionRequestIsNullThrows()
+        public void ApiClientIsNullThrows()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            CancelSubscriptionRequest request = null;
+            IApiClient apiClient = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CancelAsync(request);
+            TestDelegate test = () => new SubscriptionsClient(apiClient);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClient)));
+        }
+
+        [Test]
+        public void ApiClientConfigurationIsNullThrows()
+        {
+            // given
+            ApiClientConfiguration apiClientConfiguration = null;
+
+            // when
+            TestDelegate test = () => new SubscriptionsClient(apiClientConfiguration);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClientConfiguration)));
+        }
+
+        [Test]
+        public void CancelSubscriptionOptionsIsNullThrows()
+        {
+            // given
+            CancelSubscriptionOptions options = null;
+
+            // when
+            AsyncTestDelegate test = () => subject.CancelAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void CancelSubscriptionRequestIdIsNullOrWhiteSpaceThrows(string id)
+        public void CancelSubscriptionOptionsIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            var request = new CancelSubscriptionRequest
+            var options = new CancelSubscriptionOptions
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.CancelAsync(request);
+            AsyncTestDelegate test = () => subject.CancelAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]
         public async Task CallsCancelSubscriptionEndpoint()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            var request = new CancelSubscriptionRequest
+            var options = new CancelSubscriptionOptions
             {
                 Id = "SB12345678"
             };
 
             // when
-            await subject.CancelAsync(request);
+            await subject.CancelAsync(options);
 
             // then
             _httpTest
@@ -84,34 +107,30 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void CreateSubscriptionRequestIsNullThrows()
+        public void CreateSubscriptionOptionsIsNullThrows()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            CreateSubscriptionRequest request = null;
+            CreateSubscriptionOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            AsyncTestDelegate test = () => subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsCreateSubscriptionEndpoint()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            var request = new CreateSubscriptionRequest
+            var options = new CreateSubscriptionOptions
             {
                 IdempotencyKey = Guid.NewGuid().ToString()
             };
 
             // when
-            await subject.CreateAsync(request);
+            await subject.CreateAsync(options);
 
             // then
             _httpTest
@@ -126,8 +145,6 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
             // when
             AsyncTestDelegate test = () => subject.ForIdAsync(id);
 
@@ -141,7 +158,6 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualSubscriptionsEndpoint()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
             var id = "SB12345678";
 
             // when
@@ -157,8 +173,6 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetSubscriptionsEndpoint()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
             // when
             await subject.GetPageAsync();
 
@@ -169,28 +183,24 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void GetSubscriptionsRequestIsNullThrows()
+        public void GetSubscriptionsOptionsIsNullThrows()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            GetSubscriptionsRequest request = null;
+            GetSubscriptionsOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
-        public async Task CallsGetSubscriptionsEndpointUsingRequest()
+        public async Task CallsGetSubscriptionsEndpointUsingOptions()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            var request = new GetSubscriptionsRequest
+            var options = new GetSubscriptionsOptions
             {
                 Before = "before test",
                 After = "after test",
@@ -198,7 +208,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.GetPageAsync(request);
+            await subject.GetPageAsync(options);
 
             // then
             _httpTest
@@ -207,55 +217,49 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void UpdateSubscriptionRequestIsNullThrows()
+        public void UpdateSubscriptionOptionsIsNullThrows()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            UpdateSubscriptionRequest request = null;
+            UpdateSubscriptionOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateSubscriptionRequestIdIsNullOrWhiteSpaceThrows(string id)
+        public void UpdateSubscriptionOptionsIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            var request = new UpdateSubscriptionRequest
+            var options = new UpdateSubscriptionOptions
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]
         public async Task CallsUpdateSubscriptionEndpoint()
         {
             // given
-            var subject = new SubscriptionsClient(_clientConfiguration);
-
-            var request = new UpdateSubscriptionRequest
+            var options = new UpdateSubscriptionOptions
             {
                 Id = "SB12345678"
             };
 
             // when
-            await subject.UpdateAsync(request);
+            await subject.UpdateAsync(options);
 
             // then
             _httpTest

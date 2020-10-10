@@ -1,5 +1,5 @@
 ﻿using Flurl.Http.Testing;
-using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.Customers;
 using NUnit.Framework;
 using System;
@@ -10,13 +10,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class CustomersClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private ICustomersClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            var apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken"));
+            _subject = new CustomersClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -27,34 +28,58 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void CreateCustomerRequestIsNullThrows()
+        public void ApiClientIsNullThrows()
         {
             // given
-            var subject = new CustomersClient(_clientConfiguration);
-
-            CreateCustomerRequest request = null;
+            IApiClient apiClient = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            TestDelegate test = () => new CustomersClient(apiClient);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClient)));
+        }
+
+        [Test]
+        public void ApiClientConfigurationIsNullThrows()
+        {
+            // given
+            ApiClientConfiguration apiClientConfiguration = null;
+
+            // when
+            TestDelegate test = () => new CustomersClient(apiClientConfiguration);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClientConfiguration)));
+        }
+
+        [Test]
+        public void CreateCustomerOptionsIsNullThrows()
+        {
+            // given
+            CreateCustomerOptions options = null;
+
+            // when
+            AsyncTestDelegate test = () => _subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsCreateCustomerEndpoint()
         {
             // given
-            var subject = new CustomersClient(_clientConfiguration);
-
-            var request = new CreateCustomerRequest
+            var options = new CreateCustomerOptions
             {
                 IdempotencyKey = Guid.NewGuid().ToString()
             };
 
             // when
-            await subject.CreateAsync(request);
+            await _subject.CreateAsync(options);
 
             // then
             _httpTest
@@ -69,10 +94,8 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CustomersClient(_clientConfiguration);
-
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(id);
+            AsyncTestDelegate test = () => _subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -84,11 +107,10 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualCustomersEndpoint()
         {
             // given
-            var subject = new CustomersClient(_clientConfiguration);
             var id = "CU12345678";
 
             // when
-            await subject.ForIdAsync(id);
+            await _subject.ForIdAsync(id);
 
             // then
             _httpTest
@@ -100,10 +122,8 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetCustomersEndpoint()
         {
             // given
-            var subject = new CustomersClient(_clientConfiguration);
-
             // when
-            await subject.GetPageAsync();
+            await _subject.GetPageAsync();
 
             // then
             _httpTest
@@ -112,28 +132,24 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void GetCustomersRequestIsNullThrows()
+        public void GetCustomersOptionsIsNullThrows()
         {
             // given
-            var subject = new CustomersClient(_clientConfiguration);
-
-            GetCustomersRequest request = null;
+            GetCustomersOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => _subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
-        public async Task CallsGetCustomersEndpointUsingRequest()
+        public async Task CallsGetCustomersEndpointUsingOptions()
         {
             // given
-            var subject = new CustomersClient(_clientConfiguration);
-
-            var request = new GetCustomersRequest
+            var options = new GetCustomersOptions
             {
                 Before = "before test",
                 After = "after test",
@@ -141,7 +157,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.GetPageAsync(request);
+            await _subject.GetPageAsync(options);
 
             // then
             _httpTest
@@ -150,55 +166,49 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void UpdateCustomerRequestIsNullThrows()
+        public void UpdateCustomerOptionsIsNullThrows()
         {
             // given
-            var subject = new CustomersClient(_clientConfiguration);
-
-            UpdateCustomerRequest request = null;
+            UpdateCustomerOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => _subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateCustomerRequestIdIsNullOrWhiteSpaceThrows(string id)
+        public void UpdateCustomerOptionsIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CustomersClient(_clientConfiguration);
-
-            var request = new UpdateCustomerRequest
+            var options = new UpdateCustomerOptions
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => _subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]
         public async Task CallsUpdateCustomerEndpoint()
         {
             // given
-            var subject = new CustomersClient(_clientConfiguration);
-
-            var request = new UpdateCustomerRequest
+            var options = new UpdateCustomerOptions
             {
                 Id = "CU12345678"
             };
 
             // when
-            await subject.UpdateAsync(request);
+            await _subject.UpdateAsync(options);
 
             // then
             _httpTest

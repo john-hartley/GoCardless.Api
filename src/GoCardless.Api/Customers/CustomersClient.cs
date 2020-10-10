@@ -1,74 +1,105 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Customers
 {
-    public class CustomersClient : ApiClientBase, ICustomersClient
+    public class CustomersClient : ICustomersClient
     {
-        public CustomersClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
 
-        public IPagerBuilder<GetCustomersRequest, Customer> BuildPager()
+        public CustomersClient(IApiClient apiClient)
         {
-            return new Pager<GetCustomersRequest, Customer>(GetPageAsync);
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
         }
 
-        public Task<Response<Customer>> CreateAsync(CreateCustomerRequest request)
+        public CustomersClient(ApiClientConfiguration apiClientConfiguration)
         {
-            if (request == null)
+            if (apiClientConfiguration == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(apiClientConfiguration));
             }
 
-            return PostAsync<Response<Customer>>(
-                "customers",
-                new { customers = request },
-                request.IdempotencyKey
-            );
+            _apiClient = new ApiClient(apiClientConfiguration);
         }
 
-        public Task<Response<Customer>> ForIdAsync(string id)
+        public IPagerBuilder<GetCustomersOptions, Customer> BuildPager()
+        {
+            return new Pager<GetCustomersOptions, Customer>(GetPageAsync);
+        }
+
+        public async Task<Response<Customer>> CreateAsync(CreateCustomerOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            return await _apiClient.PostAsync<Response<Customer>>(
+                request =>
+                {
+                    request
+                        .AppendPathSegment("customers")
+                        .WithHeader("Idempotency-Key", options.IdempotencyKey);
+                },
+                new { customers = options });
+        }
+
+        public async Task<Response<Customer>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Customer>>($"customers/{id}");
+            return await _apiClient.GetAsync<Response<Customer>>(request =>
+            {
+                request.AppendPathSegment($"customers/{id}");
+            });
         }
 
-        public Task<PagedResponse<Customer>> GetPageAsync()
+        public async Task<PagedResponse<Customer>> GetPageAsync()
         {
-            return GetAsync<PagedResponse<Customer>>("customers");
+            return await _apiClient.GetAsync<PagedResponse<Customer>>(request =>
+            {
+                request.AppendPathSegment("customers");
+            });
         }
 
-        public Task<PagedResponse<Customer>> GetPageAsync(GetCustomersRequest request)
+        public async Task<PagedResponse<Customer>> GetPageAsync(GetCustomersOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<Customer>>("customers", request.ToReadOnlyDictionary());
+            return await _apiClient.GetAsync<PagedResponse<Customer>>(request =>
+            {
+                request
+                    .AppendPathSegment("customers")
+                    .SetQueryParams(options.ToReadOnlyDictionary());
+            });
         }
 
-        public Task<Response<Customer>> UpdateAsync(UpdateCustomerRequest request)
+        public async Task<Response<Customer>> UpdateAsync(UpdateCustomerOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PutAsync<Response<Customer>>(
-                $"customers/{request.Id}",
-                new { customers = request }
-            );
+            return await _apiClient.PutAsync<Response<Customer>>(
+                request =>
+                {
+                    request.AppendPathSegment($"customers/{options.Id}");
+                },
+                new { customers = options });
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Flurl.Http.Testing;
-using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.Mandates;
 using NUnit.Framework;
 using System;
@@ -10,13 +10,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class MandatesClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IMandatesClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            var apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken"));
+            _subject = new MandatesClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -27,55 +28,77 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void CancelMandateRequestIsNullThrows()
+        public void ApiClientIsNullThrows()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            CancelMandateRequest request = null;
+            IApiClient apiClient = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CancelAsync(request);
+            TestDelegate test = () => new MandatesClient(apiClient);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClient)));
+        }
+
+        [Test]
+        public void ApiClientConfigurationIsNullThrows()
+        {
+            // given
+            ApiClientConfiguration apiClientConfiguration = null;
+
+            // when
+            TestDelegate test = () => new MandatesClient(apiClientConfiguration);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClientConfiguration)));
+        }
+
+        [Test]
+        public void CancelMandateOptionsIsNullThrows()
+        {
+            // given
+            CancelMandateOptions options = null;
+
+            // when
+            AsyncTestDelegate test = () => _subject.CancelAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void CancelMandateRequestIdIsNullOrWhiteSpaceThrows(string id)
+        public void CancelMandateOptionsIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            var request = new CancelMandateRequest
+            var options = new CancelMandateOptions
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.CancelAsync(request);
+            AsyncTestDelegate test = () => _subject.CancelAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]
         public async Task CallsCancelMandateEndpoint()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            var request = new CancelMandateRequest
+            var options = new CancelMandateOptions
             {
                 Id = "MD12345678"
             };
 
             // when
-            await subject.CancelAsync(request);
+            await _subject.CancelAsync(options);
 
             // then
             _httpTest
@@ -84,34 +107,30 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void CreateMandateRequestIsNullThrows()
+        public void CreateMandateOptionsIsNullThrows()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            CreateMandateRequest request = null;
+            CreateMandateOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            AsyncTestDelegate test = () => _subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsCreateMandateEndpoint()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            var request = new CreateMandateRequest
+            var options = new CreateMandateOptions
             {
                 IdempotencyKey = Guid.NewGuid().ToString()
             };
 
             // when
-            await subject.CreateAsync(request);
+            await _subject.CreateAsync(options);
 
             // then
             _httpTest
@@ -126,10 +145,8 @@ namespace GoCardless.Api.Tests.Unit
         public void IsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(id);
+            AsyncTestDelegate test = () => _subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -141,11 +158,10 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualMandatesEndpoint()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
             var id = "MD12345678";
 
             // when
-            await subject.ForIdAsync(id);
+            await _subject.ForIdAsync(id);
 
             // then
             _httpTest
@@ -157,10 +173,8 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetMandatesEndpoint()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
             // when
-            await subject.GetPageAsync();
+            await _subject.GetPageAsync();
 
             // then
             _httpTest
@@ -169,28 +183,24 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void GetMandatesRequestIsNullThrows()
+        public void GetMandatesOptionsIsNullThrows()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            GetMandatesRequest request = null;
+            GetMandatesOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => _subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
-        public async Task CallsGetMandatesEndpointUsingRequest()
+        public async Task CallsGetMandatesEndpointUsingOptions()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            var request = new GetMandatesRequest
+            var options = new GetMandatesOptions
             {
                 Before = "before test",
                 After = "after test",
@@ -198,7 +208,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.GetPageAsync(request);
+            await _subject.GetPageAsync(options);
 
             // then
             _httpTest
@@ -207,55 +217,49 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void ReinstateMandateRequestIsNullThrows()
+        public void ReinstateMandateOptionsIsNullThrows()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            ReinstateMandateRequest request = null;
+            ReinstateMandateOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.ReinstateAsync(request);
+            AsyncTestDelegate test = () => _subject.ReinstateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void ReinstateMandateRequestIdIsNullOrWhiteSpaceThrows(string id)
+        public void ReinstateMandateOptionsIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            var request = new ReinstateMandateRequest
+            var options = new ReinstateMandateOptions
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.ReinstateAsync(request);
+            AsyncTestDelegate test = () => _subject.ReinstateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]
         public async Task CallsReinstateMandateEndpoint()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            var request = new ReinstateMandateRequest
+            var options = new ReinstateMandateOptions
             {
                 Id = "MD12345678"
             };
 
             // when
-            await subject.ReinstateAsync(request);
+            await _subject.ReinstateAsync(options);
 
             // then
             _httpTest
@@ -264,55 +268,49 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void UpdateMandateRequestIsNullThrows()
+        public void UpdateMandateOptionsIsNullThrows()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            UpdateMandateRequest request = null;
+            UpdateMandateOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => _subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateMandateRequestIdIsNullOrWhiteSpaceThrows(string id)
+        public void UpdateMandateOptionsIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            var request = new UpdateMandateRequest
+            var options = new UpdateMandateOptions
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => _subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]
         public async Task CallsUpdateMandateEndpoint()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            var request = new UpdateMandateRequest
+            var options = new UpdateMandateOptions
             {
                 Id = "MD12345678"
             };
 
             // when
-            await subject.UpdateAsync(request);
+            await _subject.UpdateAsync(options);
 
             // then
             _httpTest

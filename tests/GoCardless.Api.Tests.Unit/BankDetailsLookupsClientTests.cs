@@ -1,6 +1,6 @@
 ﻿using Flurl.Http.Testing;
 using GoCardless.Api.BankDetailsLookups;
-using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using NUnit.Framework;
 using System;
 using System.Net.Http;
@@ -10,13 +10,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class BankDetailsLookupsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IBankDetailsLookupsClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            var apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken"));
+            _subject = new BankDetailsLookupsClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -27,31 +28,55 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void BankDetailsLookupRequestIsNullThrows()
+        public void ApiClientIsNullThrows()
         {
             // given
-            var subject = new BankDetailsLookupsClient(_clientConfiguration);
-
-            BankDetailsLookupRequest request = null;
+            IApiClient apiClient = null;
 
             // when
-            AsyncTestDelegate test = () => subject.LookupAsync(request);
+            TestDelegate test = () => new BankDetailsLookupsClient(apiClient);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClient)));
+        }
+
+        [Test]
+        public void ApiClientConfigurationIsNullThrows()
+        {
+            // given
+            ApiClientConfiguration apiClientConfiguration = null;
+
+            // when
+            TestDelegate test = () => new BankDetailsLookupsClient(apiClientConfiguration);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClientConfiguration)));
+        }
+
+        [Test]
+        public void BankDetailsLookupOptionsIsNullThrows()
+        {
+            // given
+            BankDetailsLookupOptions options = null;
+
+            // when
+            AsyncTestDelegate test = () => _subject.LookupAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task BankDetailsLookupEndpoint()
         {
             // given
-            var subject = new BankDetailsLookupsClient(_clientConfiguration);
-
-            var request = new BankDetailsLookupRequest();
+            var options = new BankDetailsLookupOptions();
 
             // when
-            await subject.LookupAsync(request);
+            await _subject.LookupAsync(options);
 
             // then
             _httpTest

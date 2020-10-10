@@ -1,5 +1,5 @@
 ﻿using Flurl.Http.Testing;
-using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.PayoutItems;
 using NUnit.Framework;
 using System;
@@ -10,13 +10,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class PayoutItemsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IPayoutItemsClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            var apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken"));
+            _subject = new PayoutItemsClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -27,19 +28,45 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void GetPayoutItemRequestIsNullThrows()
+        public void ApiClientIsNullThrows()
         {
             // given
-            var subject = new PayoutItemsClient(_clientConfiguration);
-
-            GetPayoutItemsRequest request = null;
+            IApiClient apiClient = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            TestDelegate test = () => new PayoutItemsClient(apiClient);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClient)));
+        }
+
+        [Test]
+        public void ApiClientConfigurationIsNullThrows()
+        {
+            // given
+            ApiClientConfiguration apiClientConfiguration = null;
+
+            // when
+            TestDelegate test = () => new PayoutItemsClient(apiClientConfiguration);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClientConfiguration)));
+        }
+
+        [Test]
+        public void GetPayoutItemOptionsIsNullThrows()
+        {
+            // given
+            GetPayoutItemsOptions options = null;
+
+            // when
+            AsyncTestDelegate test = () => _subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
@@ -48,29 +75,25 @@ namespace GoCardless.Api.Tests.Unit
         public void PayoutIdIsNullOrWhiteSpaceThrows(string payoutId)
         {
             // given
-            var subject = new PayoutItemsClient(_clientConfiguration);
-
-            var request = new GetPayoutItemsRequest
+            var options = new GetPayoutItemsOptions
             {
                 Payout = payoutId
             };
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => _subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
             Assert.That(ex.Message, Is.Not.Null);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Payout)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Payout)));
         }
 
         [Test]
-        public async Task CallsGetPayoutItemsEndpointUsingRequest()
+        public async Task CallsGetPayoutItemsEndpointUsingOptions()
         {
             // given
-            var subject = new PayoutItemsClient(_clientConfiguration);
-
-            var request = new GetPayoutItemsRequest
+            var options = new GetPayoutItemsOptions
             {
                 Before = "before test",
                 After = "after test",
@@ -79,7 +102,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.GetPageAsync(request);
+            await _subject.GetPageAsync(options);
 
             // then
             _httpTest

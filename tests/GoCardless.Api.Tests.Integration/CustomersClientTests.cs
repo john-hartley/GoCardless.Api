@@ -10,11 +10,19 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class CustomersClientTests : IntegrationTest
     {
+        private ICustomersClient _subject;
+
+        [SetUp]
+        public void Setup()
+        {
+            _subject = new CustomersClient(_apiClient);
+        }
+
         [Test]
         public async Task CreatesConflictingCustomer()
         {
             // given
-            var request = new CreateCustomerRequest
+            var options = new CreateCustomerOptions
             {
                 AddressLine1 = "Address Line 1",
                 AddressLine2 = "Address Line 2",
@@ -39,42 +47,40 @@ namespace GoCardless.Api.Tests.Integration
                 SwedishIdentityNumber = "5302256218",
             };
 
-            var subject = new CustomersClient(_clientConfiguration);
+            _subject = new CustomersClient(_apiClient);
 
             // when
-            await subject.CreateAsync(request);
-            var result = await subject.CreateAsync(request);
+            await _subject.CreateAsync(options);
+            var result = await _subject.CreateAsync(options);
             var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Id, Is.Not.Null);
-            Assert.That(actual.AddressLine1, Is.EqualTo(request.AddressLine1));
-            Assert.That(actual.AddressLine2, Is.EqualTo(request.AddressLine2));
-            Assert.That(actual.AddressLine3, Is.EqualTo(request.AddressLine3));
-            Assert.That(actual.City, Is.EqualTo(request.City));
-            Assert.That(actual.CountryCode, Is.EqualTo(request.CountryCode));
+            Assert.That(actual.AddressLine1, Is.EqualTo(options.AddressLine1));
+            Assert.That(actual.AddressLine2, Is.EqualTo(options.AddressLine2));
+            Assert.That(actual.AddressLine3, Is.EqualTo(options.AddressLine3));
+            Assert.That(actual.City, Is.EqualTo(options.City));
+            Assert.That(actual.CountryCode, Is.EqualTo(options.CountryCode));
             Assert.That(actual.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(actual.DanishIdentityNumber, Is.EqualTo(request.DanishIdentityNumber));
-            Assert.That(actual.Email, Is.EqualTo(request.Email));
-            Assert.That(actual.FamilyName, Is.EqualTo(request.FamilyName));
-            Assert.That(actual.GivenName, Is.EqualTo(request.GivenName));
-            Assert.That(actual.Language, Is.EqualTo(request.Language));
-            Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
-            Assert.That(actual.PhoneNumber, Is.EqualTo(request.PhoneNumber));
-            Assert.That(actual.PostalCode, Is.EqualTo(request.PostalCode));
-            Assert.That(actual.Region, Is.EqualTo(request.Region));
-            Assert.That(actual.SwedishIdentityNumber, Does.Contain(request.SwedishIdentityNumber));
+            Assert.That(actual.DanishIdentityNumber, Is.EqualTo(options.DanishIdentityNumber));
+            Assert.That(actual.Email, Is.EqualTo(options.Email));
+            Assert.That(actual.FamilyName, Is.EqualTo(options.FamilyName));
+            Assert.That(actual.GivenName, Is.EqualTo(options.GivenName));
+            Assert.That(actual.Language, Is.EqualTo(options.Language));
+            Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
+            Assert.That(actual.PhoneNumber, Is.EqualTo(options.PhoneNumber));
+            Assert.That(actual.PostalCode, Is.EqualTo(options.PostalCode));
+            Assert.That(actual.Region, Is.EqualTo(options.Region));
+            Assert.That(actual.SwedishIdentityNumber, Does.Contain(options.SwedishIdentityNumber));
         }
 
         [Test]
         public async Task ReturnsCustomers()
         {
             // given
-            var subject = new CustomersClient(_clientConfiguration);
-
             // when
-            var result = (await subject.GetPageAsync()).Items.ToList();
+            var result = (await _subject.GetPageAsync()).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -102,32 +108,30 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new CustomersClient(_clientConfiguration);
-
-            var firstPageRequest = new GetCustomersRequest
+            var firstPageOptions = new GetCustomersOptions
             {
                 Limit = 1
             };
 
             // when
-            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
+            var firstPageResult = await _subject.GetPageAsync(firstPageOptions);
 
-            var secondPageRequest = new GetCustomersRequest
+            var secondPageOptions = new GetCustomersOptions
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 2
             };
 
-            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
+            var secondPageResult = await _subject.GetPageAsync(secondPageOptions);
 
             // then
-            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
-            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
+            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageOptions.Limit));
+            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageOptions.Limit));
             Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
             Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
 
-            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageRequest.Limit));
-            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
+            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageOptions.Limit));
+            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageOptions.Limit));
             Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
             Assert.That(secondPageResult.Meta.Cursors.After, Is.Not.Null);
         }
@@ -137,10 +141,9 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var customer = await _resourceFactory.CreateForeignCustomer();
-            var subject = new CustomersClient(_clientConfiguration);
 
             // when
-            var result = await subject.ForIdAsync(customer.Id);
+            var result = await _subject.ForIdAsync(customer.Id);
             var actual = result.Item;
 
             // then
@@ -169,10 +172,9 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var customer = await _resourceFactory.CreateForeignCustomer();
-            var subject = new CustomersClient(_clientConfiguration);
 
             // when
-            var result = await subject.ForIdAsync(customer.Id);
+            var result = await _subject.ForIdAsync(customer.Id);
             var actual = result.Item;
 
             // then
@@ -199,9 +201,8 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var customer = await _resourceFactory.CreateForeignCustomer();
-            var subject = new CustomersClient(_clientConfiguration);
 
-            var request = new UpdateCustomerRequest
+            var options = new UpdateCustomerOptions
             {
                 Id = customer.Id,
                 AddressLine1 = "Address Line 1",
@@ -221,27 +222,27 @@ namespace GoCardless.Api.Tests.Integration
             };
 
             // when
-            var result = await subject.UpdateAsync(request);
+            var result = await _subject.UpdateAsync(options);
             var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Id, Is.Not.Null);
-            Assert.That(actual.AddressLine1, Is.EqualTo(request.AddressLine1));
-            Assert.That(actual.AddressLine2, Is.EqualTo(request.AddressLine2));
-            Assert.That(actual.AddressLine3, Is.EqualTo(request.AddressLine3));
-            Assert.That(actual.City, Is.EqualTo(request.City));
-            Assert.That(actual.CountryCode, Is.EqualTo(request.CountryCode));
+            Assert.That(actual.AddressLine1, Is.EqualTo(options.AddressLine1));
+            Assert.That(actual.AddressLine2, Is.EqualTo(options.AddressLine2));
+            Assert.That(actual.AddressLine3, Is.EqualTo(options.AddressLine3));
+            Assert.That(actual.City, Is.EqualTo(options.City));
+            Assert.That(actual.CountryCode, Is.EqualTo(options.CountryCode));
             Assert.That(actual.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(actual.DanishIdentityNumber, Is.EqualTo(request.DanishIdentityNumber));
-            Assert.That(actual.Email, Is.EqualTo(request.Email));
-            Assert.That(actual.FamilyName, Is.EqualTo(request.FamilyName));
-            Assert.That(actual.GivenName, Is.EqualTo(request.GivenName));
-            Assert.That(actual.Language, Is.EqualTo(request.Language));
+            Assert.That(actual.DanishIdentityNumber, Is.EqualTo(options.DanishIdentityNumber));
+            Assert.That(actual.Email, Is.EqualTo(options.Email));
+            Assert.That(actual.FamilyName, Is.EqualTo(options.FamilyName));
+            Assert.That(actual.GivenName, Is.EqualTo(options.GivenName));
+            Assert.That(actual.Language, Is.EqualTo(options.Language));
             Assert.That(actual.Metadata, Is.EqualTo(customer.Metadata));
-            Assert.That(actual.PhoneNumber, Is.EqualTo(request.PhoneNumber));
-            Assert.That(actual.PostalCode, Is.EqualTo(request.PostalCode));
-            Assert.That(actual.Region, Is.EqualTo(request.Region));
+            Assert.That(actual.PhoneNumber, Is.EqualTo(options.PhoneNumber));
+            Assert.That(actual.PostalCode, Is.EqualTo(options.PostalCode));
+            Assert.That(actual.Region, Is.EqualTo(options.Region));
         }
 
         [Test]
@@ -249,9 +250,8 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var customer = await _resourceFactory.CreateForeignCustomer();
-            var subject = new CustomersClient(_clientConfiguration);
 
-            var request = new UpdateCustomerRequest
+            var options = new UpdateCustomerOptions
             {
                 Id = customer.Id,
                 AddressLine1 = "Address Line 1",
@@ -277,37 +277,36 @@ namespace GoCardless.Api.Tests.Integration
             };
 
             // when
-            var result = await subject.UpdateAsync(request);
+            var result = await _subject.UpdateAsync(options);
             var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Id, Is.Not.Null);
-            Assert.That(actual.AddressLine1, Is.EqualTo(request.AddressLine1));
-            Assert.That(actual.AddressLine2, Is.EqualTo(request.AddressLine2));
-            Assert.That(actual.AddressLine3, Is.EqualTo(request.AddressLine3));
-            Assert.That(actual.City, Is.EqualTo(request.City));
-            Assert.That(actual.CountryCode, Is.EqualTo(request.CountryCode));
+            Assert.That(actual.AddressLine1, Is.EqualTo(options.AddressLine1));
+            Assert.That(actual.AddressLine2, Is.EqualTo(options.AddressLine2));
+            Assert.That(actual.AddressLine3, Is.EqualTo(options.AddressLine3));
+            Assert.That(actual.City, Is.EqualTo(options.City));
+            Assert.That(actual.CountryCode, Is.EqualTo(options.CountryCode));
             Assert.That(actual.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(actual.DanishIdentityNumber, Is.EqualTo(request.DanishIdentityNumber));
-            Assert.That(actual.Email, Is.EqualTo(request.Email));
-            Assert.That(actual.FamilyName, Is.EqualTo(request.FamilyName));
-            Assert.That(actual.GivenName, Is.EqualTo(request.GivenName));
-            Assert.That(actual.Language, Is.EqualTo(request.Language));
-            Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
-            Assert.That(actual.PhoneNumber, Is.EqualTo(request.PhoneNumber));
-            Assert.That(actual.PostalCode, Is.EqualTo(request.PostalCode));
-            Assert.That(actual.Region, Is.EqualTo(request.Region));
+            Assert.That(actual.DanishIdentityNumber, Is.EqualTo(options.DanishIdentityNumber));
+            Assert.That(actual.Email, Is.EqualTo(options.Email));
+            Assert.That(actual.FamilyName, Is.EqualTo(options.FamilyName));
+            Assert.That(actual.GivenName, Is.EqualTo(options.GivenName));
+            Assert.That(actual.Language, Is.EqualTo(options.Language));
+            Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
+            Assert.That(actual.PhoneNumber, Is.EqualTo(options.PhoneNumber));
+            Assert.That(actual.PostalCode, Is.EqualTo(options.PostalCode));
+            Assert.That(actual.Region, Is.EqualTo(options.Region));
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
         public async Task PagesThroughCustomers()
         {
             // given
-            var subject = new CustomersClient(_clientConfiguration);
-            var firstId = (await subject.GetPageAsync()).Items.First().Id;
+            var firstId = (await _subject.GetPageAsync()).Items.First().Id;
 
-            var initialRequest = new GetCustomersRequest
+            var initialOptions = new GetCustomersOptions
             {
                 After = firstId,
                 CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1)),
@@ -315,9 +314,9 @@ namespace GoCardless.Api.Tests.Integration
             };
 
             // when
-            var result = await subject
+            var result = await _subject
                 .BuildPager()
-                .StartFrom(initialRequest)
+                .StartFrom(initialOptions)
                 .AndGetAllAfterAsync();
 
             // then

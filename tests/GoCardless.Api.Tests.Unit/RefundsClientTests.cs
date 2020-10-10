@@ -1,5 +1,5 @@
 ﻿using Flurl.Http.Testing;
-using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.Refunds;
 using NUnit.Framework;
 using System;
@@ -10,13 +10,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class RefundsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IRefundsClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            var apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken"));
+            _subject = new RefundsClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -27,34 +28,58 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void CreateRefundRequestIsNullThrows()
+        public void ApiClientIsNullThrows()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
-
-            CreateRefundRequest request = null;
+            IApiClient apiClient = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            TestDelegate test = () => new RefundsClient(apiClient);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClient)));
+        }
+
+        [Test]
+        public void ApiClientConfigurationIsNullThrows()
+        {
+            // given
+            ApiClientConfiguration apiClientConfiguration = null;
+
+            // when
+            TestDelegate test = () => new RefundsClient(apiClientConfiguration);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClientConfiguration)));
+        }
+
+        [Test]
+        public void CreateRefundOptionsIsNullThrows()
+        {
+            // given
+            CreateRefundOptions options = null;
+
+            // when
+            AsyncTestDelegate test = () => _subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsCreateRefundEndpoint()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
-
-            var request = new CreateRefundRequest
+            var options = new CreateRefundOptions
             {
                 IdempotencyKey = Guid.NewGuid().ToString()
             };
 
             // when
-            await subject.CreateAsync(request);
+            await _subject.CreateAsync(options);
 
             // then
             _httpTest
@@ -69,10 +94,8 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
-
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(id);
+            AsyncTestDelegate test = () => _subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -84,11 +107,10 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualRefundsEndpoint()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
             var id = "RF12345678";
 
             // when
-            await subject.ForIdAsync(id);
+            await _subject.ForIdAsync(id);
 
             // then
             _httpTest
@@ -100,10 +122,8 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetRefundsEndpoint()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
-
             // when
-            await subject.GetPageAsync();
+            await _subject.GetPageAsync();
 
             // then
             _httpTest
@@ -112,28 +132,24 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void GetRefundsRequestIsNullThrows()
+        public void GetRefundsOptionsIsNullThrows()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
-
-            GetRefundsRequest request = null;
+            GetRefundsOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => _subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
-        public async Task CallsGetRefundsEndpointUsingRequest()
+        public async Task CallsGetRefundsEndpointUsingOptions()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
-
-            var request = new GetRefundsRequest
+            var options = new GetRefundsOptions
             {
                 Before = "before test",
                 After = "after test",
@@ -141,7 +157,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.GetPageAsync(request);
+            await _subject.GetPageAsync(options);
 
             // then
             _httpTest
@@ -150,55 +166,49 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void UpdateRefundRequestIsNullThrows()
+        public void UpdateRefundOptionsIsNullThrows()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
-
-            UpdateRefundRequest request = null;
+            UpdateRefundOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => _subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateRefundRequestIdIsNullOrWhiteSpaceThrows(string id)
+        public void UpdateRefundOptionsIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
-
-            var request = new UpdateRefundRequest
+            var options = new UpdateRefundOptions
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => _subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]
         public async Task CallsUpdateRefundEndpoint()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
-
-            var request = new UpdateRefundRequest
+            var options = new UpdateRefundOptions
             {
                 Id = "RF12345678"
             };
 
             // when
-            await subject.UpdateAsync(request);
+            await _subject.UpdateAsync(options);
 
             // then
             _httpTest

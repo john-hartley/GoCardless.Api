@@ -14,6 +14,7 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class MandatesClientTests : IntegrationTest
     {
+        private IMandatesClient _subject;
         private Creditor _creditor;
         private Customer _customer;
         private CustomerBankAccount _customerBankAccount;
@@ -26,11 +27,17 @@ namespace GoCardless.Api.Tests.Integration
             _customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(_customer);
         }
 
+        [SetUp]
+        public void Setup()
+        {
+            _subject = new MandatesClient(_apiClient);
+        }
+
         [Test, NonParallelizable]
         public async Task CreatesCancelsAndReinstatesMandate()
         {
             // given
-            var createRequest = new CreateMandateRequest
+            var createOptions = new CreateMandateOptions
             {
                 Links = new CreateMandateLinks
                 {
@@ -47,14 +54,12 @@ namespace GoCardless.Api.Tests.Integration
                 Scheme = Scheme.Bacs
             };
 
-            var subject = new MandatesClient(_clientConfiguration);
-
             // when
-            var creationResult = await subject.CreateAsync(createRequest);
+            var createResult = await _subject.CreateAsync(createOptions);
 
-            var cancelRequest = new CancelMandateRequest
+            var cancelOptions = new CancelMandateOptions
             {
-                Id = creationResult.Item.Id,
+                Id = createResult.Item.Id,
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key4"] = "Value4",
@@ -63,11 +68,11 @@ namespace GoCardless.Api.Tests.Integration
                 },
             };
 
-            var cancellationResult = await subject.CancelAsync(cancelRequest);
+            var cancelResult = await _subject.CancelAsync(cancelOptions);
 
-            var reinstateRequest = new ReinstateMandateRequest
+            var reinstateOptions = new ReinstateMandateOptions
             {
-                Id = creationResult.Item.Id,
+                Id = createResult.Item.Id,
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key7"] = "Value7",
@@ -76,21 +81,21 @@ namespace GoCardless.Api.Tests.Integration
                 },
             };
 
-            var reinstateResult = (await subject.ReinstateAsync(reinstateRequest));
+            var reinstateResult = (await _subject.ReinstateAsync(reinstateOptions));
 
             // then
-            Assert.That(creationResult.Item, Is.Not.Null);
-            Assert.That(creationResult.Item.Id, Is.Not.Null);
-            Assert.That(creationResult.Item.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(creationResult.Item.Links.Creditor, Is.EqualTo(_creditor.Id));
-            Assert.That(creationResult.Item.Links.CustomerBankAccount, Is.EqualTo(_customerBankAccount.Id));
-            Assert.That(creationResult.Item.Metadata, Is.EqualTo(createRequest.Metadata));
-            Assert.That(creationResult.Item.NextPossibleChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
-            Assert.That(creationResult.Item.Reference, Is.Not.Null.And.EqualTo(createRequest.Reference));
-            Assert.That(creationResult.Item.Scheme, Is.EqualTo(createRequest.Scheme));
-            Assert.That(creationResult.Item.Status, Is.Not.Null.And.Not.EqualTo(MandateStatus.Cancelled));
+            Assert.That(createResult.Item, Is.Not.Null);
+            Assert.That(createResult.Item.Id, Is.Not.Null);
+            Assert.That(createResult.Item.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(createResult.Item.Links.Creditor, Is.EqualTo(_creditor.Id));
+            Assert.That(createResult.Item.Links.CustomerBankAccount, Is.EqualTo(_customerBankAccount.Id));
+            Assert.That(createResult.Item.Metadata, Is.EqualTo(createOptions.Metadata));
+            Assert.That(createResult.Item.NextPossibleChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(createResult.Item.Reference, Is.Not.Null.And.EqualTo(createOptions.Reference));
+            Assert.That(createResult.Item.Scheme, Is.EqualTo(createOptions.Scheme));
+            Assert.That(createResult.Item.Status, Is.Not.Null.And.Not.EqualTo(MandateStatus.Cancelled));
             
-            Assert.That(cancellationResult.Item.Status, Is.EqualTo(MandateStatus.Cancelled));
+            Assert.That(cancelResult.Item.Status, Is.EqualTo(MandateStatus.Cancelled));
 
             Assert.That(reinstateResult.Item.Status, Is.Not.Null.And.Not.EqualTo(MandateStatus.Cancelled));
         }
@@ -99,7 +104,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task CreatesConflictingMandate()
         {
             // given
-            var request = new CreateMandateRequest
+            var options = new CreateMandateOptions
             {
                 Links = new CreateMandateLinks
                 {
@@ -115,11 +120,9 @@ namespace GoCardless.Api.Tests.Integration
                 Scheme = Scheme.Bacs,
             };
 
-            var subject = new MandatesClient(_clientConfiguration);
-
             // when
-            await subject.CreateAsync(request);
-            var result = await subject.CreateAsync(request);
+            await _subject.CreateAsync(options);
+            var result = await _subject.CreateAsync(options);
 
             // then
             Assert.That(result.Item, Is.Not.Null);
@@ -127,9 +130,9 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(result.Item.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result.Item.Links.Creditor, Is.EqualTo(_creditor.Id));
             Assert.That(result.Item.Links.CustomerBankAccount, Is.EqualTo(_customerBankAccount.Id));
-            Assert.That(result.Item.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(result.Item.Metadata, Is.EqualTo(options.Metadata));
             Assert.That(result.Item.NextPossibleChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
-            Assert.That(result.Item.Scheme, Is.EqualTo(request.Scheme));
+            Assert.That(result.Item.Scheme, Is.EqualTo(options.Scheme));
             Assert.That(result.Item.Status, Is.Not.Null.And.Not.EqualTo(MandateStatus.Cancelled));
         }
 
@@ -137,10 +140,8 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsMandates()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
             // when
-            var result = (await subject.GetPageAsync()).Items.ToList();
+            var result = (await _subject.GetPageAsync()).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -160,32 +161,30 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-
-            var firstPageRequest = new GetMandatesRequest
+            var firstPageOptions = new GetMandatesOptions
             {
                 Limit = 1
             };
 
             // when
-            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
+            var firstPageResult = await _subject.GetPageAsync(firstPageOptions);
 
-            var secondPageRequest = new GetMandatesRequest
+            var secondPageOptions = new GetMandatesOptions
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 2
             };
 
-            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
+            var secondPageResult = await _subject.GetPageAsync(secondPageOptions);
 
             // then
-            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
-            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
+            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageOptions.Limit));
+            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageOptions.Limit));
             Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
             Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
 
-            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageRequest.Limit));
-            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
+            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageOptions.Limit));
+            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageOptions.Limit));
             Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
             Assert.That(secondPageResult.Meta.Cursors.After, Is.Not.Null);
         }
@@ -194,11 +193,10 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsIndividualMandate()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-            var mandate = await _resourceFactory.CreateMandateFor(_creditor, _customer, _customerBankAccount);
+            var mandate = await _resourceFactory.CreateMandateFor(_creditor, _customerBankAccount);
 
             // when
-            var result = await subject.ForIdAsync(mandate.Id);
+            var result = await _subject.ForIdAsync(mandate.Id);
             var actual = result.Item;
 
             // then
@@ -219,16 +217,15 @@ namespace GoCardless.Api.Tests.Integration
         public async Task UpdatesMandatePreservingMetadata()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-            var mandate = await _resourceFactory.CreateMandateFor(_creditor, _customer, _customerBankAccount);
+            var mandate = await _resourceFactory.CreateMandateFor(_creditor, _customerBankAccount);
 
-            var request = new UpdateMandateRequest
+            var options = new UpdateMandateOptions
             {
                 Id = mandate.Id
             };
 
             // when
-            var result = await subject.UpdateAsync(request);
+            var result = await _subject.UpdateAsync(options);
             var actual = result.Item;
 
             // then
@@ -241,10 +238,9 @@ namespace GoCardless.Api.Tests.Integration
         public async Task UpdatesMandateReplacingMetadata()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-            var mandate = await _resourceFactory.CreateMandateFor(_creditor, _customer, _customerBankAccount);
+            var mandate = await _resourceFactory.CreateMandateFor(_creditor, _customerBankAccount);
 
-            var request = new UpdateMandateRequest
+            var options = new UpdateMandateOptions
             {
                 Id = mandate.Id,
                 Metadata = new Dictionary<string, string>
@@ -256,23 +252,22 @@ namespace GoCardless.Api.Tests.Integration
             };
 
             // when
-            var result = await subject.UpdateAsync(request);
+            var result = await _subject.UpdateAsync(options);
             var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Id, Is.Not.Null);
-            Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
         public async Task PagesThroughMandates()
         {
             // given
-            var subject = new MandatesClient(_clientConfiguration);
-            var firstId = (await subject.GetPageAsync()).Items.First().Id;
+            var firstId = (await _subject.GetPageAsync()).Items.First().Id;
 
-            var initialRequest = new GetMandatesRequest
+            var initialOptions = new GetMandatesOptions
             {
                 After = firstId,
                 CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1)),
@@ -280,9 +275,9 @@ namespace GoCardless.Api.Tests.Integration
             };
 
             // when
-            var result = await subject
+            var result = await _subject
                 .BuildPager()
-                .StartFrom(initialRequest)
+                .StartFrom(initialOptions)
                 .AndGetAllAfterAsync();
 
             // then

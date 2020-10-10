@@ -1,5 +1,5 @@
 ﻿using GoCardless.Api.BankDetailsLookups;
-using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.CreditorBankAccounts;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
@@ -16,34 +16,45 @@ using GoCardless.Api.Payouts;
 using GoCardless.Api.RedirectFlows;
 using GoCardless.Api.Refunds;
 using GoCardless.Api.Subscriptions;
+using System;
 
 namespace GoCardless.Api
 {
-    public class GoCardlessClient
+    public class GoCardlessClient : IGoCardlessClient
     {
-        private readonly ClientConfiguration _configuration;
+        private readonly IApiClient _apiClient;
 
-        public GoCardlessClient(ClientConfiguration configuration)
+        public GoCardlessClient(IApiClient apiClient)
         {
-            _configuration = configuration;
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
+        }
 
-            BankDetailsLookups = new BankDetailsLookupsClient(configuration);
-            CreditorBankAccounts = new CreditorBankAccountsClient(configuration);
-            Creditors = new CreditorsClient(configuration);
-            CustomerBankAccounts = new CustomerBankAccountsClient(configuration);
-            CustomerNotifications = new CustomerNotificationsClient(configuration);
-            Customers = new CustomersClient(configuration);
-            Events = new EventsClient(configuration);
-            MandateImportEntries = new MandateImportEntriesClient(configuration);
-            MandateImports = new MandateImportsClient(configuration);
-            MandatePdfs = new MandatePdfsClient(configuration);
-            Mandates = new MandatesClient(configuration);
-            Payments = new PaymentsClient(configuration);
-            PayoutItems = new PayoutItemsClient(configuration);
-            Payouts = new PayoutsClient(configuration);
-            RedirectFlows = new RedirectFlowsClient(configuration);
-            Refunds = new RefundsClient(configuration);
-            Subscriptions = new SubscriptionsClient(configuration);
+        public GoCardlessClient(ApiClientConfiguration apiClientConfiguration)
+        {
+            if (apiClientConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(apiClientConfiguration));
+            }
+
+            _apiClient = new ApiClient(apiClientConfiguration);
+
+            BankDetailsLookups = new BankDetailsLookupsClient(_apiClient);
+            CreditorBankAccounts = new CreditorBankAccountsClient(_apiClient);
+            Creditors = new CreditorsClient(_apiClient);
+            CustomerBankAccounts = new CustomerBankAccountsClient(_apiClient);
+            CustomerNotifications = new CustomerNotificationsClient(_apiClient);
+            Customers = new CustomersClient(_apiClient);
+            Events = new EventsClient(_apiClient);
+            MandateImportEntries = new MandateImportEntriesClient(_apiClient);
+            MandateImports = new MandateImportsClient(_apiClient);
+            MandatePdfs = new MandatePdfsClient(_apiClient);
+            Mandates = new MandatesClient(_apiClient);
+            Payments = new PaymentsClient(_apiClient);
+            PayoutItems = new PayoutItemsClient(_apiClient);
+            Payouts = new PayoutsClient(_apiClient);
+            RedirectFlows = new RedirectFlowsClient(_apiClient);
+            Refunds = new RefundsClient(_apiClient);
+            Subscriptions = new SubscriptionsClient(_apiClient);
         }
 
         public IBankDetailsLookupsClient BankDetailsLookups { get; }

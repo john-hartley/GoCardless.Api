@@ -9,27 +9,27 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class PayoutItemsClientTests : IntegrationTest
     {
+        private IPayoutItemsClient _subject;
         private Payout _payout;
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()
         {
             _payout = await _resourceFactory.Payout();
+            _subject = new PayoutItemsClient(_apiClient);
         }
 
         [Test]
         public async Task ReturnsPayoutItems()
         {
             // given
-            var subject = new PayoutItemsClient(_clientConfiguration);
-
-            var request = new GetPayoutItemsRequest
+            var options = new GetPayoutItemsOptions
             {
                 Payout = _payout.Id
             };
 
             // when
-            var result = await subject.GetPageAsync(request);
+            var result = await _subject.GetPageAsync(options);
             var actual = result.Items.ToList();
 
             // then
@@ -43,53 +43,49 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new PayoutItemsClient(_clientConfiguration);
-
-            var firstPageRequest = new GetPayoutItemsRequest
+            var firstPageOptions = new GetPayoutItemsOptions
             {
                 Limit = 1,
                 Payout = _payout.Id
             };
 
             // when
-            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
+            var firstPageResult = await _subject.GetPageAsync(firstPageOptions);
 
-            var secondPageRequest = new GetPayoutItemsRequest
+            var secondPageOptions = new GetPayoutItemsOptions
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 1,
                 Payout = _payout.Id
             };
 
-            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
+            var secondPageResult = await _subject.GetPageAsync(secondPageOptions);
 
             // then
-            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
-            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
+            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageOptions.Limit));
+            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageOptions.Limit));
             Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
             Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
 
-            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageRequest.Limit));
-            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
+            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageOptions.Limit));
+            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageOptions.Limit));
             Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
             Assert.That(secondPageResult.Meta.Cursors.After, Is.Null);
         }
 
         [Test, Explicit("Depends on the amount of payout items, which varies.")]
-        public async Task ReturnsPagesIncludingAndAfterInitialRequest()
+        public async Task ReturnsPagesIncludingAndAfterInitialOptions()
         {
             // given
-            var subject = new PayoutItemsClient(_clientConfiguration);
-
-            var initialRequest = new GetPayoutItemsRequest
+            var initialOptions = new GetPayoutItemsOptions
             {
                 Payout = _payout.Id
             };
 
             // when
-            var result = await subject
+            var result = await _subject
                 .BuildPager()
-                .StartFrom(initialRequest)
+                .StartFrom(initialOptions)
                 .AndGetAllAfterAsync();
 
             // then

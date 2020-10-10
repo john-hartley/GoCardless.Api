@@ -9,6 +9,14 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class MandatePdfsClientTests : IntegrationTest
     {
+        private IMandatePdfsClient _subject;
+
+        [SetUp]
+        public void Setup()
+        {
+            _subject = new MandatePdfsClient(_apiClient);
+        }
+
         [Test]
         public async Task CreatesMandatePdfUsingMandate()
         {
@@ -16,10 +24,9 @@ namespace GoCardless.Api.Tests.Integration
             var creditor = await _resourceFactory.Creditor();
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
-            var mandate = await _resourceFactory.CreateMandateFor(creditor, customer, customerBankAccount);
-            var subject = new MandatePdfsClient(_clientConfiguration);
+            var mandate = await _resourceFactory.CreateMandateFor(creditor, customerBankAccount);
 
-            var request = new CreateMandatePdfRequest
+            var options = new CreateMandatePdfOptions
             {
                 Language = "en",
                 Links = new MandatePdfLinks
@@ -29,7 +36,7 @@ namespace GoCardless.Api.Tests.Integration
             };
 
             // when
-            var result = await subject.CreateAsync(request);
+            var result = await _subject.CreateAsync(options);
 
             // then
             Assert.That(result.Item, Is.Not.Null);
@@ -44,10 +51,9 @@ namespace GoCardless.Api.Tests.Integration
             var creditor = await _resourceFactory.Creditor();
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
-            var mandate = await _resourceFactory.CreateMandateFor(creditor, customer, customerBankAccount);
-            var subject = new MandatePdfsClient(_clientConfiguration);
+            var mandate = await _resourceFactory.CreateMandateFor(creditor, customerBankAccount);
 
-            var request = new CreateMandatePdfRequest
+            var options = new CreateMandatePdfOptions
             {
                 AccountHolderName = "Account holder",
                 AccountNumber = "44779911",
@@ -61,6 +67,10 @@ namespace GoCardless.Api.Tests.Integration
                 DanishIdentityNumber = "2205506218",
                 Iban = "GB18 BARC 1234 5678",
                 Language = "en",
+                Links = new MandatePdfLinks
+                {
+                    Mandate = mandate.Id
+                },
                 MandateReference = "MR12345678",
                 PhoneNumber = "+44 20 7183 8674",
                 PostalCode = "SW1A 1AA",
@@ -71,7 +81,7 @@ namespace GoCardless.Api.Tests.Integration
             };
 
             // when
-            var result = await subject.CreateAsync(request);
+            var result = await _subject.CreateAsync(options);
 
             // then
             Assert.That(result.Item, Is.Not.Null);

@@ -9,14 +9,21 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class RedirectFlowsClientTests : IntegrationTest
     {
+        private IRedirectFlowsClient _subject;
+
+        [SetUp]
+        public void Setup()
+        {
+            _subject = new RedirectFlowsClient(_apiClient);
+        }
+
         [Test]
         public async Task CreatesAndReturnsRedirectFlow()
         {
             // given
             var creditor = await _resourceFactory.Creditor();
-            var subject = new RedirectFlowsClient(_clientConfiguration);
 
-            var createRequest = new CreateRedirectFlowRequest
+            var createOptions = new CreateRedirectFlowOptions
             {
                 Description = "First redirect flow",
                 Links = new CreateRedirectFlowLinks
@@ -47,21 +54,21 @@ namespace GoCardless.Api.Tests.Integration
             };
 
             // when
-            var createResult = await subject.CreateAsync(createRequest);
-            var result = await subject.ForIdAsync(createResult.Item.Id);
+            var createResult = await _subject.CreateAsync(createOptions);
+            var result = await _subject.ForIdAsync(createResult.Item.Id);
 
             // then
             Assert.That(createResult.Item.ConfirmationUrl, Is.Null);
             Assert.That(createResult.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(createResult.Item.Description, Is.EqualTo(createRequest.Description));
+            Assert.That(createResult.Item.Description, Is.EqualTo(createOptions.Description));
             Assert.That(createResult.Item.Links, Is.Not.Null);
-            Assert.That(createResult.Item.Links.Creditor, Is.EqualTo(createRequest.Links.Creditor));
+            Assert.That(createResult.Item.Links.Creditor, Is.EqualTo(createOptions.Links.Creditor));
             Assert.That(createResult.Item.Links.Customer, Is.Null);
             Assert.That(createResult.Item.Links.CustomerBankAccount, Is.Null);
             Assert.That(createResult.Item.RedirectUrl, Is.Not.Null);
-            Assert.That(createResult.Item.Scheme, Is.EqualTo(createRequest.Scheme));
-            Assert.That(createResult.Item.SessionToken, Is.EqualTo(createRequest.SessionToken));
-            Assert.That(createResult.Item.SuccessRedirectUrl, Is.EqualTo(createRequest.SuccessRedirectUrl));
+            Assert.That(createResult.Item.Scheme, Is.EqualTo(createOptions.Scheme));
+            Assert.That(createResult.Item.SessionToken, Is.EqualTo(createOptions.SessionToken));
+            Assert.That(createResult.Item.SuccessRedirectUrl, Is.EqualTo(createOptions.SuccessRedirectUrl));
 
             Assert.That(result.Item, Is.Not.Null);
             Assert.That(result.Item.Id, Is.Not.Null.And.EqualTo(createResult.Item.Id));
@@ -85,53 +92,52 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var creditor = await _resourceFactory.Creditor();
             var redirectFlow = await _resourceFactory.CreateRedirectFlowFor(creditor);
-            var subject = new RedirectFlowsClient(_clientConfiguration);
 
-            var request = new CompleteRedirectFlowRequest
+            var options = new CompleteRedirectFlowOptions
             {
                 Id = redirectFlow.Id,
                 SessionToken = redirectFlow.SessionToken
             };
 
             // when
-            var completedResult = await subject.CompleteAsync(request);
-            var actualCompleted = completedResult.Item;
+            var completeResult = await _subject.CompleteAsync(options);
+            var actualComplete = completeResult.Item;
 
-            var result = await subject.ForIdAsync(redirectFlow.Id);
+            var result = await _subject.ForIdAsync(redirectFlow.Id);
             var actual = result.Item;
 
             // then;
-            Assert.That(actualCompleted, Is.Not.Null);
+            Assert.That(actualComplete, Is.Not.Null);
             Assert.That(actual, Is.Not.Null);
 
-            Assert.That(actualCompleted.Id, Is.Not.Null.And.EqualTo(redirectFlow.Id));
-            Assert.That(actualCompleted.ConfirmationUrl, Is.Not.Null.And.Contains(redirectFlow.RedirectUrl));
-            Assert.That(actualCompleted.CreatedAt, Is.Not.Null.And.EqualTo(redirectFlow.CreatedAt));
-            Assert.That(actualCompleted.Description, Is.EqualTo(redirectFlow.Description));
-            Assert.That(actualCompleted.Links, Is.Not.Null);
-            Assert.That(actualCompleted.Links.Creditor, Is.EqualTo(redirectFlow.Links.Creditor));
-            Assert.That(actualCompleted.Links.Customer, Is.Not.Null);
-            Assert.That(actualCompleted.Links.CustomerBankAccount, Is.Not.Null);
-            Assert.That(actualCompleted.Links.Mandate, Is.Not.Null);
-            Assert.That(actualCompleted.RedirectUrl, Is.Null);
-            Assert.That(actualCompleted.Scheme, Is.EqualTo(redirectFlow.Scheme));
-            Assert.That(actualCompleted.SessionToken, Is.EqualTo(redirectFlow.SessionToken));
-            Assert.That(actualCompleted.SuccessRedirectUrl, Is.EqualTo(redirectFlow.SuccessRedirectUrl));
+            Assert.That(actualComplete.Id, Is.Not.Null.And.EqualTo(redirectFlow.Id));
+            Assert.That(actualComplete.ConfirmationUrl, Is.Not.Null.And.Contains(redirectFlow.RedirectUrl));
+            Assert.That(actualComplete.CreatedAt, Is.Not.Null.And.EqualTo(redirectFlow.CreatedAt));
+            Assert.That(actualComplete.Description, Is.EqualTo(redirectFlow.Description));
+            Assert.That(actualComplete.Links, Is.Not.Null);
+            Assert.That(actualComplete.Links.Creditor, Is.EqualTo(redirectFlow.Links.Creditor));
+            Assert.That(actualComplete.Links.Customer, Is.Not.Null);
+            Assert.That(actualComplete.Links.CustomerBankAccount, Is.Not.Null);
+            Assert.That(actualComplete.Links.Mandate, Is.Not.Null);
+            Assert.That(actualComplete.RedirectUrl, Is.Null);
+            Assert.That(actualComplete.Scheme, Is.EqualTo(redirectFlow.Scheme));
+            Assert.That(actualComplete.SessionToken, Is.EqualTo(redirectFlow.SessionToken));
+            Assert.That(actualComplete.SuccessRedirectUrl, Is.EqualTo(redirectFlow.SuccessRedirectUrl));
 
             Assert.That(actual, Is.Not.Null);
-            Assert.That(actual.Id, Is.Not.Null.And.EqualTo(actualCompleted.Id));
-            Assert.That(actual.ConfirmationUrl, Is.EqualTo(actualCompleted.ConfirmationUrl));
-            Assert.That(actual.CreatedAt, Is.Not.Null.And.EqualTo(actualCompleted.CreatedAt));
-            Assert.That(actual.Description, Is.EqualTo(actualCompleted.Description));
+            Assert.That(actual.Id, Is.Not.Null.And.EqualTo(actualComplete.Id));
+            Assert.That(actual.ConfirmationUrl, Is.EqualTo(actualComplete.ConfirmationUrl));
+            Assert.That(actual.CreatedAt, Is.Not.Null.And.EqualTo(actualComplete.CreatedAt));
+            Assert.That(actual.Description, Is.EqualTo(actualComplete.Description));
             Assert.That(actual.Links, Is.Not.Null);
-            Assert.That(actual.Links.Creditor, Is.EqualTo(actualCompleted.Links.Creditor));
-            Assert.That(actual.Links.Customer, Is.EqualTo(actualCompleted.Links.Customer));
-            Assert.That(actual.Links.CustomerBankAccount, Is.EqualTo(actualCompleted.Links.CustomerBankAccount));
-            Assert.That(actual.Links.Mandate, Is.EqualTo(actualCompleted.Links.Mandate));
+            Assert.That(actual.Links.Creditor, Is.EqualTo(actualComplete.Links.Creditor));
+            Assert.That(actual.Links.Customer, Is.EqualTo(actualComplete.Links.Customer));
+            Assert.That(actual.Links.CustomerBankAccount, Is.EqualTo(actualComplete.Links.CustomerBankAccount));
+            Assert.That(actual.Links.Mandate, Is.EqualTo(actualComplete.Links.Mandate));
             Assert.That(actual.RedirectUrl, Is.Null);
-            Assert.That(actual.Scheme, Is.EqualTo(actualCompleted.Scheme));
-            Assert.That(actual.SessionToken, Is.EqualTo(actualCompleted.SessionToken));
-            Assert.That(actual.SuccessRedirectUrl, Is.EqualTo(actualCompleted.SuccessRedirectUrl));
+            Assert.That(actual.Scheme, Is.EqualTo(actualComplete.Scheme));
+            Assert.That(actual.SessionToken, Is.EqualTo(actualComplete.SessionToken));
+            Assert.That(actual.SuccessRedirectUrl, Is.EqualTo(actualComplete.SuccessRedirectUrl));
         }
     }
 }

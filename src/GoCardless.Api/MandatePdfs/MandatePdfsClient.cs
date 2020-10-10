@@ -1,33 +1,46 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
 using GoCardless.Api.Core.Http;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.MandatePdfs
 {
-    public class MandatePdfsClient : ApiClientBase, IMandatePdfsClient
+    public class MandatePdfsClient : IMandatePdfsClient
     {
-        public MandatePdfsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
 
-        public Task<Response<MandatePdf>> CreateAsync(CreateMandatePdfRequest request)
+        public MandatePdfsClient(IApiClient apiClient)
         {
-            if (request == null)
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
+        }
+
+        public MandatePdfsClient(ApiClientConfiguration apiClientConfiguration)
+        {
+            if (apiClientConfiguration == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(apiClientConfiguration));
             }
 
-            var customHeaders = new Dictionary<string, string>();
-            if (!string.IsNullOrWhiteSpace(request.Language))
+            _apiClient = new ApiClient(apiClientConfiguration);
+        }
+
+        public async Task<Response<MandatePdf>> CreateAsync(CreateMandatePdfOptions options)
+        {
+            if (options == null)
             {
-                customHeaders.Add("Accept-Language", request.Language);
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return PostAsync<Response<MandatePdf>>(
-                "mandate_pdfs",
-                new { mandate_pdfs = request },
-                customHeaders
-            );
+            return await _apiClient.PostAsync<Response<MandatePdf>>(
+                request =>
+                {
+                    request.AppendPathSegment("mandate_pdfs");
+                    if (!string.IsNullOrWhiteSpace(options.Language))
+                    {
+                        request.WithHeader("Accept-Language", options.Language);
+                    }
+                },
+                new { mandate_pdfs = options });
         }
     }
 }

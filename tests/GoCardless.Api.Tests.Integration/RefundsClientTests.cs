@@ -11,6 +11,7 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class RefundsClientTests : IntegrationTest
     {
+        private IRefundsClient _subject;
         private Mandate _mandate;
 
         [OneTimeSetUp]
@@ -19,7 +20,13 @@ namespace GoCardless.Api.Tests.Integration
             var creditor = await _resourceFactory.Creditor();
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
-            _mandate = await _resourceFactory.CreateMandateFor(creditor, customer, customerBankAccount);
+            _mandate = await _resourceFactory.CreateMandateFor(creditor, customerBankAccount);
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            _subject = new RefundsClient(_apiClient);
         }
 
         [Test, Explicit("Need to use scenario simulators to activate the mandate, and pay out the created payment, before continuing.")]
@@ -28,7 +35,7 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var payment = await _resourceFactory.CreatePaymentFor(_mandate);
 
-            var request = new CreateRefundRequest
+            var options = new CreateRefundOptions
             {
                 Amount = 100,
                 Links = new CreateRefundLinks { Payment = payment.Id },
@@ -42,32 +49,28 @@ namespace GoCardless.Api.Tests.Integration
                 TotalAmountConfirmation = 100
             };
 
-            var subject = new RefundsClient(_clientConfiguration);
-
             // when
-            var result = await subject.CreateAsync(request);
+            var result = await _subject.CreateAsync(options);
             var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Id, Is.Not.Null);
-            Assert.That(actual.Amount, Is.EqualTo(request.Amount));
+            Assert.That(actual.Amount, Is.EqualTo(options.Amount));
             Assert.That(actual.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(actual.Currency, Is.EqualTo(payment.Currency));
             Assert.That(actual.Links, Is.Not.Null);
-            Assert.That(actual.Links.Payment, Is.EqualTo(request.Links.Payment));
-            Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
-            Assert.That(actual.Reference, Is.EqualTo(request.Reference));
+            Assert.That(actual.Links.Payment, Is.EqualTo(options.Links.Payment));
+            Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
+            Assert.That(actual.Reference, Is.EqualTo(options.Reference));
         }
 
         [Test, NonParallelizable]
         public async Task ReturnsRefunds()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
-
             // when
-            var result = (await subject.GetPageAsync()).Items.ToList();
+            var result = (await _subject.GetPageAsync()).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -87,32 +90,30 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
-
-            var firstPageRequest = new GetRefundsRequest
+            var firstPageOptions = new GetRefundsOptions
             {
                 Limit = 1
             };
 
             // when
-            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
+            var firstPageResult = await _subject.GetPageAsync(firstPageOptions);
 
-            var secondPageRequest = new GetRefundsRequest
+            var secondPageOptions = new GetRefundsOptions
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 1
             };
 
-            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
+            var secondPageResult = await _subject.GetPageAsync(secondPageOptions);
 
             // then
-            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
-            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
+            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageOptions.Limit));
+            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageOptions.Limit));
             Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
             Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
 
-            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageRequest.Limit));
-            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
+            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageOptions.Limit));
+            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageOptions.Limit));
             Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
             Assert.That(secondPageResult.Meta.Cursors.After, Is.Not.Null);
         }
@@ -121,11 +122,10 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsIndividualRefund()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
-            var refund = (await subject.GetPageAsync()).Items.First();
+            var refund = (await _subject.GetPageAsync()).Items.First();
 
             // when
-            var result = await subject.ForIdAsync(refund.Id);
+            var result = await _subject.ForIdAsync(refund.Id);
             var actual = result.Item;
 
             // then
@@ -145,16 +145,15 @@ namespace GoCardless.Api.Tests.Integration
         public async Task UpdatesRefundPreservingMetadata()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
-            var refund = (await subject.GetPageAsync()).Items.First();
+            var refund = (await _subject.GetPageAsync()).Items.First();
 
-            var request = new UpdateRefundRequest
+            var options = new UpdateRefundOptions
             {
                 Id = refund.Id
             };
 
             // when
-            var result = await subject.UpdateAsync(request);
+            var result = await _subject.UpdateAsync(options);
             var actual = result.Item;
 
             // then
@@ -174,11 +173,10 @@ namespace GoCardless.Api.Tests.Integration
         public async Task UpdatesRefundReplacingMetadata()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
-            var refund = (await subject.GetPageAsync()).Items.First();
+            var refund = (await _subject.GetPageAsync()).Items.First();
             var now = DateTime.Now.ToString("yyyyMMdd");
 
-            var request = new UpdateRefundRequest
+            var options = new UpdateRefundOptions
             {
                 Id = refund.Id,
                 Metadata = new Dictionary<string, string>
@@ -190,7 +188,7 @@ namespace GoCardless.Api.Tests.Integration
             };
 
             // when
-            var result = await subject.UpdateAsync(request);
+            var result = await _subject.UpdateAsync(options);
             var actual = result.Item;
 
             // then
@@ -202,7 +200,7 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(actual.Links, Is.Not.Null);
             Assert.That(actual.Links.Mandate, Is.Not.Null.And.EqualTo(refund.Links.Mandate));
             Assert.That(actual.Links.Payment, Is.Not.Null.And.EqualTo(refund.Links.Payment));
-            Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(request.Metadata));
+            Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(options.Metadata));
             Assert.That(actual.Reference, Is.Not.Null.And.EqualTo(refund.Reference));
         }
 
@@ -210,18 +208,15 @@ namespace GoCardless.Api.Tests.Integration
         public async Task PagesThroughRefunds()
         {
             // given
-            var subject = new RefundsClient(_clientConfiguration);
-            var firstId = (await subject.GetPageAsync()).Items.First().Id;
-
-            var initialRequest = new GetRefundsRequest
+            var initialOptions = new GetRefundsOptions
             {
                 Limit = 1
             };
 
             // when
-            var result = await subject
+            var result = await _subject
                 .BuildPager()
-                .StartFrom(initialRequest)
+                .StartFrom(initialOptions)
                 .AndGetAllAfterAsync();
 
             // then

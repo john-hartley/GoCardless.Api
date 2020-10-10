@@ -1,60 +1,88 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Creditors
 {
-    public class CreditorsClient : ApiClientBase, ICreditorsClient
+    public class CreditorsClient : ICreditorsClient
     {
-        public CreditorsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
 
-        public IPagerBuilder<GetCreditorsRequest, Creditor> BuildPager()
+        public CreditorsClient(IApiClient apiClient)
         {
-            return new Pager<GetCreditorsRequest, Creditor>(GetPageAsync);
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
         }
 
-        public Task<Response<Creditor>> ForIdAsync(string id)
+        public CreditorsClient(ApiClientConfiguration apiClientConfiguration)
+        {
+            if (apiClientConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(apiClientConfiguration));
+            }
+
+            _apiClient = new ApiClient(apiClientConfiguration);
+        }
+
+        public IPagerBuilder<GetCreditorsOptions, Creditor> BuildPager()
+        {
+            return new Pager<GetCreditorsOptions, Creditor>(GetPageAsync);
+        }
+
+        public async Task<Response<Creditor>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Creditor>>($"creditors/{id}");
+            return await _apiClient.GetAsync<Response<Creditor>>(request =>
+            {
+                request.AppendPathSegment($"creditors/{id}");
+            });
         }
 
-        public Task<PagedResponse<Creditor>> GetPageAsync()
+        public async Task<PagedResponse<Creditor>> GetPageAsync()
         {
-            return GetAsync<PagedResponse<Creditor>>("creditors");
+            return await _apiClient.GetAsync<PagedResponse<Creditor>>(request =>
+            {
+                request.AppendPathSegment("creditors");
+            });
         }
 
-        public Task<PagedResponse<Creditor>> GetPageAsync(GetCreditorsRequest request)
+        public async Task<PagedResponse<Creditor>> GetPageAsync(GetCreditorsOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<Creditor>>("creditors", request.ToReadOnlyDictionary());
+            return await _apiClient.GetAsync<PagedResponse<Creditor>>(request =>
+            {
+                request
+                    .AppendPathSegment("creditors")
+                    .SetQueryParams(options.ToReadOnlyDictionary());
+            });
         }
 
-        public Task<Response<Creditor>> UpdateAsync(UpdateCreditorRequest request)
+        public async Task<Response<Creditor>> UpdateAsync(UpdateCreditorOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PutAsync<Response<Creditor>>(
-                $"creditors/{request.Id}",
-                new { creditors = request }
-            );
+            return await _apiClient.PutAsync<Response<Creditor>>(
+                request =>
+                {
+                    request.AppendPathSegment($"creditors/{options.Id}");
+                },
+                new { creditors = options });
         }
     }
 }

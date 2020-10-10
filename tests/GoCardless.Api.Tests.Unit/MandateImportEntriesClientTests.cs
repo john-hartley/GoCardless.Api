@@ -1,5 +1,5 @@
 ﻿using Flurl.Http.Testing;
-using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.MandateImportEntries;
 using NUnit.Framework;
 using System;
@@ -10,13 +10,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class MandateImportEntriesClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IMandateImportEntriesClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            var apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken"));
+            _subject = new MandateImportEntriesClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -27,29 +28,55 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void AddMandateImportEntryRequestIsNullThrows()
+        public void ApiClientIsNullThrows()
         {
             // given
-            var subject = new MandateImportEntriesClient(_clientConfiguration);
-            AddMandateImportEntryRequest request = null;
+            IApiClient apiClient = null;
 
             // when
-            AsyncTestDelegate test = () => subject.AddAsync(request);
+            TestDelegate test = () => new MandateImportEntriesClient(apiClient);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClient)));
+        }
+
+        [Test]
+        public void ApiClientConfigurationIsNullThrows()
+        {
+            // given
+            ApiClientConfiguration apiClientConfiguration = null;
+
+            // when
+            TestDelegate test = () => new MandateImportEntriesClient(apiClientConfiguration);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClientConfiguration)));
+        }
+
+        [Test]
+        public void AddMandateImportEntryOptionsIsNullThrows()
+        {
+            // given
+            AddMandateImportEntryOptions options = null;
+
+            // when
+            AsyncTestDelegate test = () => _subject.AddAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsAddMandateImportEntryEndpoint()
         {
             // given
-            var subject = new MandateImportEntriesClient(_clientConfiguration);
-            var request = new AddMandateImportEntryRequest();
+            var options = new AddMandateImportEntryOptions();
 
             // when
-            await subject.AddAsync(request);
+            await _subject.AddAsync(options);
 
             // then
             _httpTest
@@ -58,52 +85,49 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void GetMandateImportEntriesRequestIsNullThrows()
+        public void GetMandateImportEntriesOptionsIsNullThrows()
         {
             // given
-            var subject = new MandateImportEntriesClient(_clientConfiguration);
-            GetMandateImportEntriesRequest request = null;
+            GetMandateImportEntriesOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => _subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void GetMandateImportEntriesRequestMandateImportIsNullOrWhiteSpaceThrows(string mandateImport)
+        public void GetMandateImportEntriesOptionsMandateImportIsNullOrWhiteSpaceThrows(string mandateImport)
         {
             // given
-            var subject = new MandateImportEntriesClient(_clientConfiguration);
-            var request = new GetMandateImportEntriesRequest
+            var options = new GetMandateImportEntriesOptions
             {
                 MandateImport = mandateImport
             };
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => _subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.MandateImport)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.MandateImport)));
         }
 
         [Test]
         public async Task CallsGetMandateImportEntriesEndpoint()
         {
             // given
-            var subject = new MandateImportEntriesClient(_clientConfiguration);
-            var request = new GetMandateImportEntriesRequest
+            var options = new GetMandateImportEntriesOptions
             {
                 MandateImport = "IM12345678"
             };
 
             // when
-            await subject.GetPageAsync(request);
+            await _subject.GetPageAsync(options);
 
             // then
             _httpTest

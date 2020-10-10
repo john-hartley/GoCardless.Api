@@ -1,5 +1,5 @@
 ﻿using Flurl.Http.Testing;
-using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.MandatePdfs;
 using NUnit.Framework;
 using System;
@@ -10,13 +10,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class MandatePdfsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private IMandatePdfsClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            var apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken"));
+            _subject = new MandatePdfsClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -27,28 +28,52 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void CreateMandatePdfRequestIsNullThrows()
+        public void ApiClientIsNullThrows()
         {
             // given
-            var subject = new MandatePdfsClient(_clientConfiguration);
-
-            CreateMandatePdfRequest request = null;
+            IApiClient apiClient = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            TestDelegate test = () => new MandatePdfsClient(apiClient);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClient)));
+        }
+
+        [Test]
+        public void ApiClientConfigurationIsNullThrows()
+        {
+            // given
+            ApiClientConfiguration apiClientConfiguration = null;
+
+            // when
+            TestDelegate test = () => new MandatePdfsClient(apiClientConfiguration);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClientConfiguration)));
+        }
+
+        [Test]
+        public void CreateMandatePdfOptionsIsNullThrows()
+        {
+            // given
+            CreateMandatePdfOptions options = null;
+
+            // when
+            AsyncTestDelegate test = () => _subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
         public async Task CallsCreateMandatePdfEndpointWithoutAcceptsLanguageHeader()
         {
             // given
-            var subject = new MandatePdfsClient(_clientConfiguration);
-
-            var request = new CreateMandatePdfRequest
+            var options = new CreateMandatePdfOptions
             {
                 Links = new MandatePdfLinks
                 {
@@ -57,7 +82,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.CreateAsync(request);
+            await _subject.CreateAsync(options);
 
             // then
             _httpTest
@@ -70,9 +95,7 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateMandatePdfEndpointWithAcceptsLanguageHeader()
         {
             // given
-            var subject = new MandatePdfsClient(_clientConfiguration);
-
-            var request = new CreateMandatePdfRequest
+            var options = new CreateMandatePdfOptions
             {
                 Language = "en",
                 Links = new MandatePdfLinks
@@ -82,12 +105,12 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.CreateAsync(request);
+            await _subject.CreateAsync(options);
 
             // then
             _httpTest
                 .ShouldHaveCalled("https://api.gocardless.com/mandate_pdfs")
-                .WithHeader("Accept-Language", request.Language)
+                .WithHeader("Accept-Language", options.Language)
                 .WithVerb(HttpMethod.Post);
         }
     }

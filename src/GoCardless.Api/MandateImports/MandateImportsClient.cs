@@ -1,59 +1,83 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.MandateImports
 {
-    public class MandateImportsClient : ApiClientBase, IMandateImportsClient
+    public class MandateImportsClient : IMandateImportsClient
     {
-        public MandateImportsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
 
-        public Task<Response<MandateImport>> CancelAsync(string id)
+        public MandateImportsClient(IApiClient apiClient)
+        {
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
+        }
+
+        public MandateImportsClient(ApiClientConfiguration apiClientConfiguration)
+        {
+            if (apiClientConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(apiClientConfiguration));
+            }
+
+            _apiClient = new ApiClient(apiClientConfiguration);
+        }
+
+        public async Task<Response<MandateImport>> CancelAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return PostAsync<Response<MandateImport>>(
-                $"mandate_imports/{id}/actions/cancel"
-            );
+            return await _apiClient.PostAsync<Response<MandateImport>>(
+                request =>
+                {
+                    request.AppendPathSegment($"mandate_imports/{id}/actions/cancel");
+                });
         }
 
-        public Task<Response<MandateImport>> CreateAsync(CreateMandateImportRequest request)
+        public async Task<Response<MandateImport>> CreateAsync(CreateMandateImportOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return PostAsync<Response<MandateImport>>(
-                "mandate_imports",
-                new { mandate_imports = request }
-            );
+            return await _apiClient.PostAsync<Response<MandateImport>>(
+                request =>
+                {
+                    request.AppendPathSegment("mandate_imports");
+                },
+                new { mandate_imports = options });
         }
 
-        public Task<Response<MandateImport>> ForIdAsync(string id)
-        {
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
-            }
-
-            return GetAsync<Response<MandateImport>>($"mandate_imports/{id}");
-        }
-
-        public Task<Response<MandateImport>> SubmitAsync(string id)
+        public async Task<Response<MandateImport>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return PostAsync<Response<MandateImport>>(
-                $"mandate_imports/{id}/actions/submit"
-            );
+            return await _apiClient.GetAsync<Response<MandateImport>>(request =>
+            {
+                request.AppendPathSegment($"mandate_imports/{id}");
+            });
+        }
+
+        public async Task<Response<MandateImport>> SubmitAsync(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
+            }
+
+            return await _apiClient.PostAsync<Response<MandateImport>>(
+                request =>
+                {
+                    request.AppendPathSegment($"mandate_imports/{id}/actions/submit");
+                });
         }
     }
 }

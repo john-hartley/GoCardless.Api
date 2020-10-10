@@ -1,24 +1,41 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.CustomerNotifications
 {
-    public class CustomerNotificationsClient : ApiClientBase, ICustomerNotificationsClient
+    public class CustomerNotificationsClient : ICustomerNotificationsClient
     {
-        public CustomerNotificationsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
 
-        public Task<Response<CustomerNotification>> HandleAsync(string id)
+        public CustomerNotificationsClient(IApiClient apiClient)
+        {
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
+        }
+
+        public CustomerNotificationsClient(ApiClientConfiguration apiClientConfiguration)
+        {
+            if (apiClientConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(apiClientConfiguration));
+            }
+
+            _apiClient = new ApiClient(apiClientConfiguration);
+        }
+
+        public async Task<Response<CustomerNotification>> HandleAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return PostAsync<Response<CustomerNotification>>(
-                $"customer_notifications/{id}/actions/handle"
-            );
+            return await _apiClient.PostAsync<Response<CustomerNotification>>(
+                request =>
+                {
+                    request.AppendPathSegment($"customer_notifications/{id}/actions/handle");
+                });
         }
     }
 }

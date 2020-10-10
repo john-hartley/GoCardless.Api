@@ -1,4 +1,4 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using GoCardless.Api.Core.Http;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.Mandates;
 using GoCardless.Api.Payments;
@@ -13,6 +13,7 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class PaymentsClientTests : IntegrationTest
     {
+        private IPaymentsClient _subject;
         private Creditor _creditor;
         private Mandate _mandate;
 
@@ -22,14 +23,20 @@ namespace GoCardless.Api.Tests.Integration
             _creditor = await _resourceFactory.Creditor();
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
-            _mandate = await _resourceFactory.CreateMandateFor(_creditor, customer, customerBankAccount);
+            _mandate = await _resourceFactory.CreateMandateFor(_creditor, customerBankAccount);
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            _subject = new PaymentsClient(_apiClient);
         }
 
         [Test]
         public async Task CreatesAndCancelsConflictingPayment()
         {
             // given
-            var createRequest = new CreatePaymentRequest
+            var createOptions = new CreatePaymentOptions
             {
                 Amount = 500,
                 ChargeDate = DateTime.Now.AddMonths(1),
@@ -45,15 +52,13 @@ namespace GoCardless.Api.Tests.Integration
                 Reference = "REF123456"
             };
 
-            var subject = new PaymentsClient(_clientConfiguration);
-
             // when
-            await subject.CreateAsync(createRequest);
-            var creationResult = await subject.CreateAsync(createRequest);
+            await _subject.CreateAsync(createOptions);
+            var createResult = await _subject.CreateAsync(createOptions);
 
-            var cancelRequest = new CancelPaymentRequest
+            var cancelOptions = new CancelPaymentOptions
             {
-                Id = creationResult.Item.Id,
+                Id = createResult.Item.Id,
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key4"] = "Value4",
@@ -62,38 +67,39 @@ namespace GoCardless.Api.Tests.Integration
                 },
             };
 
-            var cancellationResult = await subject.CancelAsync(cancelRequest);
+            var cancelResult = await _subject.CancelAsync(cancelOptions);
 
             // then
-            Assert.That(creationResult.Item.Id, Is.Not.Null);
-            Assert.That(creationResult.Item.Amount, Is.EqualTo(createRequest.Amount));
-            Assert.That(creationResult.Item.AmountRefunded, Is.Not.Null);
-            Assert.That(creationResult.Item.ChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
-            Assert.That(creationResult.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(creationResult.Item.Currency, Is.EqualTo(createRequest.Currency));
-            Assert.That(creationResult.Item.Description, Is.EqualTo(createRequest.Description));
-            Assert.That(creationResult.Item.Links.Creditor, Is.EqualTo(_creditor.Id));
-            Assert.That(creationResult.Item.Links.Mandate, Is.EqualTo(_mandate.Id));
-            Assert.That(creationResult.Item.Metadata, Is.EqualTo(createRequest.Metadata));
-            Assert.That(creationResult.Item.Reference, Is.EqualTo(createRequest.Reference));
-            Assert.That(creationResult.Item.Status, Is.Not.Null.And.Not.EqualTo(PaymentStatus.Cancelled));
+            Assert.That(createResult.Item.Id, Is.Not.Null);
+            Assert.That(createResult.Item.Amount, Is.EqualTo(createOptions.Amount));
+            Assert.That(createResult.Item.AmountRefunded, Is.Not.Null);
+            Assert.That(createResult.Item.ChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(createResult.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(createResult.Item.Currency, Is.EqualTo(createOptions.Currency));
+            Assert.That(createResult.Item.Description, Is.EqualTo(createOptions.Description));
+            Assert.That(createResult.Item.Links.Creditor, Is.EqualTo(_creditor.Id));
+            Assert.That(createResult.Item.Links.Mandate, Is.EqualTo(_mandate.Id));
+            Assert.That(createResult.Item.Metadata, Is.EqualTo(createOptions.Metadata));
+            Assert.That(createResult.Item.Reference, Is.EqualTo(createOptions.Reference));
+            Assert.That(createResult.Item.Status, Is.Not.Null.And.Not.EqualTo(PaymentStatus.Cancelled));
 
-            Assert.That(cancellationResult.Item.Status, Is.EqualTo(PaymentStatus.Cancelled));
+            Assert.That(cancelResult.Item.Status, Is.EqualTo(PaymentStatus.Cancelled));
         }
 
         [Test, Explicit("Needs a merchant account to be setup, an OAuth access token to have been exchanged, and a mandate setup via a redirect flow.")]
         public async Task CreatesAndCancelsPaymentForMerchant()
         {
             var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
-            var configuration = ClientConfiguration.ForSandbox(accessToken);
-            var resourceFactory = new ResourceFactory(configuration);
+            var apiClientConfiguration= ApiClientConfiguration.ForSandbox(accessToken);
+            var apiClient = new ApiClient(apiClientConfiguration);
+            var resourceFactory = new ResourceFactory(apiClient);
 
             var creditor = await resourceFactory.Creditor();
-            var mandatesClient = new MandatesClient(configuration);
+            var mandatesClient = new MandatesClient(apiClient);
             var mandate = (await mandatesClient.GetPageAsync()).Items.First();
 
             // given
-            var createRequest = new CreatePaymentRequest
+            var createOptions = new CreatePaymentOptions
             {
                 Amount = 500,
                 AppFee = 12,
@@ -109,14 +115,13 @@ namespace GoCardless.Api.Tests.Integration
                 }
             };
 
-            var subject = new PaymentsClient(configuration);
-
             // when
-            var creationResult = await subject.CreateAsync(createRequest);
+            _subject = new PaymentsClient(apiClient);
+            var createResult = await _subject.CreateAsync(createOptions);
 
-            var cancelRequest = new CancelPaymentRequest
+            var cancelOptions = new CancelPaymentOptions
             {
-                Id = creationResult.Item.Id,
+                Id = createResult.Item.Id,
                 Metadata = new Dictionary<string, string>
                 {
                     ["Key4"] = "Value4",
@@ -125,33 +130,31 @@ namespace GoCardless.Api.Tests.Integration
                 },
             };
 
-            var cancellationResult = await subject.CancelAsync(cancelRequest);
+            var cancelResult = await _subject.CancelAsync(cancelOptions);
 
             // then
-            Assert.That(creationResult.Item.Id, Is.Not.Null);
-            Assert.That(creationResult.Item.Amount, Is.EqualTo(createRequest.Amount));
-            Assert.That(creationResult.Item.AmountRefunded, Is.Not.Null);
-            Assert.That(creationResult.Item.ChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
-            Assert.That(creationResult.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(creationResult.Item.Currency, Is.EqualTo(createRequest.Currency));
-            Assert.That(creationResult.Item.Description, Is.EqualTo(createRequest.Description));
-            Assert.That(creationResult.Item.Links.Creditor, Is.EqualTo(creditor.Id));
-            Assert.That(creationResult.Item.Links.Mandate, Is.EqualTo(mandate.Id));
-            Assert.That(creationResult.Item.Metadata, Is.EqualTo(createRequest.Metadata));
-            Assert.That(creationResult.Item.Reference, Is.EqualTo(createRequest.Reference));
-            Assert.That(creationResult.Item.Status, Is.Not.Null.And.Not.EqualTo(PaymentStatus.Cancelled));
+            Assert.That(createResult.Item.Id, Is.Not.Null);
+            Assert.That(createResult.Item.Amount, Is.EqualTo(createOptions.Amount));
+            Assert.That(createResult.Item.AmountRefunded, Is.Not.Null);
+            Assert.That(createResult.Item.ChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(createResult.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(createResult.Item.Currency, Is.EqualTo(createOptions.Currency));
+            Assert.That(createResult.Item.Description, Is.EqualTo(createOptions.Description));
+            Assert.That(createResult.Item.Links.Creditor, Is.EqualTo(creditor.Id));
+            Assert.That(createResult.Item.Links.Mandate, Is.EqualTo(mandate.Id));
+            Assert.That(createResult.Item.Metadata, Is.EqualTo(createOptions.Metadata));
+            Assert.That(createResult.Item.Reference, Is.EqualTo(createOptions.Reference));
+            Assert.That(createResult.Item.Status, Is.Not.Null.And.Not.EqualTo(PaymentStatus.Cancelled));
 
-            Assert.That(cancellationResult.Item.Status, Is.EqualTo(PaymentStatus.Cancelled));
+            Assert.That(cancelResult.Item.Status, Is.EqualTo(PaymentStatus.Cancelled));
         }
 
         [Test]
         public async Task ReturnsPayments()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
-
             // when
-            var result = (await subject.GetPageAsync()).Items.ToList();
+            var result = (await _subject.GetPageAsync()).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -174,32 +177,30 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
-
-            var firstPageRequest = new GetPaymentsRequest
+            var firstPageOptions = new GetPaymentsOptions
             {
                 Limit = 1
             };
 
             // when
-            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
+            var firstPageResult = await _subject.GetPageAsync(firstPageOptions);
 
-            var secondPageRequest = new GetPaymentsRequest
+            var secondPageOptions = new GetPaymentsOptions
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 2
             };
 
-            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
+            var secondPageResult = await _subject.GetPageAsync(secondPageOptions);
 
             // then
-            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
-            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
+            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageOptions.Limit));
+            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageOptions.Limit));
             Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
             Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
 
-            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageRequest.Limit));
-            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
+            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageOptions.Limit));
+            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageOptions.Limit));
             Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
             Assert.That(secondPageResult.Meta.Cursors.After, Is.Not.Null);
         }
@@ -208,11 +209,10 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsIndividualPayment()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
             var payment = await _resourceFactory.CreatePaymentFor(_mandate);
 
             // when
-            var result = await subject.ForIdAsync(payment.Id);
+            var result = await _subject.ForIdAsync(payment.Id);
             var actual = result.Item;
 
             // then
@@ -237,15 +237,13 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var payment = await _resourceFactory.CreatePaymentFor(_mandate);
 
-            var request = new UpdatePaymentRequest
+            var options = new UpdatePaymentOptions
             {
                 Id = payment.Id
             };
 
-            var subject = new PaymentsClient(_clientConfiguration);
-
             // when
-            var result = await subject.UpdateAsync(request);
+            var result = await _subject.UpdateAsync(options);
             var actual = result.Item;
 
             // then
@@ -260,7 +258,7 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var payment = await _resourceFactory.CreatePaymentFor(_mandate);
 
-            var request = new UpdatePaymentRequest
+            var options = new UpdatePaymentOptions
             {
                 Id = payment.Id,
                 Metadata = new Dictionary<string, string>
@@ -271,16 +269,14 @@ namespace GoCardless.Api.Tests.Integration
                 },
             };
 
-            var subject = new PaymentsClient(_clientConfiguration);
-
             // when
-            var result = await subject.UpdateAsync(request);
+            var result = await _subject.UpdateAsync(options);
             var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Id, Is.EqualTo(payment.Id));
-            Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
         }
 
         [Test, Explicit("Need to use scenario simulators to activate the mandate, and fail the created payment, before continuing.")]
@@ -289,31 +285,28 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var payment = await _resourceFactory.CreatePaymentFor(_mandate);
 
-            var request = new RetryPaymentRequest
+            var options = new RetryPaymentOptions
             {
                 Id = payment.Id
             };
 
-            var subject = new PaymentsClient(_clientConfiguration);
-
             // when
-            var result = await subject.RetryAsync(request);
+            var result = await _subject.RetryAsync(options);
             var actual = result.Item;
 
             // then
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Id, Is.EqualTo(payment.Id));
-            Assert.That(actual.Metadata, Is.EqualTo(request.Metadata));
+            Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
         public async Task PagesThroughPayments()
         {
             // given
-            var subject = new PaymentsClient(_clientConfiguration);
-            var firstId = (await subject.GetPageAsync()).Items.First().Id;
+            var firstId = (await _subject.GetPageAsync()).Items.First().Id;
 
-            var initialRequest = new GetPaymentsRequest
+            var initialOptions = new GetPaymentsOptions
             {
                 After = firstId,
                 CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1)),
@@ -321,9 +314,9 @@ namespace GoCardless.Api.Tests.Integration
             };
 
             // when
-            var result = await subject
+            var result = await _subject
                 .BuildPager()
-                .StartFrom(initialRequest)
+                .StartFrom(initialOptions)
                 .AndGetAllAfterAsync();
 
             // then

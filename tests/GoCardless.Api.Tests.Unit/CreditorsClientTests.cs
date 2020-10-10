@@ -1,5 +1,5 @@
 ﻿using Flurl.Http.Testing;
-using GoCardless.Api.Core.Configuration;
+using GoCardless.Api.Core.Http;
 using GoCardless.Api.Creditors;
 using NUnit.Framework;
 using System;
@@ -10,13 +10,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class CreditorsClientTests
     {
-        private ClientConfiguration _clientConfiguration;
+        private ICreditorsClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _clientConfiguration = ClientConfiguration.ForLive("accesstoken");
+            var apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken"));
+            _subject = new CreditorsClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -26,16 +27,42 @@ namespace GoCardless.Api.Tests.Unit
             _httpTest.Dispose();
         }
 
+        [Test]
+        public void ApiClientIsNullThrows()
+        {
+            // given
+            IApiClient apiClient = null;
+
+            // when
+            TestDelegate test = () => new CreditorsClient(apiClient);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClient)));
+        }
+
+        [Test]
+        public void ApiClientConfigurationIsNullThrows()
+        {
+            // given
+            ApiClientConfiguration apiClientConfiguration = null;
+
+            // when
+            TestDelegate test = () => new CreditorsClient(apiClientConfiguration);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClientConfiguration)));
+        }
+
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
-
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(id);
+            AsyncTestDelegate test = () => _subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -47,11 +74,10 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualCreditorsEndpoint()
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
             var id = "CR12345678";
 
             // when
-            await subject.ForIdAsync(id);
+            await _subject.ForIdAsync(id);
 
             // then
             _httpTest
@@ -63,10 +89,8 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetCreditorsEndpoint()
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
-
             // when
-            await subject.GetPageAsync();
+            await _subject.GetPageAsync();
 
             // then
             _httpTest
@@ -75,28 +99,24 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void GetCreditorsRequestIsNullThrows()
+        public void GetCreditorsOptionsIsNullThrows()
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
-
-            GetCreditorsRequest request = null;
+            GetCreditorsOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => _subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
-        public async Task CallsGetCreditorsEndpointUsingRequest()
+        public async Task CallsGetCreditorsEndpointUsingOptions()
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
-
-            var request = new GetCreditorsRequest
+            var options = new GetCreditorsOptions
             {
                 Before = "before test",
                 After = "after test",
@@ -104,7 +124,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.GetPageAsync(request);
+            await _subject.GetPageAsync(options);
 
             // then
             _httpTest
@@ -113,55 +133,49 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void UpdateCreditorRequestIsNullThrows()
+        public void UpdateCreditorOptionsIsNullThrows()
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
-
-            UpdateCreditorRequest request = null;
+            UpdateCreditorOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => _subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateCreditorRequestIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void UpdateCreditorOptionsIdIsNullEmptyOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
-
-            var request = new UpdateCreditorRequest
+            var options = new UpdateCreditorOptions
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(request);
+            AsyncTestDelegate test = () => _subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]
         public async Task CallsUpdateCreditorEndpoint()
         {
             // given
-            var subject = new CreditorsClient(_clientConfiguration);
-
-            var request = new UpdateCreditorRequest
+            var options = new UpdateCreditorOptions
             {
                 Id = "CR12345678"
             };
 
             // when
-            await subject.UpdateAsync(request);
+            await _subject.UpdateAsync(options);
 
             // then
             _httpTest

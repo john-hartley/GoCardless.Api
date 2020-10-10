@@ -5,10 +5,10 @@ namespace GoCardless.Api.Creditors
 {
     public interface ICreditorsClient
     {
-        IPagerBuilder<GetCreditorsRequest, Creditor> BuildPager();
+        IPagerBuilder<GetCreditorsOptions, Creditor> BuildPager();
         Task<Response<Creditor>> ForIdAsync(string id);
         Task<PagedResponse<Creditor>> GetPageAsync();
-        Task<PagedResponse<Creditor>> GetPageAsync(GetCreditorsRequest request);
-        Task<Response<Creditor>> UpdateAsync(UpdateCreditorRequest request);
+        Task<PagedResponse<Creditor>> GetPageAsync(GetCreditorsOptions options);
+        Task<Response<Creditor>> UpdateAsync(UpdateCreditorOptions options);
     }
 }

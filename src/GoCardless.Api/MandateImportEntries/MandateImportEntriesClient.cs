@@ -1,48 +1,67 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.MandateImportEntries
 {
-    public class MandateImportEntriesClient : ApiClientBase, IMandateImportEntriesClient
+    public class MandateImportEntriesClient : IMandateImportEntriesClient
     {
-        public MandateImportEntriesClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
 
-        public Task<Response<MandateImportEntry>> AddAsync(AddMandateImportEntryRequest request)
+        public MandateImportEntriesClient(IApiClient apiClient)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            return PostAsync<Response<MandateImportEntry>>(
-                "mandate_import_entries",
-                new { mandate_import_entries = request }
-            );
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
         }
 
-        public IPagerBuilder<GetMandateImportEntriesRequest, MandateImportEntry> BuildPager()
+        public MandateImportEntriesClient(ApiClientConfiguration apiClientConfiguration)
         {
-            return new Pager<GetMandateImportEntriesRequest, MandateImportEntry>(GetPageAsync);
+            if (apiClientConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(apiClientConfiguration));
+            }
+
+            _apiClient = new ApiClient(apiClientConfiguration);
         }
 
-        public Task<PagedResponse<MandateImportEntry>> GetPageAsync(GetMandateImportEntriesRequest request)
+        public async Task<Response<MandateImportEntry>> AddAsync(AddMandateImportEntryOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.MandateImport))
+            return await _apiClient.PostAsync<Response<MandateImportEntry>>(
+                request =>
+                {
+                    request.AppendPathSegment("mandate_import_entries");
+                },
+                new { mandate_import_entries = options });
+        }
+
+        public IPagerBuilder<GetMandateImportEntriesOptions, MandateImportEntry> BuildPager()
+        {
+            return new Pager<GetMandateImportEntriesOptions, MandateImportEntry>(GetPageAsync);
+        }
+
+        public async Task<PagedResponse<MandateImportEntry>> GetPageAsync(GetMandateImportEntriesOptions options)
+        {
+            if (options == null)
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.MandateImport));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<MandateImportEntry>>(
-                "mandate_import_entries",
-                request.ToReadOnlyDictionary()
-            );
+            if (string.IsNullOrWhiteSpace(options.MandateImport))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.MandateImport));
+            }
+
+            return await _apiClient.GetAsync<PagedResponse<MandateImportEntry>>(request =>
+            {
+                request
+                    .AppendPathSegment("mandate_import_entries")
+                    .SetQueryParams(options.ToReadOnlyDictionary());
+            });
         }
     }
 }

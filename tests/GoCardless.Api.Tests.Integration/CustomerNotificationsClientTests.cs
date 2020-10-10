@@ -15,8 +15,8 @@ namespace GoCardless.Api.Tests.Integration
             var creditor = await _resourceFactory.Creditor();
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
-            await _resourceFactory.CreateMandateFor(creditor, customer, customerBankAccount);
-            var subject = new CustomerNotificationsClient(_clientConfiguration);
+            await _resourceFactory.CreateMandateFor(creditor, customerBankAccount);
+            var subject = new CustomerNotificationsClient(_apiClient);
 
             var id = "PCN0000DZ5X5BG0";
 

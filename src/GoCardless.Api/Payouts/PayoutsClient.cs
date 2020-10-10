@@ -1,42 +1,68 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Payouts
 {
-    public class PayoutsClient : ApiClientBase, IPayoutsClient
+    public class PayoutsClient : IPayoutsClient
     {
-        public PayoutsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
 
-        public IPagerBuilder<GetPayoutsRequest, Payout> BuildPager()
+        public PayoutsClient(IApiClient apiClient)
         {
-            return new Pager<GetPayoutsRequest, Payout>(GetPageAsync);
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
         }
 
-        public Task<Response<Payout>> ForIdAsync(string id)
+        public PayoutsClient(ApiClientConfiguration apiClientConfiguration)
+        {
+            if (apiClientConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(apiClientConfiguration));
+            }
+
+            _apiClient = new ApiClient(apiClientConfiguration);
+        }
+
+        public IPagerBuilder<GetPayoutsOptions, Payout> BuildPager()
+        {
+            return new Pager<GetPayoutsOptions, Payout>(GetPageAsync);
+        }
+
+        public async Task<Response<Payout>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Payout>>($"payouts/{id}");
-        }
-
-        public Task<PagedResponse<Payout>> GetPageAsync()
-        {
-            return GetAsync<PagedResponse<Payout>>("payouts");
-        }
-
-        public Task<PagedResponse<Payout>> GetPageAsync(GetPayoutsRequest request)
-        {
-            if (request == null)
+            return await _apiClient.GetAsync<Response<Payout>>(request =>
             {
-                throw new ArgumentNullException(nameof(request));
+                request.AppendPathSegment($"payouts/{id}");
+            });
+        }
+
+        public async Task<PagedResponse<Payout>> GetPageAsync()
+        {
+            return await _apiClient.GetAsync<PagedResponse<Payout>>(request =>
+            {
+                request.AppendPathSegment("payouts");
+            });
+        }
+
+        public async Task<PagedResponse<Payout>> GetPageAsync(GetPayoutsOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<Payout>>("payouts", request.ToReadOnlyDictionary());
+            return await _apiClient.GetAsync<PagedResponse<Payout>>(request =>
+            {
+                request
+                    .AppendPathSegment("payouts")
+                    .SetQueryParams(options.ToReadOnlyDictionary());
+            });
         }
     }
 }

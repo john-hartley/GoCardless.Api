@@ -1,53 +1,75 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.RedirectFlows
 {
-    public class RedirectFlowsClient : ApiClientBase, IRedirectFlowsClient
+    public class RedirectFlowsClient : IRedirectFlowsClient
     {
-        public RedirectFlowsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
 
-        public Task<Response<RedirectFlow>> CompleteAsync(CompleteRedirectFlowRequest request)
+        public RedirectFlowsClient(IApiClient apiClient)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            if (string.IsNullOrWhiteSpace(request.Id))
-            {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
-            }
-
-            return PostAsync<Response<RedirectFlow>>(
-                $"redirect_flows/{request.Id}/actions/complete",
-                new { data = request }
-            );
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
         }
 
-        public Task<Response<RedirectFlow>> CreateAsync(CreateRedirectFlowRequest request)
+        public RedirectFlowsClient(ApiClientConfiguration apiClientConfiguration)
         {
-            if (request == null)
+            if (apiClientConfiguration == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(apiClientConfiguration));
             }
 
-            return PostAsync<Response<RedirectFlow>>(
-                "redirect_flows", 
-                new { redirect_flows = request }
-            );
+            _apiClient = new ApiClient(apiClientConfiguration);
         }
 
-        public Task<Response<RedirectFlow>> ForIdAsync(string id)
+        public async Task<Response<RedirectFlow>> CompleteAsync(CompleteRedirectFlowOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            if (string.IsNullOrWhiteSpace(options.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
+            }
+
+            return await _apiClient.PostAsync<Response<RedirectFlow>>(
+                request =>
+                {
+                    request.AppendPathSegment($"redirect_flows/{options.Id}/actions/complete");
+                },
+                new { data = options });
+        }
+
+        public async Task<Response<RedirectFlow>> CreateAsync(CreateRedirectFlowOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            return await _apiClient.PostAsync<Response<RedirectFlow>>(
+                request =>
+                {
+                    request.AppendPathSegment("redirect_flows");
+                },
+                new { redirect_flows = options });
+        }
+
+        public async Task<Response<RedirectFlow>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<RedirectFlow>>($"redirect_flows/{id}");
+            return await _apiClient.GetAsync<Response<RedirectFlow>>(request =>
+            {
+                request.AppendPathSegment($"redirect_flows/{id}");
+            });
         }
     }
 }

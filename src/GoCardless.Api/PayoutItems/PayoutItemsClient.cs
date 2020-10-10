@@ -1,35 +1,52 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using Flurl.Http;
 using GoCardless.Api.Core.Http;
 using System;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.PayoutItems
 {
-    public class PayoutItemsClient : ApiClientBase, IPayoutItemsClient
+    public class PayoutItemsClient : IPayoutItemsClient
     {
-        public PayoutItemsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly IApiClient _apiClient;
 
-        public IPagerBuilder<GetPayoutItemsRequest, PayoutItem> BuildPager()
+        public PayoutItemsClient(IApiClient apiClient)
         {
-            return new Pager<GetPayoutItemsRequest, PayoutItem>(GetPageAsync);
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
         }
 
-        public Task<PagedResponse<PayoutItem>> GetPageAsync(GetPayoutItemsRequest request)
+        public PayoutItemsClient(ApiClientConfiguration apiClientConfiguration)
         {
-            if (request == null)
+            if (apiClientConfiguration == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(apiClientConfiguration));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Payout))
+            _apiClient = new ApiClient(apiClientConfiguration);
+        }
+
+        public IPagerBuilder<GetPayoutItemsOptions, PayoutItem> BuildPager()
+        {
+            return new Pager<GetPayoutItemsOptions, PayoutItem>(GetPageAsync);
+        }
+
+        public async Task<PagedResponse<PayoutItem>> GetPageAsync(GetPayoutItemsOptions options)
+        {
+            if (options == null)
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Payout));
+                throw new ArgumentNullException(nameof(options));
             }
-            
-            return GetAsync<PagedResponse<PayoutItem>>(
-                "payout_items",
-                request.ToReadOnlyDictionary()
-            );
+
+            if (string.IsNullOrWhiteSpace(options.Payout))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Payout));
+            }
+
+            return await _apiClient.GetAsync<PagedResponse<PayoutItem>>(request =>
+            {
+                request
+                    .AppendPathSegment("payout_items")
+                    .SetQueryParams(options.ToReadOnlyDictionary());
+            });
         }
     }
 }

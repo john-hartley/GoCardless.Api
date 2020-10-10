@@ -1,4 +1,4 @@
-﻿using GoCardless.Api.Core.Configuration;
+﻿using GoCardless.Api.Core.Http;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
 using GoCardless.Api.Customers;
@@ -20,17 +20,17 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 {
     public class ResourceFactory
     {
-        private readonly ClientConfiguration _clientConfiguration;
+        private readonly IApiClient _apiClient;
+
+        internal ResourceFactory(IApiClient apiClient)
+        {
+            _apiClient = apiClient;
+        }
 
         internal async Task<Creditor> Creditor()
         {
-            var creditorsClient = new CreditorsClient(_clientConfiguration);
+            var creditorsClient = new CreditorsClient(_apiClient);
             return (await creditorsClient.GetPageAsync()).Items.First();
-        }
-
-        internal ResourceFactory(ClientConfiguration clientConfiguration)
-        {
-            _clientConfiguration = clientConfiguration;
         }
 
         internal Task<Customer> CreateForeignCustomer()
@@ -45,7 +45,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 
         internal async Task<CustomerBankAccount> CreateCustomerBankAccountFor(Customer customer)
         {
-            var request = new CreateCustomerBankAccountRequest
+            var request = new CreateCustomerBankAccountOptions
             {
                 AccountHolderName = "API BANK ACCOUNT",
                 AccountNumber = "55666666",
@@ -61,16 +61,15 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 }
             };
 
-            var customerBankAccountsClient = new CustomerBankAccountsClient(_clientConfiguration);
+            var customerBankAccountsClient = new CustomerBankAccountsClient(_apiClient);
             return (await customerBankAccountsClient.CreateAsync(request)).Item;
         }
 
         internal async Task<Mandate> CreateMandateFor(
             Creditor creditor,
-            Customer customer,
             CustomerBankAccount customerBankAccount)
         {
-            var request = new CreateMandateRequest
+            var request = new CreateMandateOptions
             {
                 Links = new CreateMandateLinks
                 {
@@ -86,18 +85,18 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 Scheme = Scheme.Bacs
             };
 
-            var mandatesClient = new MandatesClient(_clientConfiguration);
+            var mandatesClient = new MandatesClient(_apiClient);
             return (await mandatesClient.CreateAsync(request)).Item;
         }
 
         internal async Task<MandateImport> CreateMandateImport()
         {
-            var request = new CreateMandateImportRequest
+            var request = new CreateMandateImportOptions
             {
                 Scheme = "bacs",
             };
 
-            var mandateImportsClient = new MandateImportsClient(_clientConfiguration);
+            var mandateImportsClient = new MandateImportsClient(_apiClient);
             return (await mandateImportsClient.CreateAsync(request)).Item;
         }
 
@@ -105,7 +104,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             MandateImport mandateImport,
             string recordIdentifier)
         {
-            var request = new AddMandateImportEntryRequest
+            var request = new AddMandateImportEntryOptions
             {
                 BankAccount = new BankAccount
                 {
@@ -138,13 +137,13 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 RecordIdentifier = recordIdentifier
             };
 
-            var mandateImportEntriesClient = new MandateImportEntriesClient(_clientConfiguration);
+            var mandateImportEntriesClient = new MandateImportEntriesClient(_apiClient);
             return (await mandateImportEntriesClient.AddAsync(request)).Item;
         }
 
         internal async Task<Payment> CreatePaymentFor(Mandate mandate)
         {
-            var request = new CreatePaymentRequest
+            var request = new CreatePaymentOptions
             {
                 Amount = 500,
                 ChargeDate = DateTime.Now.AddMonths(1),
@@ -160,24 +159,24 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 Reference = "REF123456"
             };
 
-            var paymentsClient = new PaymentsClient(_clientConfiguration);
+            var paymentsClient = new PaymentsClient(_apiClient);
             return (await paymentsClient.CreateAsync(request)).Item;
         }
 
         internal async Task<Payout> Payout()
         {
-            var request = new GetPayoutsRequest
+            var request = new GetPayoutsOptions
             {
                 PayoutType = PayoutType.Merchant
             };
 
-            var payoutsClient = new PayoutsClient(_clientConfiguration);
+            var payoutsClient = new PayoutsClient(_apiClient);
             return (await payoutsClient.GetPageAsync(request)).Items.First();
         }
 
         internal async Task<RedirectFlow> CreateRedirectFlowFor(Creditor creditor)
         {
-            var request = new CreateRedirectFlowRequest
+            var request = new CreateRedirectFlowOptions
             {
                 Description = "First redirect flow",
                 Links = new CreateRedirectFlowLinks
@@ -207,13 +206,13 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             // when
-            var redirectFlowsClient = new RedirectFlowsClient(_clientConfiguration);
+            var redirectFlowsClient = new RedirectFlowsClient(_apiClient);
             return (await redirectFlowsClient.CreateAsync(request)).Item;
         }
 
         internal async Task<Subscription> CreateSubscriptionFor(Mandate mandate, string paymentReference = "PR123456")
         {
-            var request = new CreateSubscriptionRequest
+            var request = new CreateSubscriptionOptions
             {
                 Amount = 123,
                 Currency = "GBP",
@@ -235,7 +234,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 StartDate = DateTime.Now.AddMonths(1)
             };
 
-            var subscriptionsClient = new SubscriptionsClient(_clientConfiguration);
+            var subscriptionsClient = new SubscriptionsClient(_apiClient);
             return (await subscriptionsClient.CreateAsync(request)).Item;
         }
 
@@ -245,7 +244,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             string danishIdentityNumber = null,
             string swedishIdentityNumber = null)
         {
-            var request = new CreateCustomerRequest
+            var request = new CreateCustomerOptions
             {
                 AddressLine1 = "Address Line 1",
                 AddressLine2 = "Address Line 2",
@@ -270,7 +269,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 SwedishIdentityNumber = swedishIdentityNumber
             };
 
-            var customersClient = new CustomersClient(_clientConfiguration);
+            var customersClient = new CustomersClient(_apiClient);
             return (await customersClient.CreateAsync(request)).Item;
         }
     }
