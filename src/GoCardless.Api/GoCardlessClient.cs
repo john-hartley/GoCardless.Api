@@ -16,35 +16,45 @@ using GoCardless.Api.Payouts;
 using GoCardless.Api.RedirectFlows;
 using GoCardless.Api.Refunds;
 using GoCardless.Api.Subscriptions;
+using System;
 
 namespace GoCardless.Api
 {
-    public class GoCardlessClient
+    public class GoCardlessClient : IGoCardlessClient
     {
-        private readonly ApiClientConfiguration _apiClientConfiguration;
+        private readonly IApiClient _apiClient;
+
+        public GoCardlessClient(IApiClient apiClient)
+        {
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
+        }
 
         public GoCardlessClient(ApiClientConfiguration apiClientConfiguration)
         {
-            _apiClientConfiguration = apiClientConfiguration;
-            var apiClient = new ApiClient(_apiClientConfiguration);
+            if (apiClientConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(apiClientConfiguration));
+            }
 
-            BankDetailsLookups = new BankDetailsLookupsClient(apiClient);
-            CreditorBankAccounts = new CreditorBankAccountsClient(apiClient);
-            Creditors = new CreditorsClient(apiClient);
-            CustomerBankAccounts = new CustomerBankAccountsClient(apiClient);
-            CustomerNotifications = new CustomerNotificationsClient(apiClient);
-            Customers = new CustomersClient(apiClient);
-            Events = new EventsClient(apiClient);
-            MandateImportEntries = new MandateImportEntriesClient(apiClient);
-            MandateImports = new MandateImportsClient(apiClient);
-            MandatePdfs = new MandatePdfsClient(apiClient);
-            Mandates = new MandatesClient(apiClient);
-            Payments = new PaymentsClient(apiClient);
-            PayoutItems = new PayoutItemsClient(apiClient);
-            Payouts = new PayoutsClient(apiClient);
-            RedirectFlows = new RedirectFlowsClient(apiClient);
-            Refunds = new RefundsClient(apiClient);
-            Subscriptions = new SubscriptionsClient(apiClient);
+            _apiClient = new ApiClient(apiClientConfiguration);
+
+            BankDetailsLookups = new BankDetailsLookupsClient(_apiClient);
+            CreditorBankAccounts = new CreditorBankAccountsClient(_apiClient);
+            Creditors = new CreditorsClient(_apiClient);
+            CustomerBankAccounts = new CustomerBankAccountsClient(_apiClient);
+            CustomerNotifications = new CustomerNotificationsClient(_apiClient);
+            Customers = new CustomersClient(_apiClient);
+            Events = new EventsClient(_apiClient);
+            MandateImportEntries = new MandateImportEntriesClient(_apiClient);
+            MandateImports = new MandateImportsClient(_apiClient);
+            MandatePdfs = new MandatePdfsClient(_apiClient);
+            Mandates = new MandatesClient(_apiClient);
+            Payments = new PaymentsClient(_apiClient);
+            PayoutItems = new PayoutItemsClient(_apiClient);
+            Payouts = new PayoutsClient(_apiClient);
+            RedirectFlows = new RedirectFlowsClient(_apiClient);
+            Refunds = new RefundsClient(_apiClient);
+            Subscriptions = new SubscriptionsClient(_apiClient);
         }
 
         public IBankDetailsLookupsClient BankDetailsLookups { get; }
