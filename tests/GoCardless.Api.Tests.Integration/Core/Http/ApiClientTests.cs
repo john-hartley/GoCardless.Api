@@ -32,10 +32,10 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
         }
 
         [Test]
-        public void ValidationFailsForRequestThrows()
+        public void ValidationFailsForOptionsThrows()
         {
             // given
-            var request = new CreateCustomerOptions
+            var options = new CreateCustomerOptions
             {
                 AddressLine1 = "Address Line 1",
                 AddressLine2 = "Address Line 2",
@@ -62,7 +62,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
             var subject = new CustomersClient(_apiClient);
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            AsyncTestDelegate test = () => subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ValidationFailedException>(test);
@@ -75,12 +75,12 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
         }
 
         [Test]
-        public async Task CreateRefundRequestIsInvalidThrows()
+        public async Task CreateRefundOptionsIsInvalidThrows()
         {
             // given
             var payment = await _resourceFactory.CreatePaymentFor(_mandate);
 
-            var request = new CreateRefundOptions
+            var options = new CreateRefundOptions
             {
                 Amount = 100,
                 IdempotencyKey = Guid.NewGuid().ToString(),
@@ -97,7 +97,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
             var subject = new RefundsClient(_apiClient);
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            AsyncTestDelegate test = () => subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ValidationFailedException>(test);
@@ -113,7 +113,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
         public void ApiUsageIsInvalidInvalidThrows()
         {
             // given
-            var request = new CreateSubscriptionOptions
+            var options = new CreateSubscriptionOptions
             {
                 Amount = 123,
                 Currency = "GBP",
@@ -138,7 +138,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
             var subject = new SubscriptionsClient(apiClient);
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(request);
+            AsyncTestDelegate test = () => subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<InvalidApiUsageException>(test);
