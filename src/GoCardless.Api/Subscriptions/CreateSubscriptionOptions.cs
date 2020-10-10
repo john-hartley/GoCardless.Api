@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.Subscriptions
 {
-    public class CreateSubscriptionRequest
+    public class CreateSubscriptionOptions
     {
-        public CreateSubscriptionRequest()
+        public CreateSubscriptionOptions()
         {
             IdempotencyKey = Guid.NewGuid().ToString();
         }

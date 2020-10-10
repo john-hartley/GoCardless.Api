@@ -212,7 +212,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 
         internal async Task<Subscription> CreateSubscriptionFor(Mandate mandate, string paymentReference = "PR123456")
         {
-            var request = new CreateSubscriptionRequest
+            var request = new CreateSubscriptionOptions
             {
                 Amount = 123,
                 Currency = "GBP",

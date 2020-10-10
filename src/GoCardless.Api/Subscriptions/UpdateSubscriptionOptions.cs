@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.Subscriptions
 {
-    public class UpdateSubscriptionRequest
+    public class UpdateSubscriptionOptions
     {
         [JsonIgnore]
         public string Id { get; set; }

@@ -14,12 +14,12 @@ namespace GoCardless.Api.Subscriptions
             _apiClient = apiClient;
         }
 
-        public IPagerBuilder<GetSubscriptionsRequest, Subscription> BuildPager()
+        public IPagerBuilder<GetSubscriptionsOptions, Subscription> BuildPager()
         {
-            return new Pager<GetSubscriptionsRequest, Subscription>(GetPageAsync);
+            return new Pager<GetSubscriptionsOptions, Subscription>(GetPageAsync);
         }
 
-        public async Task<Response<Subscription>> CancelAsync(CancelSubscriptionRequest options)
+        public async Task<Response<Subscription>> CancelAsync(CancelSubscriptionOptions options)
         {
             if (options == null)
             {
@@ -39,7 +39,7 @@ namespace GoCardless.Api.Subscriptions
                 new { subscriptions = options });
         }
 
-        public async Task<Response<Subscription>> CreateAsync(CreateSubscriptionRequest options)
+        public async Task<Response<Subscription>> CreateAsync(CreateSubscriptionOptions options)
         {
             if (options == null)
             {
@@ -77,7 +77,7 @@ namespace GoCardless.Api.Subscriptions
             });
         }
 
-        public async Task<PagedResponse<Subscription>> GetPageAsync(GetSubscriptionsRequest options)
+        public async Task<PagedResponse<Subscription>> GetPageAsync(GetSubscriptionsOptions options)
         {
             if (options == null)
             {
@@ -92,7 +92,7 @@ namespace GoCardless.Api.Subscriptions
             });
         }
 
-        public async Task<Response<Subscription>> UpdateAsync(UpdateSubscriptionRequest options)
+        public async Task<Response<Subscription>> UpdateAsync(UpdateSubscriptionOptions options)
         {
             if (options == null)
             {

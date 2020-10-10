@@ -114,7 +114,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
         public void ApiUsageIsInvalidInvalidThrows()
         {
             // given
-            var request = new CreateSubscriptionRequest
+            var request = new CreateSubscriptionOptions
             {
                 Amount = 123,
                 Currency = "GBP",

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.Subscriptions
 {
-    public class CancelSubscriptionRequest
+    public class CancelSubscriptionOptions
     {
         [JsonIgnore]
         public string Id { get; set; }
