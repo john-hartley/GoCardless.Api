@@ -69,7 +69,7 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         }
     }
 
-    internal class FakePageRequest : IPageRequest, ICloneable
+    internal class FakePageRequest : IPageOptions, ICloneable
     {
         public string After { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string Before { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

@@ -3,7 +3,7 @@ using System;
 
 namespace GoCardless.Api.Creditors
 {
-    public class GetCreditorsOptions : IPageRequest, ICloneable
+    public class GetCreditorsOptions : IPageOptions, ICloneable
     {
         public object Clone()
         {

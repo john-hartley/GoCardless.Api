@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace GoCardless.Api.Core.Http
 {
     public class Pager<TRequest, TResource> : IPagerBuilder<TRequest, TResource>, IPager<TRequest, TResource>
-        where TRequest : IPageRequest, ICloneable
+        where TRequest : IPageOptions, ICloneable
     {
         private readonly Func<TRequest, Task<PagedResponse<TResource>>> _pager;
 
