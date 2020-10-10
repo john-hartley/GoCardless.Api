@@ -10,13 +10,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class PayoutsClientTests
     {
-        private IApiClient _apiClient;
+        private IPayoutsClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken"));
+            var apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken"));
+            _subject = new PayoutsClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -27,13 +28,39 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
+        public void ApiClientIsNullThrows()
+        {
+            // given
+            IApiClient apiClient = null;
+
+            // when
+            TestDelegate test = () => new PayoutsClient(apiClient);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClient)));
+        }
+
+        [Test]
+        public void ApiClientConfigurationIsNullThrows()
+        {
+            // given
+            ApiClientConfiguration apiClientConfiguration = null;
+
+            // when
+            TestDelegate test = () => new PayoutsClient(apiClientConfiguration);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClientConfiguration)));
+        }
+
+        [Test]
         public async Task CallsGetPayoutsEndpoint()
         {
             // given
-            var subject = new PayoutsClient(_apiClient);
-
             // when
-            await subject.GetPageAsync();
+            await _subject.GetPageAsync();
 
             // then
             _httpTest
@@ -45,12 +72,10 @@ namespace GoCardless.Api.Tests.Unit
         public void GetPayoutsRequestIsNullThrows()
         {
             // given
-            var subject = new PayoutsClient(_apiClient);
-
             GetPayoutsOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(options);
+            AsyncTestDelegate test = () => _subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -61,8 +86,6 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetPayoutsEndpointUsingRequest()
         {
             // given
-            var subject = new PayoutsClient(_apiClient);
-
             var request = new GetPayoutsOptions
             {
                 Before = "before test",
@@ -71,7 +94,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.GetPageAsync(request);
+            await _subject.GetPageAsync(request);
 
             // then
             _httpTest
@@ -85,10 +108,8 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new PayoutsClient(_apiClient);
-
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(id);
+            AsyncTestDelegate test = () => _subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -100,11 +121,10 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualPayoutsEndpoint()
         {
             // given
-            var subject = new PayoutsClient(_apiClient);
             var id = "PO12345678";
 
             // when
-            await subject.ForIdAsync(id);
+            await _subject.ForIdAsync(id);
 
             // then
             _httpTest
