@@ -244,7 +244,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             string danishIdentityNumber = null,
             string swedishIdentityNumber = null)
         {
-            var request = new CreateCustomerRequest
+            var request = new CreateCustomerOptions
             {
                 AddressLine1 = "Address Line 1",
                 AddressLine2 = "Address Line 2",

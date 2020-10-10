@@ -14,12 +14,12 @@ namespace GoCardless.Api.Customers
             _apiClient = apiClient;
         }
 
-        public IPagerBuilder<GetCustomersRequest, Customer> BuildPager()
+        public IPagerBuilder<GetCustomersOptions, Customer> BuildPager()
         {
-            return new Pager<GetCustomersRequest, Customer>(GetPageAsync);
+            return new Pager<GetCustomersOptions, Customer>(GetPageAsync);
         }
 
-        public async Task<Response<Customer>> CreateAsync(CreateCustomerRequest options)
+        public async Task<Response<Customer>> CreateAsync(CreateCustomerOptions options)
         {
             if (options == null)
             {
@@ -57,7 +57,7 @@ namespace GoCardless.Api.Customers
             });
         }
 
-        public async Task<PagedResponse<Customer>> GetPageAsync(GetCustomersRequest options)
+        public async Task<PagedResponse<Customer>> GetPageAsync(GetCustomersOptions options)
         {
             if (options == null)
             {
@@ -72,7 +72,7 @@ namespace GoCardless.Api.Customers
             });
         }
 
-        public async Task<Response<Customer>> UpdateAsync(UpdateCustomerRequest options)
+        public async Task<Response<Customer>> UpdateAsync(UpdateCustomerOptions options)
         {
             if (options == null)
             {

@@ -11,13 +11,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class CustomersClientTests
     {
-        private IApiClient _apiClient;
+        private ICustomersClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            var apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            _subject = new CustomersClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -28,15 +29,13 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void CreateCustomerRequestIsNullThrows()
+        public void CreateCustomerOptionsIsNullThrows()
         {
             // given
-            var subject = new CustomersClient(_apiClient);
-
-            CreateCustomerRequest options = null;
+            CreateCustomerOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.CreateAsync(options);
+            AsyncTestDelegate test = () => _subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -47,15 +46,13 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsCreateCustomerEndpoint()
         {
             // given
-            var subject = new CustomersClient(_apiClient);
-
-            var request = new CreateCustomerRequest
+            var options = new CreateCustomerOptions
             {
                 IdempotencyKey = Guid.NewGuid().ToString()
             };
 
             // when
-            await subject.CreateAsync(request);
+            await _subject.CreateAsync(options);
 
             // then
             _httpTest
@@ -70,10 +67,8 @@ namespace GoCardless.Api.Tests.Unit
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CustomersClient(_apiClient);
-
             // when
-            AsyncTestDelegate test = () => subject.ForIdAsync(id);
+            AsyncTestDelegate test = () => _subject.ForIdAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -85,11 +80,10 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsIndividualCustomersEndpoint()
         {
             // given
-            var subject = new CustomersClient(_apiClient);
             var id = "CU12345678";
 
             // when
-            await subject.ForIdAsync(id);
+            await _subject.ForIdAsync(id);
 
             // then
             _httpTest
@@ -101,10 +95,8 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsGetCustomersEndpoint()
         {
             // given
-            var subject = new CustomersClient(_apiClient);
-
             // when
-            await subject.GetPageAsync();
+            await _subject.GetPageAsync();
 
             // then
             _httpTest
@@ -113,15 +105,13 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void GetCustomersRequestIsNullThrows()
+        public void GetCustomersOptionsIsNullThrows()
         {
             // given
-            var subject = new CustomersClient(_apiClient);
-
-            GetCustomersRequest options = null;
+            GetCustomersOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(options);
+            AsyncTestDelegate test = () => _subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -129,12 +119,10 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public async Task CallsGetCustomersEndpointUsingRequest()
+        public async Task CallsGetCustomersEndpointUsingOptions()
         {
             // given
-            var subject = new CustomersClient(_apiClient);
-
-            var request = new GetCustomersRequest
+            var options = new GetCustomersOptions
             {
                 Before = "before test",
                 After = "after test",
@@ -142,7 +130,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.GetPageAsync(request);
+            await _subject.GetPageAsync(options);
 
             // then
             _httpTest
@@ -151,15 +139,13 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void UpdateCustomerRequestIsNullThrows()
+        public void UpdateCustomerOptionsIsNullThrows()
         {
             // given
-            var subject = new CustomersClient(_apiClient);
-
-            UpdateCustomerRequest options = null;
+            UpdateCustomerOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(options);
+            AsyncTestDelegate test = () => _subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -169,18 +155,16 @@ namespace GoCardless.Api.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateCustomerRequestIdIsNullOrWhiteSpaceThrows(string id)
+        public void UpdateCustomerOptionsIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CustomersClient(_apiClient);
-
-            var options = new UpdateCustomerRequest
+            var options = new UpdateCustomerOptions
             {
                 Id = id
             };
 
             // when
-            AsyncTestDelegate test = () => subject.UpdateAsync(options);
+            AsyncTestDelegate test = () => _subject.UpdateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -191,15 +175,13 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsUpdateCustomerEndpoint()
         {
             // given
-            var subject = new CustomersClient(_apiClient);
-
-            var request = new UpdateCustomerRequest
+            var options = new UpdateCustomerOptions
             {
                 Id = "CU12345678"
             };
 
             // when
-            await subject.UpdateAsync(request);
+            await _subject.UpdateAsync(options);
 
             // then
             _httpTest
