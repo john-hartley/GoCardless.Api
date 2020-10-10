@@ -68,11 +68,11 @@ namespace GoCardless.Api.Creditors
             }
 
             return await _apiClient.PutAsync<Response<Creditor>>(
-                new { creditors = options },
                 request =>
                 {
                     request.AppendPathSegment($"creditors/{options.Id}");
-                });
+                },
+                new { creditors = options });
         }
     }
 }

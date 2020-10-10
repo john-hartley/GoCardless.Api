@@ -128,11 +128,11 @@ namespace GoCardless.Api.Payments
             }
 
             return await _apiClient.PutAsync<Response<Payment>>(
-                new { payments = options },
                 request =>
                 {
                     request.AppendPathSegment($"payments/{options.Id}");
-                });
+                },
+                new { payments = options });
         }
     }
 }

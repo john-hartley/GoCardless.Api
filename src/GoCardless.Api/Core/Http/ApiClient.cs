@@ -52,8 +52,8 @@ namespace GoCardless.Api.Core.Http
         }
 
         public async Task<TResponse> PutAsync<TResponse>(
-            object envelope,
-            Action<IFlurlRequest> configure)
+            Action<IFlurlRequest> configure,
+            object envelope)
         {
             var request = BaseRequest();
             configure(request);

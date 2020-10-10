@@ -128,11 +128,11 @@ namespace GoCardless.Api.Mandates
             }
 
             return await _apiClient.PutAsync<Response<Mandate>>(
-                new { mandates = options },
                 request =>
                 {
                     request.AppendPathSegment($"mandates/{options.Id}");
-                });
+                },
+                new { mandates = options });
         }
     }
 }

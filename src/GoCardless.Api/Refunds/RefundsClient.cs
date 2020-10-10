@@ -86,11 +86,11 @@ namespace GoCardless.Api.Refunds
             }
 
             return await _apiClient.PutAsync<Response<Refund>>(
-                new { refunds = options },
                 request =>
                 {
                     request.AppendPathSegment($"refunds/{options.Id}");
-                });
+                },
+                new { refunds = options });
         }
     }
 }

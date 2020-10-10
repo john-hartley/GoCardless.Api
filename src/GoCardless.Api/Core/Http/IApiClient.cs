@@ -15,7 +15,7 @@ namespace GoCardless.Api.Core.Http
             object envelope = null);
 
         Task<TResponse> PutAsync<TResponse>(
-            object envelope, 
-            Action<IFlurlRequest> configure);
+            Action<IFlurlRequest> configure,
+            object envelope);
     }
 }

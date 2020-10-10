@@ -106,11 +106,11 @@ namespace GoCardless.Api.CustomerBankAccounts
             }
 
             return await _apiClient.PutAsync<Response<CustomerBankAccount>>(
-                new { customer_bank_accounts = options },
                 request =>
                 {
                     request.AppendPathSegment($"customer_bank_accounts/{options.Id}");
-                });
+                },
+                new { customer_bank_accounts = options });
         }
     }
 }

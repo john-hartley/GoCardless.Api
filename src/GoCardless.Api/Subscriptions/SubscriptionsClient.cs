@@ -107,11 +107,11 @@ namespace GoCardless.Api.Subscriptions
             }
 
             return await _apiClient.PutAsync<Response<Subscription>>(
-                new { subscriptions = options },
                 request =>
                 {
                     request.AppendPathSegment($"subscriptions/{options.Id}");
-                });
+                },
+                new { subscriptions = options });
         }
     }
 }
