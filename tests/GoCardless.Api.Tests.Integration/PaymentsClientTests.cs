@@ -315,8 +315,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await _subject
-                .BuildPager()
-                .StartFrom(initialOptions)
+                .PageFrom(initialOptions)
                 .AndGetAllAfterAsync();
 
             // then

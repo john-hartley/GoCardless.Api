@@ -10,13 +10,25 @@ namespace GoCardless.Api.Core.Http
         : IPagerBuilder<TOptions, TResource>, IPager<TOptions, TResource>
         where TOptions : IPageOptions, ICloneable
     {
-        private readonly Func<TOptions, Task<PagedResponse<TResource>>> _pager;
+        private readonly Func<TOptions, Task<PagedResponse<TResource>>> _source;
 
         private TOptions _options;
 
-        public Pager(Func<TOptions, Task<PagedResponse<TResource>>> pager)
+        public Pager(Func<TOptions, Task<PagedResponse<TResource>>> source)
         {
-            _pager = pager ?? throw new ArgumentNullException(nameof(pager));
+            _source = source ?? throw new ArgumentNullException(nameof(source));
+        }
+
+        public Pager(Func<TOptions, Task<PagedResponse<TResource>>> source, TOptions options)
+        {
+            _source = source ?? throw new ArgumentNullException(nameof(source));
+
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            _options = (TOptions)options.Clone();
         }
 
         public IPager<TOptions, TResource> StartFrom(TOptions options)
@@ -42,7 +54,7 @@ namespace GoCardless.Api.Core.Http
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var response = await _pager(_options).ConfigureAwait(false);
+                var response = await _source(_options).ConfigureAwait(false);
                 results.AddRange(response.Items ?? Enumerable.Empty<TResource>());
 
                 _options.Before = response.Meta.Cursors.Before;
@@ -63,7 +75,7 @@ namespace GoCardless.Api.Core.Http
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var response = await _pager(_options).ConfigureAwait(false);
+                var response = await _source(_options).ConfigureAwait(false);
                 results.AddRange(response.Items ?? Enumerable.Empty<TResource>());
 
                 _options.After = response.Meta.Cursors.After;

@@ -12,39 +12,54 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         public void PagerIsNullThrows()
         {
             // given
-            Func<FakePageOptions, Task<PagedResponse<string>>> pager = null;
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = null;
 
             // when
-            TestDelegate test = () => new Pager<FakePageOptions, string>(pager);
+            TestDelegate test = () => new Pager<FakePageOptions, string>(source);
 
             // then
             var ex = Assert.Throws<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(pager)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(source)));
         }
 
         [Test]
-        public void InitialRequestIsNullThrows()
+        public void OptionsIsNullThrows()
         {
             // given
-            Func<FakePageOptions, Task<PagedResponse<string>>> pager = _ => Task.FromResult(new PagedResponse<string>());
-            var subject = new Pager<FakePageOptions, string>(pager);
-
-            FakePageOptions initialRequest = null;
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = _ => Task.FromResult(new PagedResponse<string>());
+            FakePageOptions options = null;
 
             // when
-            TestDelegate test = () => subject.StartFrom(initialRequest);
+            TestDelegate test = () => new Pager<FakePageOptions, string>(source, options);
 
             // then
             var ex = Assert.Throws<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(initialRequest)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
         [Test]
-        public void InitialRequestIsNullWhenPagingBeforeThrows()
+        public void InitialOptionsIsNullThrows()
         {
             // given
-            Func<FakePageOptions, Task<PagedResponse<string>>> pager = _ => Task.FromResult(new PagedResponse<string>());
-            var subject = new Pager<FakePageOptions, string>(pager);
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = _ => Task.FromResult(new PagedResponse<string>());
+            var subject = new Pager<FakePageOptions, string>(source);
+
+            FakePageOptions options = null;
+
+            // when
+            TestDelegate test = () => subject.StartFrom(options);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
+        }
+
+        [Test]
+        public void InitialOptionsIsNullWhenPagingBeforeThrows()
+        {
+            // given
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = _ => Task.FromResult(new PagedResponse<string>());
+            var subject = new Pager<FakePageOptions, string>(source);
 
             // when
             AsyncTestDelegate test = () => subject.AndGetAllBeforeAsync();
@@ -58,11 +73,11 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         public void PagingBeforeThrowsOnCancel()
         {
             // given
-            var source = new CancellationTokenSource();
+            var cancellationSource = new CancellationTokenSource();
 
-            Func<FakePageOptions, Task<PagedResponse<string>>> pager = _ =>
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = _ =>
             {
-                source.Cancel();
+                cancellationSource.Cancel();
                 return Task.FromResult(new PagedResponse<string>
                 {
                     Meta = new Meta
@@ -76,12 +91,12 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
                 });
             };
 
-            var subject = new Pager<FakePageOptions, string>(pager);
+            var subject = new Pager<FakePageOptions, string>(source);
 
             subject.StartFrom(new FakePageOptions());
 
             // when
-            AsyncTestDelegate test = () => subject.AndGetAllBeforeAsync(source.Token);
+            AsyncTestDelegate test = () => subject.AndGetAllBeforeAsync(cancellationSource.Token);
 
             // then
             Assert.That(test, Throws.InstanceOf<OperationCanceledException>());
@@ -91,8 +106,8 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         public void InitialRequestIsNullWhenPagingAfterThrows()
         {
             // given
-            Func<FakePageOptions, Task<PagedResponse<string>>> pager = _ => Task.FromResult(new PagedResponse<string>());
-            var subject = new Pager<FakePageOptions, string>(pager);
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = _ => Task.FromResult(new PagedResponse<string>());
+            var subject = new Pager<FakePageOptions, string>(source);
 
             // when
             AsyncTestDelegate test = () => subject.AndGetAllAfterAsync();
@@ -106,11 +121,11 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         public void PagingAfterThrowsOnCancel()
         {
             // given
-            var source = new CancellationTokenSource();
+            var cancellationSource = new CancellationTokenSource();
 
-            Func<FakePageOptions, Task<PagedResponse<string>>> pager = _ =>
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = _ =>
             {
-                source.Cancel();
+                cancellationSource.Cancel();
                 return Task.FromResult(new PagedResponse<string>
                 {
                     Meta = new Meta
@@ -124,12 +139,12 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
                 });
             };
 
-            var subject = new Pager<FakePageOptions, string>(pager);
+            var subject = new Pager<FakePageOptions, string>(source);
 
             subject.StartFrom(new FakePageOptions());
 
             // when
-            AsyncTestDelegate test = () => subject.AndGetAllAfterAsync(source.Token);
+            AsyncTestDelegate test = () => subject.AndGetAllAfterAsync(cancellationSource.Token);
 
             // then
             Assert.That(test, Throws.InstanceOf<OperationCanceledException>());
