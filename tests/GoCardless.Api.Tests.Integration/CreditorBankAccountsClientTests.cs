@@ -135,12 +135,12 @@ namespace GoCardless.Api.Tests.Integration
             // when
             var createResult = await _subject.CreateAsync(createOptions);
 
-            var disableRequest = new DisableCreditorBankAccountOptions
+            var disableOptions = new DisableCreditorBankAccountOptions
             {
                 Id = createResult.Item.Id
             };
 
-            var disableResult = await _subject.DisableAsync(disableRequest);
+            var disableResult = await _subject.DisableAsync(disableOptions);
 
             // then
             Assert.That(createResult.Item.Id, Is.Not.Null);

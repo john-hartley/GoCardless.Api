@@ -3,7 +3,7 @@ using System;
 
 namespace GoCardless.Api.CustomerBankAccounts
 {
-    public class GetCustomerBankAccountsOptions : IPageRequest, ICloneable
+    public class GetCustomerBankAccountsOptions : IPageOptions, ICloneable
     {
         public object Clone()
         {

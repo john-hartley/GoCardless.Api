@@ -1,6 +1,7 @@
 ﻿using GoCardless.Api.Core.Http;
 using NUnit.Framework;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Tests.Unit.Core.Http
@@ -11,10 +12,10 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         public void PagerIsNullThrows()
         {
             // given
-            Func<FakePageRequest, Task<PagedResponse<string>>> pager = null;
+            Func<FakePageOptions, Task<PagedResponse<string>>> pager = null;
 
             // when
-            TestDelegate test = () => new Pager<FakePageRequest, string>(pager);
+            TestDelegate test = () => new Pager<FakePageOptions, string>(pager);
 
             // then
             var ex = Assert.Throws<ArgumentNullException>(test);
@@ -25,10 +26,10 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         public void InitialRequestIsNullThrows()
         {
             // given
-            Func<FakePageRequest, Task<PagedResponse<string>>> pager = _ => Task.FromResult(new PagedResponse<string>());
-            var subject = new Pager<FakePageRequest, string>(pager);
+            Func<FakePageOptions, Task<PagedResponse<string>>> pager = _ => Task.FromResult(new PagedResponse<string>());
+            var subject = new Pager<FakePageOptions, string>(pager);
 
-            FakePageRequest initialRequest = null;
+            FakePageOptions initialRequest = null;
 
             // when
             TestDelegate test = () => subject.StartFrom(initialRequest);
@@ -42,8 +43,8 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         public void InitialRequestIsNullWhenPagingBeforeThrows()
         {
             // given
-            Func<FakePageRequest, Task<PagedResponse<string>>> pager = _ => Task.FromResult(new PagedResponse<string>());
-            var subject = new Pager<FakePageRequest, string>(pager);
+            Func<FakePageOptions, Task<PagedResponse<string>>> pager = _ => Task.FromResult(new PagedResponse<string>());
+            var subject = new Pager<FakePageOptions, string>(pager);
 
             // when
             AsyncTestDelegate test = () => subject.AndGetAllBeforeAsync();
@@ -54,11 +55,44 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         }
 
         [Test]
+        public void PagingBeforeThrowsOnCancel()
+        {
+            // given
+            var source = new CancellationTokenSource();
+
+            Func<FakePageOptions, Task<PagedResponse<string>>> pager = _ =>
+            {
+                source.Cancel();
+                return Task.FromResult(new PagedResponse<string>
+                {
+                    Meta = new Meta
+                    {
+                        Cursors = new Cursors
+                        {
+                            Before = "1"
+                        },
+                        Limit = 1
+                    }
+                });
+            };
+
+            var subject = new Pager<FakePageOptions, string>(pager);
+
+            subject.StartFrom(new FakePageOptions());
+
+            // when
+            AsyncTestDelegate test = () => subject.AndGetAllBeforeAsync(source.Token);
+
+            // then
+            Assert.That(test, Throws.InstanceOf<OperationCanceledException>());
+        }
+
+        [Test]
         public void InitialRequestIsNullWhenPagingAfterThrows()
         {
             // given
-            Func<FakePageRequest, Task<PagedResponse<string>>> pager = _ => Task.FromResult(new PagedResponse<string>());
-            var subject = new Pager<FakePageRequest, string>(pager);
+            Func<FakePageOptions, Task<PagedResponse<string>>> pager = _ => Task.FromResult(new PagedResponse<string>());
+            var subject = new Pager<FakePageOptions, string>(pager);
 
             // when
             AsyncTestDelegate test = () => subject.AndGetAllAfterAsync();
@@ -67,17 +101,55 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
             var ex = Assert.ThrowsAsync<InvalidOperationException>(test);
             Assert.That(ex.Message, Is.Not.Null.And.Not.Empty);
         }
+
+        [Test]
+        public void PagingAfterThrowsOnCancel()
+        {
+            // given
+            var source = new CancellationTokenSource();
+
+            Func<FakePageOptions, Task<PagedResponse<string>>> pager = _ =>
+            {
+                source.Cancel();
+                return Task.FromResult(new PagedResponse<string>
+                {
+                    Meta = new Meta
+                    {
+                        Cursors = new Cursors
+                        {
+                            After = "1"
+                        },
+                        Limit = 1
+                    }
+                });
+            };
+
+            var subject = new Pager<FakePageOptions, string>(pager);
+
+            subject.StartFrom(new FakePageOptions());
+
+            // when
+            AsyncTestDelegate test = () => subject.AndGetAllAfterAsync(source.Token);
+
+            // then
+            Assert.That(test, Throws.InstanceOf<OperationCanceledException>());
+        }
     }
 
-    internal class FakePageRequest : IPageRequest, ICloneable
+    internal class FakePageOptions : IPageOptions, ICloneable
     {
-        public string After { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string Before { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int? Limit { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string After { get; set; }
+        public string Before { get; set; }
+        public int? Limit { get; set; } = 1;
 
         public object Clone()
         {
-            throw new NotImplementedException();
+            return new FakePageOptions
+            {
+                After = After,
+                Before = Before,
+                Limit = Limit,
+            };
         }
     }
 }

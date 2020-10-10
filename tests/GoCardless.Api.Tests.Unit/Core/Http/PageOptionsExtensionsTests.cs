@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace GoCardless.Api.Tests.Unit.Core.Http
 {
-    public class PageRequestExtensionsTests
+    public class PageOptionsExtensionsTests
     {
         [Test]
         public void ReturnsEmptyDictionaryWhenNoPropertiesSupplied()
         {
             // given
-            var subject = new FakePageRequest();
+            var subject = new FakePageOptions();
 
             // when
             var result = subject.ToReadOnlyDictionary();
@@ -24,7 +24,7 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         public void ExcludesNullProperties()
         {
             // given
-            var subject = new FakePageRequest
+            var subject = new FakePageOptions
             {
                 Before = "before test",
                 Limit = 5
@@ -43,7 +43,7 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         public void IncludesAllSuppliedProperties()
         {
             // given
-            var subject = new FakePageRequest
+            var subject = new FakePageOptions
             {
                 Before = "before test",
                 After = "after test",
@@ -64,7 +64,7 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         public void PreservesCaseOfValues()
         {
             // given
-            var subject = new FakePageRequest
+            var subject = new FakePageOptions
             {
                 Before = "BEFORE teSt",
                 After = "AFTER teSt"
@@ -83,7 +83,7 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         {
             // given
             var expected = DateTimeOffset.UtcNow;
-            var subject = new FakePageRequest
+            var subject = new FakePageOptions
             {
                 CreatedGreaterThanOrEqual = expected
             };
@@ -95,7 +95,7 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
             Assert.That(result["created_at[gte]"], Is.EqualTo(expected));
         }
 
-        private class FakePageRequest : IPageRequest
+        private class FakePageOptions : IPageOptions
         {
             public string Before { get; set; }
 

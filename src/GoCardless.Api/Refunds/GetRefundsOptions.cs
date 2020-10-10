@@ -3,7 +3,7 @@ using System;
 
 namespace GoCardless.Api.Refunds
 {
-    public class GetRefundsOptions : IPageRequest, ICloneable
+    public class GetRefundsOptions : IPageOptions, ICloneable
     {
         public object Clone()
         {

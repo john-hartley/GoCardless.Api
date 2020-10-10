@@ -69,7 +69,7 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void GetPayoutsRequestIsNullThrows()
+        public void GetPayoutsOptionsIsNullThrows()
         {
             // given
             GetPayoutsOptions options = null;
@@ -83,10 +83,10 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public async Task CallsGetPayoutsEndpointUsingRequest()
+        public async Task CallsGetPayoutsEndpointUsingOptions()
         {
             // given
-            var request = new GetPayoutsOptions
+            var options = new GetPayoutsOptions
             {
                 Before = "before test",
                 After = "after test",
@@ -94,7 +94,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await _subject.GetPageAsync(request);
+            await _subject.GetPageAsync(options);
 
             // then
             _httpTest

@@ -1,67 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Core.Http
 {
-    public class Pager<TRequest, TResource> : IPagerBuilder<TRequest, TResource>, IPager<TRequest, TResource>
-        where TRequest : IPageRequest, ICloneable
+    public class Pager<TOptions, TResource> 
+        : IPagerBuilder<TOptions, TResource>, IPager<TOptions, TResource>
+        where TOptions : IPageOptions, ICloneable
     {
-        private readonly Func<TRequest, Task<PagedResponse<TResource>>> _pager;
+        private readonly Func<TOptions, Task<PagedResponse<TResource>>> _pager;
 
-        private TRequest _initialRequest;
+        private TOptions _options;
 
-        public Pager(Func<TRequest, Task<PagedResponse<TResource>>> pager)
+        public Pager(Func<TOptions, Task<PagedResponse<TResource>>> pager)
         {
             _pager = pager ?? throw new ArgumentNullException(nameof(pager));
         }
 
-        public IPager<TRequest, TResource> StartFrom(TRequest initialRequest)
+        public IPager<TOptions, TResource> StartFrom(TOptions options)
         {
-            if (initialRequest == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(initialRequest));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            _initialRequest = (TRequest)initialRequest.Clone();
+            _options = (TOptions)options.Clone();
             return this;
         }
 
-        public async Task<IReadOnlyList<TResource>> AndGetAllBeforeAsync()
+        public async Task<IReadOnlyList<TResource>> AndGetAllBeforeAsync(CancellationToken cancellationToken = default)
         {
-            if (_initialRequest == null)
+            if (_options == null)
             {
-                throw new InvalidOperationException($"{nameof(_initialRequest)} was null when attempting paging. You must call the {nameof(Pager<TRequest, TResource>.StartFrom)} method first.");
+                throw new InvalidOperationException($"{nameof(_options)} was null when attempting paging. You must call the {nameof(Pager<TOptions, TResource>.StartFrom)} method first.");
             }
 
             var results = new List<TResource>();
             do
             {
-                var response = await _pager(_initialRequest).ConfigureAwait(false);
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var response = await _pager(_options).ConfigureAwait(false);
                 results.AddRange(response.Items ?? Enumerable.Empty<TResource>());
 
-                _initialRequest.Before = response.Meta.Cursors.Before;
-            } while (_initialRequest.Before != null);
+                _options.Before = response.Meta.Cursors.Before;
+            } while (_options.Before != null);
 
             return results;
         }
 
-        public async Task<IReadOnlyList<TResource>> AndGetAllAfterAsync()
+        public async Task<IReadOnlyList<TResource>> AndGetAllAfterAsync(CancellationToken cancellationToken = default)
         {
-            if (_initialRequest == null)
+            if (_options == null)
             {
-                throw new InvalidOperationException($"{nameof(_initialRequest)} was null when attempting paging. You must call the {nameof(Pager<TRequest, TResource>.StartFrom)} method first.");
+                throw new InvalidOperationException($"{nameof(_options)} was null when attempting paging. You must call the {nameof(Pager<TOptions, TResource>.StartFrom)} method first.");
             }
 
             var results = new List<TResource>();
             do
             {
-                var response = await _pager(_initialRequest).ConfigureAwait(false);
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var response = await _pager(_options).ConfigureAwait(false);
                 results.AddRange(response.Items ?? Enumerable.Empty<TResource>());
 
-                _initialRequest.After = response.Meta.Cursors.After;
-            } while (_initialRequest.After != null);
+                _options.After = response.Meta.Cursors.After;
+            } while (_options.After != null);
 
             return results;
         }

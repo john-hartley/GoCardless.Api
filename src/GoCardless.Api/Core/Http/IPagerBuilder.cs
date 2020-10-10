@@ -1,7 +1,7 @@
 ﻿namespace GoCardless.Api.Core.Http
 {
-    public interface IPagerBuilder<TRequest, TResource>
+    public interface IPagerBuilder<TOptions, TResource>
     {
-        IPager<TRequest, TResource> StartFrom(TRequest initialRequest);
+        IPager<TOptions, TResource> StartFrom(TOptions options);
     }
 }
