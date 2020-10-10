@@ -11,7 +11,17 @@ namespace GoCardless.Api.Refunds
 
         public RefundsClient(IApiClient apiClient)
         {
-            _apiClient = apiClient;
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
+        }
+
+        public RefundsClient(ApiClientConfiguration apiClientConfiguration)
+        {
+            if (apiClientConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(apiClientConfiguration));
+            }
+
+            _apiClient = new ApiClient(apiClientConfiguration);
         }
 
         public IPagerBuilder<GetRefundsOptions, Refund> BuildPager()
