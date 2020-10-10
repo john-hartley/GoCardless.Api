@@ -74,22 +74,24 @@ namespace GoCardless.Api.Customers
             });
         }
 
-        public Task<Response<Customer>> UpdateAsync(UpdateCustomerRequest request)
+        public async Task<Response<Customer>> UpdateAsync(UpdateCustomerRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PutAsync<Response<Customer>>(
-                $"customers/{request.Id}",
-                new { customers = request }
-            );
+            return await _apiClient.PutAsync<Response<Customer>>(
+                new { customers = options },
+                request =>
+                {
+                    request.AppendPathSegment($"customers/{options.Id}");
+                });
         }
     }
 }

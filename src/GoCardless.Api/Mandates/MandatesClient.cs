@@ -116,22 +116,24 @@ namespace GoCardless.Api.Mandates
                 });
         }
 
-        public Task<Response<Mandate>> UpdateAsync(UpdateMandateRequest request)
+        public async Task<Response<Mandate>> UpdateAsync(UpdateMandateRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PutAsync<Response<Mandate>>(
-                $"mandates/{request.Id}",
-                new { mandates = request }
-            );
+            return await _apiClient.PutAsync<Response<Mandate>>(
+                new { mandates = options },
+                request =>
+                {
+                    request.AppendPathSegment($"mandates/{options.Id}");
+                });
         }
     }
 }

@@ -56,22 +56,24 @@ namespace GoCardless.Api.Creditors
             });
         }
 
-        public Task<Response<Creditor>> UpdateAsync(UpdateCreditorRequest request)
+        public async Task<Response<Creditor>> UpdateAsync(UpdateCreditorRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PutAsync<Response<Creditor>>(
-                $"creditors/{request.Id}",
-                new { creditors = request }
-            );
+            return await _apiClient.PutAsync<Response<Creditor>>(
+                new { creditors = options },
+                request =>
+                {
+                    request.AppendPathSegment($"creditors/{options.Id}");
+                });
         }
     }
 }

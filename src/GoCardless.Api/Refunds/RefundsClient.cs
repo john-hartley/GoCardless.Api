@@ -74,22 +74,24 @@ namespace GoCardless.Api.Refunds
             });
         }
 
-        public Task<Response<Refund>> UpdateAsync(UpdateRefundRequest request)
+        public async Task<Response<Refund>> UpdateAsync(UpdateRefundRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PutAsync<Response<Refund>>(
-                $"refunds/{request.Id}",
-                new { refunds = request }
-            );
+            return await _apiClient.PutAsync<Response<Refund>>(
+                new { refunds = options },
+                request =>
+                {
+                    request.AppendPathSegment($"refunds/{options.Id}");
+                });
         }
     }
 }

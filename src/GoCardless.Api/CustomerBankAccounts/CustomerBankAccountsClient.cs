@@ -95,22 +95,24 @@ namespace GoCardless.Api.CustomerBankAccounts
             });
         }
 
-        public Task<Response<CustomerBankAccount>> UpdateAsync(UpdateCustomerBankAccountRequest request)
+        public async Task<Response<CustomerBankAccount>> UpdateAsync(UpdateCustomerBankAccountRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PutAsync<Response<CustomerBankAccount>>(
-                $"customer_bank_accounts/{request.Id}",
-                new { customer_bank_accounts = request }
-            );
+            return await _apiClient.PutAsync<Response<CustomerBankAccount>>(
+                new { customer_bank_accounts = options },
+                request =>
+                {
+                    request.AppendPathSegment($"customer_bank_accounts/{options.Id}");
+                });
         }
     }
 }

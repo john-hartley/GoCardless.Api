@@ -54,13 +54,15 @@ namespace GoCardless.Api.Core.Http
         }
 
         public async Task<TResponse> PutAsync<TResponse>(
-            string relativeEndpoint,
-            object envelope)
+            object envelope,
+            Action<IFlurlRequest> configure)
         {
+            var request = BaseRequest();
+            configure(request);
+
             try
             {
-                return await BaseRequest()
-                    .AppendPathSegment(relativeEndpoint)
+                return await request
                     .PutJsonAsync(envelope)
                     .ReceiveJson<TResponse>();
             }

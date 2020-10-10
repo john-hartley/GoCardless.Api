@@ -95,22 +95,24 @@ namespace GoCardless.Api.Subscriptions
             });
         }
 
-        public Task<Response<Subscription>> UpdateAsync(UpdateSubscriptionRequest request)
+        public async Task<Response<Subscription>> UpdateAsync(UpdateSubscriptionRequest options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PutAsync<Response<Subscription>>(
-                $"subscriptions/{request.Id}",
-                new { subscriptions = request }
-            );
+            return await _apiClient.PutAsync<Response<Subscription>>(
+                new { subscriptions = options },
+                request =>
+                {
+                    request.AppendPathSegment($"subscriptions/{options.Id}");
+                });
         }
     }
 }
