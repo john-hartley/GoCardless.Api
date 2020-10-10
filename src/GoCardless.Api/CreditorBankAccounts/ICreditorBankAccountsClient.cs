@@ -5,11 +5,11 @@ namespace GoCardless.Api.CreditorBankAccounts
 {
     public interface ICreditorBankAccountsClient
     {
-        IPagerBuilder<GetCreditorBankAccountsRequest, CreditorBankAccount> BuildPager();
-        Task<Response<CreditorBankAccount>> CreateAsync(CreateCreditorBankAccountRequest request);
-        Task<Response<CreditorBankAccount>> DisableAsync(DisableCreditorBankAccountRequest request);
+        IPagerBuilder<GetCreditorBankAccountsOptions, CreditorBankAccount> BuildPager();
+        Task<Response<CreditorBankAccount>> CreateAsync(CreateCreditorBankAccountOptions request);
+        Task<Response<CreditorBankAccount>> DisableAsync(DisableCreditorBankAccountOptions request);
         Task<Response<CreditorBankAccount>> ForIdAsync(string id);
         Task<PagedResponse<CreditorBankAccount>> GetPageAsync();
-        Task<PagedResponse<CreditorBankAccount>> GetPageAsync(GetCreditorBankAccountsRequest request);
+        Task<PagedResponse<CreditorBankAccount>> GetPageAsync(GetCreditorBankAccountsOptions request);
     }
 }

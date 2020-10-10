@@ -29,7 +29,7 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void BankDetailsLookupRequestIsNullThrows()
+        public void BankDetailsLookupOptionsIsNullThrows()
         {
             // given
             BankDetailsLookupOptions options = null;

@@ -14,12 +14,12 @@ namespace GoCardless.Api.CreditorBankAccounts
             _apiClient = apiClient;
         }
 
-        public IPagerBuilder<GetCreditorBankAccountsRequest, CreditorBankAccount> BuildPager()
+        public IPagerBuilder<GetCreditorBankAccountsOptions, CreditorBankAccount> BuildPager()
         {
-            return new Pager<GetCreditorBankAccountsRequest, CreditorBankAccount>(GetPageAsync);
+            return new Pager<GetCreditorBankAccountsOptions, CreditorBankAccount>(GetPageAsync);
         }
 
-        public async Task<Response<CreditorBankAccount>> CreateAsync(CreateCreditorBankAccountRequest options)
+        public async Task<Response<CreditorBankAccount>> CreateAsync(CreateCreditorBankAccountOptions options)
         {
             if (options == null)
             {
@@ -36,7 +36,7 @@ namespace GoCardless.Api.CreditorBankAccounts
                 new { creditor_bank_accounts = options });
         }
 
-        public async Task<Response<CreditorBankAccount>> DisableAsync(DisableCreditorBankAccountRequest options)
+        public async Task<Response<CreditorBankAccount>> DisableAsync(DisableCreditorBankAccountOptions options)
         {
             if (options == null)
             {
@@ -77,7 +77,7 @@ namespace GoCardless.Api.CreditorBankAccounts
             });
         }
 
-        public async Task<PagedResponse<CreditorBankAccount>> GetPageAsync(GetCreditorBankAccountsRequest options)
+        public async Task<PagedResponse<CreditorBankAccount>> GetPageAsync(GetCreditorBankAccountsOptions options)
         {
             if (options == null)
             {

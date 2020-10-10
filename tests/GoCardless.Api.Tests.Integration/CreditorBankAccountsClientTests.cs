@@ -10,6 +10,7 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class CreditorBankAccountsClientTests : IntegrationTest
     {
+        private ICreditorBankAccountsClient _subject;
         private Creditor _creditor;
 
         [OneTimeSetUp]
@@ -18,11 +19,17 @@ namespace GoCardless.Api.Tests.Integration
             _creditor = await _resourceFactory.Creditor();
         }
 
+        [SetUp]
+        public void Setup()
+        {
+            _subject = new CreditorBankAccountsClient(_apiClient);
+        }
+
         [Test, Explicit("Checking the disabled state in the final assertion sometimes takes a little time.")]
         public async Task CreatesAndDisablesConflictingCreditorBankAccountUsingBankCode()
         {
             // given
-            var createRequest = new CreateCreditorBankAccountRequest
+            var createOptions = new CreateCreditorBankAccountOptions
             {
                 AccountHolderName = "API BANK ACCOUNT",
                 AccountNumber = "532013001",
@@ -39,38 +46,36 @@ namespace GoCardless.Api.Tests.Integration
                 SetAsDefaultPayoutAccount = true
             };
 
-            var subject = new CreditorBankAccountsClient(_apiClient);
-
             // when
-            await subject.CreateAsync(createRequest);
-            var creationResult = await subject.CreateAsync(createRequest);
+            await _subject.CreateAsync(createOptions);
+            var createResult = await _subject.CreateAsync(createOptions);
 
-            var disableRequest = new DisableCreditorBankAccountRequest
+            var disableOptions = new DisableCreditorBankAccountOptions
             {
-                Id = creationResult.Item.Id
+                Id = createResult.Item.Id
             };
 
-            var disabledResult = await subject.DisableAsync(disableRequest);
+            var disableResult = await _subject.DisableAsync(disableOptions);
 
             // then
-            Assert.That(creationResult.Item.Id, Is.Not.Null);
-            Assert.That(creationResult.Item.AccountHolderName, Is.EqualTo(createRequest.AccountHolderName));
-            Assert.That(creationResult.Item.AccountNumberEnding, Is.Not.Null);
-            Assert.That(creationResult.Item.BankName, Is.Not.Null);
-            Assert.That(creationResult.Item.CountryCode, Is.EqualTo(createRequest.CountryCode));
-            Assert.That(creationResult.Item.Currency, Is.EqualTo(createRequest.Currency));
-            Assert.That(creationResult.Item.Metadata, Is.EqualTo(createRequest.Metadata));
-            Assert.That(creationResult.Item.Links.Creditor, Is.EqualTo(createRequest.Links.Creditor));
-            Assert.That(creationResult.Item.Enabled, Is.True);
+            Assert.That(createResult.Item.Id, Is.Not.Null);
+            Assert.That(createResult.Item.AccountHolderName, Is.EqualTo(createOptions.AccountHolderName));
+            Assert.That(createResult.Item.AccountNumberEnding, Is.Not.Null);
+            Assert.That(createResult.Item.BankName, Is.Not.Null);
+            Assert.That(createResult.Item.CountryCode, Is.EqualTo(createOptions.CountryCode));
+            Assert.That(createResult.Item.Currency, Is.EqualTo(createOptions.Currency));
+            Assert.That(createResult.Item.Metadata, Is.EqualTo(createOptions.Metadata));
+            Assert.That(createResult.Item.Links.Creditor, Is.EqualTo(createOptions.Links.Creditor));
+            Assert.That(createResult.Item.Enabled, Is.True);
 
-            Assert.That(disabledResult.Item.Enabled, Is.False);
+            Assert.That(disableResult.Item.Enabled, Is.False);
         }
 
         [Test]
         public async Task CreatesAndDisablesCreditorBankAccountUsingBranchCode()
         {
             // given
-            var createRequest = new CreateCreditorBankAccountRequest
+            var createOptions = new CreateCreditorBankAccountOptions
             {
                 AccountHolderName = "API BANK ACCOUNT",
                 AccountNumber = "55666666",
@@ -86,37 +91,35 @@ namespace GoCardless.Api.Tests.Integration
                 }
             };
 
-            var subject = new CreditorBankAccountsClient(_apiClient);
-
             // when
-            var creationResult = await subject.CreateAsync(createRequest);
+            var createResult = await _subject.CreateAsync(createOptions);
 
-            var disableRequest = new DisableCreditorBankAccountRequest
+            var disableOptions = new DisableCreditorBankAccountOptions
             {
-                Id = creationResult.Item.Id
+                Id = createResult.Item.Id
             };
 
-            var disabledResult = await subject.DisableAsync(disableRequest);
+            var disableResult = await _subject.DisableAsync(disableOptions);
 
             // then
-            Assert.That(creationResult.Item.Id, Is.Not.Null.And.Not.Empty);
-            Assert.That(creationResult.Item.AccountHolderName, Is.EqualTo(createRequest.AccountHolderName));
-            Assert.That(creationResult.Item.AccountNumberEnding, Is.Not.Null);
-            Assert.That(creationResult.Item.BankName, Is.Not.Null.And.Not.Empty);
-            Assert.That(creationResult.Item.CountryCode, Is.EqualTo(createRequest.CountryCode));
-            Assert.That(creationResult.Item.Currency, Is.EqualTo(createRequest.Currency));
-            Assert.That(creationResult.Item.Metadata, Is.EqualTo(createRequest.Metadata));
-            Assert.That(creationResult.Item.Links.Creditor, Is.EqualTo(createRequest.Links.Creditor));
-            Assert.That(creationResult.Item.Enabled, Is.True);
+            Assert.That(createResult.Item.Id, Is.Not.Null.And.Not.Empty);
+            Assert.That(createResult.Item.AccountHolderName, Is.EqualTo(createOptions.AccountHolderName));
+            Assert.That(createResult.Item.AccountNumberEnding, Is.Not.Null);
+            Assert.That(createResult.Item.BankName, Is.Not.Null.And.Not.Empty);
+            Assert.That(createResult.Item.CountryCode, Is.EqualTo(createOptions.CountryCode));
+            Assert.That(createResult.Item.Currency, Is.EqualTo(createOptions.Currency));
+            Assert.That(createResult.Item.Metadata, Is.EqualTo(createOptions.Metadata));
+            Assert.That(createResult.Item.Links.Creditor, Is.EqualTo(createOptions.Links.Creditor));
+            Assert.That(createResult.Item.Enabled, Is.True);
 
-            Assert.That(disabledResult.Item.Enabled, Is.False);
+            Assert.That(disableResult.Item.Enabled, Is.False);
         }
 
         [Test]
         public async Task CreatesAndDisablesCreditorBankAccountUsingIban()
         {
             // given
-            var createRequest = new CreateCreditorBankAccountRequest
+            var createOptions = new CreateCreditorBankAccountOptions
             {
                 AccountHolderName = "API BANK ACCOUNT",
                 Iban = "GB60 BARC 2000 0055 7799 11",
@@ -129,40 +132,36 @@ namespace GoCardless.Api.Tests.Integration
                 }
             };
 
-            var subject = new CreditorBankAccountsClient(_apiClient);
-
             // when
-            var creationResult = await subject.CreateAsync(createRequest);
+            var createResult = await _subject.CreateAsync(createOptions);
 
-            var disableRequest = new DisableCreditorBankAccountRequest
+            var disableRequest = new DisableCreditorBankAccountOptions
             {
-                Id = creationResult.Item.Id
+                Id = createResult.Item.Id
             };
 
-            var disabledResult = await subject.DisableAsync(disableRequest);
+            var disableResult = await _subject.DisableAsync(disableRequest);
 
             // then
-            Assert.That(creationResult.Item.Id, Is.Not.Null);
-            Assert.That(creationResult.Item.AccountHolderName, Is.EqualTo(createRequest.AccountHolderName));
-            Assert.That(creationResult.Item.AccountNumberEnding, Is.Not.Null);
-            Assert.That(creationResult.Item.BankName, Is.Not.Null);
-            Assert.That(creationResult.Item.CountryCode, Is.Not.Null);
-            Assert.That(creationResult.Item.Currency, Is.Not.Null);
-            Assert.That(creationResult.Item.Metadata, Is.EqualTo(createRequest.Metadata));
-            Assert.That(creationResult.Item.Links.Creditor, Is.EqualTo(createRequest.Links.Creditor));
-            Assert.That(creationResult.Item.Enabled, Is.True);
+            Assert.That(createResult.Item.Id, Is.Not.Null);
+            Assert.That(createResult.Item.AccountHolderName, Is.EqualTo(createOptions.AccountHolderName));
+            Assert.That(createResult.Item.AccountNumberEnding, Is.Not.Null);
+            Assert.That(createResult.Item.BankName, Is.Not.Null);
+            Assert.That(createResult.Item.CountryCode, Is.Not.Null);
+            Assert.That(createResult.Item.Currency, Is.Not.Null);
+            Assert.That(createResult.Item.Metadata, Is.EqualTo(createOptions.Metadata));
+            Assert.That(createResult.Item.Links.Creditor, Is.EqualTo(createOptions.Links.Creditor));
+            Assert.That(createResult.Item.Enabled, Is.True);
 
-            Assert.That(disabledResult.Item.Enabled, Is.False);
+            Assert.That(disableResult.Item.Enabled, Is.False);
         }
 
         [Test]
         public async Task ReturnsCreditorBankAccounts()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_apiClient);
-
             // when
-            var result = (await subject.GetPageAsync()).Items.ToList();
+            var result = (await _subject.GetPageAsync()).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -179,32 +178,30 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_apiClient);
-
-            var firstPageRequest = new GetCreditorBankAccountsRequest
+            var firstPageOptions = new GetCreditorBankAccountsOptions
             {
                 Limit = 1
             };
 
             // when
-            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
+            var firstPageResult = await _subject.GetPageAsync(firstPageOptions);
 
-            var secondPageRequest = new GetCreditorBankAccountsRequest
+            var secondPageOptions = new GetCreditorBankAccountsOptions
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 2
             };
 
-            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
+            var secondPageResult = await _subject.GetPageAsync(secondPageOptions);
 
             // then
-            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
-            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
+            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageOptions.Limit));
+            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageOptions.Limit));
             Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
             Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
 
-            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageRequest.Limit));
-            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
+            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageOptions.Limit));
+            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageOptions.Limit));
             Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
             Assert.That(secondPageResult.Meta.Cursors.After, Is.Not.Null);
         }
@@ -213,11 +210,10 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsIndividualCreditorBankAccount()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_apiClient);
-            var creditorBankAccount = (await subject.GetPageAsync()).Items.First();
+            var creditorBankAccount = (await _subject.GetPageAsync()).Items.First();
 
             // when
-            var result = await subject.ForIdAsync(creditorBankAccount.Id);
+            var result = await _subject.ForIdAsync(creditorBankAccount.Id);
             var actual = result.Item;
 
             // then
@@ -236,19 +232,18 @@ namespace GoCardless.Api.Tests.Integration
         public async Task PagesThroughCreditorBankAccounts()
         {
             // given
-            var subject = new CreditorBankAccountsClient(_apiClient);
-            var firstId = (await subject.GetPageAsync()).Items.First().Id;
+            var firstId = (await _subject.GetPageAsync()).Items.First().Id;
 
-            var initialRequest = new GetCreditorBankAccountsRequest
+            var initialOptions = new GetCreditorBankAccountsOptions
             {
                 After = firstId,
                 Limit = 1,
             };
 
             // when
-            var result = await subject
+            var result = await _subject
                 .BuildPager()
-                .StartFrom(initialRequest)
+                .StartFrom(initialOptions)
                 .AndGetAllAfterAsync();
 
             // then
