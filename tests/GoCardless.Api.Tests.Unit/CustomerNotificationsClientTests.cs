@@ -10,13 +10,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class CustomerNotificationsClientTests
     {
-        private IApiClient _apiClient;
+        private ICustomerNotificationsClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken"));
+            var apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken"));
+            _subject = new CustomerNotificationsClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -26,16 +27,42 @@ namespace GoCardless.Api.Tests.Unit
             _httpTest.Dispose();
         }
 
+        [Test]
+        public void ApiClientIsNullThrows()
+        {
+            // given
+            IApiClient apiClient = null;
+
+            // when
+            TestDelegate test = () => new CustomerNotificationsClient(apiClient);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClient)));
+        }
+
+        [Test]
+        public void ApiClientConfigurationIsNullThrows()
+        {
+            // given
+            ApiClientConfiguration apiClientConfiguration = null;
+
+            // when
+            TestDelegate test = () => new CustomerNotificationsClient(apiClientConfiguration);
+
+            // then
+            var ex = Assert.Throws<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClientConfiguration)));
+        }
+
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
         public void IdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
-            var subject = new CustomerNotificationsClient(_apiClient);
-
             // when
-            AsyncTestDelegate test = () => subject.HandleAsync(id);
+            AsyncTestDelegate test = () => _subject.HandleAsync(id);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
@@ -46,11 +73,10 @@ namespace GoCardless.Api.Tests.Unit
         public async Task CallsHandleCustomerNotificationsEndpoint()
         {
             // given
-            var subject = new CustomerNotificationsClient(_apiClient);
             var id = "PCN12345678";
 
             // when
-            await subject.HandleAsync(id);
+            await _subject.HandleAsync(id);
 
             // then
             _httpTest
