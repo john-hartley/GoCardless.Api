@@ -25,7 +25,7 @@ namespace GoCardless.Api.Tests.Integration
         }
 
         [Test]
-        public async Task CreatesSubscription()
+        public async Task CreatesConflictingSubscription()
         {
             // given
             var request = new CreateSubscriptionRequest
