@@ -24,11 +24,6 @@ namespace GoCardless.Api.Customers
             _apiClient = new ApiClient(apiClientConfiguration);
         }
 
-        public IPagerBuilder<GetCustomersOptions, Customer> BuildPager()
-        {
-            return new Pager<GetCustomersOptions, Customer>(GetPageAsync);
-        }
-
         public async Task<Response<Customer>> CreateAsync(CreateCustomerOptions options)
         {
             if (options == null)
@@ -80,6 +75,11 @@ namespace GoCardless.Api.Customers
                     .AppendPathSegment("customers")
                     .SetQueryParams(options.ToReadOnlyDictionary());
             });
+        }
+
+        public IPager<GetCustomersOptions, Customer> PageFrom(GetCustomersOptions options)
+        {
+            return new Pager<GetCustomersOptions, Customer>(GetPageAsync, options);
         }
 
         public async Task<Response<Customer>> UpdateAsync(UpdateCustomerOptions options)
