@@ -5,9 +5,9 @@ namespace GoCardless.Api.Payouts
 {
     public interface IPayoutsClient
     {
-        IPagerBuilder<GetPayoutsRequest, Payout> BuildPager();
+        IPagerBuilder<GetPayoutsOptions, Payout> BuildPager();
         Task<Response<Payout>> ForIdAsync(string id);
         Task<PagedResponse<Payout>> GetPageAsync();
-        Task<PagedResponse<Payout>> GetPageAsync(GetPayoutsRequest request);
+        Task<PagedResponse<Payout>> GetPageAsync(GetPayoutsOptions options);
     }
 }

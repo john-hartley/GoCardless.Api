@@ -9,19 +9,25 @@ namespace GoCardless.Api.Tests.Integration
 {
     public class PayoutsClientTests : IntegrationTest
     {
+        private IPayoutsClient _subject;
+
+        [SetUp]
+        public void Setup()
+        {
+            _subject = new PayoutsClient(_apiClient);
+        }
+
         [Test]
         public async Task ReturnsPayouts()
         {
             // given
-            var subject = new PayoutsClient(_apiClient);
-
-            var request = new GetPayoutsRequest
+            var options = new GetPayoutsOptions
             {
                 PayoutType = PayoutType.Merchant
             };
 
             // when
-            var result = (await subject.GetPageAsync(request)).Items.ToList();
+            var result = (await _subject.GetPageAsync(options)).Items.ToList();
 
             // then
             Assert.That(result.Any(), Is.True);
@@ -44,32 +50,30 @@ namespace GoCardless.Api.Tests.Integration
         public async Task MapsPagingProperties()
         {
             // given
-            var subject = new PayoutsClient(_apiClient);
-
-            var firstPageRequest = new GetPayoutsRequest
+            var firstPageOptions = new GetPayoutsOptions
             {
                 Limit = 1
             };
 
             // when
-            var firstPageResult = await subject.GetPageAsync(firstPageRequest);
+            var firstPageResult = await _subject.GetPageAsync(firstPageOptions);
 
-            var secondPageRequest = new GetPayoutsRequest
+            var secondPageOptions = new GetPayoutsOptions
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 1
             };
 
-            var secondPageResult = await subject.GetPageAsync(secondPageRequest);
+            var secondPageResult = await _subject.GetPageAsync(secondPageOptions);
 
             // then
-            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageRequest.Limit));
-            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageRequest.Limit));
+            Assert.That(firstPageResult.Items.Count(), Is.EqualTo(firstPageOptions.Limit));
+            Assert.That(firstPageResult.Meta.Limit, Is.EqualTo(firstPageOptions.Limit));
             Assert.That(firstPageResult.Meta.Cursors.Before, Is.Null);
             Assert.That(firstPageResult.Meta.Cursors.After, Is.Not.Null);
 
-            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageRequest.Limit));
-            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageRequest.Limit));
+            Assert.That(secondPageResult.Items.Count(), Is.EqualTo(secondPageOptions.Limit));
+            Assert.That(secondPageResult.Meta.Limit, Is.EqualTo(secondPageOptions.Limit));
             Assert.That(secondPageResult.Meta.Cursors.Before, Is.Not.Null);
             Assert.That(secondPageResult.Meta.Cursors.After, Is.Not.Null);
         }
@@ -78,11 +82,10 @@ namespace GoCardless.Api.Tests.Integration
         public async Task ReturnsIndividualPayout()
         {
             // given
-            var subject = new PayoutsClient(_apiClient);
-            var payout = (await subject.GetPageAsync()).Items.First();
+            var payout = (await _subject.GetPageAsync()).Items.First();
 
             // when
-            var result = await subject.ForIdAsync(payout.Id);
+            var result = await _subject.ForIdAsync(payout.Id);
             var actual = result.Item;
 
             // then
@@ -102,22 +105,21 @@ namespace GoCardless.Api.Tests.Integration
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
-        public async Task ReturnsPagesIncludingAndBeforeInitialRequest()
+        public async Task ReturnsPagesIncludingAndBeforeInitialOptions()
         {
             // given
-            var subject = new PayoutsClient(_apiClient);
-            var lastId = (await subject.GetPageAsync()).Items.Last().Id;
+            var lastId = (await _subject.GetPageAsync()).Items.Last().Id;
 
-            var initialRequest = new GetPayoutsRequest
+            var initialOptions = new GetPayoutsOptions
             {
                 Before = lastId,
                 Limit = 1,
             };
 
             // when
-            var result = await subject
+            var result = await _subject
                 .BuildPager()
-                .StartFrom(initialRequest)
+                .StartFrom(initialOptions)
                 .AndGetAllBeforeAsync();
 
             // then
@@ -127,20 +129,18 @@ namespace GoCardless.Api.Tests.Integration
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
-        public async Task ReturnsPagesIncludingAndAfterInitialRequest()
+        public async Task ReturnsPagesIncludingAndAfterInitialOptions()
         {
             // given
-            var subject = new PayoutsClient(_apiClient);
-
-            var initialRequest = new GetPayoutsRequest
+            var initialOptions = new GetPayoutsOptions
             {
                 Limit = 1,
             };
 
             // when
-            var result = await subject
+            var result = await _subject
                 .BuildPager()
-                .StartFrom(initialRequest)
+                .StartFrom(initialOptions)
                 .AndGetAllAfterAsync();
 
             // then
@@ -150,22 +150,21 @@ namespace GoCardless.Api.Tests.Integration
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
-        public async Task ReturnsPagesIncludingAndAfterInitialRequestWhenCursorSpecified()
+        public async Task ReturnsPagesIncludingAndAfterInitialOptionsWhenCursorSpecified()
         {
             // given
-            var subject = new PayoutsClient(_apiClient);
-            var firstId = (await subject.GetPageAsync()).Items.First().Id;
+            var firstId = (await _subject.GetPageAsync()).Items.First().Id;
 
-            var initialRequest = new GetPayoutsRequest
+            var initialOptions = new GetPayoutsOptions
             {
                 After = firstId,
                 Limit = 1,
             };
 
             // when
-            var result = await subject
+            var result = await _subject
                 .BuildPager()
-                .StartFrom(initialRequest)
+                .StartFrom(initialOptions)
                 .AndGetAllAfterAsync();
 
             // then

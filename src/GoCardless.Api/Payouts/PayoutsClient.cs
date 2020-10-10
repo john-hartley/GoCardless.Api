@@ -14,9 +14,9 @@ namespace GoCardless.Api.Payouts
             _apiClient = apiClient;
         }
 
-        public IPagerBuilder<GetPayoutsRequest, Payout> BuildPager()
+        public IPagerBuilder<GetPayoutsOptions, Payout> BuildPager()
         {
-            return new Pager<GetPayoutsRequest, Payout>(GetPageAsync);
+            return new Pager<GetPayoutsOptions, Payout>(GetPageAsync);
         }
 
         public async Task<Response<Payout>> ForIdAsync(string id)
@@ -40,7 +40,7 @@ namespace GoCardless.Api.Payouts
             });
         }
 
-        public async Task<PagedResponse<Payout>> GetPageAsync(GetPayoutsRequest options)
+        public async Task<PagedResponse<Payout>> GetPageAsync(GetPayoutsOptions options)
         {
             if (options == null)
             {

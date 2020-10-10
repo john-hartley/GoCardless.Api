@@ -165,7 +165,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 
         internal async Task<Payout> Payout()
         {
-            var request = new GetPayoutsRequest
+            var request = new GetPayoutsOptions
             {
                 PayoutType = PayoutType.Merchant
             };

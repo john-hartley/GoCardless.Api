@@ -48,7 +48,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PayoutsClient(_apiClient);
 
-            GetPayoutsRequest options = null;
+            GetPayoutsOptions options = null;
 
             // when
             AsyncTestDelegate test = () => subject.GetPageAsync(options);
@@ -64,7 +64,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PayoutsClient(_apiClient);
 
-            var request = new GetPayoutsRequest
+            var request = new GetPayoutsOptions
             {
                 Before = "before test",
                 After = "after test",
