@@ -208,15 +208,14 @@ namespace GoCardless.Api.Tests.Integration
         public async Task PagesThroughRefunds()
         {
             // given
-            var initialOptions = new GetRefundsOptions
+            var options = new GetRefundsOptions
             {
                 Limit = 1
             };
 
             // when
             var result = await _subject
-                .BuildPager()
-                .StartFrom(initialOptions)
+                .PageFrom(options)
                 .AndGetAllAfterAsync();
 
             // then
