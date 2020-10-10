@@ -32,7 +32,7 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new MandateImportEntriesClient(_apiClient);
-            AddMandateImportEntryRequest options = null;
+            AddMandateImportEntryOptions options = null;
 
             // when
             AsyncTestDelegate test = () => subject.AddAsync(options);
@@ -47,7 +47,7 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new MandateImportEntriesClient(_apiClient);
-            var request = new AddMandateImportEntryRequest();
+            var request = new AddMandateImportEntryOptions();
 
             // when
             await subject.AddAsync(request);
@@ -63,7 +63,7 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new MandateImportEntriesClient(_apiClient);
-            GetMandateImportEntriesRequest options = null;
+            GetMandateImportEntriesOptions options = null;
 
             // when
             AsyncTestDelegate test = () => subject.GetPageAsync(options);
@@ -80,7 +80,7 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new MandateImportEntriesClient(_apiClient);
-            var request = new GetMandateImportEntriesRequest
+            var request = new GetMandateImportEntriesOptions
             {
                 MandateImport = mandateImport
             };
@@ -98,7 +98,7 @@ namespace GoCardless.Api.Tests.Unit
         {
             // given
             var subject = new MandateImportEntriesClient(_apiClient);
-            var request = new GetMandateImportEntriesRequest
+            var request = new GetMandateImportEntriesOptions
             {
                 MandateImport = "IM12345678"
             };

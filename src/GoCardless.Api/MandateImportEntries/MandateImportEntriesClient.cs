@@ -14,7 +14,7 @@ namespace GoCardless.Api.MandateImportEntries
             _apiClient = apiClient;
         }
 
-        public async Task<Response<MandateImportEntry>> AddAsync(AddMandateImportEntryRequest options)
+        public async Task<Response<MandateImportEntry>> AddAsync(AddMandateImportEntryOptions options)
         {
             if (options == null)
             {
@@ -29,12 +29,12 @@ namespace GoCardless.Api.MandateImportEntries
                 new { mandate_import_entries = options });
         }
 
-        public IPagerBuilder<GetMandateImportEntriesRequest, MandateImportEntry> BuildPager()
+        public IPagerBuilder<GetMandateImportEntriesOptions, MandateImportEntry> BuildPager()
         {
-            return new Pager<GetMandateImportEntriesRequest, MandateImportEntry>(GetPageAsync);
+            return new Pager<GetMandateImportEntriesOptions, MandateImportEntry>(GetPageAsync);
         }
 
-        public async Task<PagedResponse<MandateImportEntry>> GetPageAsync(GetMandateImportEntriesRequest options)
+        public async Task<PagedResponse<MandateImportEntry>> GetPageAsync(GetMandateImportEntriesOptions options)
         {
             if (options == null)
             {

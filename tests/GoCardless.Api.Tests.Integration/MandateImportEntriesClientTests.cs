@@ -17,7 +17,7 @@ namespace GoCardless.Api.Tests.Integration
             var subject = new MandateImportEntriesClient(_apiClient);
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
-            var request = new AddMandateImportEntryRequest
+            var request = new AddMandateImportEntryOptions
             {
                 BankAccount = new BankAccount
                 {
@@ -74,7 +74,7 @@ namespace GoCardless.Api.Tests.Integration
             var mandateImportsClient = new MandateImportsClient(_apiClient);
             await mandateImportsClient.SubmitAsync(mandateImport.Id);
 
-            var request = new GetMandateImportEntriesRequest
+            var request = new GetMandateImportEntriesOptions
             {
                 MandateImport = mandateImport.Id
             };
@@ -104,7 +104,7 @@ namespace GoCardless.Api.Tests.Integration
             var secondRecordId = "second-record";
             var secondEntry = await _resourceFactory.CreateMandateImportEntryFor(mandateImport, secondRecordId);
 
-            var request = new GetMandateImportEntriesRequest
+            var request = new GetMandateImportEntriesOptions
             {
                 MandateImport = mandateImport.Id
             };
@@ -144,7 +144,7 @@ namespace GoCardless.Api.Tests.Integration
             var secondRecordId = "second-record";
             await _resourceFactory.CreateMandateImportEntryFor(mandateImport, secondRecordId);
 
-            var firstPageRequest = new GetMandateImportEntriesRequest
+            var firstPageRequest = new GetMandateImportEntriesOptions
             {
                 Limit = 1,
                 MandateImport = mandateImport.Id
@@ -153,7 +153,7 @@ namespace GoCardless.Api.Tests.Integration
             // when
             var firstPageResult = await subject.GetPageAsync(firstPageRequest);
 
-            var secondPageRequest = new GetMandateImportEntriesRequest
+            var secondPageRequest = new GetMandateImportEntriesOptions
             {
                 After = firstPageResult.Meta.Cursors.After,
                 Limit = 1,
@@ -187,7 +187,7 @@ namespace GoCardless.Api.Tests.Integration
             var secondRecordId = "second-record";
             await _resourceFactory.CreateMandateImportEntryFor(mandateImport, secondRecordId);
 
-            var initialRequest = new GetMandateImportEntriesRequest
+            var initialRequest = new GetMandateImportEntriesOptions
             {
                 Limit = 1,
                 MandateImport = mandateImport.Id
