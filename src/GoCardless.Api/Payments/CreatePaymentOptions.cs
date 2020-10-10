@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace GoCardless.Api.Payments
 {
-    public class CreatePaymentRequest
+    public class CreatePaymentOptions
     {
-        public CreatePaymentRequest()
+        public CreatePaymentOptions()
         {
             IdempotencyKey = Guid.NewGuid().ToString();
         }

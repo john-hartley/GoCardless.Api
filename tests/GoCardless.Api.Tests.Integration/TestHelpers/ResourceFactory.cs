@@ -143,7 +143,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 
         internal async Task<Payment> CreatePaymentFor(Mandate mandate)
         {
-            var request = new CreatePaymentRequest
+            var request = new CreatePaymentOptions
             {
                 Amount = 500,
                 ChargeDate = DateTime.Now.AddMonths(1),

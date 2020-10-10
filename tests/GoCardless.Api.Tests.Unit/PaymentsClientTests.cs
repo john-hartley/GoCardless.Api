@@ -33,7 +33,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PaymentsClient(_apiClient);
 
-            CancelPaymentRequest options = null;
+            CancelPaymentOptions options = null;
 
             // when
             AsyncTestDelegate test = () => subject.CancelAsync(options);
@@ -51,7 +51,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PaymentsClient(_apiClient);
 
-            var options = new CancelPaymentRequest
+            var options = new CancelPaymentOptions
             {
                 Id = id
             };
@@ -70,7 +70,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PaymentsClient(_apiClient);
 
-            var request = new CancelPaymentRequest
+            var request = new CancelPaymentOptions
             {
                 Id = "PM12345678"
             };
@@ -90,7 +90,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PaymentsClient(_apiClient);
 
-            CreatePaymentRequest options = null;
+            CreatePaymentOptions options = null;
 
             // when
             AsyncTestDelegate test = () => subject.CreateAsync(options);
@@ -106,7 +106,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PaymentsClient(_apiClient);
 
-            var request = new CreatePaymentRequest
+            var request = new CreatePaymentOptions
             {
                 IdempotencyKey = Guid.NewGuid().ToString()
             };
@@ -175,7 +175,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PaymentsClient(_apiClient);
 
-            GetPaymentsRequest options = null;
+            GetPaymentsOptions options = null;
 
             // when
             AsyncTestDelegate test = () => subject.GetPageAsync(options);
@@ -191,7 +191,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PaymentsClient(_apiClient);
 
-            var request = new GetPaymentsRequest
+            var request = new GetPaymentsOptions
             {
                 Before = "before test",
                 After = "after test",
@@ -213,7 +213,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PaymentsClient(_apiClient);
 
-            RetryPaymentRequest options = null;
+            RetryPaymentOptions options = null;
 
             // when
             AsyncTestDelegate test = () => subject.RetryAsync(options);
@@ -231,7 +231,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PaymentsClient(_apiClient);
 
-            var request = new RetryPaymentRequest
+            var request = new RetryPaymentOptions
             {
                 Id = id
             };
@@ -250,7 +250,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PaymentsClient(_apiClient);
 
-            var request = new RetryPaymentRequest
+            var request = new RetryPaymentOptions
             {
                 Id = "PM12345678"
             };
@@ -270,7 +270,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PaymentsClient(_apiClient);
 
-            UpdatePaymentRequest options = null;
+            UpdatePaymentOptions options = null;
 
             // when
             AsyncTestDelegate test = () => subject.UpdateAsync(options);
@@ -288,7 +288,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PaymentsClient(_apiClient);
 
-            var options = new UpdatePaymentRequest
+            var options = new UpdatePaymentOptions
             {
                 Id = id
             };
@@ -307,7 +307,7 @@ namespace GoCardless.Api.Tests.Unit
             // given
             var subject = new PaymentsClient(_apiClient);
 
-            var request = new UpdatePaymentRequest
+            var request = new UpdatePaymentOptions
             {
                 Id = "PM12345678"
             };

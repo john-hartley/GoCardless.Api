@@ -14,12 +14,12 @@ namespace GoCardless.Api.Payments
             _apiClient = apiClient;
         }
 
-        public IPagerBuilder<GetPaymentsRequest, Payment> BuildPager()
+        public IPagerBuilder<GetPaymentsOptions, Payment> BuildPager()
         {
-            return new Pager<GetPaymentsRequest, Payment>(GetPageAsync);
+            return new Pager<GetPaymentsOptions, Payment>(GetPageAsync);
         }
 
-        public async Task<Response<Payment>> CancelAsync(CancelPaymentRequest options)
+        public async Task<Response<Payment>> CancelAsync(CancelPaymentOptions options)
         {
             if (options == null)
             {
@@ -39,7 +39,7 @@ namespace GoCardless.Api.Payments
                 new { payments = options });
         }
 
-        public async Task<Response<Payment>> CreateAsync(CreatePaymentRequest options)
+        public async Task<Response<Payment>> CreateAsync(CreatePaymentOptions options)
         {
             if (options == null)
             {
@@ -77,7 +77,7 @@ namespace GoCardless.Api.Payments
             });
         }
 
-        public async Task<PagedResponse<Payment>> GetPageAsync(GetPaymentsRequest options)
+        public async Task<PagedResponse<Payment>> GetPageAsync(GetPaymentsOptions options)
         {
             if (options == null)
             {
@@ -92,7 +92,7 @@ namespace GoCardless.Api.Payments
             });
         }
 
-        public async Task<Response<Payment>> RetryAsync(RetryPaymentRequest options)
+        public async Task<Response<Payment>> RetryAsync(RetryPaymentOptions options)
         {
             if (options == null)
             {
@@ -112,7 +112,7 @@ namespace GoCardless.Api.Payments
                 new { payments = options });
         }
 
-        public async Task<Response<Payment>> UpdateAsync(UpdatePaymentRequest options)
+        public async Task<Response<Payment>> UpdateAsync(UpdatePaymentOptions options)
         {
             if (options == null)
             {
