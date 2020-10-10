@@ -234,7 +234,7 @@ namespace GoCardless.Api.Tests.Integration
             // given
             var firstId = (await _subject.GetPageAsync()).Items.First().Id;
 
-            var initialOptions = new GetCreditorBankAccountsOptions
+            var options = new GetCreditorBankAccountsOptions
             {
                 After = firstId,
                 Limit = 1,
@@ -242,8 +242,7 @@ namespace GoCardless.Api.Tests.Integration
 
             // when
             var result = await _subject
-                .BuildPager()
-                .StartFrom(initialOptions)
+                .PageFrom(options)
                 .AndGetAllAfterAsync();
 
             // then
