@@ -9,6 +9,16 @@ namespace GoCardless.Api.BankDetailsLookups
     {
         private readonly IApiClient _apiClient;
 
+        public BankDetailsLookupsClient(IApiClient apiClient)
+        {
+            if (apiClient == null)
+            {
+                throw new ArgumentNullException(nameof(apiClient));
+            }
+
+            _apiClient = apiClient;
+        }
+
         public BankDetailsLookupsClient(ApiClientConfiguration apiClientConfiguration)
         {
             if (apiClientConfiguration == null)
@@ -17,11 +27,6 @@ namespace GoCardless.Api.BankDetailsLookups
             }
 
             _apiClient = new ApiClient(apiClientConfiguration);
-        }
-
-        public BankDetailsLookupsClient(IApiClient apiClient)
-        {
-            _apiClient = apiClient;
         }
 
         public async Task<Response<BankDetailsLookup>> LookupAsync(BankDetailsLookupOptions options)
