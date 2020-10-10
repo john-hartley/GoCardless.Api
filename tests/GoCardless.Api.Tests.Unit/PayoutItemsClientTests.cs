@@ -11,13 +11,14 @@ namespace GoCardless.Api.Tests.Unit
 {
     public class PayoutItemsClientTests
     {
-        private IApiClient _apiClient;
+        private IPayoutItemsClient _subject;
         private HttpTest _httpTest;
 
         [SetUp]
         public void Setup()
         {
-            _apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            var apiClient = new ApiClient(ClientConfiguration.ForLive("accesstoken"));
+            _subject = new PayoutItemsClient(apiClient);
             _httpTest = new HttpTest();
         }
 
@@ -28,15 +29,13 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void GetPayoutItemRequestIsNullThrows()
+        public void GetPayoutItemOptionsIsNullThrows()
         {
             // given
-            var subject = new PayoutItemsClient(_apiClient);
-
-            GetPayoutItemsRequest options = null;
+            GetPayoutItemsOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(options);
+            AsyncTestDelegate test = () => _subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -49,29 +48,25 @@ namespace GoCardless.Api.Tests.Unit
         public void PayoutIdIsNullOrWhiteSpaceThrows(string payoutId)
         {
             // given
-            var subject = new PayoutItemsClient(_apiClient);
-
-            var request = new GetPayoutItemsRequest
+            var options = new GetPayoutItemsOptions
             {
                 Payout = payoutId
             };
 
             // when
-            AsyncTestDelegate test = () => subject.GetPageAsync(request);
+            AsyncTestDelegate test = () => _subject.GetPageAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
             Assert.That(ex.Message, Is.Not.Null);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(request.Payout)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Payout)));
         }
 
         [Test]
-        public async Task CallsGetPayoutItemsEndpointUsingRequest()
+        public async Task CallsGetPayoutItemsEndpointUsingOptions()
         {
             // given
-            var subject = new PayoutItemsClient(_apiClient);
-
-            var request = new GetPayoutItemsRequest
+            var options = new GetPayoutItemsOptions
             {
                 Before = "before test",
                 After = "after test",
@@ -80,7 +75,7 @@ namespace GoCardless.Api.Tests.Unit
             };
 
             // when
-            await subject.GetPageAsync(request);
+            await _subject.GetPageAsync(options);
 
             // then
             _httpTest
