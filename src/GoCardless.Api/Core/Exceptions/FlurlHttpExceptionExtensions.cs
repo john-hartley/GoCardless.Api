@@ -42,6 +42,11 @@ namespace GoCardless.Api.Core.Exceptions
             ApiErrorResponse apiErrorResponse)
         {
             var error = apiErrorResponse.Error;
+            if (error.Code == 409)
+            {
+                return new ConflictingResourceException(error.Message, error);
+            }
+
             switch (error.Type)
             {
                 case "gocardless":

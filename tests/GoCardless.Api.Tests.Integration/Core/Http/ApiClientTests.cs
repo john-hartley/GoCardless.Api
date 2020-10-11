@@ -4,6 +4,7 @@ using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
 using GoCardless.Api.Customers;
 using GoCardless.Api.Mandates;
+using GoCardless.Api.Payments;
 using GoCardless.Api.Refunds;
 using GoCardless.Api.Subscriptions;
 using GoCardless.Api.Tests.Integration.TestHelpers;
@@ -13,6 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Flurl.Http;
+using System.Security.Cryptography.X509Certificates;
 
 namespace GoCardless.Api.Tests.Integration.Core.Http
 {
@@ -134,7 +137,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
                 }
             };
 
-            var apiClient = new ApiClient(ApiClientConfiguration.ForSandbox("invalid token"));
+            var apiClient = new ApiClient(ApiClientConfiguration.ForSandbox("invalid token", false));
             var subject = new SubscriptionsClient(apiClient);
 
             // when
@@ -148,6 +151,85 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
             Assert.That(ex.Message, Is.Not.Null.And.Not.Empty);
             Assert.That(ex.RawResponse, Is.Not.Null.And.Not.Empty);
             Assert.That(ex.RequestId, Is.Not.Null.And.Not.Empty);
+        }
+
+        [Test]
+        public async Task ThrowsOnConflict()
+        {
+            // given
+            var options = new CreatePaymentOptions
+            {
+                Amount = 500,
+                ChargeDate = DateTime.Now.AddMonths(1),
+                Description = "Sandbox Payment",
+                Currency = "GBP",
+                Links = new CreatePaymentLinks { Mandate = _mandate.Id },
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                },
+                Reference = "REF123456"
+            };
+
+            var configuration = ApiClientConfiguration.ForSandbox(_accessToken, throwOnConflict: true);
+            var subject = new ApiClient(configuration);
+            var paymentsClient = new PaymentsClient(subject);
+
+            // when
+            var result = await paymentsClient.CreateAsync(options);
+            AsyncTestDelegate test = () => paymentsClient.CreateAsync(options);
+
+            // then
+            var ex = Assert.ThrowsAsync<ConflictingResourceException>(test);
+            var error = ex.Errors.Single(x => x.Reason == "idempotent_creation_conflict");
+            Assert.That(error.Links["conflicting_resource_id"], Is.EqualTo(result.Item.Id));
+        }
+
+        [Test]
+        public async Task FetchesOnConflict()
+        {
+            // given
+            var options = new CreatePaymentOptions
+            {
+                Amount = 500,
+                ChargeDate = DateTime.Now.AddMonths(1),
+                Description = "Sandbox Payment",
+                Currency = "GBP",
+                Links = new CreatePaymentLinks { Mandate = _mandate.Id },
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                },
+                Reference = "REF123456"
+            };
+
+            var configuration = ApiClientConfiguration.ForSandbox(_accessToken, throwOnConflict: false);
+            var subject = new ApiClient(configuration);
+            var paymentsClient = new PaymentsClient(subject);
+
+            // when
+            var result = await paymentsClient.CreateAsync(options);
+            AsyncTestDelegate test = () => paymentsClient.CreateAsync(options);
+
+            // then
+            Assert.DoesNotThrowAsync(test);
+
+            Assert.That(result.Item.Id, Is.Not.Null);
+            Assert.That(result.Item.Amount, Is.EqualTo(options.Amount));
+            Assert.That(result.Item.AmountRefunded, Is.Not.Null);
+            Assert.That(result.Item.ChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
+            Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result.Item.Currency, Is.EqualTo(options.Currency));
+            Assert.That(result.Item.Description, Is.EqualTo(options.Description));
+            Assert.That(result.Item.Links.Creditor, Is.EqualTo(_creditor.Id));
+            Assert.That(result.Item.Links.Mandate, Is.EqualTo(_mandate.Id));
+            Assert.That(result.Item.Metadata, Is.EqualTo(options.Metadata));
+            Assert.That(result.Item.Reference, Is.EqualTo(options.Reference));
+            Assert.That(result.Item.Status, Is.Not.Null.And.Not.EqualTo(PaymentStatus.Cancelled));
         }
     }
 }

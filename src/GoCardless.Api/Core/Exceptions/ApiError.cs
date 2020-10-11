@@ -4,6 +4,11 @@ namespace GoCardless.Api.Core.Exceptions
 {
     public class ApiError
     {
+        public ApiError()
+        {
+            Errors = new List<Error>();
+        }
+
         public int Code { get; set; }
         public string DocumentationUrl { get; set; }
         public IReadOnlyList<Error> Errors { get; set; }
