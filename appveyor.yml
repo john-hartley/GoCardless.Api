@@ -1,5 +1,5 @@
 version: 2.1.2.{build}
-image: Visual Studio 2017
+image: Visual Studio 2019
 configuration: Release
 skip_tags: true
 
@@ -24,8 +24,6 @@ skip_commits:
 
 before_build:
   dotnet restore
-  
-  s
 
 build:
   publish_nuget: true
