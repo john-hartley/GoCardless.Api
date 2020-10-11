@@ -5,9 +5,6 @@ using GoCardless.Api.Core.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Core.Http
@@ -66,11 +63,11 @@ namespace GoCardless.Api.Core.Http
             catch (FlurlHttpException ex)
             {
                 var apiException = await ex.CreateApiExceptionAsync();
-                if (apiException is ConflictingResourceException
+                if (apiException is ConflictingResourceException conflictingResourceException
                     && !_apiClientConfiguration.ThrowOnConflict)
                 {
                     var uri = ex.Call.Request.RequestUri;
-                    var conflictingResourceId = ConflictingResourceIdFrom(apiException.Errors);
+                    var conflictingResourceId = conflictingResourceException.ResourceId;
 
                     if (!string.IsNullOrWhiteSpace(conflictingResourceId) 
                         && uri.Segments.Length >= 2)
@@ -110,27 +107,6 @@ namespace GoCardless.Api.Core.Http
             return _apiClientConfiguration.BaseUri
                 .WithHeaders(_apiClientConfiguration.Headers)
                 .ConfigureRequest(x => x.JsonSerializer = _newtonsoftJsonSerializer);
-        }
-
-        private string ConflictingResourceIdFrom(IEnumerable<Error> errors)
-        {
-            var bankAccountExists = errors.SingleOrDefault(x => x.Reason == "bank_account_exists");
-            if (bankAccountExists != null)
-            {
-                if (bankAccountExists.Links.ContainsKey("creditor_bank_account"))
-                {
-                    return bankAccountExists.Links["creditor_bank_account"];
-                }
-                if (bankAccountExists.Links.ContainsKey("customer_bank_account"))
-                {
-                    return bankAccountExists.Links["customer_bank_account"];
-                }
-            }
-
-            return errors
-                .SingleOrDefault(x => x.Reason == "idempotent_creation_conflict")
-                ?.Links
-                ?.SingleOrDefault(x => x.Key == "conflicting_resource_id").Value;
         }
     }
 }
