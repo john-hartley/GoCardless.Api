@@ -36,9 +36,6 @@ test:
     GoCardless.Api.Tests.Unit.dll
     GoCardless.Api.Tests.Integration.dll
 
-nuget:
-  project_feed: true
-
 deploy:
   provider: NuGet
   api_key:
