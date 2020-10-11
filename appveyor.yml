@@ -3,6 +3,12 @@ image: Visual Studio 2019
 configuration: Release
 skip_tags: true
 
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+
 environment:
   GoCardlessAccessToken:
     secure: TXXkPrAH2llzmiO+qkmAJrPWpYQ+5764Gz6z30AhhxAyc7rMJCDJl5hdRvS4lZKcpVc7wZVi1AiHBXAKjuxeSg==
@@ -16,15 +22,6 @@ skip_commits:
   files:
     - README.md
 
-dotnet_csproj:
-  patch: true
-  file: '**\*.csproj'
-  version: '{version}'
-  package_version: '{version}'
-
-nuget:
-  project_feed: true
- 
 before_build:
   dotnet restore
 
@@ -38,6 +35,9 @@ test:
   assemblies:
     GoCardless.Api.Tests.Unit.dll
     GoCardless.Api.Tests.Integration.dll
+
+nuget:
+  project_feed: true
 
 deploy:
   provider: NuGet
