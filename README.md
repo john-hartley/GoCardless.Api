@@ -169,4 +169,3 @@ I'd also like to thank the GoCardless engineering team. Whilst I don't know how 
 
 Finally, I'd like to thank [Workshop2](https://github.com/Workshop2) for pointing me in the right direction when setting up AppVeyor.
 
-
