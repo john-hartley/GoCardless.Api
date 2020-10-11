@@ -67,10 +67,6 @@ namespace GoCardless.Api.Tests.Integration
                 DanishIdentityNumber = "2205506218",
                 Iban = "GB18 BARC 1234 5678",
                 Language = "en",
-                Links = new MandatePdfLinks
-                {
-                    Mandate = mandate.Id
-                },
                 MandateReference = "MR12345678",
                 PhoneNumber = "+44 20 7183 8674",
                 PostalCode = "SW1A 1AA",
