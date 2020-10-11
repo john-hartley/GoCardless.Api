@@ -90,7 +90,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task CreatesAndCancelsPaymentForMerchant()
         {
             var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
-            var apiClientConfiguration= ApiClientConfiguration.ForSandbox(accessToken);
+            var apiClientConfiguration= ApiClientConfiguration.ForSandbox(accessToken, false);
             var apiClient = new ApiClient(apiClientConfiguration);
             var resourceFactory = new ResourceFactory(apiClient);
 

@@ -16,7 +16,7 @@ namespace GoCardless.Api.Tests.Unit
         [SetUp]
         public void Setup()
         {
-            var apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken"));
+            var apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken", false));
             _subject = new CreditorsClient(apiClient);
             _httpTest = new HttpTest();
         }

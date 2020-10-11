@@ -5,17 +5,17 @@ namespace GoCardless.Api.Core.Http
 {
     public class ApiClientConfiguration
     {
-        public static ApiClientConfiguration ForLive(string accessToken)
+        public static ApiClientConfiguration ForLive(string accessToken, bool throwOnConflict)
         {
-            return new ApiClientConfiguration(true, accessToken);
+            return new ApiClientConfiguration(accessToken, true, throwOnConflict);
         }
 
-        public static ApiClientConfiguration ForSandbox(string accessToken)
+        public static ApiClientConfiguration ForSandbox(string accessToken, bool throwOnConflict)
         {
-            return new ApiClientConfiguration(false, accessToken);
+            return new ApiClientConfiguration(accessToken, false, throwOnConflict);
         }
 
-        private ApiClientConfiguration(bool live, string accessToken)
+        private ApiClientConfiguration(string accessToken, bool live, bool throwOnConflict)
         {
             if (string.IsNullOrWhiteSpace(accessToken))
             {
@@ -33,10 +33,13 @@ namespace GoCardless.Api.Core.Http
                 ["Authorization"] = $"Bearer {AccessToken}",
                 ["GoCardless-Version"] = "2015-07-06",
             };
+
+            ThrowOnConflict = throwOnConflict;
         }
 
-        public string BaseUri { get; }
         public string AccessToken { get; }
+        public string BaseUri { get; }
         public IDictionary<string, string> Headers { get; }
+        public bool ThrowOnConflict { get; }
     }
 }

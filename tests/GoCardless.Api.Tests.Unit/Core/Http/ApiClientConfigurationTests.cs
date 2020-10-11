@@ -20,7 +20,7 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         {
             // given
             // when
-            TestDelegate test = () => ApiClientConfiguration.ForLive(accessToken);
+            TestDelegate test = () => ApiClientConfiguration.ForLive(accessToken, false);
 
             // then
             var ex = Assert.Throws<ArgumentException>(test);
@@ -31,7 +31,7 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         public void BaseUriIsLiveUriWhenUsingLiveConfiguration()
         {
             // given
-            var subject = ApiClientConfiguration.ForLive(_accessToken);
+            var subject = ApiClientConfiguration.ForLive(_accessToken, false);
 
             // when
             var result = subject.BaseUri;
@@ -47,7 +47,7 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         {
             // given
             // when
-            TestDelegate test = () => ApiClientConfiguration.ForSandbox(accessToken);
+            TestDelegate test = () => ApiClientConfiguration.ForSandbox(accessToken, false);
 
             // then
             var ex = Assert.Throws<ArgumentException>(test);
@@ -58,7 +58,7 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
         public void BaseUriIsSandboxUriWhenUsingSandboxConfiguration()
         {
             // given
-            var subject = ApiClientConfiguration.ForSandbox(_accessToken);
+            var subject = ApiClientConfiguration.ForSandbox(_accessToken, false);
 
             // when
             var result = subject.BaseUri;

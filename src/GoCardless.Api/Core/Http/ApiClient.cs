@@ -54,11 +54,11 @@ namespace GoCardless.Api.Core.Http
             Action<IFlurlRequest> configure,
             object envelope = null)
         {
-            var request = BaseRequest();
-            configure(request);
-
             try
             {
+                var request = BaseRequest();
+                configure(request);
+
                 return await request
                     .PostJsonAsync(envelope ?? new { })
                     .ReceiveJson<TResponse>();
@@ -66,7 +66,8 @@ namespace GoCardless.Api.Core.Http
             catch (FlurlHttpException ex)
             {
                 var apiException = await ex.CreateApiExceptionAsync();
-                if (apiException.Code == (int)HttpStatusCode.Conflict)
+                if (apiException is ConflictingResourceException
+                    && !_apiClientConfiguration.ThrowOnConflict)
                 {
                     var uri = ex.Call.Request.RequestUri;
                     var conflictingResourceId = ConflictingResourceIdFrom(apiException.Errors);
@@ -74,9 +75,9 @@ namespace GoCardless.Api.Core.Http
                     if (!string.IsNullOrWhiteSpace(conflictingResourceId) 
                         && uri.Segments.Length >= 2)
                     {
-                        return await GetAsync<TResponse>(req =>
+                        return await GetAsync<TResponse>(request =>
                         {
-                            req.AppendPathSegments(uri.Segments[1], conflictingResourceId);
+                            request.AppendPathSegments(uri.Segments[1], conflictingResourceId);
                         });
                     }
                 }
@@ -89,11 +90,11 @@ namespace GoCardless.Api.Core.Http
             Action<IFlurlRequest> configure,
             object envelope)
         {
-            var request = BaseRequest();
-            configure(request);
-
             try
             {
+                var request = BaseRequest();
+                configure(request);
+
                 return await request
                     .PutJsonAsync(envelope)
                     .ReceiveJson<TResponse>();

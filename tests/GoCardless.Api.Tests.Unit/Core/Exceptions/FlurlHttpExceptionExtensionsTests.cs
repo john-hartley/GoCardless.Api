@@ -42,6 +42,21 @@ namespace GoCardless.Api.Tests.Unit.Core.Exceptions
         }
 
         [Test]
+        public async Task ConflictErrorTypeReturnsConflictingResourceException()
+        {
+            // given
+            var apiErrorResponse = ApiErrorResponseFor(409, "invalid_state");
+            var httpCall = HttpCallFor(apiErrorResponse);
+            var exception = new FlurlHttpException(httpCall);
+
+            // when
+            var result = await exception.CreateApiExceptionAsync();
+
+            // then
+            Assert.That(result, Is.InstanceOf<ConflictingResourceException>());
+        }
+
+        [Test]
         public async Task InvalidStateErrorTypeReturnsInvalidStateException()
         {
             // given
