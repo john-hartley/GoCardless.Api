@@ -27,6 +27,11 @@ build_script:
 
 after_build:
 - dotnet pack .\GoCardless.Api.sln --configuration release --no-build -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg -o artifacts
+- ps: |
+    Push-Location .\artifacts
+    $path = Resolve-Path "..\src\GoCardless.Api\bin\Release\netstandard2.0"
+    7z a GoCardless.Api.zip "$path\*"
+    Pop-Location
 
 artifacts:
 - path: artifacts\*
