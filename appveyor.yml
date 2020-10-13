@@ -10,7 +10,7 @@ dotnet_csproj:
   patch: true
   file: '**\*.csproj'
   version_prefix: '{version}'
-  package_version: '{version}'
+  package_version: '{version}-preview'
 
 environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -23,7 +23,7 @@ before_build:
 - dotnet restore
 
 build_script:
-- ps: .\build.ps1
+- ps: .\build.ps1 -isPreview
 
 after_build:
 - ps: .\version.ps1 src\GoCardless.Api\bin\Release\netstandard2.0\GoCardless.Api.dll
@@ -63,11 +63,11 @@ for:
 
 -
   branches:
-    except:
+    only:
       - master
 
   dotnet_csproj:
-    package_version: '{version}-preview'
+    package_version: '{version}'
 
   build_script:
-    - ps: .\build.ps1 -isPreview
+    - ps: .\build.ps1
