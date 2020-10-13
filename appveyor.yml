@@ -26,8 +26,8 @@ build_script:
 - ps: .\build.ps1
 
 after_build:
-#- ps: .\version.ps1 src\GoCardless.Api\bin\Release\netstandard2.0\GoCardless.Api.dll
-#- dotnet pack .\GoCardless.Api.sln --configuration release --no-build -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg -o artifacts
+- ps: .\version.ps1 src\GoCardless.Api\bin\Release\netstandard2.0\GoCardless.Api.dll
+- dotnet pack .\GoCardless.Api.sln --configuration release --no-build -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg -o artifacts
 
 artifacts:
 - path: artifacts\*
