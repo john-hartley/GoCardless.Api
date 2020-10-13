@@ -37,13 +37,13 @@ test_script:
 
 before_deploy:
 - ps: >-
-  if ($env:APPVEYOR_PULL_REQUEST_IS_PULL_REQUEST)
-  {
-      Write-Host "Pull request: $env:APPVEYOR_PULL_REQUEST_IS_PULL_REQUEST"
-      Write-Host "Branch: $env:APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH"
-      Write-Host "Skipping deploy."
-      Exit-AppveyorBuild 
-  }
+    if ($env:APPVEYOR_PULL_REQUEST_IS_PULL_REQUEST)
+    {
+        Write-Host "Pull request: $env:APPVEYOR_PULL_REQUEST_IS_PULL_REQUEST"
+        Write-Host "Branch: $env:APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH"
+        Write-Host "Skipping deploy."
+        Exit-AppveyorBuild 
+    }
 
 # deploy:
   # provider: NuGet
