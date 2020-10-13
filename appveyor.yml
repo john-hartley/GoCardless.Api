@@ -26,21 +26,22 @@ build_script:
 - ps: .\build.ps1
 
 after_build:
-- ps: .\version.ps1 src\GoCardless.Api\bin\Release\netstandard2.0\GoCardless.Api.dll
-- dotnet pack .\GoCardless.Api.sln --configuration release --no-build -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg -o artifacts
+#- ps: .\version.ps1 src\GoCardless.Api\bin\Release\netstandard2.0\GoCardless.Api.dll
+#- dotnet pack .\GoCardless.Api.sln --configuration release --no-build -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg -o artifacts
 
 artifacts:
 - path: artifacts\*
 
-test_script:
-- dotnet test --no-build --verbosity minimal
+#test_script:
+#- dotnet test --no-build --verbosity minimal
 
 before_deploy:
 - ps: >-
+    Write-Host "Pull request: $env:APPVEYOR_PULL_REQUEST_IS_PULL_REQUEST"
+    Write-Host "Branch: $env:APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH"
+    
     if ($env:APPVEYOR_PULL_REQUEST_IS_PULL_REQUEST)
-    {
-        Write-Host "Pull request: $env:APPVEYOR_PULL_REQUEST_IS_PULL_REQUEST"
-        Write-Host "Branch: $env:APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH"
+    {        
         Write-Host "Skipping deploy."
         Exit-AppveyorBuild 
     }
