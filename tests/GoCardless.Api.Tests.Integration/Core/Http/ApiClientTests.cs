@@ -113,7 +113,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
         }
 
         [Test]
-        public void ApiUsageIsInvalidInvalidThrows()
+        public void ApiUsageIsInvalidThrows()
         {
             // given
             var options = new CreateSubscriptionOptions
