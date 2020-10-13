@@ -30,11 +30,14 @@ after_build:
 - ps: |
     Push-Location .\artifacts
     $path = Resolve-Path "..\src\GoCardless.Api\bin\Release\netstandard2.0"
-    7z a GoCardless.Api.zip "$path\*"
+    7z a "GoCardless.Api-${env:APPVEYOR_BUILD_VERSION}.zip" "$path\*"
     Pop-Location
 
 artifacts:
-- path: artifacts\*
+  - path: artifacts\/.*(\.|\.s)nupkg/
+
+  - path: artifacts\GoCardless.Api-{version}.zip
+    type: zip
 
 test_script:
 - dotnet test --no-build --verbosity minimal
