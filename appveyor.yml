@@ -34,7 +34,7 @@ after_build:
     Pop-Location
 
 artifacts:
-  - path: 'artifacts\*(\.|\.s)nupkg'
+  - path: 'artifacts\*.*nupkg'
   
   - path: artifacts\GoCardless.Api-$(APPVEYOR_BUILD_VERSION).zip
     type: zip
