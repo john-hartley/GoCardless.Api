@@ -1,48 +1,62 @@
 version: 2.1.2.{build}
-image: Visual Studio 2017
+image: Visual Studio 2019
 configuration: Release
 skip_tags: true
 
+pull_requests:
+  do_not_increment_build_number: true
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version_prefix: '{version}'
+  package_version: '{version}-preview'
+
 environment:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
   GoCardlessAccessToken:
     secure: TXXkPrAH2llzmiO+qkmAJrPWpYQ+5764Gz6z30AhhxAyc7rMJCDJl5hdRvS4lZKcpVc7wZVi1AiHBXAKjuxeSg==
   GoCardlessMerchantAccessToken:
     secure: G1bsYuWUcdrK8fgPSf7alrvlFjZWcs6lWJ4xzFusLXpN3uejuFUBCrCo89ln5tRqR7GWfbmNFRnWXe8sAQhbSg==
 
-pull_requests:
-  do_not_increment_build_number: true
-
-skip_commits:
-  files:
-    - README.md
-
-dotnet_csproj:
-  patch: true
-  file: '**\*.csproj'
-  version: '{version}'
-  package_version: '{version}'
-
-nuget:
-  project_feed: true
- 
 before_build:
-  dotnet restore
+- dotnet restore
 
-build:
-  publish_nuget: true
-  publish_nuget_symbols: false
-  include_nuget_references: true
-  verbosity: minimal
+build_script:
+- ps: .\build.ps1 -isPreview
 
-test:
-  assemblies:
-    GoCardless.Api.Tests.Unit.dll
-    GoCardless.Api.Tests.Integration.dll
+after_build:
+- ps: .\version.ps1 src\GoCardless.Api\bin\Release\netstandard2.0\GoCardless.Api.dll
+- dotnet pack .\GoCardless.Api.sln --configuration release --no-build -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg -o artifacts
+
+artifacts:
+  - path: artifacts\*
+
+test_script:
+- dotnet test --no-build --verbosity minimal
 
 deploy:
   provider: NuGet
   api_key:
     secure: IHQBPznFGiXsWhZzJT3e6RPD062lPDeny7gZokkAfwc8nwBebVnJeeNBhzFIeK62
-  skip_symbols: true
+  skip_symbols: false
+  artifact: /.*(\.|\.s)nupkg/
   on:
     branch: master
+
+#
+# Branch-specific overrides.
+#
+
+for:
+
+-
+  branches:
+    only:
+      - master
+
+  dotnet_csproj:
+    package_version: '{version}'
+
+  build_script:
+    - ps: .\build.ps1
