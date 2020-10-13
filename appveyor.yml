@@ -63,8 +63,8 @@ for:
 
 -
   branches:
-    only:
-      - test-preview-build
+    except:
+      - master
 
   dotnet_csproj:
     package_version: '{version}-preview'
