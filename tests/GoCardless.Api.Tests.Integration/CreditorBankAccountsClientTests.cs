@@ -18,7 +18,7 @@ namespace GoCardless.Api.Tests.Integration
             _creditor = await _resourceFactory.Creditor();
         }
 
-        [Test]
+        [Test, Explicit("Checking the disabled state in the final assertion sometimes takes a little time.")]
         public async Task CreatesAndDisablesConflictingCreditorBankAccountUsingBankCode()
         {
             // given

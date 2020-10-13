@@ -35,22 +35,26 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(result[0].Name, Is.Not.Null.And.EqualTo(creditor.Name));
             Assert.That(result[0].PostalCode, Is.Not.Null.And.EqualTo(creditor.PostalCode));
             Assert.That(result[0].Region, Is.Not.Null.And.EqualTo(creditor.Region));
+            Assert.That(result[0].VerificationStatus, Is.Not.Null.And.EqualTo(creditor.VerificationStatus));
+
             Assert.That(result[0].SchemeIdentifiers, Is.Not.Null);
             Assert.That(result[0].SchemeIdentifiers.Any(), Is.True);
-            Assert.That(result[0].SchemeIdentifiers[0].AddressLine1, Is.Not.Null);
-            Assert.That(result[0].SchemeIdentifiers[0].CanSpecifyMandateReference, Is.True);
-            Assert.That(result[0].SchemeIdentifiers[0].City, Is.Not.Null);
-            Assert.That(result[0].SchemeIdentifiers[0].CountryCode, Is.Not.Null);
-            Assert.That(result[0].SchemeIdentifiers[0].Currency, Is.Not.Null);
-            Assert.That(result[0].SchemeIdentifiers[0].Email, Is.Not.Null);
-            Assert.That(result[0].SchemeIdentifiers[0].MinimumAdvanceNotice, Is.Not.EqualTo(default(int)));
-            Assert.That(result[0].SchemeIdentifiers[0].Name, Is.Not.Null);
-            Assert.That(result[0].SchemeIdentifiers[0].PhoneNumber, Is.Not.Null);
-            Assert.That(result[0].SchemeIdentifiers[0].PostalCode, Is.Not.Null);
-            Assert.That(result[0].SchemeIdentifiers[0].Region, Is.Not.Null);
-            Assert.That(result[0].SchemeIdentifiers[0].Reference, Is.Not.Null);
-            Assert.That(result[0].SchemeIdentifiers[0].Scheme, Is.Not.Null);
-            Assert.That(result[0].VerificationStatus, Is.Not.Null.And.EqualTo(creditor.VerificationStatus));
+
+            var schemeIdentifier = result[0].SchemeIdentifiers.SingleOrDefault(x => x.Currency == "GBP");
+            Assert.That(schemeIdentifier, Is.Not.Null);
+            Assert.That(schemeIdentifier.AddressLine1, Is.Not.Null);
+            Assert.That(schemeIdentifier.CanSpecifyMandateReference, Is.True);
+            Assert.That(schemeIdentifier.City, Is.Not.Null);
+            Assert.That(schemeIdentifier.CountryCode, Is.Not.Null);
+            Assert.That(schemeIdentifier.Currency, Is.Not.Null);
+            Assert.That(schemeIdentifier.Email, Is.Not.Null);
+            Assert.That(schemeIdentifier.MinimumAdvanceNotice, Is.Not.EqualTo(default(int)));
+            Assert.That(schemeIdentifier.Name, Is.Not.Null);
+            Assert.That(schemeIdentifier.PhoneNumber, Is.Not.Null);
+            Assert.That(schemeIdentifier.PostalCode, Is.Not.Null);
+            Assert.That(schemeIdentifier.Region, Is.Not.Null);
+            Assert.That(schemeIdentifier.Reference, Is.Not.Null);
+            Assert.That(schemeIdentifier.Scheme, Is.Not.Null);
         }
 
         [Test]
@@ -102,22 +106,26 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(actual.Name, Is.Not.Null.And.EqualTo(creditor.Name));
             Assert.That(actual.PostalCode, Is.Not.Null.And.EqualTo(creditor.PostalCode));
             Assert.That(actual.Region, Is.Not.Null.And.EqualTo(creditor.Region));
+            Assert.That(actual.VerificationStatus, Is.Not.Null.And.EqualTo(creditor.VerificationStatus));
+
             Assert.That(actual.SchemeIdentifiers, Is.Not.Null);
             Assert.That(actual.SchemeIdentifiers.Any(), Is.True);
-            Assert.That(actual.SchemeIdentifiers[0].AddressLine1, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].CanSpecifyMandateReference, Is.True);
-            Assert.That(actual.SchemeIdentifiers[0].City, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].CountryCode, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].Currency, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].Email, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].MinimumAdvanceNotice, Is.Not.EqualTo(default(int)));
-            Assert.That(actual.SchemeIdentifiers[0].Name, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].PhoneNumber, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].PostalCode, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].Region, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].Reference, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].Scheme, Is.Not.Null);
-            Assert.That(actual.VerificationStatus, Is.Not.Null.And.EqualTo(creditor.VerificationStatus));
+
+            var schemeIdentifier = actual.SchemeIdentifiers.SingleOrDefault(x => x.Currency == "GBP");
+            Assert.That(schemeIdentifier, Is.Not.Null);
+            Assert.That(schemeIdentifier.AddressLine1, Is.Not.Null);
+            Assert.That(schemeIdentifier.CanSpecifyMandateReference, Is.True);
+            Assert.That(schemeIdentifier.City, Is.Not.Null);
+            Assert.That(schemeIdentifier.CountryCode, Is.Not.Null);
+            Assert.That(schemeIdentifier.Currency, Is.Not.Null);
+            Assert.That(schemeIdentifier.Email, Is.Not.Null);
+            Assert.That(schemeIdentifier.MinimumAdvanceNotice, Is.Not.EqualTo(default(int)));
+            Assert.That(schemeIdentifier.Name, Is.Not.Null);
+            Assert.That(schemeIdentifier.PhoneNumber, Is.Not.Null);
+            Assert.That(schemeIdentifier.PostalCode, Is.Not.Null);
+            Assert.That(schemeIdentifier.Region, Is.Not.Null);
+            Assert.That(schemeIdentifier.Reference, Is.Not.Null);
+            Assert.That(schemeIdentifier.Scheme, Is.Not.Null);
         }
 
         [Test, NonParallelizable]
@@ -167,22 +175,26 @@ namespace GoCardless.Api.Tests.Integration
             Assert.That(actual.Name, Is.EqualTo(request.Name));
             Assert.That(actual.PostalCode, Is.EqualTo(request.PostalCode));
             Assert.That(actual.Region, Is.EqualTo(request.Region));
+            Assert.That(actual.VerificationStatus, Is.Not.Null);
+
             Assert.That(actual.SchemeIdentifiers, Is.Not.Null);
             Assert.That(actual.SchemeIdentifiers.Any(), Is.True);
-            Assert.That(actual.SchemeIdentifiers[0].AddressLine1, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].CanSpecifyMandateReference, Is.True);
-            Assert.That(actual.SchemeIdentifiers[0].City, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].CountryCode, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].Currency, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].Email, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].MinimumAdvanceNotice, Is.Not.EqualTo(default(int)));
-            Assert.That(actual.SchemeIdentifiers[0].Name, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].PhoneNumber, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].PostalCode, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].Region, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].Reference, Is.Not.Null);
-            Assert.That(actual.SchemeIdentifiers[0].Scheme, Is.Not.Null);
-            Assert.That(actual.VerificationStatus, Is.Not.Null);
+
+            var schemeIdentifier = actual.SchemeIdentifiers.SingleOrDefault(x => x.Currency == "GBP");
+            Assert.That(schemeIdentifier, Is.Not.Null);
+            Assert.That(schemeIdentifier.AddressLine1, Is.Not.Null);
+            Assert.That(schemeIdentifier.CanSpecifyMandateReference, Is.True);
+            Assert.That(schemeIdentifier.City, Is.Not.Null);
+            Assert.That(schemeIdentifier.CountryCode, Is.Not.Null);
+            Assert.That(schemeIdentifier.Currency, Is.Not.Null);
+            Assert.That(schemeIdentifier.Email, Is.Not.Null);
+            Assert.That(schemeIdentifier.MinimumAdvanceNotice, Is.Not.EqualTo(default(int)));
+            Assert.That(schemeIdentifier.Name, Is.Not.Null);
+            Assert.That(schemeIdentifier.PhoneNumber, Is.Not.Null);
+            Assert.That(schemeIdentifier.PostalCode, Is.Not.Null);
+            Assert.That(schemeIdentifier.Region, Is.Not.Null);
+            Assert.That(schemeIdentifier.Reference, Is.Not.Null);
+            Assert.That(schemeIdentifier.Scheme, Is.Not.Null);
         }
     }
 }
