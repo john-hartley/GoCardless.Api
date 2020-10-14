@@ -1,4 +1,4 @@
-version: 2.1.2.{build}
+version: 2.1.2
 image: Visual Studio 2019
 configuration: Release
 skip_tags: true
@@ -20,6 +20,9 @@ environment:
     secure: G1bsYuWUcdrK8fgPSf7alrvlFjZWcs6lWJ4xzFusLXpN3uejuFUBCrCo89ln5tRqR7GWfbmNFRnWXe8sAQhbSg==
   AppVeyorAccessToken:
     secure: 7OcqRJaIJNw403TUh8lcnHOzfiHpw745zJ3rX/Ng0cc=
+    
+init:
+- ps: .\build.ps1
 
 before_build:
 - dotnet restore
