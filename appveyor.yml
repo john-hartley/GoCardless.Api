@@ -57,6 +57,7 @@ deploy:
   auth_token:
     secure: Vbs49DLAUW2eoofz+IBs7TT0YUXScK1hR7PWJVJ1L2qdOrpnEFG+GTT1PT9zubcu
   artifact: source_code,/.*(\.|\.s)nupkg/
+  tag: v$(APPVEYOR_BUILD_VERSION)
   draft: true
   on:
     branch: master
