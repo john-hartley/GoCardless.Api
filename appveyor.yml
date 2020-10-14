@@ -1,41 +1,63 @@
-version: 2.2.1.{build}
+version: 2.1.{build}
 image: Visual Studio 2019
 configuration: Release
 skip_tags: true
 
+pull_requests:
+  do_not_increment_build_number: true
+
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
-  version: '{version}'
+  version_prefix: '{version}'
   package_version: '{version}'
 
 environment:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
   GoCardlessAccessToken:
     secure: TXXkPrAH2llzmiO+qkmAJrPWpYQ+5764Gz6z30AhhxAyc7rMJCDJl5hdRvS4lZKcpVc7wZVi1AiHBXAKjuxeSg==
   GoCardlessMerchantAccessToken:
     secure: G1bsYuWUcdrK8fgPSf7alrvlFjZWcs6lWJ4xzFusLXpN3uejuFUBCrCo89ln5tRqR7GWfbmNFRnWXe8sAQhbSg==
 
-pull_requests:
-  do_not_increment_build_number: true
-
 before_build:
-  dotnet restore
+- dotnet restore
 
-build:
-  publish_nuget: true
-  publish_nuget_symbols: false
-  include_nuget_references: true
-  verbosity: minimal
+build_script:
+- ps: dotnet build .\GoCardless.Api.sln --configuration release --no-restore
 
-test:
-  assemblies:
-    GoCardless.Api.Tests.Unit.dll
-    GoCardless.Api.Tests.Integration.dll
+after_build:
+- dotnet pack .\GoCardless.Api.sln --configuration release --no-build -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg -o artifacts
+- ps: |
+    Push-Location .\artifacts
+    $path = Resolve-Path "..\src\GoCardless.Api\bin\Release\netstandard2.0"
+    $file = "GoCardless.Api-${env:APPVEYOR_BUILD_VERSION}.zip"
+    Write-Host Zipping contents of $path to $file
+    7z a $file "$path\*"
+    Pop-Location
+
+artifacts:
+  - path: 'artifacts\*nupkg'
+  - path: artifacts\GoCardless.Api-$(APPVEYOR_BUILD_VERSION).zip
+    name: source_code
+    type: zip
+
+test_script:
+- dotnet test --no-build --verbosity minimal
 
 deploy:
-  provider: NuGet
+- provider: NuGet
   api_key:
     secure: IHQBPznFGiXsWhZzJT3e6RPD062lPDeny7gZokkAfwc8nwBebVnJeeNBhzFIeK62
-  skip_symbols: true
+  skip_symbols: false
+  artifact: /.*(\.|\.s)nupkg/
+  on:
+    branch: master
+
+- provider: GitHub
+  auth_token:
+    secure: Vbs49DLAUW2eoofz+IBs7TT0YUXScK1hR7PWJVJ1L2qdOrpnEFG+GTT1PT9zubcu
+  artifact: source_code,/.*(\.|\.s)nupkg/
+  tag: v$(APPVEYOR_BUILD_VERSION)
+  draft: true
   on:
     branch: master
