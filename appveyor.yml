@@ -18,6 +18,8 @@ environment:
     secure: TXXkPrAH2llzmiO+qkmAJrPWpYQ+5764Gz6z30AhhxAyc7rMJCDJl5hdRvS4lZKcpVc7wZVi1AiHBXAKjuxeSg==
   GoCardlessMerchantAccessToken:
     secure: G1bsYuWUcdrK8fgPSf7alrvlFjZWcs6lWJ4xzFusLXpN3uejuFUBCrCo89ln5tRqR7GWfbmNFRnWXe8sAQhbSg==
+  AppVeyorAccessToken:
+    secure: 7OcqRJaIJNw403TUh8lcnHOzfiHpw745zJ3rX/Ng0cc=
 
 before_build:
 - dotnet restore
@@ -30,14 +32,14 @@ after_build:
 - ps: |
     Push-Location .\artifacts
     $path = Resolve-Path "..\src\GoCardless.Api\bin\Release\netstandard2.0"
-    $file = "GoCardless.Api.zip"
+    $file = "GoCardless.Api-${env:APPVEYOR_BUILD_VERSION}.zip"
     Write-Host Zipping contents of $path to $file
     7z a $file "$path\*"
     Pop-Location
 
 artifacts:
   - path: 'artifacts\*nupkg'
-  - path: artifacts\GoCardless.Api.zip
+  - path: artifacts\GoCardless.Api-$(APPVEYOR_BUILD_VERSION).zip
     name: source_code
     type: zip
 
