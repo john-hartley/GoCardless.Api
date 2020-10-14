@@ -55,7 +55,7 @@ deploy:
 - provider: GitHub
   api_key:
     secure: Vbs49DLAUW2eoofz+IBs7TT0YUXScK1hR7PWJVJ1L2qdOrpnEFG+GTT1PT9zubcu
-  artifact: GoCardless.Api-*.zip,*nupkg
+  artifact: /GoCardless.Api-*.zip/,/.*(\.|\.s)nupkg/
   draft: true
   on:
     branch: master
