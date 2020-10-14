@@ -1,4 +1,4 @@
-version: 2.1.2.{build}
+version: 2.1.{build}
 image: Visual Studio 2019
 configuration: Release
 skip_tags: true
@@ -30,14 +30,14 @@ after_build:
 - ps: |
     Push-Location .\artifacts
     $path = Resolve-Path "..\src\GoCardless.Api\bin\Release\netstandard2.0"
-    $file = "GoCardless.Api.zip"
+    $file = "GoCardless.Api-${env:APPVEYOR_BUILD_VERSION}.zip"
     Write-Host Zipping contents of $path to $file
     7z a $file "$path\*"
     Pop-Location
 
 artifacts:
   - path: 'artifacts\*nupkg'
-  - path: artifacts\GoCardless.Api.zip
+  - path: artifacts\GoCardless.Api-$(APPVEYOR_BUILD_VERSION).zip
     name: source_code
     type: zip
 
