@@ -20,11 +20,9 @@ environment:
     secure: G1bsYuWUcdrK8fgPSf7alrvlFjZWcs6lWJ4xzFusLXpN3uejuFUBCrCo89ln5tRqR7GWfbmNFRnWXe8sAQhbSg==
   AppVeyorAccessToken:
     secure: 7OcqRJaIJNw403TUh8lcnHOzfiHpw745zJ3rX/Ng0cc=
-    
-init:
-- ps: .\build.ps1
 
 before_build:
+- ps: .\build.ps1
 - dotnet restore
 
 build_script:
