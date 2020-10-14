@@ -36,7 +36,7 @@ after_build:
     Pop-Location
 
 artifacts:
-  - path: 'artifacts\*.*nupkg'
+  - path: 'artifacts\*nupkg'
   - path: artifacts\GoCardless.Api-$(APPVEYOR_BUILD_VERSION).zip
     type: zip
 
@@ -49,5 +49,13 @@ deploy:
     secure: IHQBPznFGiXsWhZzJT3e6RPD062lPDeny7gZokkAfwc8nwBebVnJeeNBhzFIeK62
   skip_symbols: false
   artifact: /.*(\.|\.s)nupkg/
+  on:
+    branch: master
+
+- provider: GitHub
+  api_key:
+    secure: Vbs49DLAUW2eoofz+IBs7TT0YUXScK1hR7PWJVJ1L2qdOrpnEFG+GTT1PT9zubcu
+  artifact: GoCardless.Api-*.zip,*nupkg
+  draft: true
   on:
     branch: master
