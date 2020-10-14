@@ -1,4 +1,4 @@
-version: 2.1.2
+version: 2.1.{build}
 image: Visual Studio 2019
 configuration: Release
 skip_tags: true
@@ -18,11 +18,8 @@ environment:
     secure: TXXkPrAH2llzmiO+qkmAJrPWpYQ+5764Gz6z30AhhxAyc7rMJCDJl5hdRvS4lZKcpVc7wZVi1AiHBXAKjuxeSg==
   GoCardlessMerchantAccessToken:
     secure: G1bsYuWUcdrK8fgPSf7alrvlFjZWcs6lWJ4xzFusLXpN3uejuFUBCrCo89ln5tRqR7GWfbmNFRnWXe8sAQhbSg==
-  AppVeyorAccessToken:
-    secure: 7OcqRJaIJNw403TUh8lcnHOzfiHpw745zJ3rX/Ng0cc=
 
 before_build:
-- ps: .\build.ps1
 - dotnet restore
 
 build_script:
