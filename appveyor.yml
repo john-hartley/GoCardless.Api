@@ -30,7 +30,7 @@ after_build:
 - ps: |
     Push-Location .\artifacts
     $path = Resolve-Path "..\src\GoCardless.Api\bin\Release\netstandard2.0"
-    $file = GoCardless.Api.zip
+    $file = "GoCardless.Api.zip"
     Write-Host Zipping contents of $path to $file
     7z a $file "$path\*"
     Pop-Location
