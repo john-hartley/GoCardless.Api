@@ -30,14 +30,14 @@ after_build:
 - ps: |
     Push-Location .\artifacts
     $path = Resolve-Path "..\src\GoCardless.Api\bin\Release\netstandard2.0"
-    $file = "GoCardless.Api-${env:APPVEYOR_BUILD_VERSION}.zip"
+    $file = "GoCardless.Api.zip"
     Write-Host Zipping contents of $path to $file
     7z a $file "$path\*"
     Pop-Location
 
 artifacts:
   - path: 'artifacts\*nupkg'
-  - path: artifacts\GoCardless.Api-$(APPVEYOR_BUILD_VERSION).zip
+  - path: artifacts\GoCardless.Api.zip
     type: zip
 
 test_script:
@@ -55,7 +55,7 @@ deploy:
 - provider: GitHub
   auth_token:
     secure: Vbs49DLAUW2eoofz+IBs7TT0YUXScK1hR7PWJVJ1L2qdOrpnEFG+GTT1PT9zubcu
-  artifact: /GoCardless.Api-*.zip/,/.*(\.|\.s)nupkg/
+  artifact: GoCardless.Api.zip,/.*(\.|\.s)nupkg/
   draft: true
   on:
     branch: master
