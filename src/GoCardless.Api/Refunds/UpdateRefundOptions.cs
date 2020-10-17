@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Refunds
+namespace GoCardlessApi.Refunds
 {
     public class UpdateRefundOptions
     {

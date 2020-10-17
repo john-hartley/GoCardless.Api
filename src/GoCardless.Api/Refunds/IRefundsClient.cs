@@ -1,7 +1,7 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Refunds
+namespace GoCardlessApi.Refunds
 {
     public interface IRefundsClient : IPageable<GetRefundsOptions, Refund>
     {

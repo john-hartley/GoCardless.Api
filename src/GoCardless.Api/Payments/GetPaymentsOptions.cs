@@ -1,7 +1,8 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
+using GoCardlessApi.Http.Serialisation;
 using System;
 
-namespace GoCardless.Api.Payments
+namespace GoCardlessApi.Payments
 {
     public class GetPaymentsOptions : IPageOptions, ICloneable
     {

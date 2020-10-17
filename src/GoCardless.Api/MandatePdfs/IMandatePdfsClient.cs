@@ -1,7 +1,7 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.MandatePdfs
+namespace GoCardlessApi.MandatePdfs
 {
     public interface IMandatePdfsClient
     {

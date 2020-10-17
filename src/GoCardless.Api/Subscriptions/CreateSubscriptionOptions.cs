@@ -1,9 +1,9 @@
-﻿using GoCardless.Api.Core.Serialisation;
+﻿using GoCardlessApi.Http.Serialisation;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Subscriptions
+namespace GoCardlessApi.Subscriptions
 {
     public class CreateSubscriptionOptions
     {

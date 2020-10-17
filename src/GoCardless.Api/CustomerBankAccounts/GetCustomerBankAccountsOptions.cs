@@ -1,7 +1,8 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
+using GoCardlessApi.Http.Serialisation;
 using System;
 
-namespace GoCardless.Api.CustomerBankAccounts
+namespace GoCardlessApi.CustomerBankAccounts
 {
     public class GetCustomerBankAccountsOptions : IPageOptions, ICloneable
     {

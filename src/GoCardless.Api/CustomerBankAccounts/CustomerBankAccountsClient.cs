@@ -1,9 +1,9 @@
 ﻿using Flurl.Http;
-using GoCardless.Api.Core.Http;
+using GoCardlessApi.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.CustomerBankAccounts
+namespace GoCardlessApi.CustomerBankAccounts
 {
     public class CustomerBankAccountsClient : ICustomerBankAccountsClient
     {

@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.RedirectFlows
+﻿namespace GoCardlessApi.RedirectFlows
 {
     public class PrefilledCustomer
     {

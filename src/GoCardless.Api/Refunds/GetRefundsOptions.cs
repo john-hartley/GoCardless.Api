@@ -1,7 +1,8 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
+using GoCardlessApi.Http.Serialisation;
 using System;
 
-namespace GoCardless.Api.Refunds
+namespace GoCardlessApi.Refunds
 {
     public class GetRefundsOptions : IPageOptions, ICloneable
     {

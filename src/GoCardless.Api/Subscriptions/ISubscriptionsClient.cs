@@ -1,7 +1,7 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Subscriptions
+namespace GoCardlessApi.Subscriptions
 {
     public interface ISubscriptionsClient : IPageable<GetSubscriptionsOptions, Subscription>
     {

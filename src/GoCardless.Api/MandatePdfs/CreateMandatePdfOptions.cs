@@ -1,8 +1,8 @@
-﻿using GoCardless.Api.Core.Serialisation;
+﻿using GoCardlessApi.Http.Serialisation;
 using Newtonsoft.Json;
 using System;
 
-namespace GoCardless.Api.MandatePdfs
+namespace GoCardlessApi.MandatePdfs
 {
     public class CreateMandatePdfOptions
     {
@@ -28,7 +28,7 @@ namespace GoCardless.Api.MandatePdfs
         public string Region { get; set; }
 
         /// <summary>
-        /// See <see cref="Models.Scheme"/> for possible values.
+        /// See <see cref="Common.Scheme"/> for possible values.
         /// </summary>
         public string Scheme { get; set; }
 

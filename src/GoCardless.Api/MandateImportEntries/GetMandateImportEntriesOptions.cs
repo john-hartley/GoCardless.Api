@@ -1,7 +1,8 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
+using GoCardlessApi.Http.Serialisation;
 using System;
 
-namespace GoCardless.Api.MandateImportEntries
+namespace GoCardlessApi.MandateImportEntries
 {
     public class GetMandateImportEntriesOptions : IPageOptions, ICloneable
     {

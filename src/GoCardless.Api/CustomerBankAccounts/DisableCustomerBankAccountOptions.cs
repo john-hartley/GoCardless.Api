@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GoCardless.Api.CustomerBankAccounts
+namespace GoCardlessApi.CustomerBankAccounts
 {
     public class DisableCustomerBankAccountOptions
     {

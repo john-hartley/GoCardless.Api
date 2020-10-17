@@ -1,9 +1,9 @@
-﻿using GoCardless.Api.Core.Serialisation;
+﻿using GoCardlessApi.Http.Serialisation;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Payments
+namespace GoCardlessApi.Payments
 {
     public class CreatePaymentOptions
     {

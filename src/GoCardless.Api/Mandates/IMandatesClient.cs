@@ -1,7 +1,7 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Mandates
+namespace GoCardlessApi.Mandates
 {
     public interface IMandatesClient : IPageable<GetMandatesOptions, Mandate>
     {

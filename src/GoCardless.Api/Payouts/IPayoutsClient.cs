@@ -1,7 +1,7 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Payouts
+namespace GoCardlessApi.Payouts
 {
     public interface IPayoutsClient : IPageable<GetPayoutsOptions, Payout>
     {

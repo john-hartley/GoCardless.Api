@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.CustomerBankAccounts
+namespace GoCardlessApi.CustomerBankAccounts
 {
     public class CreateCustomerBankAccountOptions
     {

@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.Creditors
+﻿namespace GoCardlessApi.Creditors
 {
     public class SchemeIdentifier
     {
@@ -18,7 +18,7 @@
         public string Region { get; set; }
 
         /// <summary>
-        /// See <see cref="Models.Scheme"/> for supported schemes.
+        /// See <see cref="Common.Scheme"/> for supported schemes.
         /// </summary>
         public string Scheme { get; set; }
     }

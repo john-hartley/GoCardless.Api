@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Mandates
+namespace GoCardlessApi.Mandates
 {
     public class UpdateMandateOptions
     {

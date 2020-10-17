@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.BankDetailsLookups
+﻿namespace GoCardlessApi.BankDetailsLookups
 {
     public class BankDetailsLookupOptions
     {

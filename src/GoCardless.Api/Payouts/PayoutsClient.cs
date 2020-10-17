@@ -1,9 +1,9 @@
 ﻿using Flurl.Http;
-using GoCardless.Api.Core.Http;
+using GoCardlessApi.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Payouts
+namespace GoCardlessApi.Payouts
 {
     public class PayoutsClient : IPayoutsClient
     {
