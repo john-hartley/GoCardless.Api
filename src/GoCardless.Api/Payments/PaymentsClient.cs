@@ -36,12 +36,13 @@ namespace GoCardless.Api.Payments
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.IdempotentAsync<Response<Payment>>(
-                request =>
-                {
-                    request.AppendPathSegment($"payments/{options.Id}/actions/cancel");
-                },
-                new { payments = options });
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"payments/{options.Id}/actions/cancel")
+                    .PostJsonAsync(new { payments = options })
+                    .ReceiveJson<Response<Payment>>();
+            });
         }
 
         public async Task<Response<Payment>> CreateAsync(CreatePaymentOptions options)
@@ -51,14 +52,15 @@ namespace GoCardless.Api.Payments
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.IdempotentAsync<Response<Payment>>(
+            return await _apiClient.IdempotentAsync(
+                options.IdempotencyKey,
                 request =>
                 {
-                    request
+                    return request
                         .AppendPathSegment("payments")
-                        .WithHeader("Idempotency-Key", options.IdempotencyKey);
-                },
-                new { payments = options });
+                        .PostJsonAsync(new { payments = options })
+                        .ReceiveJson<Response<Payment>>();
+                });
         }
 
         public async Task<Response<Payment>> ForIdAsync(string id)
@@ -119,12 +121,13 @@ namespace GoCardless.Api.Payments
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.IdempotentAsync<Response<Payment>>(
-                request =>
-                {
-                    request.AppendPathSegment($"payments/{options.Id}/actions/retry");
-                },
-                new { payments = options });
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"payments/{options.Id}/actions/retry")
+                    .PostJsonAsync(new { payments = options })
+                    .ReceiveJson<Response<Payment>>();
+            });
         }
 
         public async Task<Response<Payment>> UpdateAsync(UpdatePaymentOptions options)

@@ -31,16 +31,18 @@ namespace GoCardless.Api.MandatePdfs
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.IdempotentAsync<Response<MandatePdf>>(
-                request =>
+            return await _apiClient.RequestAsync(request =>
+            {
+                if (!string.IsNullOrWhiteSpace(options.Language))
                 {
-                    request.AppendPathSegment("mandate_pdfs");
-                    if (!string.IsNullOrWhiteSpace(options.Language))
-                    {
-                        request.WithHeader("Accept-Language", options.Language);
-                    }
-                },
-                new { mandate_pdfs = options });
+                    request.WithHeader("Accept-Language", options.Language);
+                }
+
+                return request
+                    .AppendPathSegment("mandate_pdfs")
+                    .PostJsonAsync(new { mandate_pdfs = options })
+                    .ReceiveJson<Response<MandatePdf>>();
+            });
         }
     }
 }

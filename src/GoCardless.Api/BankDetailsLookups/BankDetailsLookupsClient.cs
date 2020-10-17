@@ -31,12 +31,13 @@ namespace GoCardless.Api.BankDetailsLookups
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.IdempotentAsync<Response<BankDetailsLookup>>(
-                request =>
-                {
-                    request.AppendPathSegment("bank_details_lookups");
-                },
-                new { bank_details_lookups = options });
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("bank_details_lookups")
+                    .PostJsonAsync(new { bank_details_lookups = options })
+                    .ReceiveJson<Response<BankDetailsLookup>>();
+            });
         }
     }
 }

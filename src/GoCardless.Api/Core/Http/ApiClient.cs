@@ -37,41 +37,11 @@ namespace GoCardless.Api.Core.Http
         }
 
         public async Task<TResponse> IdempotentAsync<TResponse>(
-            Action<IFlurlRequest> configure,
-            object envelope = null)
+            string idempotencyKey,
+            Func<IFlurlRequest, Task<TResponse>> action)
         {
-            try
-            {
-                var request = Request();
-                configure(request);
-
-                return await request
-                    .PostJsonAsync(envelope ?? new { })
-                    .ReceiveJson<TResponse>();
-            }
-            catch (FlurlHttpException ex)
-            {
-                var apiException = await ex.CreateApiExceptionAsync();
-                if (apiException is ConflictingResourceException conflictingResourceException
-                    && !_apiClientConfiguration.ThrowOnConflict)
-                {
-                    var uri = ex.Call.Request.RequestUri;
-                    var conflictingResourceId = conflictingResourceException.ResourceId;
-
-                    if (!string.IsNullOrWhiteSpace(conflictingResourceId) 
-                        && uri.Segments.Length >= 2)
-                    {
-                        return await RequestAsync(request =>
-                        {
-                            return request
-                                .AppendPathSegments(uri.Segments[1], conflictingResourceId)
-                                .GetJsonAsync<TResponse>();
-                        });
-                    }
-                }
-
-                throw apiException;
-            }
+            var request = IdempotentRequest(idempotencyKey);
+            return await SendAsync(request, action).ConfigureAwait(false);
         }
 
         public async Task<TResponse> PutAsync<TResponse>(
@@ -101,7 +71,26 @@ namespace GoCardless.Api.Core.Http
             }
             catch (FlurlHttpException ex)
             {
-                throw ex;
+                var apiException = await ex.CreateApiExceptionAsync().ConfigureAwait(false);
+                if (apiException is ConflictingResourceException conflictingResourceException
+                    && !_apiClientConfiguration.ThrowOnConflict)
+                {
+                    var uri = ex.Call.Request.RequestUri;
+                    var conflictingResourceId = conflictingResourceException.ResourceId;
+
+                    if (!string.IsNullOrWhiteSpace(conflictingResourceId)
+                        && uri.Segments.Length >= 2)
+                    {
+                        return await RequestAsync(fetchOnConflictRequest =>
+                        {
+                            return fetchOnConflictRequest
+                                .AppendPathSegments(uri.Segments[1], conflictingResourceId)
+                                .GetJsonAsync<TResponse>();
+                        }).ConfigureAwait(false);
+                    }
+                }
+
+                throw apiException;
             }
         }
 

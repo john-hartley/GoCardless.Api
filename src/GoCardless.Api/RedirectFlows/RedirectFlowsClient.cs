@@ -36,12 +36,13 @@ namespace GoCardless.Api.RedirectFlows
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.IdempotentAsync<Response<RedirectFlow>>(
-                request =>
-                {
-                    request.AppendPathSegment($"redirect_flows/{options.Id}/actions/complete");
-                },
-                new { data = options });
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"redirect_flows/{options.Id}/actions/complete")
+                    .PostJsonAsync(new { data = options })
+                    .ReceiveJson<Response<RedirectFlow>>();
+            });
         }
 
         public async Task<Response<RedirectFlow>> CreateAsync(CreateRedirectFlowOptions options)
@@ -51,12 +52,13 @@ namespace GoCardless.Api.RedirectFlows
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.IdempotentAsync<Response<RedirectFlow>>(
-                request =>
-                {
-                    request.AppendPathSegment("redirect_flows");
-                },
-                new { redirect_flows = options });
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("redirect_flows")
+                    .PostJsonAsync(new { redirect_flows = options })
+                    .ReceiveJson<Response<RedirectFlow>>();
+            });
         }
 
         public async Task<Response<RedirectFlow>> ForIdAsync(string id)

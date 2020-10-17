@@ -31,12 +31,14 @@ namespace GoCardless.Api.MandateImportEntries
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.IdempotentAsync<Response<MandateImportEntry>>(
+            return await _apiClient.RequestAsync(
                 request =>
                 {
-                    request.AppendPathSegment("mandate_import_entries");
-                },
-                new { mandate_import_entries = options });
+                    return request
+                        .AppendPathSegment("mandate_import_entries")
+                        .PostJsonAsync(new { mandate_import_entries = options })
+                        .ReceiveJson<Response<MandateImportEntry>>();
+                });
         }
 
         public async Task<PagedResponse<MandateImportEntry>> GetPageAsync(GetMandateImportEntriesOptions options)

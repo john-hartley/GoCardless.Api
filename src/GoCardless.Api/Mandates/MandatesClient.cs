@@ -36,12 +36,13 @@ namespace GoCardless.Api.Mandates
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.IdempotentAsync<Response<Mandate>>(
-                request =>
-                {
-                    request.AppendPathSegment($"mandates/{options.Id}/actions/cancel");
-                },
-                new { mandates = options });
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"mandates/{options.Id}/actions/cancel")
+                    .PostJsonAsync(new { mandates = options })
+                    .ReceiveJson<Response<Mandate>>();
+            });
         }
 
         public async Task<Response<Mandate>> CreateAsync(CreateMandateOptions options)
@@ -51,14 +52,15 @@ namespace GoCardless.Api.Mandates
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.IdempotentAsync<Response<Mandate>>(
+            return await _apiClient.IdempotentAsync(
+                options.IdempotencyKey,
                 request =>
                 {
-                    request
+                    return request
                         .AppendPathSegment("mandates")
-                        .WithHeader("Idempotency-Key", options.IdempotencyKey);
-                },
-                new { mandates = options });
+                        .PostJsonAsync(new { mandates = options })
+                        .ReceiveJson<Response<Mandate>>();
+                });
         }
 
         public async Task<Response<Mandate>> ForIdAsync(string id)
@@ -119,12 +121,13 @@ namespace GoCardless.Api.Mandates
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.IdempotentAsync<Response<Mandate>>(
-                request =>
-                {
-                    request.AppendPathSegment($"mandates/{options.Id}/actions/reinstate");
-                },
-                new { mandates = options });
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"mandates/{options.Id}/actions/reinstate")
+                    .PostJsonAsync(new { mandates = options })
+                    .ReceiveJson<Response<Mandate>>();
+            });
         }
 
         public async Task<Response<Mandate>> UpdateAsync(UpdateMandateOptions options)

@@ -31,14 +31,15 @@ namespace GoCardless.Api.CustomerBankAccounts
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.IdempotentAsync<Response<CustomerBankAccount>>(
+            return await _apiClient.IdempotentAsync(
+                options.IdempotencyKey,
                 request =>
                 {
-                    request
+                    return request
                         .AppendPathSegment("customer_bank_accounts")
-                        .WithHeader("Idempotency-Key", options.IdempotencyKey);
-                },
-                new { customer_bank_accounts = options });
+                        .PostJsonAsync(new { customer_bank_accounts = options })
+                        .ReceiveJson<Response<CustomerBankAccount>>();
+                });
         }
 
         public async Task<Response<CustomerBankAccount>> DisableAsync(DisableCustomerBankAccountOptions options)
@@ -53,11 +54,13 @@ namespace GoCardless.Api.CustomerBankAccounts
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.IdempotentAsync<Response<CustomerBankAccount>>(
-                request =>
-                {
-                    request.AppendPathSegment($"customer_bank_accounts/{options.Id}/actions/disable");
-                });
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"customer_bank_accounts/{options.Id}/actions/disable")
+                    .PostJsonAsync(new { })
+                    .ReceiveJson<Response<CustomerBankAccount>>();
+            });
         }
 
         public async Task<Response<CustomerBankAccount>> ForIdAsync(string id)
@@ -77,7 +80,7 @@ namespace GoCardless.Api.CustomerBankAccounts
 
         public async Task<PagedResponse<CustomerBankAccount>> GetPageAsync()
         {
-            return await _apiClient.RequestAsync<PagedResponse<CustomerBankAccount>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
                 return request
                     .AppendPathSegment("customer_bank_accounts")
@@ -92,7 +95,7 @@ namespace GoCardless.Api.CustomerBankAccounts
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.RequestAsync<PagedResponse<CustomerBankAccount>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
                 return request
                     .AppendPathSegment("customer_bank_accounts")
@@ -118,12 +121,13 @@ namespace GoCardless.Api.CustomerBankAccounts
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.PutAsync<Response<CustomerBankAccount>>(
-                request =>
-                {
-                    request.AppendPathSegment($"customer_bank_accounts/{options.Id}");
-                },
-                new { customer_bank_accounts = options });
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"customer_bank_accounts/{options.Id}")
+                    .PutJsonAsync(new { customer_bank_accounts = options })
+                    .ReceiveJson<Response<CustomerBankAccount>>();
+            });
         }
     }
 }

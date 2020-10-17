@@ -31,14 +31,15 @@ namespace GoCardless.Api.CreditorBankAccounts
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.IdempotentAsync<Response<CreditorBankAccount>>(
+            return await _apiClient.IdempotentAsync(
+                options.IdempotencyKey,
                 request =>
                 {
-                    request
+                    return request
                         .AppendPathSegment("creditor_bank_accounts")
-                        .WithHeader("Idempotency-Key", options.IdempotencyKey);
-                },
-                new { creditor_bank_accounts = options });
+                        .PostJsonAsync(new { creditor_bank_accounts = options })
+                        .ReceiveJson<Response<CreditorBankAccount>>();
+                });
         }
 
         public async Task<Response<CreditorBankAccount>> DisableAsync(DisableCreditorBankAccountOptions options)
@@ -53,12 +54,13 @@ namespace GoCardless.Api.CreditorBankAccounts
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.IdempotentAsync<Response<CreditorBankAccount>>(
-                request =>
-                {
-                    request.AppendPathSegment($"creditor_bank_accounts/{options.Id}/actions/disable");
-                },
-                new { creditor_bank_accounts = options });
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"creditor_bank_accounts/{options.Id}/actions/disable")
+                    .PostJsonAsync(new { })
+                    .ReceiveJson<Response<CreditorBankAccount>>();
+            });
         }
 
         public async Task<Response<CreditorBankAccount>> ForIdAsync(string id)

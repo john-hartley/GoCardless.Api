@@ -31,14 +31,15 @@ namespace GoCardless.Api.Refunds
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.IdempotentAsync<Response<Refund>>(
+            return await _apiClient.IdempotentAsync(
+                options.IdempotencyKey,
                 request =>
                 {
-                    request
+                    return request
                         .AppendPathSegment("refunds")
-                        .WithHeader("Idempotency-Key", options.IdempotencyKey);
-                },
-                new { refunds = options });
+                        .PostJsonAsync(new { refunds = options })
+                        .ReceiveJson<Response<Refund>>();
+                });
         }
 
         public async Task<Response<Refund>> ForIdAsync(string id)
