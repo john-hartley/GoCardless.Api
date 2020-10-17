@@ -1,5 +1,5 @@
 ﻿using GoCardless.Api.MandateImports;
-using GoCardless.Api.Models;
+using GoCardless.Api.Common;
 using GoCardless.Api.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;

@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.Models
+﻿namespace GoCardless.Api.Common
 {
     public static class Scheme
     {

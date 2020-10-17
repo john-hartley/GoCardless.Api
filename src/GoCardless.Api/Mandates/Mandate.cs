@@ -21,7 +21,7 @@ namespace GoCardless.Api.Mandates
         public string Reference { get; set; }
 
         /// <summary>
-        /// See <see cref="Models.Scheme"/> for possible values.
+        /// See <see cref="Common.Scheme"/> for possible values.
         /// </summary>
         public string Scheme { get; set; }
 

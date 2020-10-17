@@ -2,7 +2,7 @@
 using GoCardless.Api.CustomerBankAccounts;
 using GoCardless.Api.Customers;
 using GoCardless.Api.Mandates;
-using GoCardless.Api.Models;
+using GoCardless.Api.Common;
 using GoCardless.Api.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;

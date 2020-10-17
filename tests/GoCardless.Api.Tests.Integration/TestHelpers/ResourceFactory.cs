@@ -4,7 +4,7 @@ using GoCardless.Api.Customers;
 using GoCardless.Api.MandateImportEntries;
 using GoCardless.Api.MandateImports;
 using GoCardless.Api.Mandates;
-using GoCardless.Api.Models;
+using GoCardless.Api.Common;
 using GoCardless.Api.Payments;
 using GoCardless.Api.Payouts;
 using GoCardless.Api.RedirectFlows;

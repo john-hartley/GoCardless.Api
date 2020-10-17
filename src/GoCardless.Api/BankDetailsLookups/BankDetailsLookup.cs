@@ -6,7 +6,7 @@ namespace GoCardless.Api.BankDetailsLookups
     {
         /// <summary>
         /// An array of schemes supported for this bank account. 
-        /// See <see cref="Models.Scheme"/> for supported schemes.
+        /// See <see cref="Common.Scheme"/> for supported schemes.
         /// </summary>
         public IEnumerable<string> AvailableDebitSchemes { get; set; }
 

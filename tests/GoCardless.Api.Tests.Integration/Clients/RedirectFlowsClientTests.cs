@@ -1,4 +1,4 @@
-﻿using GoCardless.Api.Models;
+﻿using GoCardless.Api.Common;
 using GoCardless.Api.RedirectFlows;
 using GoCardless.Api.Tests.Integration.TestHelpers;
 using NUnit.Framework;
