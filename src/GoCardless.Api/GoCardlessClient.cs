@@ -1,5 +1,4 @@
 ﻿using GoCardless.Api.BankDetailsLookups;
-using GoCardless.Api.Core.Http;
 using GoCardless.Api.CreditorBankAccounts;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
@@ -22,7 +21,7 @@ namespace GoCardless.Api
 {
     public class GoCardlessClient : IGoCardlessClient
     {
-        public GoCardlessClient(ApiClientConfiguration configuration)
+        public GoCardlessClient(GoCardlessConfiguration configuration)
         {
             if (configuration == null)
             {

@@ -1,5 +1,4 @@
 ﻿using Flurl.Http.Testing;
-using GoCardless.Api.Core.Http;
 using GoCardless.Api.Events;
 using NUnit.Framework;
 using System;
@@ -16,7 +15,7 @@ namespace GoCardless.Api.Tests.Unit
         [SetUp]
         public void Setup()
         {
-            var configuration = ApiClientConfiguration.ForLive("accesstoken", false);
+            var configuration = GoCardlessConfiguration.ForLive("accesstoken", false);
             _subject = new EventsClient(configuration);
             _httpTest = new HttpTest();
         }
@@ -31,7 +30,7 @@ namespace GoCardless.Api.Tests.Unit
         public void ConfigurationIsNullThrows()
         {
             // given
-            ApiClientConfiguration configuration = null;
+            GoCardlessConfiguration configuration = null;
 
             // when
             TestDelegate test = () => new EventsClient(configuration);

@@ -9,7 +9,7 @@ namespace GoCardless.Api.Mandates
     {
         private readonly ApiClient _apiClient;
 
-        public MandatesClient(ApiClientConfiguration configuration)
+        public MandatesClient(GoCardlessConfiguration configuration)
         {
             if (configuration == null)
             {

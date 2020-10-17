@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Core.Http
+namespace GoCardless.Api
 {
-    public class ApiClientConfiguration
+    public class GoCardlessConfiguration
     {
-        public static ApiClientConfiguration ForLive(string accessToken, bool throwOnConflict)
+        public static GoCardlessConfiguration ForLive(string accessToken, bool throwOnConflict)
         {
-            return new ApiClientConfiguration(accessToken, true, throwOnConflict);
+            return new GoCardlessConfiguration(accessToken, true, throwOnConflict);
         }
 
-        public static ApiClientConfiguration ForSandbox(string accessToken, bool throwOnConflict)
+        public static GoCardlessConfiguration ForSandbox(string accessToken, bool throwOnConflict)
         {
-            return new ApiClientConfiguration(accessToken, false, throwOnConflict);
+            return new GoCardlessConfiguration(accessToken, false, throwOnConflict);
         }
 
-        private ApiClientConfiguration(string accessToken, bool live, bool throwOnConflict)
+        private GoCardlessConfiguration(string accessToken, bool live, bool throwOnConflict)
         {
             if (string.IsNullOrWhiteSpace(accessToken))
             {

@@ -9,7 +9,7 @@ namespace GoCardless.Api.BankDetailsLookups
     {
         private readonly ApiClient _apiClient;
 
-        public BankDetailsLookupsClient(ApiClientConfiguration configuration)
+        public BankDetailsLookupsClient(GoCardlessConfiguration configuration)
         {
             if (configuration == null)
             {

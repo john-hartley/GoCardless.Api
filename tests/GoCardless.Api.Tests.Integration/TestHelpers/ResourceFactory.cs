@@ -1,5 +1,4 @@
-﻿using GoCardless.Api.Core.Http;
-using GoCardless.Api.Creditors;
+﻿using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
 using GoCardless.Api.Customers;
 using GoCardless.Api.MandateImportEntries;
@@ -20,9 +19,9 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 {
     public class ResourceFactory
     {
-        private readonly ApiClientConfiguration _configuration;
+        private readonly GoCardlessConfiguration _configuration;
 
-        internal ResourceFactory(ApiClientConfiguration configuration)
+        internal ResourceFactory(GoCardlessConfiguration configuration)
         {
             _configuration = configuration;
         }

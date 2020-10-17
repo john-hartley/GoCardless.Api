@@ -9,7 +9,7 @@ namespace GoCardless.Api.PayoutItems
     {
         private readonly ApiClient _apiClient;
 
-        public PayoutItemsClient(ApiClientConfiguration configuration)
+        public PayoutItemsClient(GoCardlessConfiguration configuration)
         {
             if (configuration == null)
             {

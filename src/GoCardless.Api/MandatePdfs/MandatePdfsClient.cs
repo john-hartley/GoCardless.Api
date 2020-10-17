@@ -9,7 +9,7 @@ namespace GoCardless.Api.MandatePdfs
     {
         private readonly ApiClient _apiClient;
 
-        public MandatePdfsClient(ApiClientConfiguration configuration)
+        public MandatePdfsClient(GoCardlessConfiguration configuration)
         {
             if (configuration == null)
             {

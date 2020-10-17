@@ -1,4 +1,3 @@
-using GoCardless.Api.Core.Http;
 using GoCardless.Api.Mandates;
 using GoCardless.Api.Subscriptions;
 using GoCardless.Api.Tests.Integration.TestHelpers;
@@ -134,7 +133,7 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
-            var configuration = ApiClientConfiguration.ForSandbox(accessToken, false);
+            var configuration = GoCardlessConfiguration.ForSandbox(accessToken, false);
             var mandatesClient = new MandatesClient(configuration);
             var mandate = (await mandatesClient.GetPageAsync()).Items.First();
 
@@ -336,7 +335,7 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
-            var configuration = ApiClientConfiguration.ForSandbox(accessToken, false);
+            var configuration = GoCardlessConfiguration.ForSandbox(accessToken, false);
             var resourceFactory = new ResourceFactory(configuration);
 
             var mandatesClient = new MandatesClient(configuration);

@@ -11,10 +11,10 @@ namespace GoCardless.Api.Core.Http
 {
     internal class ApiClient
     {
-        private readonly NewtonsoftJsonSerializer _newtonsoftJsonSerializer;
-        private readonly ApiClientConfiguration _configuration;
+        private readonly NewtonsoftJsonSerializer _serializer;
+        private readonly GoCardlessConfiguration _configuration;
 
-        internal ApiClient(ApiClientConfiguration configuration)
+        internal ApiClient(GoCardlessConfiguration configuration)
         {
             var jsonSerializerSettings = new JsonSerializerSettings
             {
@@ -25,18 +25,18 @@ namespace GoCardless.Api.Core.Http
                 NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
             };
 
-            _newtonsoftJsonSerializer = new NewtonsoftJsonSerializer(jsonSerializerSettings);
+            _serializer = new NewtonsoftJsonSerializer(jsonSerializerSettings);
             _configuration = configuration;
         }
 
-        public async Task<TResponse> RequestAsync<TResponse>(
+        internal async Task<TResponse> RequestAsync<TResponse>(
             Func<IFlurlRequest, Task<TResponse>> action)
         {
             var request = Request();
             return await SendAsync(request, action).ConfigureAwait(false);
         }
 
-        public async Task<TResponse> IdempotentRequestAsync<TResponse>(
+        internal async Task<TResponse> IdempotentRequestAsync<TResponse>(
             string idempotencyKey,
             Func<IFlurlRequest, Task<TResponse>> action)
         {
@@ -86,7 +86,7 @@ namespace GoCardless.Api.Core.Http
         {
             return _configuration.BaseUri
                 .WithHeaders(_configuration.Headers)
-                .ConfigureRequest(x => x.JsonSerializer = _newtonsoftJsonSerializer);
+                .ConfigureRequest(x => x.JsonSerializer = _serializer);
         }
     }
 }

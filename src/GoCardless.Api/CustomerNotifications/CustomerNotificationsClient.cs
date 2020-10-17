@@ -9,7 +9,7 @@ namespace GoCardless.Api.CustomerNotifications
     {
         private readonly ApiClient _apiClient;
 
-        public CustomerNotificationsClient(ApiClientConfiguration configuration)
+        public CustomerNotificationsClient(GoCardlessConfiguration configuration)
         {
             if (configuration == null)
             {

@@ -9,7 +9,7 @@ namespace GoCardless.Api.CreditorBankAccounts
     {
         private readonly ApiClient _apiClient;
 
-        public CreditorBankAccountsClient(ApiClientConfiguration configuration)
+        public CreditorBankAccountsClient(GoCardlessConfiguration configuration)
         {
             if (configuration == null)
             {
