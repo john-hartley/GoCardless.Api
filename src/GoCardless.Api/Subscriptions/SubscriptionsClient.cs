@@ -9,19 +9,14 @@ namespace GoCardless.Api.Subscriptions
     {
         private readonly IApiClient _apiClient;
 
-        public SubscriptionsClient(IApiClient apiClient)
+        public SubscriptionsClient(ApiClientConfiguration configuration)
         {
-            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
-        }
-
-        public SubscriptionsClient(ApiClientConfiguration apiClientConfiguration)
-        {
-            if (apiClientConfiguration == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(apiClientConfiguration));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            _apiClient = new ApiClient(apiClientConfiguration);
+            _apiClient = new ApiClient(configuration);
         }
 
         public async Task<Response<Subscription>> CancelAsync(CancelSubscriptionOptions options)

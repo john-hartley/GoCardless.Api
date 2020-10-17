@@ -20,16 +20,16 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
 {
     public class ResourceFactory
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClientConfiguration _configuration;
 
-        internal ResourceFactory(IApiClient apiClient)
+        internal ResourceFactory(ApiClientConfiguration configuration)
         {
-            _apiClient = apiClient;
+            _configuration = configuration;
         }
 
         internal async Task<Creditor> Creditor()
         {
-            var creditorsClient = new CreditorsClient(_apiClient);
+            var creditorsClient = new CreditorsClient(_configuration);
             return (await creditorsClient.GetPageAsync()).Items.First();
         }
 
@@ -61,7 +61,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 }
             };
 
-            var customerBankAccountsClient = new CustomerBankAccountsClient(_apiClient);
+            var customerBankAccountsClient = new CustomerBankAccountsClient(_configuration);
             return (await customerBankAccountsClient.CreateAsync(options)).Item;
         }
 
@@ -85,7 +85,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 Scheme = Scheme.Bacs
             };
 
-            var mandatesClient = new MandatesClient(_apiClient);
+            var mandatesClient = new MandatesClient(_configuration);
             return (await mandatesClient.CreateAsync(options)).Item;
         }
 
@@ -96,7 +96,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 Scheme = "bacs",
             };
 
-            var mandateImportsClient = new MandateImportsClient(_apiClient);
+            var mandateImportsClient = new MandateImportsClient(_configuration);
             return (await mandateImportsClient.CreateAsync(options)).Item;
         }
 
@@ -137,7 +137,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 RecordIdentifier = recordIdentifier
             };
 
-            var mandateImportEntriesClient = new MandateImportEntriesClient(_apiClient);
+            var mandateImportEntriesClient = new MandateImportEntriesClient(_configuration);
             return (await mandateImportEntriesClient.AddAsync(options)).Item;
         }
 
@@ -159,7 +159,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 Reference = "REF123456"
             };
 
-            var paymentsClient = new PaymentsClient(_apiClient);
+            var paymentsClient = new PaymentsClient(_configuration);
             return (await paymentsClient.CreateAsync(options)).Item;
         }
 
@@ -170,7 +170,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 PayoutType = PayoutType.Merchant
             };
 
-            var payoutsClient = new PayoutsClient(_apiClient);
+            var payoutsClient = new PayoutsClient(_configuration);
             return (await payoutsClient.GetPageAsync(options)).Items.First();
         }
 
@@ -206,7 +206,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
             };
 
             // when
-            var redirectFlowsClient = new RedirectFlowsClient(_apiClient);
+            var redirectFlowsClient = new RedirectFlowsClient(_configuration);
             return (await redirectFlowsClient.CreateAsync(options)).Item;
         }
 
@@ -234,7 +234,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 StartDate = DateTime.Now.AddMonths(1)
             };
 
-            var subscriptionsClient = new SubscriptionsClient(_apiClient);
+            var subscriptionsClient = new SubscriptionsClient(_configuration);
             return (await subscriptionsClient.CreateAsync(options)).Item;
         }
 
@@ -269,7 +269,7 @@ namespace GoCardless.Api.Tests.Integration.TestHelpers
                 SwedishIdentityNumber = swedishIdentityNumber
             };
 
-            var customersClient = new CustomersClient(_apiClient);
+            var customersClient = new CustomersClient(_configuration);
             return (await customersClient.CreateAsync(options)).Item;
         }
     }

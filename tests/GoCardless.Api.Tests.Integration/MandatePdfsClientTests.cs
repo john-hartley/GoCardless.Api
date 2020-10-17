@@ -14,7 +14,7 @@ namespace GoCardless.Api.Tests.Integration
         [SetUp]
         public void Setup()
         {
-            _subject = new MandatePdfsClient(_apiClient);
+            _subject = new MandatePdfsClient(_configuration);
         }
 
         [Test]
@@ -51,7 +51,6 @@ namespace GoCardless.Api.Tests.Integration
             var creditor = await _resourceFactory.Creditor();
             var customer = await _resourceFactory.CreateLocalCustomer();
             var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
-            var mandate = await _resourceFactory.CreateMandateFor(creditor, customerBankAccount);
 
             var options = new CreateMandatePdfOptions
             {

@@ -26,7 +26,7 @@ namespace GoCardless.Api.Tests.Integration
         [SetUp]
         public void Setup()
         {
-            _subject = new RefundsClient(_apiClient);
+            _subject = new RefundsClient(_configuration);
         }
 
         [Test, Explicit("Need to use scenario simulators to activate the mandate, and pay out the created payment, before continuing.")]

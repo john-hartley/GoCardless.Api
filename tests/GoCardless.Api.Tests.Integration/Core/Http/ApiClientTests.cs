@@ -62,7 +62,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
                 SwedishIdentityNumber = "5302256218",
             };
 
-            var subject = new CustomersClient(_apiClient);
+            var subject = new CustomersClient(_configuration);
 
             // when
             AsyncTestDelegate test = () => subject.CreateAsync(options);
@@ -97,7 +97,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
                 TotalAmountConfirmation = 100
             };
 
-            var subject = new RefundsClient(_apiClient);
+            var subject = new RefundsClient(_configuration);
 
             // when
             AsyncTestDelegate test = () => subject.CreateAsync(options);

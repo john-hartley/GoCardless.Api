@@ -9,19 +9,14 @@ namespace GoCardless.Api.Creditors
     {
         private readonly IApiClient _apiClient;
 
-        public CreditorsClient(IApiClient apiClient)
+        public CreditorsClient(ApiClientConfiguration configuration)
         {
-            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
-        }
-
-        public CreditorsClient(ApiClientConfiguration apiClientConfiguration)
-        {
-            if (apiClientConfiguration == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(apiClientConfiguration));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            _apiClient = new ApiClient(apiClientConfiguration);
+            _apiClient = new ApiClient(configuration);
         }
 
         public async Task<Response<Creditor>> ForIdAsync(string id)

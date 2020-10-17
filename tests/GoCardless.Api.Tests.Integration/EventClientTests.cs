@@ -14,7 +14,7 @@ namespace GoCardless.Api.Tests.Integration
         [SetUp]
         public void Setup()
         {
-            _subject = new EventsClient(_apiClient);
+            _subject = new EventsClient(_configuration);
         }
 
         [Test]

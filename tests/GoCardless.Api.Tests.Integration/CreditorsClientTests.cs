@@ -13,7 +13,7 @@ namespace GoCardless.Api.Tests.Integration
         [SetUp]
         public void Setup()
         {
-            _subject = new CreditorsClient(_apiClient);
+            _subject = new CreditorsClient(_configuration);
         }
 
         [Test, NonParallelizable]

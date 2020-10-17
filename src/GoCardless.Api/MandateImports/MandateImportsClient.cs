@@ -9,19 +9,14 @@ namespace GoCardless.Api.MandateImports
     {
         private readonly IApiClient _apiClient;
 
-        public MandateImportsClient(IApiClient apiClient)
+        public MandateImportsClient(ApiClientConfiguration configuration)
         {
-            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
-        }
-
-        public MandateImportsClient(ApiClientConfiguration apiClientConfiguration)
-        {
-            if (apiClientConfiguration == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(apiClientConfiguration));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            _apiClient = new ApiClient(apiClientConfiguration);
+            _apiClient = new ApiClient(configuration);
         }
 
         public async Task<Response<MandateImport>> CancelAsync(string id)

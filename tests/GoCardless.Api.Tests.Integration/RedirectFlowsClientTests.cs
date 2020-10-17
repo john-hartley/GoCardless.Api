@@ -14,7 +14,7 @@ namespace GoCardless.Api.Tests.Integration
         [SetUp]
         public void Setup()
         {
-            _subject = new RedirectFlowsClient(_apiClient);
+            _subject = new RedirectFlowsClient(_configuration);
         }
 
         [Test]

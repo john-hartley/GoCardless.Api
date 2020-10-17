@@ -22,7 +22,7 @@ namespace GoCardless.Api.Tests.Integration
         [SetUp]
         public void Setup()
         {
-            _subject = new CreditorBankAccountsClient(_apiClient);
+            _subject = new CreditorBankAccountsClient(_configuration);
         }
 
         [Test, Explicit("Checking the disabled state in the final assertion sometimes takes a little time.")]

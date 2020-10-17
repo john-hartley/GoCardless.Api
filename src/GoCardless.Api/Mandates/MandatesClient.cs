@@ -9,19 +9,14 @@ namespace GoCardless.Api.Mandates
     {
         private readonly IApiClient _apiClient;
 
-        public MandatesClient(IApiClient apiClient)
+        public MandatesClient(ApiClientConfiguration configuration)
         {
-            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
-        }
-
-        public MandatesClient(ApiClientConfiguration apiClientConfiguration)
-        {
-            if (apiClientConfiguration == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(apiClientConfiguration));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            _apiClient = new ApiClient(apiClientConfiguration);
+            _apiClient = new ApiClient(configuration);
         }
 
         public async Task<Response<Mandate>> CancelAsync(CancelMandateOptions options)

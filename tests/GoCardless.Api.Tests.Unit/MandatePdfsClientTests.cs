@@ -16,8 +16,8 @@ namespace GoCardless.Api.Tests.Unit
         [SetUp]
         public void Setup()
         {
-            var apiClient = new ApiClient(ApiClientConfiguration.ForLive("accesstoken", false));
-            _subject = new MandatePdfsClient(apiClient);
+            var configuration = ApiClientConfiguration.ForLive("accesstoken", false);
+            _subject = new MandatePdfsClient(configuration);
             _httpTest = new HttpTest();
         }
 
@@ -28,31 +28,17 @@ namespace GoCardless.Api.Tests.Unit
         }
 
         [Test]
-        public void ApiClientIsNullThrows()
+        public void ConfigurationIsNullThrows()
         {
             // given
-            IApiClient apiClient = null;
+            ApiClientConfiguration configuration = null;
 
             // when
-            TestDelegate test = () => new MandatePdfsClient(apiClient);
+            TestDelegate test = () => new MandatePdfsClient(configuration);
 
             // then
             var ex = Assert.Throws<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClient)));
-        }
-
-        [Test]
-        public void ApiClientConfigurationIsNullThrows()
-        {
-            // given
-            ApiClientConfiguration apiClientConfiguration = null;
-
-            // when
-            TestDelegate test = () => new MandatePdfsClient(apiClientConfiguration);
-
-            // then
-            var ex = Assert.Throws<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClientConfiguration)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(configuration)));
         }
 
         [Test]

@@ -16,7 +16,12 @@ namespace GoCardless.Api.Tests.Integration
         public async Task OneTimeSetup()
         {
             _payout = await _resourceFactory.Payout();
-            _subject = new PayoutItemsClient(_apiClient);
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            _subject = new PayoutItemsClient(_configuration);
         }
 
         [Test]

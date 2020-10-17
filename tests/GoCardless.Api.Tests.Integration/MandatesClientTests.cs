@@ -30,7 +30,7 @@ namespace GoCardless.Api.Tests.Integration
         [SetUp]
         public void Setup()
         {
-            _subject = new MandatesClient(_apiClient);
+            _subject = new MandatesClient(_configuration);
         }
 
         [Test, NonParallelizable]

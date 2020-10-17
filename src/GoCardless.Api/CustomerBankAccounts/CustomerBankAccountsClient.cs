@@ -9,19 +9,14 @@ namespace GoCardless.Api.CustomerBankAccounts
     {
         private readonly IApiClient _apiClient;
 
-        public CustomerBankAccountsClient(IApiClient apiClient)
+        public CustomerBankAccountsClient(ApiClientConfiguration configuration)
         {
-            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
-        }
-
-        public CustomerBankAccountsClient(ApiClientConfiguration apiClientConfiguration)
-        {
-            if (apiClientConfiguration == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(apiClientConfiguration));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            _apiClient = new ApiClient(apiClientConfiguration);
+            _apiClient = new ApiClient(configuration);
         }
 
         public async Task<Response<CustomerBankAccount>> CreateAsync(CreateCustomerBankAccountOptions options)

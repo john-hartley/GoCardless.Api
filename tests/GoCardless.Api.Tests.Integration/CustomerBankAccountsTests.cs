@@ -15,7 +15,7 @@ namespace GoCardless.Api.Tests.Integration
         [SetUp]
         public void Setup()
         {
-            _subject = new CustomerBankAccountsClient(_apiClient);
+            _subject = new CustomerBankAccountsClient(_configuration);
         }
 
         [Test]

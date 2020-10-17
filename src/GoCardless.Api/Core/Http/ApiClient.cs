@@ -12,9 +12,9 @@ namespace GoCardless.Api.Core.Http
     public class ApiClient : IApiClient
     {
         private readonly NewtonsoftJsonSerializer _newtonsoftJsonSerializer;
-        private readonly ApiClientConfiguration _apiClientConfiguration;
+        private readonly ApiClientConfiguration _configuration;
 
-        public ApiClient(ApiClientConfiguration apiClientConfiguration)
+        public ApiClient(ApiClientConfiguration configuration)
         {
             var jsonSerializerSettings = new JsonSerializerSettings
             {
@@ -26,7 +26,7 @@ namespace GoCardless.Api.Core.Http
             };
 
             _newtonsoftJsonSerializer = new NewtonsoftJsonSerializer(jsonSerializerSettings);
-            _apiClientConfiguration = apiClientConfiguration;
+            _configuration = configuration;
         }
 
         public async Task<TResponse> RequestAsync<TResponse>(
@@ -56,7 +56,7 @@ namespace GoCardless.Api.Core.Http
             {
                 var apiException = await ex.CreateApiExceptionAsync().ConfigureAwait(false);
                 if (apiException is ConflictingResourceException conflictingResourceException
-                    && !_apiClientConfiguration.ThrowOnConflict)
+                    && !_configuration.ThrowOnConflict)
                 {
                     var uri = ex.Call.Request.RequestUri;
                     var conflictingResourceId = conflictingResourceException.ResourceId;
@@ -84,8 +84,8 @@ namespace GoCardless.Api.Core.Http
 
         private IFlurlRequest Request()
         {
-            return _apiClientConfiguration.BaseUri
-                .WithHeaders(_apiClientConfiguration.Headers)
+            return _configuration.BaseUri
+                .WithHeaders(_configuration.Headers)
                 .ConfigureRequest(x => x.JsonSerializer = _newtonsoftJsonSerializer);
         }
     }
