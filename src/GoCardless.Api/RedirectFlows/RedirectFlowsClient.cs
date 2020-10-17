@@ -66,9 +66,11 @@ namespace GoCardless.Api.RedirectFlows
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.RequestAsync<Response<RedirectFlow>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request.AppendPathSegment($"redirect_flows/{id}");
+                return request
+                    .AppendPathSegment($"redirect_flows/{id}")
+                    .GetJsonAsync<Response<RedirectFlow>>();
             });
         }
     }

@@ -30,21 +30,10 @@ namespace GoCardless.Api.Core.Http
             _apiClientConfiguration = apiClientConfiguration;
         }
 
-        public async Task<TResponse> RequestAsync<TResponse>(Action<IFlurlRequest> configure)
+        public async Task<TResponse> RequestAsync<TResponse>(Func<IFlurlRequest, Task<TResponse>> action)
         {
-            try
-            {
-                var request = Request();
-                configure(request);
-
-                return await request
-                    .GetJsonAsync<TResponse>()
-                    .ConfigureAwait(false);
-            }
-            catch (FlurlHttpException ex)
-            {
-                throw await ex.CreateApiExceptionAsync();
-            }
+            var request = Request();
+            return await SendAsync(request, action).ConfigureAwait(false);
         }
 
         public async Task<TResponse> IdempotentAsync<TResponse>(
@@ -72,9 +61,11 @@ namespace GoCardless.Api.Core.Http
                     if (!string.IsNullOrWhiteSpace(conflictingResourceId) 
                         && uri.Segments.Length >= 2)
                     {
-                        return await RequestAsync<TResponse>(request =>
+                        return await RequestAsync(request =>
                         {
-                            request.AppendPathSegments(uri.Segments[1], conflictingResourceId);
+                            return request
+                                .AppendPathSegments(uri.Segments[1], conflictingResourceId)
+                                .GetJsonAsync<TResponse>();
                         });
                     }
                 }
@@ -99,6 +90,18 @@ namespace GoCardless.Api.Core.Http
             catch (FlurlHttpException ex)
             {
                 throw await ex.CreateApiExceptionAsync();
+            }
+        }
+
+        private async Task<TResponse> SendAsync<TResponse>(IFlurlRequest request, Func<IFlurlRequest, Task<TResponse>> action)
+        {
+            try
+            {
+                return await action(request).ConfigureAwait(false);
+            }
+            catch (FlurlHttpException ex)
+            {
+                throw ex;
             }
         }
 

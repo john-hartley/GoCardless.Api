@@ -31,17 +31,21 @@ namespace GoCardless.Api.Creditors
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.RequestAsync<Response<Creditor>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request.AppendPathSegment($"creditors/{id}");
+                return request
+                    .AppendPathSegment($"creditors/{id}")
+                    .GetJsonAsync<Response<Creditor>>();
             });
         }
 
         public async Task<PagedResponse<Creditor>> GetPageAsync()
         {
-            return await _apiClient.RequestAsync<PagedResponse<Creditor>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request.AppendPathSegment("creditors");
+                return request
+                    .AppendPathSegment("creditors")
+                    .GetJsonAsync<PagedResponse<Creditor>>();
             });
         }
 
@@ -52,11 +56,12 @@ namespace GoCardless.Api.Creditors
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.RequestAsync<PagedResponse<Creditor>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request
+                return request
                     .AppendPathSegment("creditors")
-                    .SetQueryParams(options.ToReadOnlyDictionary());
+                    .SetQueryParams(options.ToReadOnlyDictionary())
+                    .GetJsonAsync<PagedResponse<Creditor>>();
             });
         }
 
