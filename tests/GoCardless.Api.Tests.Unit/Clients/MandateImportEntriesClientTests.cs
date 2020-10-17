@@ -44,10 +44,10 @@ namespace GoCardlessApi.Tests.Unit.Clients
         public void AddMandateImportEntryOptionsIsNullThrows()
         {
             // given
-            AddMandateImportEntryOptions options = null;
+            CreateMandateImportEntryOptions options = null;
 
             // when
-            AsyncTestDelegate test = () => _subject.AddAsync(options);
+            AsyncTestDelegate test = () => _subject.CreateAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
@@ -58,10 +58,10 @@ namespace GoCardlessApi.Tests.Unit.Clients
         public async Task CallsAddMandateImportEntryEndpoint()
         {
             // given
-            var options = new AddMandateImportEntryOptions();
+            var options = new CreateMandateImportEntryOptions();
 
             // when
-            await _subject.AddAsync(options);
+            await _subject.CreateAsync(options);
 
             // then
             _httpTest

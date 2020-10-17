@@ -103,7 +103,7 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
             MandateImport mandateImport,
             string recordIdentifier)
         {
-            var options = new AddMandateImportEntryOptions
+            var options = new CreateMandateImportEntryOptions
             {
                 BankAccount = new BankAccount
                 {
@@ -137,7 +137,7 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
             };
 
             var mandateImportEntriesClient = new MandateImportEntriesClient(_configuration);
-            return (await mandateImportEntriesClient.AddAsync(options)).Item;
+            return (await mandateImportEntriesClient.CreateAsync(options)).Item;
         }
 
         internal async Task<Payment> CreatePaymentFor(Mandate mandate)
