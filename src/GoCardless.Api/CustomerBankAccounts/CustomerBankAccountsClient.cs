@@ -7,7 +7,7 @@ namespace GoCardless.Api.CustomerBankAccounts
 {
     public class CustomerBankAccountsClient : ICustomerBankAccountsClient
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClient _apiClient;
 
         public CustomerBankAccountsClient(ApiClientConfiguration configuration)
         {

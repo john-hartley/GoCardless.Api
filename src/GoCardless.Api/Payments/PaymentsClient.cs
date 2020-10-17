@@ -7,7 +7,7 @@ namespace GoCardless.Api.Payments
 {
     public class PaymentsClient : IPaymentsClient
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClient _apiClient;
 
         public PaymentsClient(ApiClientConfiguration configuration)
         {

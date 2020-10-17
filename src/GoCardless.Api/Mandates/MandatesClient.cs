@@ -7,7 +7,7 @@ namespace GoCardless.Api.Mandates
 {
     public class MandatesClient : IMandatesClient
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClient _apiClient;
 
         public MandatesClient(ApiClientConfiguration configuration)
         {

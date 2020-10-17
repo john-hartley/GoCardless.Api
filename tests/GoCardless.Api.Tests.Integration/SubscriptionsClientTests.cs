@@ -339,7 +339,6 @@ namespace GoCardless.Api.Tests.Integration
             var configuration = ApiClientConfiguration.ForSandbox(accessToken, false);
             var resourceFactory = new ResourceFactory(configuration);
 
-            var apiClient = new ApiClient(configuration);
             var mandatesClient = new MandatesClient(configuration);
             var mandate = (await mandatesClient.GetPageAsync()).Items.First();
             var subscription = await resourceFactory.CreateSubscriptionFor(mandate, paymentReference: null);

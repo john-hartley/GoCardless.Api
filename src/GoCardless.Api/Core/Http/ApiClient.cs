@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.Core.Http
 {
-    public class ApiClient : IApiClient
+    internal class ApiClient
     {
         private readonly NewtonsoftJsonSerializer _newtonsoftJsonSerializer;
         private readonly ApiClientConfiguration _configuration;
 
-        public ApiClient(ApiClientConfiguration configuration)
+        internal ApiClient(ApiClientConfiguration configuration)
         {
             var jsonSerializerSettings = new JsonSerializerSettings
             {

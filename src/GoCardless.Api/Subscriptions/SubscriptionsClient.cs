@@ -7,7 +7,7 @@ namespace GoCardless.Api.Subscriptions
 {
     public class SubscriptionsClient : ISubscriptionsClient
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClient _apiClient;
 
         public SubscriptionsClient(ApiClientConfiguration configuration)
         {

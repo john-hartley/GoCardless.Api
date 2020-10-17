@@ -7,7 +7,7 @@ namespace GoCardless.Api.RedirectFlows
 {
     public class RedirectFlowsClient : IRedirectFlowsClient
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClient _apiClient;
 
         public RedirectFlowsClient(ApiClientConfiguration configuration)
         {

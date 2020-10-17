@@ -7,7 +7,7 @@ namespace GoCardless.Api.Creditors
 {
     public class CreditorsClient : ICreditorsClient
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClient _apiClient;
 
         public CreditorsClient(ApiClientConfiguration configuration)
         {

@@ -7,7 +7,7 @@ namespace GoCardless.Api.CreditorBankAccounts
 {
     public class CreditorBankAccountsClient : ICreditorBankAccountsClient
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClient _apiClient;
 
         public CreditorBankAccountsClient(ApiClientConfiguration configuration)
         {
