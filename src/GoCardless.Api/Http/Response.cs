@@ -1,22 +1,22 @@
-﻿using GoCardless.Api.BankDetailsLookups;
-using GoCardless.Api.CreditorBankAccounts;
-using GoCardless.Api.Creditors;
-using GoCardless.Api.CustomerBankAccounts;
-using GoCardless.Api.CustomerNotifications;
-using GoCardless.Api.Events;
-using GoCardless.Api.MandateImportEntries;
-using GoCardless.Api.MandateImports;
-using GoCardless.Api.MandatePdfs;
-using GoCardless.Api.Mandates;
-using GoCardless.Api.Payments;
-using GoCardless.Api.Payouts;
-using GoCardless.Api.RedirectFlows;
-using GoCardless.Api.Refunds;
-using GoCardless.Api.Subscriptions;
+﻿using GoCardlessApi.BankDetailsLookups;
+using GoCardlessApi.CreditorBankAccounts;
+using GoCardlessApi.Creditors;
+using GoCardlessApi.CustomerBankAccounts;
+using GoCardlessApi.CustomerNotifications;
+using GoCardlessApi.Events;
+using GoCardlessApi.MandateImportEntries;
+using GoCardlessApi.MandateImports;
+using GoCardlessApi.MandatePdfs;
+using GoCardlessApi.Mandates;
+using GoCardlessApi.Payments;
+using GoCardlessApi.Payouts;
+using GoCardlessApi.RedirectFlows;
+using GoCardlessApi.Refunds;
+using GoCardlessApi.Subscriptions;
 using Newtonsoft.Json;
-using Customer = GoCardless.Api.Customers.Customer;
+using Customer = GoCardlessApi.Customers.Customer;
 
-namespace GoCardless.Api.Http
+namespace GoCardlessApi.Http
 {
     public class Response<TResource> where TResource : class
     {

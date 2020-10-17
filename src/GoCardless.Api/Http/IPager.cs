@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Http
+namespace GoCardlessApi.Http
 {
     public interface IPager<TRequest, TResource>
     {

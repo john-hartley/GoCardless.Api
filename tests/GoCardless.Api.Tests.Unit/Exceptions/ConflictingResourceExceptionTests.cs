@@ -1,8 +1,8 @@
-﻿using GoCardless.Api.Exceptions;
+﻿using GoCardlessApi.Exceptions;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Tests.Unit.Exceptions
+namespace GoCardlessApi.Tests.Unit.Exceptions
 {
     public class ConflictingResourceExceptionTests
     {

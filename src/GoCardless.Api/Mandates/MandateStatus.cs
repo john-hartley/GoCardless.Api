@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.Mandates
+﻿namespace GoCardlessApi.Mandates
 {
     public static class MandateStatus
     {

@@ -1,10 +1,10 @@
-﻿using GoCardless.Api.Http;
-using GoCardless.Api.Http.Serialisation;
+﻿using GoCardlessApi.Http;
+using GoCardlessApi.Http.Serialisation;
 using NUnit.Framework;
 using System;
 using System.Linq;
 
-namespace GoCardless.Api.Tests.Unit.Http
+namespace GoCardlessApi.Tests.Unit.Http
 {
     public class PageOptionsExtensionsTests
     {

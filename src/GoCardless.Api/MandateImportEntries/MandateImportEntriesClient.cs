@@ -1,9 +1,9 @@
 ﻿using Flurl.Http;
-using GoCardless.Api.Http;
+using GoCardlessApi.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.MandateImportEntries
+namespace GoCardlessApi.MandateImportEntries
 {
     public class MandateImportEntriesClient : IMandateImportEntriesClient
     {

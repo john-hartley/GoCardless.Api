@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Exceptions
+namespace GoCardlessApi.Exceptions
 {
     public static class FlurlHttpExceptionExtensions
     {

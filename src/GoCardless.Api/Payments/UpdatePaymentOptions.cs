@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Payments
+namespace GoCardlessApi.Payments
 {
     public class UpdatePaymentOptions
     {

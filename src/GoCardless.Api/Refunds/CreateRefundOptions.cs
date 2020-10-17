@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Refunds
+namespace GoCardlessApi.Refunds
 {
     public class CreateRefundOptions
     {

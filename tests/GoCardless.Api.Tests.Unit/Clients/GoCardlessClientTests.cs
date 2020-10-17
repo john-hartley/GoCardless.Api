@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 
-namespace GoCardless.Api.Tests.Unit.Clients
+namespace GoCardlessApi.Tests.Unit.Clients
 {
     public class GoCardlessClientTests
     {

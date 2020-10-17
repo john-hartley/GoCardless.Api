@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using GoCardless.Api.Http;
+using GoCardlessApi.Http;
 
-namespace GoCardless.Api.CustomerNotifications
+namespace GoCardlessApi.CustomerNotifications
 {
     public interface ICustomerNotificationsClient
     {

@@ -1,12 +1,12 @@
-﻿using GoCardless.Api.Creditors;
-using GoCardless.Api.CustomerBankAccounts;
-using GoCardless.Api.Customers;
-using GoCardless.Api.Exceptions;
-using GoCardless.Api.Mandates;
-using GoCardless.Api.Payments;
-using GoCardless.Api.Refunds;
-using GoCardless.Api.Subscriptions;
-using GoCardless.Api.Tests.Integration.TestHelpers;
+﻿using GoCardlessApi.Creditors;
+using GoCardlessApi.CustomerBankAccounts;
+using GoCardlessApi.Customers;
+using GoCardlessApi.Exceptions;
+using GoCardlessApi.Mandates;
+using GoCardlessApi.Payments;
+using GoCardlessApi.Refunds;
+using GoCardlessApi.Subscriptions;
+using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Tests.Integration.Http
+namespace GoCardlessApi.Tests.Integration.Http
 {
     public class ApiClientTests : IntegrationTest
     {

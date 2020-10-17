@@ -1,8 +1,8 @@
-﻿using GoCardless.Api.Http;
-using GoCardless.Api.Http.Serialisation;
+﻿using GoCardlessApi.Http;
+using GoCardlessApi.Http.Serialisation;
 using System;
 
-namespace GoCardless.Api.Events
+namespace GoCardlessApi.Events
 {
     public class GetEventsOptions : IPageOptions, ICloneable
     {

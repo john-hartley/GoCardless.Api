@@ -1,8 +1,8 @@
-﻿using GoCardless.Api.Http;
-using GoCardless.Api.Http.Serialisation;
+﻿using GoCardlessApi.Http;
+using GoCardlessApi.Http.Serialisation;
 using System;
 
-namespace GoCardless.Api.CreditorBankAccounts
+namespace GoCardlessApi.CreditorBankAccounts
 {
     public class GetCreditorBankAccountsOptions : IPageOptions, ICloneable
     {

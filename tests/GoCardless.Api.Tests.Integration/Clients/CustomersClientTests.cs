@@ -1,12 +1,12 @@
-﻿using GoCardless.Api.Customers;
-using GoCardless.Api.Tests.Integration.TestHelpers;
+﻿using GoCardlessApi.Customers;
+using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Tests.Integration.Clients
+namespace GoCardlessApi.Tests.Integration.Clients
 {
     public class CustomersClientTests : IntegrationTest
     {

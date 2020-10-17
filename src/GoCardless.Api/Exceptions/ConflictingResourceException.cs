@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace GoCardless.Api.Exceptions
+namespace GoCardlessApi.Exceptions
 {
     public class ConflictingResourceException : ApiException
     {

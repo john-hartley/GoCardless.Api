@@ -1,9 +1,9 @@
-﻿using GoCardless.Api.Http.Serialisation;
+﻿using GoCardlessApi.Http.Serialisation;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace GoCardless.Api.Http
+namespace GoCardlessApi.Http
 {
     public static class PageOptionsExtensions
     {

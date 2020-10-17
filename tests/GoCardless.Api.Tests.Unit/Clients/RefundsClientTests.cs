@@ -1,11 +1,11 @@
 ﻿using Flurl.Http.Testing;
-using GoCardless.Api.Refunds;
+using GoCardlessApi.Refunds;
 using NUnit.Framework;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Tests.Unit.Clients
+namespace GoCardlessApi.Tests.Unit.Clients
 {
     public class RefundsClientTests
     {

@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.Http.Serialisation
+﻿namespace GoCardlessApi.Http.Serialisation
 {
     public static class DateFormat
     {

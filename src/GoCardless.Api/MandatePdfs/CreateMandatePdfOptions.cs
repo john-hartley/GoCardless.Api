@@ -1,8 +1,8 @@
-﻿using GoCardless.Api.Http.Serialisation;
+﻿using GoCardlessApi.Http.Serialisation;
 using Newtonsoft.Json;
 using System;
 
-namespace GoCardless.Api.MandatePdfs
+namespace GoCardlessApi.MandatePdfs
 {
     public class CreateMandatePdfOptions
     {

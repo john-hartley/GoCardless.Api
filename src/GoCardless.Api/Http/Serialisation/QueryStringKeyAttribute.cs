@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GoCardless.Api.Http.Serialisation
+namespace GoCardlessApi.Http.Serialisation
 {
     public class QueryStringKeyAttribute : Attribute
     {

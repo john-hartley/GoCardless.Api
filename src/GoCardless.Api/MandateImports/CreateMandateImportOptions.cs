@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.MandateImports
+﻿namespace GoCardlessApi.MandateImports
 {
     public class CreateMandateImportOptions
     {

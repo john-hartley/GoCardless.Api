@@ -1,7 +1,7 @@
-﻿using GoCardless.Api.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Events
+namespace GoCardlessApi.Events
 {
     public interface IEventsClient : IPageable<GetEventsOptions, Event>
     {

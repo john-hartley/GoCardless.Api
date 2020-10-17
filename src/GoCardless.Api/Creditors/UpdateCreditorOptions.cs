@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GoCardless.Api.Creditors
+namespace GoCardlessApi.Creditors
 {
     public class UpdateCreditorOptions
     {

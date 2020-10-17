@@ -1,7 +1,7 @@
-﻿using GoCardless.Api.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Customers
+namespace GoCardlessApi.Customers
 {
     public interface ICustomersClient : IPageable<GetCustomersOptions, Customer>
     {

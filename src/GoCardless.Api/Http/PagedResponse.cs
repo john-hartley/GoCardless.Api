@@ -1,18 +1,18 @@
-﻿using GoCardless.Api.CreditorBankAccounts;
-using GoCardless.Api.Creditors;
-using GoCardless.Api.CustomerBankAccounts;
-using GoCardless.Api.Events;
-using GoCardless.Api.MandateImportEntries;
-using GoCardless.Api.Mandates;
-using GoCardless.Api.Payments;
-using GoCardless.Api.PayoutItems;
-using GoCardless.Api.Payouts;
-using GoCardless.Api.Refunds;
-using GoCardless.Api.Subscriptions;
+﻿using GoCardlessApi.CreditorBankAccounts;
+using GoCardlessApi.Creditors;
+using GoCardlessApi.CustomerBankAccounts;
+using GoCardlessApi.Events;
+using GoCardlessApi.MandateImportEntries;
+using GoCardlessApi.Mandates;
+using GoCardlessApi.Payments;
+using GoCardlessApi.PayoutItems;
+using GoCardlessApi.Payouts;
+using GoCardlessApi.Refunds;
+using GoCardlessApi.Subscriptions;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Http
+namespace GoCardlessApi.Http
 {
     public class PagedResponse<TResource>
     {

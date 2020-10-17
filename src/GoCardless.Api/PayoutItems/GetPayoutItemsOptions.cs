@@ -1,7 +1,7 @@
-﻿using GoCardless.Api.Http;
+﻿using GoCardlessApi.Http;
 using System;
 
-namespace GoCardless.Api.PayoutItems
+namespace GoCardlessApi.PayoutItems
 {
     public class GetPayoutItemsOptions : IPageOptions, ICloneable
     {

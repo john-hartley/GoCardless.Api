@@ -1,7 +1,7 @@
-﻿using GoCardless.Api.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Creditors
+namespace GoCardlessApi.Creditors
 {
     public interface ICreditorsClient : IPageable<GetCreditorsOptions, Creditor>
     {

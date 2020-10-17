@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Http
+namespace GoCardlessApi.Http
 {
     public class Pager<TOptions, TResource> : IPager<TOptions, TResource>
         where TOptions : IPageOptions, ICloneable

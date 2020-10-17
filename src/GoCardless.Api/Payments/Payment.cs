@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Payments
+namespace GoCardlessApi.Payments
 {
     public class Payment
     {

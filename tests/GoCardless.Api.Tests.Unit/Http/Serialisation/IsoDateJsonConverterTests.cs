@@ -1,9 +1,9 @@
-﻿using GoCardless.Api.Http.Serialisation;
+﻿using GoCardlessApi.Http.Serialisation;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 
-namespace GoCardless.Api.Tests.Unit.Http.Serialisation
+namespace GoCardlessApi.Tests.Unit.Http.Serialisation
 {
     public class IsoDateJsonConverterTests
     {

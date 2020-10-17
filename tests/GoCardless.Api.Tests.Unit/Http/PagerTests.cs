@@ -1,10 +1,10 @@
-﻿using GoCardless.Api.Http;
+﻿using GoCardlessApi.Http;
 using NUnit.Framework;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Tests.Unit.Http
+namespace GoCardlessApi.Tests.Unit.Http
 {
     public class PagerTests
     {

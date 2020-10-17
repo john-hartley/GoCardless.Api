@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.Events
+﻿namespace GoCardlessApi.Events
 {
     public static class ResourceType
     {

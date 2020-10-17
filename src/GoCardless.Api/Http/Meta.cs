@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.Http
+﻿namespace GoCardlessApi.Http
 {
     public class Meta
     {

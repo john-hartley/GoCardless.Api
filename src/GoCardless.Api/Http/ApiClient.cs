@@ -1,13 +1,13 @@
 ﻿using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
-using GoCardless.Api.Exceptions;
+using GoCardlessApi.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Http
+namespace GoCardlessApi.Http
 {
     internal class ApiClient
     {

@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.CustomerNotifications
+﻿namespace GoCardlessApi.CustomerNotifications
 {
     public class ActionTaken
     {

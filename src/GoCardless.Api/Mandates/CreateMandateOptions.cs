@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Mandates
+namespace GoCardlessApi.Mandates
 {
     public class CreateMandateOptions
     {

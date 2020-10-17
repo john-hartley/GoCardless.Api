@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GoCardless.Api.Exceptions
+namespace GoCardlessApi.Exceptions
 {
     public class InvalidStateException : ApiException
     {

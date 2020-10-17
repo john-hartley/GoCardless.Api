@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.Exceptions
+﻿namespace GoCardlessApi.Exceptions
 {
     public class ApiErrorResponse
     {

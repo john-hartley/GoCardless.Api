@@ -1,8 +1,8 @@
-﻿using GoCardless.Api.Http;
-using GoCardless.Api.Http.Serialisation;
+﻿using GoCardlessApi.Http;
+using GoCardlessApi.Http.Serialisation;
 using System;
 
-namespace GoCardless.Api.Mandates
+namespace GoCardlessApi.Mandates
 {
     public class GetMandatesOptions : IPageOptions, ICloneable
     {
