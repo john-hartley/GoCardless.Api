@@ -36,7 +36,7 @@ namespace GoCardless.Api.Subscriptions
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.PostAsync<Response<Subscription>>(
+            return await _apiClient.IdempotentAsync<Response<Subscription>>(
                 request =>
                 {
                     request.AppendPathSegment($"subscriptions/{options.Id}/actions/cancel");
@@ -51,7 +51,7 @@ namespace GoCardless.Api.Subscriptions
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.PostAsync<Response<Subscription>>(
+            return await _apiClient.IdempotentAsync<Response<Subscription>>(
                 request =>
                 {
                     request
@@ -68,7 +68,7 @@ namespace GoCardless.Api.Subscriptions
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.GetAsync<Response<Subscription>>(request =>
+            return await _apiClient.RequestAsync<Response<Subscription>>(request =>
             {
                 request.AppendPathSegment($"subscriptions/{id}");
             });
@@ -76,7 +76,7 @@ namespace GoCardless.Api.Subscriptions
 
         public async Task<PagedResponse<Subscription>> GetPageAsync()
         {
-            return await _apiClient.GetAsync<PagedResponse<Subscription>>(request =>
+            return await _apiClient.RequestAsync<PagedResponse<Subscription>>(request =>
             {
                 request.AppendPathSegment("subscriptions");
             });
@@ -89,7 +89,7 @@ namespace GoCardless.Api.Subscriptions
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.GetAsync<PagedResponse<Subscription>>(request =>
+            return await _apiClient.RequestAsync<PagedResponse<Subscription>>(request =>
             {
                 request
                     .AppendPathSegment("subscriptions")

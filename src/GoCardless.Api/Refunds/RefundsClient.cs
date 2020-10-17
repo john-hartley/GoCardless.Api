@@ -31,7 +31,7 @@ namespace GoCardless.Api.Refunds
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.PostAsync<Response<Refund>>(
+            return await _apiClient.IdempotentAsync<Response<Refund>>(
                 request =>
                 {
                     request
@@ -48,7 +48,7 @@ namespace GoCardless.Api.Refunds
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.GetAsync<Response<Refund>>(request =>
+            return await _apiClient.RequestAsync<Response<Refund>>(request =>
             {
                 request.AppendPathSegment($"refunds/{id}");
             });
@@ -56,7 +56,7 @@ namespace GoCardless.Api.Refunds
 
         public async Task<PagedResponse<Refund>> GetPageAsync()
         {
-            return await _apiClient.GetAsync<PagedResponse<Refund>>(request =>
+            return await _apiClient.RequestAsync<PagedResponse<Refund>>(request =>
             {
                 request.AppendPathSegment("refunds");
             });
@@ -69,7 +69,7 @@ namespace GoCardless.Api.Refunds
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.GetAsync<PagedResponse<Refund>>(request =>
+            return await _apiClient.RequestAsync<PagedResponse<Refund>>(request =>
             {
                 request
                     .AppendPathSegment("refunds")

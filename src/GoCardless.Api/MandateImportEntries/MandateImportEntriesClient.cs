@@ -31,7 +31,7 @@ namespace GoCardless.Api.MandateImportEntries
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.PostAsync<Response<MandateImportEntry>>(
+            return await _apiClient.IdempotentAsync<Response<MandateImportEntry>>(
                 request =>
                 {
                     request.AppendPathSegment("mandate_import_entries");
@@ -51,7 +51,7 @@ namespace GoCardless.Api.MandateImportEntries
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.MandateImport));
             }
 
-            return await _apiClient.GetAsync<PagedResponse<MandateImportEntry>>(request =>
+            return await _apiClient.RequestAsync<PagedResponse<MandateImportEntry>>(request =>
             {
                 request
                     .AppendPathSegment("mandate_import_entries")

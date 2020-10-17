@@ -31,7 +31,7 @@ namespace GoCardless.Api.Events
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.GetAsync<Response<Event>>(request =>
+            return await _apiClient.RequestAsync<Response<Event>>(request =>
             {
                 request.AppendPathSegment($"events/{id}");
             });
@@ -39,7 +39,7 @@ namespace GoCardless.Api.Events
 
         public async Task<PagedResponse<Event>> GetPageAsync()
         {
-            return await _apiClient.GetAsync<PagedResponse<Event>>(request =>
+            return await _apiClient.RequestAsync<PagedResponse<Event>>(request =>
             {
                 request.AppendPathSegment("events");
             });
@@ -52,7 +52,7 @@ namespace GoCardless.Api.Events
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.GetAsync<PagedResponse<Event>>(request =>
+            return await _apiClient.RequestAsync<PagedResponse<Event>>(request =>
             {
                 request
                     .AppendPathSegment("events")

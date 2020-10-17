@@ -31,7 +31,7 @@ namespace GoCardless.Api.MandatePdfs
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.PostAsync<Response<MandatePdf>>(
+            return await _apiClient.IdempotentAsync<Response<MandatePdf>>(
                 request =>
                 {
                     request.AppendPathSegment("mandate_pdfs");

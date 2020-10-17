@@ -30,11 +30,11 @@ namespace GoCardless.Api.Core.Http
             _apiClientConfiguration = apiClientConfiguration;
         }
 
-        public async Task<TResponse> GetAsync<TResponse>(Action<IFlurlRequest> configure)
+        public async Task<TResponse> RequestAsync<TResponse>(Action<IFlurlRequest> configure)
         {
             try
             {
-                var request = BaseRequest();
+                var request = Request();
                 configure(request);
 
                 return await request
@@ -47,13 +47,13 @@ namespace GoCardless.Api.Core.Http
             }
         }
 
-        public async Task<TResponse> PostAsync<TResponse>(
+        public async Task<TResponse> IdempotentAsync<TResponse>(
             Action<IFlurlRequest> configure,
             object envelope = null)
         {
             try
             {
-                var request = BaseRequest();
+                var request = Request();
                 configure(request);
 
                 return await request
@@ -72,7 +72,7 @@ namespace GoCardless.Api.Core.Http
                     if (!string.IsNullOrWhiteSpace(conflictingResourceId) 
                         && uri.Segments.Length >= 2)
                     {
-                        return await GetAsync<TResponse>(request =>
+                        return await RequestAsync<TResponse>(request =>
                         {
                             request.AppendPathSegments(uri.Segments[1], conflictingResourceId);
                         });
@@ -89,7 +89,7 @@ namespace GoCardless.Api.Core.Http
         {
             try
             {
-                var request = BaseRequest();
+                var request = Request();
                 configure(request);
 
                 return await request
@@ -102,7 +102,12 @@ namespace GoCardless.Api.Core.Http
             }
         }
 
-        private IFlurlRequest BaseRequest()
+        private IFlurlRequest IdempotentRequest(string idempotencyKey)
+        {
+            return Request().WithHeader("Idempotency-Key", idempotencyKey);
+        }
+
+        private IFlurlRequest Request()
         {
             return _apiClientConfiguration.BaseUri
                 .WithHeaders(_apiClientConfiguration.Headers)

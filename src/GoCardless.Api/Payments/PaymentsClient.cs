@@ -36,7 +36,7 @@ namespace GoCardless.Api.Payments
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.PostAsync<Response<Payment>>(
+            return await _apiClient.IdempotentAsync<Response<Payment>>(
                 request =>
                 {
                     request.AppendPathSegment($"payments/{options.Id}/actions/cancel");
@@ -51,7 +51,7 @@ namespace GoCardless.Api.Payments
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.PostAsync<Response<Payment>>(
+            return await _apiClient.IdempotentAsync<Response<Payment>>(
                 request =>
                 {
                     request
@@ -68,7 +68,7 @@ namespace GoCardless.Api.Payments
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.GetAsync<Response<Payment>>(request =>
+            return await _apiClient.RequestAsync<Response<Payment>>(request =>
             {
                 request.AppendPathSegment($"payments/{id}");
             });
@@ -76,7 +76,7 @@ namespace GoCardless.Api.Payments
 
         public async Task<PagedResponse<Payment>> GetPageAsync()
         {
-            return await _apiClient.GetAsync<PagedResponse<Payment>>(request =>
+            return await _apiClient.RequestAsync<PagedResponse<Payment>>(request =>
             {
                 request.AppendPathSegment("payments");
             });
@@ -89,7 +89,7 @@ namespace GoCardless.Api.Payments
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.GetAsync<PagedResponse<Payment>>(request =>
+            return await _apiClient.RequestAsync<PagedResponse<Payment>>(request =>
             {
                 request
                     .AppendPathSegment("payments")
@@ -114,7 +114,7 @@ namespace GoCardless.Api.Payments
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.PostAsync<Response<Payment>>(
+            return await _apiClient.IdempotentAsync<Response<Payment>>(
                 request =>
                 {
                     request.AppendPathSegment($"payments/{options.Id}/actions/retry");

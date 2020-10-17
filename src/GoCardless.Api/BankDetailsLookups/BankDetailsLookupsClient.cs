@@ -31,7 +31,7 @@ namespace GoCardless.Api.BankDetailsLookups
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.PostAsync<Response<BankDetailsLookup>>(
+            return await _apiClient.IdempotentAsync<Response<BankDetailsLookup>>(
                 request =>
                 {
                     request.AppendPathSegment("bank_details_lookups");

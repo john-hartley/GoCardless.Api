@@ -31,7 +31,7 @@ namespace GoCardless.Api.CreditorBankAccounts
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.PostAsync<Response<CreditorBankAccount>>(
+            return await _apiClient.IdempotentAsync<Response<CreditorBankAccount>>(
                 request =>
                 {
                     request
@@ -53,7 +53,7 @@ namespace GoCardless.Api.CreditorBankAccounts
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.PostAsync<Response<CreditorBankAccount>>(
+            return await _apiClient.IdempotentAsync<Response<CreditorBankAccount>>(
                 request =>
                 {
                     request.AppendPathSegment($"creditor_bank_accounts/{options.Id}/actions/disable");
@@ -68,7 +68,7 @@ namespace GoCardless.Api.CreditorBankAccounts
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.GetAsync<Response<CreditorBankAccount>>(request =>
+            return await _apiClient.RequestAsync<Response<CreditorBankAccount>>(request =>
             {
                 request.AppendPathSegment($"creditor_bank_accounts/{id}");
             });
@@ -76,7 +76,7 @@ namespace GoCardless.Api.CreditorBankAccounts
 
         public async Task<PagedResponse<CreditorBankAccount>> GetPageAsync()
         {
-            return await _apiClient.GetAsync<PagedResponse<CreditorBankAccount>>(request =>
+            return await _apiClient.RequestAsync<PagedResponse<CreditorBankAccount>>(request =>
             {
                 request.AppendPathSegment("creditor_bank_accounts");
             });
@@ -89,7 +89,7 @@ namespace GoCardless.Api.CreditorBankAccounts
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.GetAsync<PagedResponse<CreditorBankAccount>>(request =>
+            return await _apiClient.RequestAsync<PagedResponse<CreditorBankAccount>>(request =>
             {
                 request
                     .AppendPathSegment("creditor_bank_accounts")

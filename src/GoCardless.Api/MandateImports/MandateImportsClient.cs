@@ -31,7 +31,7 @@ namespace GoCardless.Api.MandateImports
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.PostAsync<Response<MandateImport>>(
+            return await _apiClient.IdempotentAsync<Response<MandateImport>>(
                 request =>
                 {
                     request.AppendPathSegment($"mandate_imports/{id}/actions/cancel");
@@ -45,7 +45,7 @@ namespace GoCardless.Api.MandateImports
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.PostAsync<Response<MandateImport>>(
+            return await _apiClient.IdempotentAsync<Response<MandateImport>>(
                 request =>
                 {
                     request.AppendPathSegment("mandate_imports");
@@ -60,7 +60,7 @@ namespace GoCardless.Api.MandateImports
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.GetAsync<Response<MandateImport>>(request =>
+            return await _apiClient.RequestAsync<Response<MandateImport>>(request =>
             {
                 request.AppendPathSegment($"mandate_imports/{id}");
             });
@@ -73,7 +73,7 @@ namespace GoCardless.Api.MandateImports
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.PostAsync<Response<MandateImport>>(
+            return await _apiClient.IdempotentAsync<Response<MandateImport>>(
                 request =>
                 {
                     request.AppendPathSegment($"mandate_imports/{id}/actions/submit");

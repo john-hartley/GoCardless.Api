@@ -36,7 +36,7 @@ namespace GoCardless.Api.RedirectFlows
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.PostAsync<Response<RedirectFlow>>(
+            return await _apiClient.IdempotentAsync<Response<RedirectFlow>>(
                 request =>
                 {
                     request.AppendPathSegment($"redirect_flows/{options.Id}/actions/complete");
@@ -51,7 +51,7 @@ namespace GoCardless.Api.RedirectFlows
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.PostAsync<Response<RedirectFlow>>(
+            return await _apiClient.IdempotentAsync<Response<RedirectFlow>>(
                 request =>
                 {
                     request.AppendPathSegment("redirect_flows");
@@ -66,7 +66,7 @@ namespace GoCardless.Api.RedirectFlows
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.GetAsync<Response<RedirectFlow>>(request =>
+            return await _apiClient.RequestAsync<Response<RedirectFlow>>(request =>
             {
                 request.AppendPathSegment($"redirect_flows/{id}");
             });

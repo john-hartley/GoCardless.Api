@@ -36,7 +36,7 @@ namespace GoCardless.Api.Mandates
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.PostAsync<Response<Mandate>>(
+            return await _apiClient.IdempotentAsync<Response<Mandate>>(
                 request =>
                 {
                     request.AppendPathSegment($"mandates/{options.Id}/actions/cancel");
@@ -51,7 +51,7 @@ namespace GoCardless.Api.Mandates
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.PostAsync<Response<Mandate>>(
+            return await _apiClient.IdempotentAsync<Response<Mandate>>(
                 request =>
                 {
                     request
@@ -68,7 +68,7 @@ namespace GoCardless.Api.Mandates
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.GetAsync<Response<Mandate>>(request =>
+            return await _apiClient.RequestAsync<Response<Mandate>>(request =>
             {
                 request.AppendPathSegment($"mandates/{id}");
             });
@@ -76,7 +76,7 @@ namespace GoCardless.Api.Mandates
 
         public async Task<PagedResponse<Mandate>> GetPageAsync()
         {
-            return await _apiClient.GetAsync<PagedResponse<Mandate>>(request =>
+            return await _apiClient.RequestAsync<PagedResponse<Mandate>>(request =>
             {
                 request.AppendPathSegment("mandates");
             });
@@ -89,7 +89,7 @@ namespace GoCardless.Api.Mandates
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.GetAsync<PagedResponse<Mandate>>(request =>
+            return await _apiClient.RequestAsync<PagedResponse<Mandate>>(request =>
             {
                 request
                     .AppendPathSegment("mandates")
@@ -114,7 +114,7 @@ namespace GoCardless.Api.Mandates
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.PostAsync<Response<Mandate>>(
+            return await _apiClient.IdempotentAsync<Response<Mandate>>(
                 request =>
                 {
                     request.AppendPathSegment($"mandates/{options.Id}/actions/reinstate");
