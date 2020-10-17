@@ -9,7 +9,7 @@ namespace GoCardless.Api.RedirectFlows
     {
         private readonly ApiClient _apiClient;
 
-        public RedirectFlowsClient(ApiClientConfiguration configuration)
+        public RedirectFlowsClient(GoCardlessConfiguration configuration)
         {
             if (configuration == null)
             {

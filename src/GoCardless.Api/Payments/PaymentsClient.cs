@@ -9,7 +9,7 @@ namespace GoCardless.Api.Payments
     {
         private readonly ApiClient _apiClient;
 
-        public PaymentsClient(ApiClientConfiguration configuration)
+        public PaymentsClient(GoCardlessConfiguration configuration)
         {
             if (configuration == null)
             {

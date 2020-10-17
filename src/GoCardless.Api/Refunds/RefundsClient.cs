@@ -9,7 +9,7 @@ namespace GoCardless.Api.Refunds
     {
         private readonly ApiClient _apiClient;
 
-        public RefundsClient(ApiClientConfiguration configuration)
+        public RefundsClient(GoCardlessConfiguration configuration)
         {
             if (configuration == null)
             {

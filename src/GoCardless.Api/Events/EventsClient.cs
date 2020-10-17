@@ -9,7 +9,7 @@ namespace GoCardless.Api.Events
     {
         private readonly ApiClient _apiClient;
 
-        public EventsClient(ApiClientConfiguration configuration)
+        public EventsClient(GoCardlessConfiguration configuration)
         {
             if (configuration == null)
             {

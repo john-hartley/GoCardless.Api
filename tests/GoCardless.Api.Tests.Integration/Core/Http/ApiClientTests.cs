@@ -1,5 +1,4 @@
 ﻿using GoCardless.Api.Core.Exceptions;
-using GoCardless.Api.Core.Http;
 using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
 using GoCardless.Api.Customers;
@@ -135,7 +134,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
                 }
             };
 
-            var configuration = ApiClientConfiguration.ForSandbox("invalid token", false);
+            var configuration = GoCardlessConfiguration.ForSandbox("invalid token", false);
             var subject = new SubscriptionsClient(configuration);
 
             // when
@@ -171,7 +170,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
                 Reference = "REF123456"
             };
 
-            var configuration = ApiClientConfiguration.ForSandbox(_accessToken, throwOnConflict: true);
+            var configuration = GoCardlessConfiguration.ForSandbox(_accessToken, throwOnConflict: true);
             var paymentsClient = new PaymentsClient(configuration);
 
             // when
@@ -204,7 +203,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
                 Reference = "REF123456"
             };
 
-            var configuration = ApiClientConfiguration.ForSandbox(_accessToken, throwOnConflict: false);
+            var configuration = GoCardlessConfiguration.ForSandbox(_accessToken, throwOnConflict: false);
             var paymentsClient = new PaymentsClient(configuration);
 
             // when

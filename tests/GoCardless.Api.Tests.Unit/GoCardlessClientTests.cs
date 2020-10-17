@@ -1,5 +1,4 @@
-﻿using GoCardless.Api.Core.Http;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 
 namespace GoCardless.Api.Tests.Unit
@@ -10,7 +9,7 @@ namespace GoCardless.Api.Tests.Unit
         public void ConfigurationIsNullThrows()
         {
             // given
-            ApiClientConfiguration configuration = null;
+            GoCardlessConfiguration configuration = null;
 
             // when
             TestDelegate test = () => new GoCardlessClient(configuration);

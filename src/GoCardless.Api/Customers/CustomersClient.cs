@@ -9,7 +9,7 @@ namespace GoCardless.Api.Customers
     {
         private readonly ApiClient _apiClient;
 
-        public CustomersClient(ApiClientConfiguration configuration)
+        public CustomersClient(GoCardlessConfiguration configuration)
         {
             if (configuration == null)
             {

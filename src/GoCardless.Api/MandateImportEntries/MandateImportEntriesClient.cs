@@ -9,7 +9,7 @@ namespace GoCardless.Api.MandateImportEntries
     {
         private readonly ApiClient _apiClient;
 
-        public MandateImportEntriesClient(ApiClientConfiguration configuration)
+        public MandateImportEntriesClient(GoCardlessConfiguration configuration)
         {
             if (configuration == null)
             {
