@@ -7,21 +7,16 @@ namespace GoCardless.Api.Payouts
 {
     public class PayoutsClient : IPayoutsClient
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClient _apiClient;
 
-        public PayoutsClient(IApiClient apiClient)
+        public PayoutsClient(ApiClientConfiguration configuration)
         {
-            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
-        }
-
-        public PayoutsClient(ApiClientConfiguration apiClientConfiguration)
-        {
-            if (apiClientConfiguration == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(apiClientConfiguration));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            _apiClient = new ApiClient(apiClientConfiguration);
+            _apiClient = new ApiClient(configuration);
         }
 
         public async Task<Response<Payout>> ForIdAsync(string id)
@@ -31,17 +26,21 @@ namespace GoCardless.Api.Payouts
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.GetAsync<Response<Payout>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request.AppendPathSegment($"payouts/{id}");
+                return request
+                    .AppendPathSegment($"payouts/{id}")
+                    .GetJsonAsync<Response<Payout>>();
             });
         }
 
         public async Task<PagedResponse<Payout>> GetPageAsync()
         {
-            return await _apiClient.GetAsync<PagedResponse<Payout>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request.AppendPathSegment("payouts");
+                return request
+                    .AppendPathSegment("payouts")
+                    .GetJsonAsync<PagedResponse<Payout>>();
             });
         }
 
@@ -52,11 +51,12 @@ namespace GoCardless.Api.Payouts
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.GetAsync<PagedResponse<Payout>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request
+                return request
                     .AppendPathSegment("payouts")
-                    .SetQueryParams(options.ToReadOnlyDictionary());
+                    .SetQueryParams(options.ToReadOnlyDictionary())
+                    .GetJsonAsync<PagedResponse<Payout>>();
             });
         }
 

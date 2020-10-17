@@ -6,12 +6,7 @@ namespace GoCardless.Api.Tests.Unit.Core.Http
 {
     public class ApiClientConfigurationTests
     {
-        private readonly string _accessToken;
-
-        public ApiClientConfigurationTests()
-        {
-            _accessToken = "accesstoken";
-        }
+        private readonly string _accessToken = "accesstoken";
 
         [TestCase(null)]
         [TestCase("")]

@@ -7,31 +7,17 @@ namespace GoCardless.Api.Tests.Unit
     public class GoCardlessClientTests
     {
         [Test]
-        public void ApiClientIsNullThrows()
+        public void ConfigurationIsNullThrows()
         {
             // given
-            IApiClient apiClient = null;
+            ApiClientConfiguration configuration = null;
 
             // when
-            TestDelegate test = () => new GoCardlessClient(apiClient);
+            TestDelegate test = () => new GoCardlessClient(configuration);
 
             // then
             var ex = Assert.Throws<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClient)));
-        }
-
-        [Test]
-        public void ApiClientConfigurationIsNullThrows()
-        {
-            // given
-            ApiClientConfiguration apiClientConfiguration = null;
-
-            // when
-            TestDelegate test = () => new GoCardlessClient(apiClientConfiguration);
-
-            // then
-            var ex = Assert.Throws<ArgumentNullException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(apiClientConfiguration)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(configuration)));
         }
     }
 }

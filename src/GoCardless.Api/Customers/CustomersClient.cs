@@ -7,21 +7,16 @@ namespace GoCardless.Api.Customers
 {
     public class CustomersClient : ICustomersClient
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClient _apiClient;
 
-        public CustomersClient(IApiClient apiClient)
+        public CustomersClient(ApiClientConfiguration configuration)
         {
-            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
-        }
-
-        public CustomersClient(ApiClientConfiguration apiClientConfiguration)
-        {
-            if (apiClientConfiguration == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(apiClientConfiguration));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            _apiClient = new ApiClient(apiClientConfiguration);
+            _apiClient = new ApiClient(configuration);
         }
 
         public async Task<Response<Customer>> CreateAsync(CreateCustomerOptions options)
@@ -31,14 +26,15 @@ namespace GoCardless.Api.Customers
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.PostAsync<Response<Customer>>(
+            return await _apiClient.IdempotentRequestAsync(
+                options.IdempotencyKey,
                 request =>
                 {
-                    request
+                    return request
                         .AppendPathSegment("customers")
-                        .WithHeader("Idempotency-Key", options.IdempotencyKey);
-                },
-                new { customers = options });
+                        .PostJsonAsync(new { customers = options })
+                        .ReceiveJson<Response<Customer>>();
+                });
         }
 
         public async Task<Response<Customer>> ForIdAsync(string id)
@@ -48,17 +44,21 @@ namespace GoCardless.Api.Customers
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.GetAsync<Response<Customer>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request.AppendPathSegment($"customers/{id}");
+                return request
+                    .AppendPathSegment($"customers/{id}")
+                    .GetJsonAsync<Response<Customer>>();
             });
         }
 
         public async Task<PagedResponse<Customer>> GetPageAsync()
         {
-            return await _apiClient.GetAsync<PagedResponse<Customer>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request.AppendPathSegment("customers");
+                return request
+                    .AppendPathSegment("customers")
+                    .GetJsonAsync<PagedResponse<Customer>>();
             });
         }
 
@@ -69,11 +69,12 @@ namespace GoCardless.Api.Customers
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.GetAsync<PagedResponse<Customer>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request
+                return request
                     .AppendPathSegment("customers")
-                    .SetQueryParams(options.ToReadOnlyDictionary());
+                    .SetQueryParams(options.ToReadOnlyDictionary())
+                    .GetJsonAsync<PagedResponse<Customer>>();
             });
         }
 
@@ -94,12 +95,13 @@ namespace GoCardless.Api.Customers
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.PutAsync<Response<Customer>>(
-                request =>
-                {
-                    request.AppendPathSegment($"customers/{options.Id}");
-                },
-                new { customers = options });
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"customers/{options.Id}")
+                    .PutJsonAsync(new { customers = options })
+                    .ReceiveJson<Response<Customer>>();
+            });
         }
     }
 }

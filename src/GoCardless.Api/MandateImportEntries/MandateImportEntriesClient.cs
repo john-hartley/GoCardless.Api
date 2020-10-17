@@ -7,21 +7,16 @@ namespace GoCardless.Api.MandateImportEntries
 {
     public class MandateImportEntriesClient : IMandateImportEntriesClient
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClient _apiClient;
 
-        public MandateImportEntriesClient(IApiClient apiClient)
+        public MandateImportEntriesClient(ApiClientConfiguration configuration)
         {
-            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
-        }
-
-        public MandateImportEntriesClient(ApiClientConfiguration apiClientConfiguration)
-        {
-            if (apiClientConfiguration == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(apiClientConfiguration));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            _apiClient = new ApiClient(apiClientConfiguration);
+            _apiClient = new ApiClient(configuration);
         }
 
         public async Task<Response<MandateImportEntry>> AddAsync(AddMandateImportEntryOptions options)
@@ -31,12 +26,14 @@ namespace GoCardless.Api.MandateImportEntries
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.PostAsync<Response<MandateImportEntry>>(
+            return await _apiClient.RequestAsync(
                 request =>
                 {
-                    request.AppendPathSegment("mandate_import_entries");
-                },
-                new { mandate_import_entries = options });
+                    return request
+                        .AppendPathSegment("mandate_import_entries")
+                        .PostJsonAsync(new { mandate_import_entries = options })
+                        .ReceiveJson<Response<MandateImportEntry>>();
+                });
         }
 
         public async Task<PagedResponse<MandateImportEntry>> GetPageAsync(GetMandateImportEntriesOptions options)
@@ -51,11 +48,12 @@ namespace GoCardless.Api.MandateImportEntries
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.MandateImport));
             }
 
-            return await _apiClient.GetAsync<PagedResponse<MandateImportEntry>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request
+                return request
                     .AppendPathSegment("mandate_import_entries")
-                    .SetQueryParams(options.ToReadOnlyDictionary());
+                    .SetQueryParams(options.ToReadOnlyDictionary())
+                    .GetJsonAsync<PagedResponse<MandateImportEntry>>();
             });
         }
 

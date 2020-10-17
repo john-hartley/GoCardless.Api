@@ -7,21 +7,16 @@ namespace GoCardless.Api.Events
 {
     public class EventsClient : IEventsClient
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClient _apiClient;
 
-        public EventsClient(IApiClient apiClient)
+        public EventsClient(ApiClientConfiguration configuration)
         {
-            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
-        }
-
-        public EventsClient(ApiClientConfiguration apiClientConfiguration)
-        {
-            if (apiClientConfiguration == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(apiClientConfiguration));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            _apiClient = new ApiClient(apiClientConfiguration);
+            _apiClient = new ApiClient(configuration);
         }
 
         public async Task<Response<Event>> ForIdAsync(string id)
@@ -31,17 +26,21 @@ namespace GoCardless.Api.Events
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.GetAsync<Response<Event>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request.AppendPathSegment($"events/{id}");
+                return request
+                    .AppendPathSegment($"events/{id}")
+                    .GetJsonAsync<Response<Event>>();
             });
         }
 
         public async Task<PagedResponse<Event>> GetPageAsync()
         {
-            return await _apiClient.GetAsync<PagedResponse<Event>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request.AppendPathSegment("events");
+                return request
+                    .AppendPathSegment("events")
+                    .GetJsonAsync<PagedResponse<Event>>();
             });
         }
 
@@ -52,11 +51,12 @@ namespace GoCardless.Api.Events
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.GetAsync<PagedResponse<Event>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request
+                return request
                     .AppendPathSegment("events")
-                    .SetQueryParams(options.ToReadOnlyDictionary());
+                    .SetQueryParams(options.ToReadOnlyDictionary())
+                    .GetJsonAsync<PagedResponse<Event>>();
             });
         }
 

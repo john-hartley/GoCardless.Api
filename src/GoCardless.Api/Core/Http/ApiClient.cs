@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace GoCardless.Api.Core.Http
 {
-    public class ApiClient : IApiClient
+    internal class ApiClient
     {
         private readonly NewtonsoftJsonSerializer _newtonsoftJsonSerializer;
-        private readonly ApiClientConfiguration _apiClientConfiguration;
+        private readonly ApiClientConfiguration _configuration;
 
-        public ApiClient(ApiClientConfiguration apiClientConfiguration)
+        internal ApiClient(ApiClientConfiguration configuration)
         {
             var jsonSerializerSettings = new JsonSerializerSettings
             {
@@ -22,60 +22,54 @@ namespace GoCardless.Api.Core.Http
                 {
                     NamingStrategy = new SnakeCaseNamingStrategy()
                 },
-                Formatting = Formatting.Indented,
                 NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
             };
 
             _newtonsoftJsonSerializer = new NewtonsoftJsonSerializer(jsonSerializerSettings);
-            _apiClientConfiguration = apiClientConfiguration;
+            _configuration = configuration;
         }
 
-        public async Task<TResponse> GetAsync<TResponse>(Action<IFlurlRequest> configure)
+        public async Task<TResponse> RequestAsync<TResponse>(
+            Func<IFlurlRequest, Task<TResponse>> action)
+        {
+            var request = Request();
+            return await SendAsync(request, action).ConfigureAwait(false);
+        }
+
+        public async Task<TResponse> IdempotentRequestAsync<TResponse>(
+            string idempotencyKey,
+            Func<IFlurlRequest, Task<TResponse>> action)
+        {
+            var request = IdempotentRequest(idempotencyKey);
+            return await SendAsync(request, action).ConfigureAwait(false);
+        }
+
+        private async Task<TResponse> SendAsync<TResponse>(
+            IFlurlRequest request, 
+            Func<IFlurlRequest, Task<TResponse>> action)
         {
             try
             {
-                var request = BaseRequest();
-                configure(request);
-
-                return await request
-                    .GetJsonAsync<TResponse>()
-                    .ConfigureAwait(false);
+                return await action(request).ConfigureAwait(false);
             }
             catch (FlurlHttpException ex)
             {
-                throw await ex.CreateApiExceptionAsync();
-            }
-        }
-
-        public async Task<TResponse> PostAsync<TResponse>(
-            Action<IFlurlRequest> configure,
-            object envelope = null)
-        {
-            try
-            {
-                var request = BaseRequest();
-                configure(request);
-
-                return await request
-                    .PostJsonAsync(envelope ?? new { })
-                    .ReceiveJson<TResponse>();
-            }
-            catch (FlurlHttpException ex)
-            {
-                var apiException = await ex.CreateApiExceptionAsync();
+                var apiException = await ex.CreateApiExceptionAsync().ConfigureAwait(false);
                 if (apiException is ConflictingResourceException conflictingResourceException
-                    && !_apiClientConfiguration.ThrowOnConflict)
+                    && !_configuration.ThrowOnConflict)
                 {
                     var uri = ex.Call.Request.RequestUri;
                     var conflictingResourceId = conflictingResourceException.ResourceId;
 
-                    if (!string.IsNullOrWhiteSpace(conflictingResourceId) 
+                    if (!string.IsNullOrWhiteSpace(conflictingResourceId)
                         && uri.Segments.Length >= 2)
                     {
-                        return await GetAsync<TResponse>(request =>
+                        return await RequestAsync(fetchOnConflictRequest =>
                         {
-                            request.AppendPathSegments(uri.Segments[1], conflictingResourceId);
-                        });
+                            return fetchOnConflictRequest
+                                .AppendPathSegments(uri.Segments[1], conflictingResourceId)
+                                .GetJsonAsync<TResponse>();
+                        }).ConfigureAwait(false);
                     }
                 }
 
@@ -83,29 +77,15 @@ namespace GoCardless.Api.Core.Http
             }
         }
 
-        public async Task<TResponse> PutAsync<TResponse>(
-            Action<IFlurlRequest> configure,
-            object envelope)
+        private IFlurlRequest IdempotentRequest(string idempotencyKey)
         {
-            try
-            {
-                var request = BaseRequest();
-                configure(request);
-
-                return await request
-                    .PutJsonAsync(envelope)
-                    .ReceiveJson<TResponse>();
-            }
-            catch (FlurlHttpException ex)
-            {
-                throw await ex.CreateApiExceptionAsync();
-            }
+            return Request().WithHeader("Idempotency-Key", idempotencyKey);
         }
 
-        private IFlurlRequest BaseRequest()
+        private IFlurlRequest Request()
         {
-            return _apiClientConfiguration.BaseUri
-                .WithHeaders(_apiClientConfiguration.Headers)
+            return _configuration.BaseUri
+                .WithHeaders(_configuration.Headers)
                 .ConfigureRequest(x => x.JsonSerializer = _newtonsoftJsonSerializer);
         }
     }

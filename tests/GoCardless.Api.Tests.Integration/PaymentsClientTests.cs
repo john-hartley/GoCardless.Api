@@ -29,7 +29,7 @@ namespace GoCardless.Api.Tests.Integration
         [SetUp]
         public void Setup()
         {
-            _subject = new PaymentsClient(_apiClient);
+            _subject = new PaymentsClient(_configuration);
         }
 
         [Test]
@@ -90,12 +90,11 @@ namespace GoCardless.Api.Tests.Integration
         public async Task CreatesAndCancelsPaymentForMerchant()
         {
             var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
-            var apiClientConfiguration= ApiClientConfiguration.ForSandbox(accessToken, false);
-            var apiClient = new ApiClient(apiClientConfiguration);
-            var resourceFactory = new ResourceFactory(apiClient);
+            var configuration = ApiClientConfiguration.ForSandbox(accessToken, false);
+            var resourceFactory = new ResourceFactory(configuration);
 
             var creditor = await resourceFactory.Creditor();
-            var mandatesClient = new MandatesClient(apiClient);
+            var mandatesClient = new MandatesClient(configuration);
             var mandate = (await mandatesClient.GetPageAsync()).Items.First();
 
             // given
@@ -116,7 +115,7 @@ namespace GoCardless.Api.Tests.Integration
             };
 
             // when
-            _subject = new PaymentsClient(apiClient);
+            _subject = new PaymentsClient(configuration);
             var createResult = await _subject.CreateAsync(createOptions);
 
             var cancelOptions = new CancelPaymentOptions

@@ -7,21 +7,16 @@ namespace GoCardless.Api.Refunds
 {
     public class RefundsClient : IRefundsClient
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClient _apiClient;
 
-        public RefundsClient(IApiClient apiClient)
+        public RefundsClient(ApiClientConfiguration configuration)
         {
-            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
-        }
-
-        public RefundsClient(ApiClientConfiguration apiClientConfiguration)
-        {
-            if (apiClientConfiguration == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(apiClientConfiguration));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            _apiClient = new ApiClient(apiClientConfiguration);
+            _apiClient = new ApiClient(configuration);
         }
 
         public async Task<Response<Refund>> CreateAsync(CreateRefundOptions options)
@@ -31,14 +26,15 @@ namespace GoCardless.Api.Refunds
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.PostAsync<Response<Refund>>(
+            return await _apiClient.IdempotentRequestAsync(
+                options.IdempotencyKey,
                 request =>
                 {
-                    request
+                    return request
                         .AppendPathSegment("refunds")
-                        .WithHeader("Idempotency-Key", options.IdempotencyKey);
-                },
-                new { refunds = options });
+                        .PostJsonAsync(new { refunds = options })
+                        .ReceiveJson<Response<Refund>>();
+                });
         }
 
         public async Task<Response<Refund>> ForIdAsync(string id)
@@ -48,17 +44,21 @@ namespace GoCardless.Api.Refunds
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.GetAsync<Response<Refund>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request.AppendPathSegment($"refunds/{id}");
+                return request
+                    .AppendPathSegment($"refunds/{id}")
+                    .GetJsonAsync<Response<Refund>>();
             });
         }
 
         public async Task<PagedResponse<Refund>> GetPageAsync()
         {
-            return await _apiClient.GetAsync<PagedResponse<Refund>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request.AppendPathSegment("refunds");
+                return request
+                    .AppendPathSegment("refunds")
+                    .GetJsonAsync<PagedResponse<Refund>>();
             });
         }
 
@@ -69,11 +69,12 @@ namespace GoCardless.Api.Refunds
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.GetAsync<PagedResponse<Refund>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request
+                return request
                     .AppendPathSegment("refunds")
-                    .SetQueryParams(options.ToReadOnlyDictionary());
+                    .SetQueryParams(options.ToReadOnlyDictionary())
+                    .GetJsonAsync<PagedResponse<Refund>>();
             });
         }
 
@@ -94,12 +95,13 @@ namespace GoCardless.Api.Refunds
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.PutAsync<Response<Refund>>(
-                request =>
-                {
-                    request.AppendPathSegment($"refunds/{options.Id}");
-                },
-                new { refunds = options });
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"refunds/{options.Id}")
+                    .PutJsonAsync(new { refunds = options })
+                    .ReceiveJson<Response<Refund>>();
+            });
         }
     }
 }

@@ -14,7 +14,7 @@ namespace GoCardless.Api.Tests.Integration
         [SetUp]
         public void Setup()
         {
-            _subject = new MandateImportsClient(_apiClient);
+            _subject = new MandateImportsClient(_configuration);
         }
 
         [Test]

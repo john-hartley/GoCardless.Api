@@ -14,8 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Flurl.Http;
-using System.Security.Cryptography.X509Certificates;
 
 namespace GoCardless.Api.Tests.Integration.Core.Http
 {
@@ -62,7 +60,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
                 SwedishIdentityNumber = "5302256218",
             };
 
-            var subject = new CustomersClient(_apiClient);
+            var subject = new CustomersClient(_configuration);
 
             // when
             AsyncTestDelegate test = () => subject.CreateAsync(options);
@@ -97,7 +95,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
                 TotalAmountConfirmation = 100
             };
 
-            var subject = new RefundsClient(_apiClient);
+            var subject = new RefundsClient(_configuration);
 
             // when
             AsyncTestDelegate test = () => subject.CreateAsync(options);
@@ -137,8 +135,8 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
                 }
             };
 
-            var apiClient = new ApiClient(ApiClientConfiguration.ForSandbox("invalid token", false));
-            var subject = new SubscriptionsClient(apiClient);
+            var configuration = ApiClientConfiguration.ForSandbox("invalid token", false);
+            var subject = new SubscriptionsClient(configuration);
 
             // when
             AsyncTestDelegate test = () => subject.CreateAsync(options);
@@ -174,8 +172,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
             };
 
             var configuration = ApiClientConfiguration.ForSandbox(_accessToken, throwOnConflict: true);
-            var subject = new ApiClient(configuration);
-            var paymentsClient = new PaymentsClient(subject);
+            var paymentsClient = new PaymentsClient(configuration);
 
             // when
             var result = await paymentsClient.CreateAsync(options);
@@ -208,8 +205,7 @@ namespace GoCardless.Api.Tests.Integration.Core.Http
             };
 
             var configuration = ApiClientConfiguration.ForSandbox(_accessToken, throwOnConflict: false);
-            var subject = new ApiClient(configuration);
-            var paymentsClient = new PaymentsClient(subject);
+            var paymentsClient = new PaymentsClient(configuration);
 
             // when
             var result = await paymentsClient.CreateAsync(options);

@@ -7,21 +7,16 @@ namespace GoCardless.Api.MandatePdfs
 {
     public class MandatePdfsClient : IMandatePdfsClient
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClient _apiClient;
 
-        public MandatePdfsClient(IApiClient apiClient)
+        public MandatePdfsClient(ApiClientConfiguration configuration)
         {
-            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
-        }
-
-        public MandatePdfsClient(ApiClientConfiguration apiClientConfiguration)
-        {
-            if (apiClientConfiguration == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(apiClientConfiguration));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            _apiClient = new ApiClient(apiClientConfiguration);
+            _apiClient = new ApiClient(configuration);
         }
 
         public async Task<Response<MandatePdf>> CreateAsync(CreateMandatePdfOptions options)
@@ -31,16 +26,18 @@ namespace GoCardless.Api.MandatePdfs
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.PostAsync<Response<MandatePdf>>(
-                request =>
+            return await _apiClient.RequestAsync(request =>
+            {
+                if (!string.IsNullOrWhiteSpace(options.Language))
                 {
-                    request.AppendPathSegment("mandate_pdfs");
-                    if (!string.IsNullOrWhiteSpace(options.Language))
-                    {
-                        request.WithHeader("Accept-Language", options.Language);
-                    }
-                },
-                new { mandate_pdfs = options });
+                    request.WithHeader("Accept-Language", options.Language);
+                }
+
+                return request
+                    .AppendPathSegment("mandate_pdfs")
+                    .PostJsonAsync(new { mandate_pdfs = options })
+                    .ReceiveJson<Response<MandatePdf>>();
+            });
         }
     }
 }

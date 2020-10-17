@@ -7,21 +7,16 @@ namespace GoCardless.Api.PayoutItems
 {
     public class PayoutItemsClient : IPayoutItemsClient
     {
-        private readonly IApiClient _apiClient;
+        private readonly ApiClient _apiClient;
 
-        public PayoutItemsClient(IApiClient apiClient)
+        public PayoutItemsClient(ApiClientConfiguration configuration)
         {
-            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
-        }
-
-        public PayoutItemsClient(ApiClientConfiguration apiClientConfiguration)
-        {
-            if (apiClientConfiguration == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(apiClientConfiguration));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            _apiClient = new ApiClient(apiClientConfiguration);
+            _apiClient = new ApiClient(configuration);
         }
 
         public async Task<PagedResponse<PayoutItem>> GetPageAsync(GetPayoutItemsOptions options)
@@ -36,11 +31,12 @@ namespace GoCardless.Api.PayoutItems
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Payout));
             }
 
-            return await _apiClient.GetAsync<PagedResponse<PayoutItem>>(request =>
+            return await _apiClient.RequestAsync(request =>
             {
-                request
+                return request
                     .AppendPathSegment("payout_items")
-                    .SetQueryParams(options.ToReadOnlyDictionary());
+                    .SetQueryParams(options.ToReadOnlyDictionary())
+                    .GetJsonAsync<PagedResponse<PayoutItem>>();
             });
         }
 

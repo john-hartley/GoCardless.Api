@@ -27,7 +27,7 @@ namespace GoCardless.Api.Tests.Integration
         [SetUp]
         public void Setup()
         {
-            _subject = new SubscriptionsClient(_apiClient);
+            _subject = new SubscriptionsClient(_configuration);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace GoCardless.Api.Tests.Integration
                 StartDate = DateTime.Now.AddMonths(1)
             };
 
-            _subject = new SubscriptionsClient(_apiClient);
+            _subject = new SubscriptionsClient(_configuration);
 
             // when
             var result = await _subject.CreateAsync(options);
@@ -134,9 +134,8 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
-            var apiClientConfiguration= ApiClientConfiguration.ForSandbox(accessToken, false);
-            var apiClient = new ApiClient(apiClientConfiguration);
-            var mandatesClient = new MandatesClient(apiClient);
+            var configuration = ApiClientConfiguration.ForSandbox(accessToken, false);
+            var mandatesClient = new MandatesClient(configuration);
             var mandate = (await mandatesClient.GetPageAsync()).Items.First();
 
             var options = new CreateSubscriptionOptions
@@ -161,7 +160,7 @@ namespace GoCardless.Api.Tests.Integration
                 StartDate = DateTime.Now.AddMonths(1)
             };
 
-            _subject = new SubscriptionsClient(apiClient);
+            _subject = new SubscriptionsClient(configuration);
 
             // when
             var result = await _subject.CreateAsync(options);
@@ -337,11 +336,10 @@ namespace GoCardless.Api.Tests.Integration
         {
             // given
             var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
-            var apiClientConfiguration = ApiClientConfiguration.ForSandbox(accessToken, false);
-            var resourceFactory = new ResourceFactory(new ApiClient(apiClientConfiguration));
+            var configuration = ApiClientConfiguration.ForSandbox(accessToken, false);
+            var resourceFactory = new ResourceFactory(configuration);
 
-            var apiClient = new ApiClient(apiClientConfiguration);
-            var mandatesClient = new MandatesClient(apiClient);
+            var mandatesClient = new MandatesClient(configuration);
             var mandate = (await mandatesClient.GetPageAsync()).Items.First();
             var subscription = await resourceFactory.CreateSubscriptionFor(mandate, paymentReference: null);
 
@@ -359,7 +357,7 @@ namespace GoCardless.Api.Tests.Integration
                 Name = "Updated subscription name"
             };
 
-            _subject = new SubscriptionsClient(apiClient);
+            _subject = new SubscriptionsClient(configuration);
 
             // when
             var result = await _subject.UpdateAsync(options);

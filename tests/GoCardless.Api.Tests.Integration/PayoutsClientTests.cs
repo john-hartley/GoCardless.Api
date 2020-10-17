@@ -14,7 +14,7 @@ namespace GoCardless.Api.Tests.Integration
         [SetUp]
         public void Setup()
         {
-            _subject = new PayoutsClient(_apiClient);
+            _subject = new PayoutsClient(_configuration);
         }
 
         [Test]

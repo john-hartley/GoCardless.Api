@@ -15,7 +15,7 @@ namespace GoCardless.Api.Tests.Integration
         [SetUp]
         public void Setup()
         {
-            _subject = new MandateImportEntriesClient(_apiClient);
+            _subject = new MandateImportEntriesClient(_configuration);
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace GoCardless.Api.Tests.Integration
             var mandateImport = await _resourceFactory.CreateMandateImport();
             var mandateImportEntry = await _resourceFactory.CreateMandateImportEntryFor(mandateImport, "first-record");
 
-            var mandateImportsClient = new MandateImportsClient(_apiClient);
+            var mandateImportsClient = new MandateImportsClient(_configuration);
             await mandateImportsClient.SubmitAsync(mandateImport.Id);
 
             var options = new GetMandateImportEntriesOptions

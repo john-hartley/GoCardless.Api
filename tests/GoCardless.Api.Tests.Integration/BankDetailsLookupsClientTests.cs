@@ -11,7 +11,7 @@ namespace GoCardless.Api.Tests.Integration
         public async Task LooksupBankDetails()
         {
             // given
-            var subject = new BankDetailsLookupsClient(_apiClient);
+            var subject = new BankDetailsLookupsClient(_configuration);
 
             var options = new BankDetailsLookupOptions
             {
