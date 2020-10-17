@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Converters;
 using System;
 
-namespace GoCardless.Api.Serialisation
+namespace GoCardless.Api.Http.Serialisation
 {
     public class IsoDateJsonConverter : IsoDateTimeConverter
     {

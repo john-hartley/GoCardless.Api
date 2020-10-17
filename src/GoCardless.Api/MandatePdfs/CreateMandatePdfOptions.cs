@@ -1,4 +1,4 @@
-﻿using GoCardless.Api.Serialisation;
+﻿using GoCardless.Api.Http.Serialisation;
 using Newtonsoft.Json;
 using System;
 

@@ -1,5 +1,5 @@
 ﻿using GoCardless.Api.Http;
-using GoCardless.Api.Serialisation;
+using GoCardless.Api.Http.Serialisation;
 using System;
 
 namespace GoCardless.Api.Payouts
