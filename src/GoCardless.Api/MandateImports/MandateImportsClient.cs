@@ -1,5 +1,5 @@
 ﻿using Flurl.Http;
-using GoCardless.Api.Core.Http;
+using GoCardless.Api.Http;
 using System;
 using System.Threading.Tasks;
 

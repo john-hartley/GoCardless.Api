@@ -1,4 +1,4 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardless.Api.Http;
 using System.Threading.Tasks;
 
 namespace GoCardless.Api.Creditors

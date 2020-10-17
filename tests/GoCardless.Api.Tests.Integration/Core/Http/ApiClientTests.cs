@@ -1,7 +1,7 @@
-﻿using GoCardless.Api.Core.Exceptions;
-using GoCardless.Api.Creditors;
+﻿using GoCardless.Api.Creditors;
 using GoCardless.Api.CustomerBankAccounts;
 using GoCardless.Api.Customers;
+using GoCardless.Api.Exceptions;
 using GoCardless.Api.Mandates;
 using GoCardless.Api.Payments;
 using GoCardless.Api.Refunds;
