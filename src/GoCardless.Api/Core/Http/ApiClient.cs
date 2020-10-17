@@ -36,7 +36,7 @@ namespace GoCardless.Api.Core.Http
             return await SendAsync(request, action).ConfigureAwait(false);
         }
 
-        public async Task<TResponse> IdempotentAsync<TResponse>(
+        public async Task<TResponse> IdempotentRequestAsync<TResponse>(
             string idempotencyKey,
             Func<IFlurlRequest, Task<TResponse>> action)
         {

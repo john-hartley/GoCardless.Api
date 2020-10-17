@@ -31,7 +31,7 @@ namespace GoCardless.Api.CreditorBankAccounts
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.IdempotentAsync(
+            return await _apiClient.IdempotentRequestAsync(
                 options.IdempotencyKey,
                 request =>
                 {
