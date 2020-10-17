@@ -8,6 +8,5 @@ namespace GoCardless.Api.Core.Http
     {
         Task<TResponse> RequestAsync<TResponse>(Func<IFlurlRequest, Task<TResponse>> action);
         Task<TResponse> IdempotentRequestAsync<TResponse>(string idempotencyKey, Func<IFlurlRequest, Task<TResponse>> action);
-        Task<TResponse> PutAsync<TResponse>(Action<IFlurlRequest> configure, object envelope);
     }
 }

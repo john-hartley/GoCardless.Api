@@ -30,7 +30,8 @@ namespace GoCardless.Api.Core.Http
             _apiClientConfiguration = apiClientConfiguration;
         }
 
-        public async Task<TResponse> RequestAsync<TResponse>(Func<IFlurlRequest, Task<TResponse>> action)
+        public async Task<TResponse> RequestAsync<TResponse>(
+            Func<IFlurlRequest, Task<TResponse>> action)
         {
             var request = Request();
             return await SendAsync(request, action).ConfigureAwait(false);
@@ -44,26 +45,9 @@ namespace GoCardless.Api.Core.Http
             return await SendAsync(request, action).ConfigureAwait(false);
         }
 
-        public async Task<TResponse> PutAsync<TResponse>(
-            Action<IFlurlRequest> configure,
-            object envelope)
-        {
-            try
-            {
-                var request = Request();
-                configure(request);
-
-                return await request
-                    .PutJsonAsync(envelope)
-                    .ReceiveJson<TResponse>();
-            }
-            catch (FlurlHttpException ex)
-            {
-                throw await ex.CreateApiExceptionAsync();
-            }
-        }
-
-        private async Task<TResponse> SendAsync<TResponse>(IFlurlRequest request, Func<IFlurlRequest, Task<TResponse>> action)
+        private async Task<TResponse> SendAsync<TResponse>(
+            IFlurlRequest request, 
+            Func<IFlurlRequest, Task<TResponse>> action)
         {
             try
             {

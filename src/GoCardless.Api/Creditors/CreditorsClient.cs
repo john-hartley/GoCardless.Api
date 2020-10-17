@@ -82,12 +82,13 @@ namespace GoCardless.Api.Creditors
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.PutAsync<Response<Creditor>>(
-                request =>
-                {
-                    request.AppendPathSegment($"creditors/{options.Id}");
-                },
-                new { creditors = options });
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"creditors/{options.Id}")
+                    .PutJsonAsync(new { creditors = options })
+                    .ReceiveJson<Response<Creditor>>();
+            });
         }
     }
 }

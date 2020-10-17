@@ -100,12 +100,13 @@ namespace GoCardless.Api.Customers
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.PutAsync<Response<Customer>>(
-                request =>
-                {
-                    request.AppendPathSegment($"customers/{options.Id}");
-                },
-                new { customers = options });
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"customers/{options.Id}")
+                    .PutJsonAsync(new { customers = options })
+                    .ReceiveJson<Response<Customer>>();
+            });
         }
     }
 }

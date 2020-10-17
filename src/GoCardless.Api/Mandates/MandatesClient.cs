@@ -142,12 +142,13 @@ namespace GoCardless.Api.Mandates
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.PutAsync<Response<Mandate>>(
-                request =>
-                {
-                    request.AppendPathSegment($"mandates/{options.Id}");
-                },
-                new { mandates = options });
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"mandates/{options.Id}")
+                    .PutJsonAsync(new { mandates = options })
+                    .ReceiveJson<Response<Mandate>>();
+            });
         }
     }
 }
