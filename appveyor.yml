@@ -37,7 +37,7 @@ after_build:
 
 artifacts:
   - path: 'artifacts\*nupkg'
-  - path: artifacts\GoCardless.Api-$(env:ActualVersion).zip
+  - path: artifacts\GoCardless.Api-$(ActualVersion).zip
     name: source_code
     type: zip
 
