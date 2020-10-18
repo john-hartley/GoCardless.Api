@@ -17,8 +17,9 @@ init:
 - ps: $env:ActualVersion = ($env:APPVEYOR_BUILD_VERSION -split '(-)', 2)[0]
 
 before_build:
-- ps: Write-Host ($env:APPVEYOR_BUILD_VERSION -split '(-)', 2)[0]
-- ps: Write-Host "Actual version: $env:ActualVersion"
+- ps: |
+    Write-Host ($env:APPVEYOR_BUILD_VERSION -split '(-)', 2)[0]
+    Write-Host "Actual version: $env:ActualVersion"
 - dotnet restore
 
 build_script:
