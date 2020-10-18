@@ -24,7 +24,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             // given
             var mandateImport = await _resourceFactory.CreateMandateImport();
 
-            var options = new AddMandateImportEntryOptions
+            var options = new CreateMandateImportEntryOptions
             {
                 BankAccount = new BankAccount
                 {
@@ -59,7 +59,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             };
 
             // when
-            var result = await _subject.AddAsync(options);
+            var result = await _subject.CreateAsync(options);
             var actual = result.Item;
 
             // then

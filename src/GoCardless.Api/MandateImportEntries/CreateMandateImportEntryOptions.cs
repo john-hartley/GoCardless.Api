@@ -1,6 +1,6 @@
 ﻿namespace GoCardlessApi.MandateImportEntries
 {
-    public class AddMandateImportEntryOptions
+    public class CreateMandateImportEntryOptions
     {
         public Amendment Amendment { get; set; }
         public BankAccount BankAccount { get; set; }
