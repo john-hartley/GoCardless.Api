@@ -8,7 +8,7 @@
 		<PackageProjectUrl>https://github.com/john-hartley/GoCardless.Api</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/john-hartley/GoCardless.Api</RepositoryUrl>
 		<VersionPrefix>3.0.0</VersionPrefix>
-		<PackageVersion>3.0.0</PackageVersion>
+		<VersionSuffix>pre</VersionSuffix>
 	</PropertyGroup>
 
 	<ItemGroup>
