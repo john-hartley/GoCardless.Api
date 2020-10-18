@@ -25,7 +25,7 @@ after_build:
     Push-Location .\artifacts
     
     $path = Resolve-Path "..\src\GoCardless.Api\bin\Release\netstandard2.0"
-    $assemblyPath = [System.IO.Path]::Combine($path, "GoCardless.Api.dll")
+    $assemblyPath = Join-Path $path "GoCardless.Api.dll"
     
     $env:PRODUCT_VERSION = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($assemblyPath).ProductVersion
     $file = "GoCardless.Api-${env:PRODUCT_VERSION}.zip"
