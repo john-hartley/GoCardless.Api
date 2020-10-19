@@ -17,7 +17,7 @@ To stay up-to-date with the API, please read the [official documentation](https:
 
 ## Features
 
-- Support for all endpoints, including those which are restricted (thanks to the GoCardless support team for enabling this for me)
+- Support for all major endpoints, including those which are restricted (thanks to the GoCardless support team for enabling this for me)
 - Support for partner integrations
 - `async` all the way down
 
@@ -26,6 +26,8 @@ To stay up-to-date with the API, please read the [official documentation](https:
 This project respects [Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.html) for all public releases that are pushed to [nuget.org](https://nuget.org).
 
 ## Getting Started
+
+If you're upgrading from `2.x.x` to `3.x.x`, please read the [migration guide](https://github.com/john-hartley/GoCardless.Api/wiki/Migration-Guide:-Upgrading-from-2.x.x-to-3.x.x).
 
 ### Installation
 
@@ -59,7 +61,7 @@ Each resource is scoped to its own namespace - notice we've imported `GoCardless
 If you attempt to create a resource that already exists, either from retrying a request with an idempotency key (see below), or trying to create a bank account that already exists, the API will return a `409 Conflict` response. `throwOnConflict` determines what the client will do when this happens:
 
 - When set to `false`, the client will perform a GET request to fetch the conflicting resource
-- When set to `true`, the client will fail fast and throw a `ConflictingResourceException`, and the exception's `ResourceId` property will hold the id of the conflicting resource
+- When set to `true`, the client will fail fast by throwing a `ConflictingResourceException`, and the exception's `ResourceId` property will hold the id of the conflicting resource
 
 ### Making Requests
 
@@ -100,14 +102,14 @@ Retry logic is currently not built into the client. There are no plans to add th
 ### Paging
 
 GoCardless' API uses what's called cursor-pagination. From a high level, all you need to know is that "before" means records that are newer, and "after" means records that are older. This sounds counter-intuitive, because results returned from the API are in reverse-chronological order, meaning the newest results are returned first.
-    
+
 For each type of resource that supports paging, there are a few different ways in which you can access paged data.
 
 | Method | Description |
 |:--------:|-----------|
-| GetPageAsync() | Returns a single page of the most recently added items. |
-| GetPageAsync(GetXOptions options) | Where `X` is a collection of resources (e.g. `Customers`, `Subscriptions`, etc.), returns a single page of items, allowing you to provide additional filtering. The filtering capabilities differ per endpoint. Please refer to the [official documentation](https://developer.gocardless.com/api-reference/) for information on the parameters.
-| PageFrom(GetXOptions options) | Provides a simple abstraction that allows you to get all pages in either direction. |
+| `GetPageAsync()` | Returns a single page of the most recently added items. |
+| `GetPageAsync(GetXOptions options)` | Where `X` is a collection of resources (e.g. `Customers`, `Subscriptions`, etc.), returns a single page of items, allowing you to provide additional filtering. The filtering capabilities differ per endpoint. Please refer to the [official documentation](https://developer.gocardless.com/api-reference/) for information on the parameters.
+| `PageFrom(GetXOptions options)` | Provides a simple abstraction that allows you to get all pages in either direction. |
 
 As an example of `PageFrom()`, let's say you wanted to get all payments for a given subscription. You can do that like so:
 
@@ -158,12 +160,14 @@ The GoCardless API can generate several different kinds of error, and so there a
 
 These correspond with the [4 error types](https://developer.gocardless.com/api-reference/#api-usage-errors) defined by the API. As explained above, there is also `ConflictingResourceException` which is defined as a convenience.
 
-Each exception type exposes a number of properties, matching with those in the official documentation, but I've also added a `RawResponse` property to help diagnose any edge cases.
+Each exception type exposes a number of properties, matching with those in the official documentation, but there is also a `RawResponse` property to help diagnose any edge cases.
+
+As each exception type exposes the same properties, you have the choice of catching specific exceptions, or simply catching `ApiException`. The reason the different exception types exist is to make different problems stand out clearly when examining exceptions in application monitoring software such as [Sentry](https://sentry.io) and [Raygun](https://raygun.com/).
 
 ## Questions
 
 If you have any questions, I'll do my best to answer them. However, please note that if you're asking about _how_ the API works, as opposed to a question about the client, you should raise a [support ticket](https://support.gocardless.com/hc/en-gb) with the GoCardless team.
 
-## Issues
+## Issues and Feature Requests
 
-If you notice a problem with the client, please [create an issue](https://github.com/john-hartley/GoCardless.Api/issues/new), including, where appropriate, steps to reproduce the problem.
+If you notice a problem with the client, or have a feature request, please [create an issue](https://github.com/john-hartley/GoCardless.Api/issues/new/choose).
