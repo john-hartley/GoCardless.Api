@@ -11,7 +11,7 @@ This project aims to improve upon that client by:
 - Making heavy use of integration tests to provide stronger guarantees of correctness
 - Providing simple, predictable mechanisms for paging
 
-There are currently more than 300 tests, with almost 100 of those being integration tests.
+There are currently more than 340 tests, with almost 100 of those being integration tests.
 
 To stay up-to-date with the API, please read the [official documentation](https://developer.gocardless.com/api-reference).
 
