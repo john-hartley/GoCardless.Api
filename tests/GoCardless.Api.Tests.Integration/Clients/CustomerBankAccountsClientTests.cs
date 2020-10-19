@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GoCardlessApi.Tests.Integration.Clients
 {
-    public class CustomerBankAccountsTests : IntegrationTest
+    public class CustomerBankAccountsClientTests : IntegrationTest
     {
         private ICustomerBankAccountsClient _subject;
 
