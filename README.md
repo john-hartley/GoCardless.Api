@@ -27,7 +27,7 @@ This project respects [Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.
 
 ## Getting Started
 
-If you're upgrading from `2.x.x` to `3.x.x`, please read the [migration guide](https://github.com/john-hartley/GoCardless.Api/wiki/Migration-Guide:-Upgrading-from-2.x.x-to-3.x.x).
+If you're upgrading from `2.x.x` to `3.x.x`, please read the [list of breaking changes](https://github.com/john-hartley/GoCardless.Api/wiki/Breaking-changes-from-2.x.x-to-3.x.x) to help navigate that upgrade.
 
 ### Installation
 
