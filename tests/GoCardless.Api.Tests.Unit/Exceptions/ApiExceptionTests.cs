@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace GoCardlessApi.Tests.Unit.Exceptions
 {
-    public class ConflictingResourceExceptionTests
+    public class ApiExceptionTests
     {
         [Test]
         public void ResourceIdReturnsNullWhenNoKeyFound()
@@ -13,7 +13,7 @@ namespace GoCardlessApi.Tests.Unit.Exceptions
             var apiError = new ApiError();
 
             // when
-            var result = new ConflictingResourceException("", apiError);
+            var result = new ApiException("", apiError);
 
             // then
             Assert.That(result.ResourceId, Is.Null);
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Exceptions
             };
 
             // when
-            var result = new ConflictingResourceException("", apiError);
+            var result = new ApiException("", apiError);
 
             // then
             Assert.That(result.ResourceId, Is.EqualTo(expected));

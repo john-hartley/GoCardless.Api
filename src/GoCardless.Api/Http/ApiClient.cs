@@ -55,11 +55,11 @@ namespace GoCardlessApi.Http
             catch (FlurlHttpException ex)
             {
                 var apiException = await ex.CreateApiExceptionAsync().ConfigureAwait(false);
-                if (apiException is ConflictingResourceException conflictingResourceException
+                if (apiException is ConflictingResourceException
                     && !_configuration.ThrowOnConflict)
                 {
                     var uri = ex.Call.Request.RequestUri;
-                    var conflictingResourceId = conflictingResourceException.ResourceId;
+                    var conflictingResourceId = apiException.ResourceId;
 
                     if (!string.IsNullOrWhiteSpace(conflictingResourceId)
                         && uri.Segments.Length >= 2)
