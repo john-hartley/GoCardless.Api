@@ -47,13 +47,15 @@ namespace GoCardlessApi.MandateImports
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.RequestAsync(request =>
-            {
-                return request
-                    .AppendPathSegment("mandate_imports")
-                    .PostJsonAsync(new { mandate_imports = options })
-                    .ReceiveJson<Response<MandateImport>>();
-            });
+            return await _apiClient.IdempotentRequestAsync(
+                options.IdempotencyKey,
+                request =>
+                {
+                    return request
+                        .AppendPathSegment("mandate_imports")
+                        .PostJsonAsync(new { mandate_imports = options })
+                        .ReceiveJson<Response<MandateImport>>();
+                });
         }
 
         public async Task<Response<MandateImport>> ForIdAsync(string id)
