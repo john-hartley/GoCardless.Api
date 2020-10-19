@@ -101,14 +101,14 @@ Retry logic is currently not built into the client. There are no plans to add th
 
 ### Paging
 
-GoCardless' API uses what's called cursor-pagination. From a high level, all you need to know is that "before" means records that are newer, and "after" means records that are older. This sounds counter-intuitive, because results returned from the API are in reverse-chronological order, meaning the newest results are returned first.
+The GoCardless API returns lists of results in reverse-chronological order (i.e. the newest items appear first). The API uses cursor-pagination to page through results, where the `Before` and `After` cursors means "newer than" and "older than", respectively.
 
 For each type of resource that supports paging, there are a few different ways in which you can access paged data.
 
 | Method | Description |
 |:--------:|-----------|
 | `GetPageAsync()` | Returns a single page of the most recently added items. |
-| `GetPageAsync(GetXOptions options)` | Where `X` is a collection of resources (e.g. `Customers`, `Subscriptions`, etc.), returns a single page of items, allowing you to provide additional filtering. The filtering capabilities differ per endpoint. Please refer to the [official documentation](https://developer.gocardless.com/api-reference/) for information on the parameters.
+| `GetPageAsync(GetXOptions options)` | Where `X` is a collection of resources (e.g. `Customers`, `Subscriptions`, etc.), returns a single page of items, allowing you to provide additional filtering. The filtering capabilities differ per endpoint, so you should check the properties on the options type you're interested in. Please refer to the [official documentation](https://developer.gocardless.com/api-reference/) for more information on what the different properties do.
 | `PageFrom(GetXOptions options)` | Provides a simple abstraction that allows you to get all pages in either direction. |
 
 As an example of `PageFrom()`, let's say you wanted to get all payments for a given subscription. You can do that like so:
