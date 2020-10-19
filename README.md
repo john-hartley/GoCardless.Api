@@ -166,7 +166,7 @@ As each exception type exposes the same properties, you have the choice of catch
 
 ## Questions
 
-If you have any questions, I'll do my best to answer them. However, please note that if you're asking about _how_ the API works, as opposed to a question about the client, you should raise a [support ticket](https://support.gocardless.com/hc/en-gb) with the GoCardless team.
+If you have any questions, I'll do my best to answer them. However, please note that if you're asking about how the API works, as opposed to a question about the client, you should raise a [support ticket](https://support.gocardless.com/hc/en-gb) with the GoCardless team.
 
 ## Issues and Feature Requests
 
