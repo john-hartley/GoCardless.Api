@@ -78,7 +78,12 @@ namespace GoCardlessApi.Tests.Integration.Clients
             var mandateImportEntry = await _resourceFactory.CreateMandateImportEntryFor(mandateImport, "first-record");
 
             var mandateImportsClient = new MandateImportsClient(_configuration);
-            await mandateImportsClient.SubmitAsync(mandateImport.Id);
+            var submitOptions = new SubmitMandateImportOptions
+            {
+                Id = mandateImport.Id
+            };
+
+            await mandateImportsClient.SubmitAsync(submitOptions);
 
             var options = new GetMandateImportEntriesOptions
             {
@@ -90,10 +95,11 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             // then
             Assert.That(result.Any(), Is.True);
+            Assert.That(result[0].RecordIdentifier, Is.Not.Null.And.EqualTo(mandateImportEntry.RecordIdentifier));
             Assert.That(result[0].Links, Is.Not.Null);
-            Assert.That(result[0].Links.Customer, Is.Not.Null);
-            Assert.That(result[0].Links.CustomerBankAccount, Is.Not.Null);
-            Assert.That(result[0].Links.Mandate, Is.Not.Null);
+            Assert.That(result[0].Links.Customer, Is.Null);
+            Assert.That(result[0].Links.CustomerBankAccount, Is.Null);
+            Assert.That(result[0].Links.Mandate, Is.Null);
             Assert.That(result[0].Links.MandateImport, Is.Not.Null.And.EqualTo(mandateImport.Id));
         }
 

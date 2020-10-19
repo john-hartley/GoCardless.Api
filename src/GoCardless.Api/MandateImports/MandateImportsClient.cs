@@ -19,17 +19,22 @@ namespace GoCardlessApi.MandateImports
             _apiClient = new ApiClient(configuration);
         }
 
-        public async Task<Response<MandateImport>> CancelAsync(string id)
+        public async Task<Response<MandateImport>> CancelAsync(CancelMandateImportOptions options)
         {
-            if (string.IsNullOrWhiteSpace(id))
+            if (options == null)
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            if (string.IsNullOrWhiteSpace(options.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
             return await _apiClient.RequestAsync(request =>
             {
                 return request
-                    .AppendPathSegment($"mandate_imports/{id}/actions/cancel")
+                    .AppendPathSegment($"mandate_imports/{options.Id}/actions/cancel")
                     .PostJsonAsync(new { })
                     .ReceiveJson<Response<MandateImport>>();
             });
@@ -68,17 +73,22 @@ namespace GoCardlessApi.MandateImports
             });
         }
 
-        public async Task<Response<MandateImport>> SubmitAsync(string id)
+        public async Task<Response<MandateImport>> SubmitAsync(SubmitMandateImportOptions options)
         {
-            if (string.IsNullOrWhiteSpace(id))
+            if (options == null)
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            if (string.IsNullOrWhiteSpace(options.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
             return await _apiClient.RequestAsync(request =>
             {
                 return request
-                    .AppendPathSegment($"mandate_imports/{id}/actions/submit")
+                    .AppendPathSegment($"mandate_imports/{options.Id}/actions/submit")
                     .PostJsonAsync(new { })
                     .ReceiveJson<Response<MandateImport>>();
             });
