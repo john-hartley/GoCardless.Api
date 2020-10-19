@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GoCardlessApi.Exceptions
 {
@@ -24,5 +25,29 @@ namespace GoCardlessApi.Exceptions
         public IReadOnlyList<Error> Errors { get; }
         public string RawResponse { get; }
         public string RequestId { get; }
+
+        public string ResourceId
+        {
+            get
+            {
+                var bankAccountExists = Errors.SingleOrDefault(x => x.Reason == "bank_account_exists");
+                if (bankAccountExists != null)
+                {
+                    if (bankAccountExists.Links.ContainsKey("creditor_bank_account"))
+                    {
+                        return bankAccountExists.Links["creditor_bank_account"];
+                    }
+                    if (bankAccountExists.Links.ContainsKey("customer_bank_account"))
+                    {
+                        return bankAccountExists.Links["customer_bank_account"];
+                    }
+                }
+
+                return Errors
+                    .SingleOrDefault(x => x.Reason == "idempotent_creation_conflict")
+                    ?.Links
+                    ?.SingleOrDefault(x => x.Key == "conflicting_resource_id").Value;
+            }
+        }
     }
 }
