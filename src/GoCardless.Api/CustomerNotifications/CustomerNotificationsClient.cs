@@ -21,6 +21,11 @@ namespace GoCardlessApi.CustomerNotifications
 
         public async Task<Response<CustomerNotification>> HandleAsync(HandleCustomerNotificationOptions options)
         {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             if (string.IsNullOrWhiteSpace(options.Id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
