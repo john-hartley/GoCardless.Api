@@ -40,28 +40,50 @@ namespace GoCardlessApi.Tests.Unit.Clients
             Assert.That(ex.ParamName, Is.EqualTo(nameof(configuration)));
         }
 
+        [Test]
+        public void CancelMandateImportOptionsIsNullThrows()
+        {
+            // given
+            CancelMandateImportOptions options = null;
+
+            // when
+            AsyncTestDelegate test = () => _subject.CancelAsync(options);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
+        }
+
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
         public void CancelIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
+            var options = new CancelMandateImportOptions
+            {
+                Id = id
+            };
+
             // when
-            AsyncTestDelegate test = () => _subject.CancelAsync(id);
+            AsyncTestDelegate test = () => _subject.CancelAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]
         public async Task CallsCancelMandateImportEndpoint()
         {
             // given
-            var id = "IM12345678";
+            var options = new CancelMandateImportOptions
+            {
+                Id = "IM12345678"
+            };
 
             // when
-            await _subject.CancelAsync(id);
+            await _subject.CancelAsync(options);
 
             // then
             _httpTest
@@ -127,28 +149,50 @@ namespace GoCardlessApi.Tests.Unit.Clients
                 .WithVerb(HttpMethod.Get);
         }
 
+        [Test]
+        public void SubmitMandateImportOptionsIsNullThrows()
+        {
+            // given
+            SubmitMandateImportOptions options = null;
+
+            // when
+            AsyncTestDelegate test = () => _subject.SubmitAsync(options);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
+        }
+
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
         public void SubmitIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
+            var options = new SubmitMandateImportOptions
+            {
+                Id = id
+            };
+
             // when
-            AsyncTestDelegate test = () => _subject.SubmitAsync(id);
+            AsyncTestDelegate test = () => _subject.SubmitAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]
         public async Task CallsSubmitMandateImportEndpoint()
         {
             // given
-            var id = "IM12345678";
+            var options = new SubmitMandateImportOptions
+            {
+                Id = "IM12345678"
+            };
 
             // when
-            await _subject.SubmitAsync(id);
+            await _subject.SubmitAsync(options);
 
             // then
             _httpTest

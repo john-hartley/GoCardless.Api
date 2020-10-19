@@ -22,9 +22,13 @@ namespace GoCardlessApi.Tests.Integration.Clients
         {
             // given
             var mandateImport = await _resourceFactory.CreateMandateImport();
+            var options = new CancelMandateImportOptions
+            {
+                Id = mandateImport.Id
+            };
 
             // when
-            var result = await _subject.CancelAsync(mandateImport.Id);
+            var result = await _subject.CancelAsync(options);
 
             // then
             Assert.That(result.Item, Is.Not.Null);
@@ -76,9 +80,13 @@ namespace GoCardlessApi.Tests.Integration.Clients
         {
             // given
             var mandateImport = await _resourceFactory.CreateMandateImport();
+            var options = new SubmitMandateImportOptions
+            {
+                Id = mandateImport.Id
+            };
 
             // when
-            var result = await _subject.SubmitAsync(mandateImport.Id);
+            var result = await _subject.SubmitAsync(options);
 
             // then
             Assert.That(result.Item, Is.Not.Null);
