@@ -40,32 +40,54 @@ namespace GoCardlessApi.Tests.Unit.Clients
             Assert.That(ex.ParamName, Is.EqualTo(nameof(configuration)));
         }
 
+        [Test]
+        public void HandleCustomerNotificationOptionsIsNullThrows()
+        {
+            // given
+            HandleCustomerNotificationOptions options = null;
+
+            // when
+            AsyncTestDelegate test = () => _subject.HandleAsync(options);
+
+            // then
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
+        }
+
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void IdIsNullOrWhiteSpaceThrows(string id)
+        public void HandleCustomerNotificationOptionsIdIsNullOrWhiteSpaceThrows(string id)
         {
             // given
+            var options = new HandleCustomerNotificationOptions
+            {
+                Id = id
+            };
+
             // when
-            AsyncTestDelegate test = () => _subject.HandleAsync(id);
+            AsyncTestDelegate test = () => _subject.HandleAsync(options);
 
             // then
             var ex = Assert.ThrowsAsync<ArgumentException>(test);
-            Assert.That(ex.ParamName, Is.EqualTo(nameof(id)));
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Id)));
         }
 
         [Test]
         public async Task CallsHandleCustomerNotificationsEndpoint()
         {
             // given
-            var id = "PCN12345678";
+            var options = new HandleCustomerNotificationOptions
+            {
+                Id = "PCN12345678"
+            };
 
             // when
-            await _subject.HandleAsync(id);
+            await _subject.HandleAsync(options);
 
             // then
             _httpTest
-                .ShouldHaveCalled("https://api.gocardless.com/customer_notifications")
+                .ShouldHaveCalled("https://api.gocardless.com/customer_notifications/PCN12345678/actions/handle")
                 .WithVerb(HttpMethod.Post);
         }
     }

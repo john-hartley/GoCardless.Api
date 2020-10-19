@@ -5,6 +5,6 @@ namespace GoCardlessApi.CustomerNotifications
 {
     public interface ICustomerNotificationsClient
     {
-        Task<Response<CustomerNotification>> HandleAsync(string id);
+        Task<Response<CustomerNotification>> HandleAsync(HandleCustomerNotificationOptions options);
     }
 }

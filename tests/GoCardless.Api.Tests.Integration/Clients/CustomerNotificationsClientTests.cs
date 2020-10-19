@@ -18,14 +18,17 @@ namespace GoCardlessApi.Tests.Integration.Clients
             await _resourceFactory.CreateMandateFor(creditor, customerBankAccount);
             var subject = new CustomerNotificationsClient(_configuration);
 
-            var id = "PCN0000DZ5X5BG0";
+            var options = new HandleCustomerNotificationOptions
+            {
+                Id = "PCN000MD59PMGWZ"
+            };
 
             // when
-            var result = await subject.HandleAsync(id);
+            var result = await subject.HandleAsync(options);
 
             // then
             Assert.That(result.Item, Is.Not.Null);
-            Assert.That(result.Item.Id, Is.Not.Null.And.EqualTo(id));
+            Assert.That(result.Item.Id, Is.Not.Null.And.EqualTo(options.Id));
             Assert.That(result.Item.ActionTaken, Is.Not.Null.And.EqualTo(ActionTaken.Handled));
             Assert.That(result.Item.ActionTakenAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result.Item.ActionTakenBy, Is.Not.Null);
