@@ -35,7 +35,7 @@ namespace GoCardlessApi.Http
             var options = (TOptions)_options.Clone();
             var maxItems = options.Limit;
 
-            if (options.Limit == null)
+            if (options.Limit == null || options.Limit > MaxItemsPerPage)
             {
                 options.Limit = MaxItemsPerPage;
             }
@@ -64,7 +64,7 @@ namespace GoCardlessApi.Http
             var options = (TOptions)_options.Clone();
             var maxItems = options.Limit;
 
-            if (options.Limit == null)
+            if (options.Limit == null || options.Limit > MaxItemsPerPage)
             {
                 options.Limit = MaxItemsPerPage;
             }

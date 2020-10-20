@@ -205,6 +205,25 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
+        [Category(TestCategory.Paging)]
+        public async Task ReturnsResultsWhenLimitIsHigherThanApiMaximum()
+        {
+            // given
+            var options = new GetPaymentsOptions
+            {
+                Limit = 1000
+            };
+
+            // when
+            var result = await _subject
+                .PageUsing(options)
+                .GetItemsAfterAsync();
+
+            // then
+            Assert.That(result.Count(), Is.GreaterThan(1));
+        }
+
+        [Test]
         public async Task ReturnsIndividualPayment()
         {
             // given
