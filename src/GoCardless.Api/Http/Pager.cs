@@ -32,34 +32,21 @@ namespace GoCardlessApi.Http
 
         public async Task<IReadOnlyList<TResource>> GetItemsBeforeAsync(CancellationToken cancellationToken = default)
         {
-            var options = (TOptions)_options.Clone();
-            var maxItems = options.Limit;
-
-            if (options.Limit == null || options.Limit > MaxItemsPerPage)
-            {
-                options.Limit = MaxItemsPerPage;
-            }
-
-            var results = new List<TResource>();
-            do
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var response = await _source(options).ConfigureAwait(false);
-                results.AddRange(response.Items ?? Enumerable.Empty<TResource>());
-                
-                if (maxItems.HasValue && results.Count >= maxItems)
-                {
-                    return results.Take(maxItems.Value).ToList();
-                }
-
-                options.Before = response.Meta.Cursors.Before;
-            } while (options.Before != null);
-
-            return results;
+            return await GetItems(
+                options => options.Before != null,
+                cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<IReadOnlyList<TResource>> GetItemsAfterAsync(CancellationToken cancellationToken = default)
+        {
+            return await GetItems(
+                options => options.After != null, 
+                cancellationToken).ConfigureAwait(false);
+        }
+
+        private async Task<IReadOnlyList<TResource>> GetItems(
+            Predicate<TOptions> predicate,
+            CancellationToken cancellationToken)
         {
             var options = (TOptions)_options.Clone();
             var maxItems = options.Limit;
@@ -82,8 +69,9 @@ namespace GoCardlessApi.Http
                     return results.Take(maxItems.Value).ToList();
                 }
 
+                options.Before = response.Meta.Cursors.Before;
                 options.After = response.Meta.Cursors.After;
-            } while (options.After != null);
+            } while (predicate(options));
 
             return results;
         }
