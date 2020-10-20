@@ -33,6 +33,7 @@ namespace GoCardlessApi.Http
         public async Task<IReadOnlyList<TResource>> GetItemsBeforeAsync(CancellationToken cancellationToken = default)
         {
             return await GetItems(
+                (options, response) => options.Before = response.Meta.Cursors.Before,
                 options => options.Before != null,
                 cancellationToken).ConfigureAwait(false);
         }
@@ -40,11 +41,13 @@ namespace GoCardlessApi.Http
         public async Task<IReadOnlyList<TResource>> GetItemsAfterAsync(CancellationToken cancellationToken = default)
         {
             return await GetItems(
+                (options, response) => options.After = response.Meta.Cursors.After,
                 options => options.After != null, 
                 cancellationToken).ConfigureAwait(false);
         }
 
         private async Task<IReadOnlyList<TResource>> GetItems(
+            Action<TOptions, PagedResponse<TResource>> advanceCursor,
             Predicate<TOptions> predicate,
             CancellationToken cancellationToken)
         {
@@ -69,8 +72,7 @@ namespace GoCardlessApi.Http
                     return results.Take(maxItems.Value).ToList();
                 }
 
-                options.Before = response.Meta.Cursors.Before;
-                options.After = response.Meta.Cursors.After;
+                advanceCursor(options, response);
             } while (predicate(options));
 
             return results;

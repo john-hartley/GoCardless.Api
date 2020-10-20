@@ -211,16 +211,32 @@ namespace GoCardlessApi.Tests.Integration.Clients
             // given
             var options = new GetPaymentsOptions
             {
-                Limit = 1000
+                Limit = 1001
             };
 
             // when
-            var result = await _subject
+            var afterResults = (await _subject
                 .PageUsing(options)
-                .GetItemsAfterAsync();
+                .GetItemsAfterAsync())
+                .Select(x => new { x.Id, x.CreatedAt })
+                .ToList();
+
+            options.Before = afterResults.Last().Id;
+
+            afterResults = afterResults
+                .Take(1000)
+                .OrderBy(x => x.CreatedAt)
+                .ToList();
+
+            var beforeResults = (await _subject
+                .PageUsing(options)
+                .GetItemsBeforeAsync())
+                .OrderBy(x => x.CreatedAt)
+                .Select(x => new { x.Id, x.CreatedAt })
+                .ToList();
 
             // then
-            Assert.That(result.Count(), Is.GreaterThan(1));
+            Assert.That(afterResults.SequenceEqual(beforeResults), Is.True);
         }
 
         [Test]
