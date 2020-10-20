@@ -1,4 +1,5 @@
-﻿using GoCardlessApi.Creditors;
+﻿using GoCardless.Api.Tests.Integration.TestHelpers;
+using GoCardlessApi.Creditors;
 using GoCardlessApi.Mandates;
 using GoCardlessApi.Payments;
 using GoCardlessApi.Tests.Integration.TestHelpers;
@@ -277,7 +278,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
         }
 
-        [Test, Explicit("Need to use scenario simulators to activate the mandate, and fail the created payment, before continuing.")]
+        [Test, NeedsManualInterventionAttribute("Need to use scenario simulators to activate the mandate, and fail the created payment, before continuing.")]
         public async Task RetriesPayment()
         {
             // given
@@ -285,7 +286,13 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             var options = new RetryPaymentOptions
             {
-                Id = payment.Id
+                Id = payment.Id,
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                }
             };
 
             // when
@@ -296,6 +303,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Id, Is.EqualTo(payment.Id));
             Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
+            Assert.That(actual.Status, Is.EqualTo(PaymentStatus.PendingSubmission));
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
