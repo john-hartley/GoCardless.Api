@@ -238,8 +238,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             var options = new GetCreditorBankAccountsOptions
             {
-                After = firstId,
-                Limit = 1,
+                After = firstId
             };
 
             // when

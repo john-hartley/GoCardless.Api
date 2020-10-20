@@ -9,6 +9,8 @@ namespace GoCardlessApi.Http
     public class Pager<TOptions, TResource> : IPager<TOptions, TResource>
         where TOptions : IPageOptions, ICloneable
     {
+        private const int MaxItemsPerPage = 500;
+
         private readonly Func<TOptions, Task<PagedResponse<TResource>>> _source;
         private readonly TOptions _options;
 
@@ -26,32 +28,58 @@ namespace GoCardlessApi.Http
 
         public async Task<IReadOnlyList<TResource>> AndGetAllBeforeAsync(CancellationToken cancellationToken = default)
         {
+            var options = (TOptions)_options.Clone();
+            var maxItems = options.Limit;
+
+            if (options.Limit == null)
+            {
+                options.Limit = MaxItemsPerPage;
+            }
+
             var results = new List<TResource>();
             do
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var response = await _source(_options).ConfigureAwait(false);
+                var response = await _source(options).ConfigureAwait(false);
                 results.AddRange(response.Items ?? Enumerable.Empty<TResource>());
+                
+                if (maxItems.HasValue && results.Count >= maxItems)
+                {
+                    return results.Take(maxItems.GetValueOrDefault()).ToList();
+                }
 
-                _options.Before = response.Meta.Cursors.Before;
-            } while (_options.Before != null);
+                options.Before = response.Meta.Cursors.Before;
+            } while (options.Before != null);
 
             return results;
         }
 
         public async Task<IReadOnlyList<TResource>> AndGetAllAfterAsync(CancellationToken cancellationToken = default)
         {
+            var options = (TOptions)_options.Clone();
+            var maxItems = options.Limit;
+
+            if (options.Limit == null)
+            {
+                options.Limit = MaxItemsPerPage;
+            }
+
             var results = new List<TResource>();
             do
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var response = await _source(_options).ConfigureAwait(false);
+                var response = await _source(options).ConfigureAwait(false);
                 results.AddRange(response.Items ?? Enumerable.Empty<TResource>());
 
-                _options.After = response.Meta.Cursors.After;
-            } while (_options.After != null);
+                if (maxItems.HasValue && results.Count >= maxItems)
+                {
+                    return results.Take(maxItems.GetValueOrDefault()).ToList();
+                }
+
+                options.After = response.Meta.Cursors.After;
+            } while (options.After != null);
 
             return results;
         }

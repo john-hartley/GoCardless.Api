@@ -406,8 +406,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             var options = new GetSubscriptionsOptions
             {
                 After = firstId,
-                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1)),
-                Limit = 1,
+                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1))
             };
 
             // when

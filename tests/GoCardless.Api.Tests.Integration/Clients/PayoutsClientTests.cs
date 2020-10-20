@@ -113,8 +113,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             var options = new GetPayoutsOptions
             {
-                Before = lastId,
-                Limit = 1,
+                Before = lastId
             };
 
             // when
@@ -133,10 +132,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         public async Task ReturnsPagesIncludingAndAfterInitialOptions()
         {
             // given
-            var options = new GetPayoutsOptions
-            {
-                Limit = 1,
-            };
+            var options = new GetPayoutsOptions();
 
             // when
             var result = await _subject
@@ -158,8 +154,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             var options = new GetPayoutsOptions
             {
-                After = firstId,
-                Limit = 1,
+                After = firstId
             };
 
             // when
