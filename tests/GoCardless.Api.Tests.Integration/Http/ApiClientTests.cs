@@ -77,9 +77,7 @@ namespace GoCardlessApi.Tests.Integration.Http
             var options = new CreateRefundOptions
             {
                 Amount = 100,
-                IdempotencyKey = Guid.NewGuid().ToString(),
                 Links = new CreateRefundLinks { Payment = payment.Id },
-                Metadata = Metadata.Initial,
                 TotalAmountConfirmation = 100
             };
 
@@ -109,7 +107,6 @@ namespace GoCardlessApi.Tests.Integration.Http
                 IntervalUnit = IntervalUnit.Weekly,
                 Count = 5,
                 Interval = 1,
-                Metadata = Metadata.Initial,
                 Name = "Test subscription",
                 StartDate = DateTime.Now.AddMonths(1),
                 Links = new SubscriptionLinks
@@ -145,7 +142,6 @@ namespace GoCardlessApi.Tests.Integration.Http
                 Description = "Sandbox Payment",
                 Currency = "GBP",
                 Links = new CreatePaymentLinks { Mandate = _mandate.Id },
-                Metadata = Metadata.Initial,
                 Reference = "REF123456"
             };
 
