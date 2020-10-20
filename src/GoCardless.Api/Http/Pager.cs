@@ -22,7 +22,7 @@ namespace GoCardlessApi.Http
             {
                 throw new ArgumentNullException(nameof(options));
             }
-            if (options.Limit.GetValueOrDefault() < 1)
+            if (options.Limit.HasValue && options.Limit.Value < 1)
             {
                 throw new ArgumentOutOfRangeException(nameof(options.Limit));
             }
@@ -50,7 +50,7 @@ namespace GoCardlessApi.Http
                 
                 if (maxItems.HasValue && results.Count >= maxItems)
                 {
-                    return results.Take(maxItems.GetValueOrDefault()).ToList();
+                    return results.Take(maxItems.Value).ToList();
                 }
 
                 options.Before = response.Meta.Cursors.Before;
@@ -79,7 +79,7 @@ namespace GoCardlessApi.Http
 
                 if (maxItems.HasValue && results.Count >= maxItems)
                 {
-                    return results.Take(maxItems.GetValueOrDefault()).ToList();
+                    return results.Take(maxItems.Value).ToList();
                 }
 
                 options.After = response.Meta.Cursors.After;
