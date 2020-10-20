@@ -129,7 +129,7 @@ var payments = await client.Payments
     .GetItemsAfterAsync(); // Remember "after" means older than.
 ```
 
-The code above will page through the payments for a subscription with an id of `SB12345678`, starting from the newest payment, and will then continue sending requests to get older payments, until either the limit is reached or there are no more pages left.
+The code above will page through the payments for a subscription with an id of `SB12345678`. Starting from the newest payment, it will continue sending requests to get older payments, until either the number of payments `>=` `Limit` or there are no more pages left.
 
 There is a corresponding `GetItemsBeforeAsync()` method to page in the opposite direction (i.e. oldest to newest).
 
