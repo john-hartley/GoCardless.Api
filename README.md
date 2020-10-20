@@ -101,7 +101,7 @@ Retry logic is currently not built into the client. There are no plans to add th
 
 ### Paging
 
-The GoCardless API returns lists of results in reverse-chronological order (i.e. the newest items appear first). The API uses cursor-pagination to page through results, where the `Before` and `After` cursors means "newer than" and "older than", respectively.
+The GoCardless API returns lists of results in reverse-chronological order (i.e. the newest items appear first). The API uses cursor-pagination to page through results, where the `Before` and `After` cursors mean "newer than" and "older than", respectively.
 
 For each type of resource that supports paging, there are a few different ways in which you can access paged data.
 
