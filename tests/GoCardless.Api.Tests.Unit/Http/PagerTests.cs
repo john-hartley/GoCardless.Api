@@ -39,6 +39,25 @@ namespace GoCardlessApi.Tests.Unit.Http
             Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
+        [TestCase(-1)]
+        [TestCase(0)]
+        public void OptionsLimitIsOutOfRangeThrows(int limit)
+        {
+            // given
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = _ => Task.FromResult(new PagedResponse<string>());
+            var options = new FakePageOptions
+            {
+                Limit = limit
+            };
+
+            // when
+            TestDelegate test = () => new Pager<FakePageOptions, string>(source, options);
+
+            // then
+            var ex = Assert.Throws<ArgumentOutOfRangeException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Limit)));
+        }
+
         [Test]
         public void PagingBeforeThrowsOnCancel()
         {

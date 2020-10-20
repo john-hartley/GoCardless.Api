@@ -22,6 +22,10 @@ namespace GoCardlessApi.Http
             {
                 throw new ArgumentNullException(nameof(options));
             }
+            if (options.Limit.GetValueOrDefault() < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(options.Limit));
+            }
 
             _options = (TOptions)options.Clone();
         }
