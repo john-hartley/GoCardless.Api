@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using GoCardlessApi.Creditors;
 using GoCardlessApi.Tests.Integration.TestHelpers;
+using GoCardlessApi.Tests.Integration.TestHelpers.Extensions;
 
 namespace GoCardlessApi.Tests.Integration.Clients
 {
@@ -49,19 +50,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             var schemeIdentifier = result[0].SchemeIdentifiers.SingleOrDefault(x => x.Currency == "GBP");
             Assert.That(schemeIdentifier, Is.Not.Null);
-            Assert.That(schemeIdentifier.AddressLine1, Is.Not.Null);
-            Assert.That(schemeIdentifier.CanSpecifyMandateReference, Is.True);
-            Assert.That(schemeIdentifier.City, Is.Not.Null);
-            Assert.That(schemeIdentifier.CountryCode, Is.Not.Null);
-            Assert.That(schemeIdentifier.Currency, Is.Not.Null);
-            Assert.That(schemeIdentifier.Email, Is.Not.Null);
-            Assert.That(schemeIdentifier.MinimumAdvanceNotice, Is.Not.EqualTo(default(int)));
-            Assert.That(schemeIdentifier.Name, Is.Not.Null);
-            Assert.That(schemeIdentifier.PhoneNumber, Is.Not.Null);
-            Assert.That(schemeIdentifier.PostalCode, Is.Not.Null);
-            Assert.That(schemeIdentifier.Region, Is.Not.Null);
-            Assert.That(schemeIdentifier.Reference, Is.Not.Null);
-            Assert.That(schemeIdentifier.Scheme, Is.Not.Null);
+            Assert.That(schemeIdentifier.IsValid(), Is.True);
         }
 
         [Test]
@@ -117,19 +106,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             var schemeIdentifier = actual.SchemeIdentifiers.SingleOrDefault(x => x.Currency == "GBP");
             Assert.That(schemeIdentifier, Is.Not.Null);
-            Assert.That(schemeIdentifier.AddressLine1, Is.Not.Null);
-            Assert.That(schemeIdentifier.CanSpecifyMandateReference, Is.True);
-            Assert.That(schemeIdentifier.City, Is.Not.Null);
-            Assert.That(schemeIdentifier.CountryCode, Is.Not.Null);
-            Assert.That(schemeIdentifier.Currency, Is.Not.Null);
-            Assert.That(schemeIdentifier.Email, Is.Not.Null);
-            Assert.That(schemeIdentifier.MinimumAdvanceNotice, Is.Not.EqualTo(default(int)));
-            Assert.That(schemeIdentifier.Name, Is.Not.Null);
-            Assert.That(schemeIdentifier.PhoneNumber, Is.Not.Null);
-            Assert.That(schemeIdentifier.PostalCode, Is.Not.Null);
-            Assert.That(schemeIdentifier.Region, Is.Not.Null);
-            Assert.That(schemeIdentifier.Reference, Is.Not.Null);
-            Assert.That(schemeIdentifier.Scheme, Is.Not.Null);
+            Assert.That(schemeIdentifier.IsValid(), Is.True);
         }
 
         [Test, NonParallelizable]
@@ -184,19 +161,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             var schemeIdentifier = actual.SchemeIdentifiers.SingleOrDefault(x => x.Currency == "GBP");
             Assert.That(schemeIdentifier, Is.Not.Null);
-            Assert.That(schemeIdentifier.AddressLine1, Is.Not.Null);
-            Assert.That(schemeIdentifier.CanSpecifyMandateReference, Is.True);
-            Assert.That(schemeIdentifier.City, Is.Not.Null);
-            Assert.That(schemeIdentifier.CountryCode, Is.Not.Null);
-            Assert.That(schemeIdentifier.Currency, Is.Not.Null);
-            Assert.That(schemeIdentifier.Email, Is.Not.Null);
-            Assert.That(schemeIdentifier.MinimumAdvanceNotice, Is.Not.EqualTo(default(int)));
-            Assert.That(schemeIdentifier.Name, Is.Not.Null);
-            Assert.That(schemeIdentifier.PhoneNumber, Is.Not.Null);
-            Assert.That(schemeIdentifier.PostalCode, Is.Not.Null);
-            Assert.That(schemeIdentifier.Region, Is.Not.Null);
-            Assert.That(schemeIdentifier.Reference, Is.Not.Null);
-            Assert.That(schemeIdentifier.Scheme, Is.Not.Null);
+            Assert.That(schemeIdentifier.IsValid(), Is.True);
         }
     }
 }
