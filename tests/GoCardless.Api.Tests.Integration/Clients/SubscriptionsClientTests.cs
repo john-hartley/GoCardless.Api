@@ -396,7 +396,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result.Item.Status, Is.EqualTo(SubscriptionStatus.Cancelled));
         }
 
-        [Test, Explicit("Can end up performing lots of calls.")]
+        [Test]
         [Category(TestCategory.Paging)]
         public async Task PagesThroughSubscriptions()
         {

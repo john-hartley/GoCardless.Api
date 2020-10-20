@@ -300,7 +300,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Region, Is.EqualTo(options.Region));
         }
 
-        [Test, Explicit("Can end up performing lots of calls.")]
+        [Test]
         [Category(TestCategory.Paging)]
         public async Task PagesThroughCustomers()
         {

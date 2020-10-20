@@ -229,7 +229,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Enabled, Is.EqualTo(creditorBankAccount.Enabled));
         }
 
-        [Test, Explicit("Can end up performing lots of calls.")]
+        [Test]
         [Category(TestCategory.Paging)]
         public async Task PagesThroughCreditorBankAccounts()
         {

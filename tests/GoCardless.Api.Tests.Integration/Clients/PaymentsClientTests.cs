@@ -307,7 +307,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Status, Is.EqualTo(PaymentStatus.PendingSubmission));
         }
 
-        [Test, Explicit("Can end up performing lots of calls.")]
+        [Test]
         [Category(TestCategory.Paging)]
         public async Task PagesThroughPayments()
         {

@@ -261,7 +261,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
         }
 
-        [Test, Explicit("Can end up performing lots of calls.")]
+        [Test]
         [Category(TestCategory.Paging)]
         public async Task PagesThroughMandates()
         {

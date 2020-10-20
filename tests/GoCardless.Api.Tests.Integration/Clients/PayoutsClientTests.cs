@@ -104,7 +104,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Status, Is.Not.Null.And.EqualTo(payout.Status));
         }
 
-        [Test, Explicit("Can end up performing lots of calls.")]
+        [Test]
         [Category(TestCategory.Paging)]
         public async Task ReturnsPagesIncludingAndBeforeInitialOptions()
         {
@@ -127,7 +127,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
         }
 
-        [Test, Explicit("Can end up performing lots of calls.")]
+        [Test]
         [Category(TestCategory.Paging)]
         public async Task ReturnsPagesIncludingAndAfterInitialOptions()
         {
@@ -145,7 +145,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
         }
 
-        [Test, Explicit("Can end up performing lots of calls.")]
+        [Test]
         [Category(TestCategory.Paging)]
         public async Task ReturnsPagesIncludingAndAfterInitialOptionsWhenCursorSpecified()
         {
