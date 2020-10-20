@@ -48,10 +48,6 @@ namespace GoCardlessApi.Tests.Integration.Clients
         public async Task CreatesMandatePdfUsingSuppliedDetails()
         {
             // given
-            var creditor = await _resourceFactory.Creditor();
-            var customer = await _resourceFactory.CreateLocalCustomer();
-            var customerBankAccount = await _resourceFactory.CreateCustomerBankAccountFor(customer);
-
             var options = new CreateMandatePdfOptions
             {
                 AccountHolderName = "Account holder",
