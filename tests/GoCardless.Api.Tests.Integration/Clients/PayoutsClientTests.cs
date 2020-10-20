@@ -105,6 +105,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
+        [Category(TestCategory.Paging)]
         public async Task ReturnsPagesIncludingAndBeforeInitialOptions()
         {
             // given
@@ -128,6 +129,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
+        [Category(TestCategory.Paging)]
         public async Task ReturnsPagesIncludingAndAfterInitialOptions()
         {
             // given
@@ -148,6 +150,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
+        [Category(TestCategory.Paging)]
         public async Task ReturnsPagesIncludingAndAfterInitialOptionsWhenCursorSpecified()
         {
             // given

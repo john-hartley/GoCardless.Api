@@ -29,7 +29,8 @@ namespace GoCardlessApi.Tests.Integration.Clients
             _subject = new RefundsClient(_configuration);
         }
 
-        [Test, Explicit("Need to use scenario simulators to activate the mandate, and pay out the created payment, before continuing.")]
+        [Test, Explicit("Use scenario simulators to activate the mandate, and pay out the created payment, before continuing.")]
+        [Category(TestCategory.NeedsManualIntervention)]
         public async Task CreatesRefund()
         {
             // given

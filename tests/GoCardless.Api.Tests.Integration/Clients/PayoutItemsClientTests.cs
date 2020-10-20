@@ -45,6 +45,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, Explicit("Depending on the payout, there may or may not be multiple items, making this test prone to failure because of the cursor assertions.")]
+        [Category(TestCategory.Paging)]
         public async Task MapsPagingProperties()
         {
             // given
@@ -79,6 +80,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, Explicit("Depends on the amount of payout items, which varies.")]
+        [Category(TestCategory.Paging)]
         public async Task ReturnsPagesIncludingAndAfterInitialOptions()
         {
             // given

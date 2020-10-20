@@ -86,6 +86,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, Explicit("Needs a merchant account to be setup, an OAuth access token to have been exchanged, and a mandate setup via a redirect flow.")]
+        [Category(TestCategory.NeedsMerchantAccount)]
         public async Task CreatesAndCancelsPaymentForMerchant()
         {
             var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
@@ -278,6 +279,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, Explicit("Need to use scenario simulators to activate the mandate, and fail the created payment, before continuing.")]
+        [Category(TestCategory.NeedsManualIntervention)]
         public async Task RetriesPayment()
         {
             // given
@@ -285,7 +287,13 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             var options = new RetryPaymentOptions
             {
-                Id = payment.Id
+                Id = payment.Id,
+                Metadata = new Dictionary<string, string>
+                {
+                    ["Key1"] = "Value1",
+                    ["Key2"] = "Value2",
+                    ["Key3"] = "Value3",
+                }
             };
 
             // when
@@ -296,9 +304,11 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Id, Is.EqualTo(payment.Id));
             Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
+            Assert.That(actual.Status, Is.EqualTo(PaymentStatus.PendingSubmission));
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
+        [Category(TestCategory.Paging)]
         public async Task PagesThroughPayments()
         {
             // given
