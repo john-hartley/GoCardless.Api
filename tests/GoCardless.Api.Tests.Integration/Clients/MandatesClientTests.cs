@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GoCardless.Api.Tests.Integration.TestHelpers;
 
 namespace GoCardlessApi.Tests.Integration.Clients
 {
@@ -262,6 +263,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
+        [Category(TestCategory.Paging)]
         public async Task PagesThroughMandates()
         {
             // given

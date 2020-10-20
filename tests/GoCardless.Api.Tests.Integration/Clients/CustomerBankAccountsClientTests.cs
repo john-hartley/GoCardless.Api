@@ -1,4 +1,5 @@
-﻿using GoCardlessApi.CustomerBankAccounts;
+﻿using GoCardless.Api.Tests.Integration.TestHelpers;
+using GoCardlessApi.CustomerBankAccounts;
 using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
@@ -191,6 +192,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
+        [Category(TestCategory.Paging)]
         public async Task PagesThroughCustomerBankAccounts()
         {
             // given

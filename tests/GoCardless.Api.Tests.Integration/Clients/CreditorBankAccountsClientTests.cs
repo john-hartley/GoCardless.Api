@@ -1,4 +1,5 @@
-﻿using GoCardlessApi.CreditorBankAccounts;
+﻿using GoCardless.Api.Tests.Integration.TestHelpers;
+using GoCardlessApi.CreditorBankAccounts;
 using GoCardlessApi.Creditors;
 using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
@@ -26,6 +27,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, Explicit("Checking the disabled state in the final assertion sometimes takes a little time.")]
+        [Category(TestCategory.TimeDependent)]
         public async Task CreatesAndDisablesConflictingCreditorBankAccountUsingBankCode()
         {
             // given
@@ -229,6 +231,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
+        [Category(TestCategory.Paging)]
         public async Task PagesThroughCreditorBankAccounts()
         {
             // given

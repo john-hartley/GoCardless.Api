@@ -1,4 +1,5 @@
-﻿using GoCardlessApi.Common;
+﻿using GoCardless.Api.Tests.Integration.TestHelpers;
+using GoCardlessApi.Common;
 using GoCardlessApi.RedirectFlows;
 using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
@@ -86,7 +87,8 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result.Item.SuccessRedirectUrl, Is.EqualTo(createResult.Item.SuccessRedirectUrl));
         }
 
-        [Test, Explicit("Requires user intervention to complete a session with GoCardless in a browser.")]
+        [Test, Explicit("Need to complete a session with GoCardless in a browser.")]
+        [Category(TestCategory.NeedsManualIntervention)]
         public async Task CompletesRedirectFlow()
         {
             // given

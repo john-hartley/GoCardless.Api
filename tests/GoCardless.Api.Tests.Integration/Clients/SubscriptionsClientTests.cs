@@ -1,3 +1,4 @@
+using GoCardless.Api.Tests.Integration.TestHelpers;
 using GoCardlessApi.Mandates;
 using GoCardlessApi.Subscriptions;
 using GoCardlessApi.Tests.Integration.TestHelpers;
@@ -129,6 +130,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, Explicit("Needs a merchant account to be setup, an OAuth access token to have been exchanged, and a mandate setup via a redirect flow.")]
+        [Category(TestCategory.NeedsMerchantAccount)]
         public async Task CreatesSubscriptionForMerchant()
         {
             // given
@@ -331,6 +333,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, Explicit("Needs a merchant account to be setup, an OAuth access token to have been exchanged, and a mandate setup via a redirect flow.")]
+        [Category(TestCategory.NeedsMerchantAccount)]
         public async Task UpdatesSubscriptionForMerchant()
         {
             // given
@@ -395,6 +398,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, Explicit("Can end up performing lots of calls.")]
+        [Category(TestCategory.Paging)]
         public async Task PagesThroughSubscriptions()
         {
             // given

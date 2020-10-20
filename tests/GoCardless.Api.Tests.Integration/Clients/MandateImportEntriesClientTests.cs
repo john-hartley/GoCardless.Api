@@ -1,4 +1,5 @@
-﻿using GoCardlessApi.MandateImportEntries;
+﻿using GoCardless.Api.Tests.Integration.TestHelpers;
+using GoCardlessApi.MandateImportEntries;
 using GoCardlessApi.MandateImports;
 using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
@@ -71,6 +72,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, Explicit("There is a short delay between the submission of a mandate import and it being processed. Once processed, the properties should be mapped.")]
+        [Category(TestCategory.TimeDependent)]
         public async Task MapsAllLinksAfterMandateImportHasBeenSubmitted()
         {
             // given
