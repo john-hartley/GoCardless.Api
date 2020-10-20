@@ -205,7 +205,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Reference, Is.Not.Null.And.EqualTo(refund.Reference));
         }
 
-        [Test, NonParallelizable]
+        [Test]
         public async Task PagesThroughRefunds()
         {
             // given
