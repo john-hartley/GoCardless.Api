@@ -88,6 +88,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
+        [Category(TestCategory.Paging)]
         public async Task MapsPagingProperties()
         {
             // given
