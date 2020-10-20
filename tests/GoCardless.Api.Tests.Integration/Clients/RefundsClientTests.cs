@@ -127,6 +127,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             // then
             Validate(actual, refund);
+            Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(refund.Metadata));
         }
 
         [Test, NonParallelizable]
@@ -146,6 +147,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             // then
             Validate(actual, refund);
+            Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(refund.Metadata));
         }
 
         [Test, NonParallelizable]
@@ -172,6 +174,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             // then
             Validate(actual, refund);
+            Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(options.Metadata));
         }
 
         [Test]
@@ -201,7 +204,6 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Links, Is.Not.Null);
             Assert.That(actual.Links.Mandate, Is.Not.Null.And.EqualTo(expected.Links.Mandate));
             Assert.That(actual.Links.Payment, Is.Not.Null.And.EqualTo(expected.Links.Payment));
-            Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(expected.Metadata));
             Assert.That(actual.Reference, Is.Not.Null.And.EqualTo(expected.Reference));
         }
     }
