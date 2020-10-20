@@ -9,6 +9,7 @@
 		<RepositoryUrl>https://github.com/john-hartley/GoCardless.Api</RepositoryUrl>
 		<VersionPrefix>3.0.0</VersionPrefix>
 		<VersionSuffix>pre</VersionSuffix>
+		<RootNamespace>GoCardlessApi</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

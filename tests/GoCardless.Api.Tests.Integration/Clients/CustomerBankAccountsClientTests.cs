@@ -1,6 +1,5 @@
-﻿using GoCardless.Api.Tests.Integration.TestHelpers;
+﻿using GoCardlessApi.Tests.Integration.TestHelpers;
 using GoCardlessApi.CustomerBankAccounts;
-using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

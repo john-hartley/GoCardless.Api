@@ -1,4 +1,3 @@
-using GoCardless.Api.Tests.Integration.TestHelpers;
 using GoCardlessApi.Mandates;
 using GoCardlessApi.Subscriptions;
 using GoCardlessApi.Tests.Integration.TestHelpers;

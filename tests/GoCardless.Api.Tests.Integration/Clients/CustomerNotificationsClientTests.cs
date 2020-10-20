@@ -1,5 +1,4 @@
-﻿using GoCardless.Api.Tests.Integration.TestHelpers;
-using GoCardlessApi.CustomerNotifications;
+﻿using GoCardlessApi.CustomerNotifications;
 using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;

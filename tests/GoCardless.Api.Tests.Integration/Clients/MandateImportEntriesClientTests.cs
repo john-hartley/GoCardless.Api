@@ -1,5 +1,4 @@
-﻿using GoCardless.Api.Tests.Integration.TestHelpers;
-using GoCardlessApi.MandateImportEntries;
+﻿using GoCardlessApi.MandateImportEntries;
 using GoCardlessApi.MandateImports;
 using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;

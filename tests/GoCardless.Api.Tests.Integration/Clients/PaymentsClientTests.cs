@@ -1,5 +1,4 @@
-﻿using GoCardless.Api.Tests.Integration.TestHelpers;
-using GoCardlessApi.Creditors;
+﻿using GoCardlessApi.Creditors;
 using GoCardlessApi.Mandates;
 using GoCardlessApi.Payments;
 using GoCardlessApi.Tests.Integration.TestHelpers;

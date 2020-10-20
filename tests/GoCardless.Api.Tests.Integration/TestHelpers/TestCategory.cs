@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.Tests.Integration.TestHelpers
+﻿namespace GoCardlessApi.Tests.Integration.TestHelpers
 {
     internal static class TestCategory
     {
