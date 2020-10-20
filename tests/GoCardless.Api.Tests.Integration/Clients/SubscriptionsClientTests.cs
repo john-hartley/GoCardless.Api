@@ -3,7 +3,6 @@ using GoCardlessApi.Subscriptions;
 using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -44,12 +43,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 {
                     Mandate = _mandate.Id
                 },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 Name = "Test subscription",
                 PaymentReference = "PR123456",
                 StartDate = DateTime.Now.AddMonths(1)
@@ -95,12 +89,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 {
                     Mandate = _mandate.Id
                 },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 Month = Month.NameOf(startDate),
                 Name = "Test subscription",
                 PaymentReference = "PR123456",
@@ -150,12 +139,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 {
                     Mandate = mandate.Id
                 },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 Name = "Test subscription",
                 StartDate = DateTime.Now.AddMonths(1)
             };
@@ -310,12 +294,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             {
                 Id = subscription.Id,
                 Amount = 456,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key4"] = "Value4",
-                    ["Key5"] = "Value5",
-                    ["Key6"] = "Value6",
-                },
+                Metadata = Metadata.Updated,
                 Name = "Updated subscription name",
                 PaymentReference = "PR456789"
             };
@@ -349,12 +328,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 Id = subscription.Id,
                 Amount = 456,
                 AppFee = 34,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key4"] = "Value4",
-                    ["Key5"] = "Value5",
-                    ["Key6"] = "Value6",
-                },
+                Metadata = Metadata.Updated,
                 Name = "Updated subscription name"
             };
 
@@ -380,12 +354,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             var options = new CancelSubscriptionOptions
             {
                 Id = subscription.Id,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key4"] = "Value4",
-                    ["Key5"] = "Value5",
-                    ["Key6"] = "Value6",
-                },
+                Metadata = Metadata.Updated
             };
 
             // when

@@ -2,7 +2,6 @@
 using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,12 +34,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 FamilyName = "Family Name",
                 GivenName = "Given Name",
                 Language = "en",
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 PhoneNumber = "+44 20 7183 8674",
                 PostalCode = "SW1A 1AA",
                 Region = "Essex",
@@ -265,12 +259,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 FamilyName = "Family Name 2",
                 GivenName = "Given Name 22",
                 Language = "en",
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key4"] = "Value6",
-                    ["Key5"] = "Value7",
-                    ["Key6"] = "Value8",
-                },
+                Metadata = Metadata.Updated,
                 PhoneNumber = "+44 1235 567890",
                 PostalCode = "SW1A 1AA",
                 Region = "Essex",

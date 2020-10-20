@@ -40,12 +40,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             {
                 Amount = 100,
                 Links = new CreateRefundLinks { Payment = payment.Id },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 Reference = "RF123456",
                 TotalAmountConfirmation = 100
             };

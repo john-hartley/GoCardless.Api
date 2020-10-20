@@ -9,7 +9,6 @@ using GoCardlessApi.Subscriptions;
 using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -48,12 +47,7 @@ namespace GoCardlessApi.Tests.Integration.Http
                 FamilyName = "Family Name",
                 GivenName = "Given Name",
                 Language = "incorrect language", // This triggers the error.
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 PostalCode = "SW1A 1AA",
                 Region = "Essex",
                 SwedishIdentityNumber = "5302256218",
@@ -85,12 +79,7 @@ namespace GoCardlessApi.Tests.Integration.Http
                 Amount = 100,
                 IdempotencyKey = Guid.NewGuid().ToString(),
                 Links = new CreateRefundLinks { Payment = payment.Id },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 TotalAmountConfirmation = 100
             };
 
@@ -120,12 +109,7 @@ namespace GoCardlessApi.Tests.Integration.Http
                 IntervalUnit = IntervalUnit.Weekly,
                 Count = 5,
                 Interval = 1,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 Name = "Test subscription",
                 StartDate = DateTime.Now.AddMonths(1),
                 Links = new SubscriptionLinks
@@ -161,12 +145,7 @@ namespace GoCardlessApi.Tests.Integration.Http
                 Description = "Sandbox Payment",
                 Currency = "GBP",
                 Links = new CreatePaymentLinks { Mandate = _mandate.Id },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 Reference = "REF123456"
             };
 
@@ -194,12 +173,7 @@ namespace GoCardlessApi.Tests.Integration.Http
                 Description = "Sandbox Payment",
                 Currency = "GBP",
                 Links = new CreatePaymentLinks { Mandate = _mandate.Id },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 Reference = "REF123456"
             };
 
