@@ -109,9 +109,9 @@ For each type of resource that supports paging, there are a few different ways i
 |:--------:|-----------|
 | `GetPageAsync()` | Returns a single page of the most recently added items. |
 | `GetPageAsync(GetXOptions options)` | Where `X` is a collection of resources (e.g. `Customers`, `Subscriptions`, etc.), returns a single page of items, allowing you to provide additional filtering. The filtering capabilities differ per endpoint, so you should check the properties on the options type you're interested in. Please refer to the [official documentation](https://developer.gocardless.com/api-reference/) for more information on what the different properties do.
-| `PageFrom(GetXOptions options)` | Provides a simple abstraction that allows you to get all pages in either direction. |
+| `PageUsing(GetXOptions options)` | Provides a simple abstraction that allows you to get pages in either direction. |
 
-As an example of `PageFrom()`, let's say you wanted to get all payments for a given subscription. You can do that like so:
+As an example of `PageUsing()`, let's say you wanted to get the 200 most recent payments for a given subscription. You can do that like so:
 
 ```c#
 using GoCardlessApi.Payments;
@@ -120,19 +120,20 @@ using GoCardlessApi.Payments;
 // just as with GetPageAsync().
 var options = new GetPaymentsOptions
 {
-    Subscription = "SB12345678"
+    Subscription = "SB12345678",
+    Limit = 200
 };
 
 var payments = await client.Payments
-    .PageFrom(options)
-    .AndGetAllAfterAsync(); // Remember "after" means older than.
+    .PageUsing(options)
+    .GetItemsAfterAsync(); // Remember "after" means older than.
 ```
 
-The code above will use `options` to get the first (i.e. newest) page of payments for a subscription with an id of `SB12345678`, and then continue sending requests to get the subsequent (i.e. older) pages, until there are no more left. The results of the initial request will be joined together with all of the subsequent requests, returning the complete list of payments for the subscription.
+The code above will page through the payments for a subscription with an id of `SB12345678`, starting from the newest payment, and will then continue sending requests to get older payments, until either the limit is reached or there are no more pages left.
 
-There is a corresponding `AndGetAllBeforeAsync()` method to page in the opposite direction (i.e. oldest to newest).
+There is a corresponding `GetItemsBeforeAsync()` method to page in the opposite direction (i.e. oldest to newest).
 
-As `AndGetAllBeforeAsync()` and `AndGetAllAfterAsync()` can be long-running operations, they have support for [`CancellationToken`](https://docs.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken).
+As `GetItemsBeforeAsync()` and `GetItemsAfterAsync()` can be long-running operations if a limit isn't supplied, they have support for [`CancellationToken`](https://docs.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken).
 
 ### Advanced Paging
 
