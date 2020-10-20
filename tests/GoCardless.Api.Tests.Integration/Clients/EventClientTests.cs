@@ -276,7 +276,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.ResourceType, Is.Not.Null.And.EqualTo(@event.ResourceType));
         }
 
-        [Test, Explicit("Can end up performing lots of calls.")]
+        [Test]
         [Category(TestCategory.Paging)]
         public async Task PagesThroughEvents()
         {
@@ -291,8 +291,8 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             // when
             var result = await _subject
-                .PageFrom(options)
-                .AndGetAllAfterAsync();
+                .PageUsing(options)
+                .GetItemsAfterAsync();
 
             // then
             Assert.That(result.Count, Is.GreaterThan(1));

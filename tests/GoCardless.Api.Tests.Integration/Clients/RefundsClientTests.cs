@@ -88,6 +88,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
+        [Category(TestCategory.Paging)]
         public async Task MapsPagingProperties()
         {
             // given
@@ -205,19 +206,16 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Reference, Is.Not.Null.And.EqualTo(refund.Reference));
         }
 
-        [Test, NonParallelizable]
+        [Test]
         public async Task PagesThroughRefunds()
         {
             // given
-            var options = new GetRefundsOptions
-            {
-                Limit = 1
-            };
+            var options = new GetRefundsOptions();
 
             // when
             var result = await _subject
-                .PageFrom(options)
-                .AndGetAllAfterAsync();
+                .PageUsing(options)
+                .GetItemsAfterAsync();
 
             // then
             Assert.That(result.Count, Is.GreaterThan(1));

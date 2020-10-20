@@ -300,7 +300,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Region, Is.EqualTo(options.Region));
         }
 
-        [Test, Explicit("Can end up performing lots of calls.")]
+        [Test]
         [Category(TestCategory.Paging)]
         public async Task PagesThroughCustomers()
         {
@@ -310,14 +310,13 @@ namespace GoCardlessApi.Tests.Integration.Clients
             var options = new GetCustomersOptions
             {
                 After = firstId,
-                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1)),
-                Limit = 1,
+                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1))
             };
 
             // when
             var result = await _subject
-                .PageFrom(options)
-                .AndGetAllAfterAsync();
+                .PageUsing(options)
+                .GetItemsAfterAsync();
 
             // then
             Assert.That(result.Count, Is.GreaterThan(1));

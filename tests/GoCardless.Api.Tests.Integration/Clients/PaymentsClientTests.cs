@@ -205,6 +205,41 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
+        [Category(TestCategory.Paging)]
+        public async Task ReturnsResultsWhenLimitIsHigherThanApiMaximum()
+        {
+            // given
+            var options = new GetPaymentsOptions
+            {
+                Limit = 1001
+            };
+
+            // when
+            var afterResults = (await _subject
+                .PageUsing(options)
+                .GetItemsAfterAsync())
+                .Select(x => new { x.Id, x.CreatedAt })
+                .ToList();
+
+            options.Before = afterResults.Last().Id;
+
+            afterResults = afterResults
+                .Take(1000)
+                .OrderBy(x => x.CreatedAt)
+                .ToList();
+
+            var beforeResults = (await _subject
+                .PageUsing(options)
+                .GetItemsBeforeAsync())
+                .OrderBy(x => x.CreatedAt)
+                .Select(x => new { x.Id, x.CreatedAt })
+                .ToList();
+
+            // then
+            Assert.That(afterResults.SequenceEqual(beforeResults), Is.True);
+        }
+
+        [Test]
         public async Task ReturnsIndividualPayment()
         {
             // given
@@ -307,7 +342,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Status, Is.EqualTo(PaymentStatus.PendingSubmission));
         }
 
-        [Test, Explicit("Can end up performing lots of calls.")]
+        [Test]
         [Category(TestCategory.Paging)]
         public async Task PagesThroughPayments()
         {
@@ -317,14 +352,13 @@ namespace GoCardlessApi.Tests.Integration.Clients
             var options = new GetPaymentsOptions
             {
                 After = firstId,
-                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1)),
-                Limit = 1,
+                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1))
             };
 
             // when
             var result = await _subject
-                .PageFrom(options)
-                .AndGetAllAfterAsync();
+                .PageUsing(options)
+                .GetItemsAfterAsync();
 
             // then
             Assert.That(result.Count, Is.GreaterThan(1));

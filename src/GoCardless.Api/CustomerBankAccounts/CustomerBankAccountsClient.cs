@@ -99,7 +99,7 @@ namespace GoCardlessApi.CustomerBankAccounts
             });
         }
 
-        public IPager<GetCustomerBankAccountsOptions, CustomerBankAccount> PageFrom(GetCustomerBankAccountsOptions options)
+        public IPager<GetCustomerBankAccountsOptions, CustomerBankAccount> PageUsing(GetCustomerBankAccountsOptions options)
         {
             return new Pager<GetCustomerBankAccountsOptions, CustomerBankAccount>(GetPageAsync, options);
         }

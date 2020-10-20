@@ -56,7 +56,7 @@ namespace GoCardlessApi.MandateImportEntries
             });
         }
 
-        public IPager<GetMandateImportEntriesOptions, MandateImportEntry> PageFrom(GetMandateImportEntriesOptions options)
+        public IPager<GetMandateImportEntriesOptions, MandateImportEntry> PageUsing(GetMandateImportEntriesOptions options)
         {
             return new Pager<GetMandateImportEntriesOptions, MandateImportEntry>(GetPageAsync, options);
         }

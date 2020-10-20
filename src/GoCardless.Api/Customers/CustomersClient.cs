@@ -78,7 +78,7 @@ namespace GoCardlessApi.Customers
             });
         }
 
-        public IPager<GetCustomersOptions, Customer> PageFrom(GetCustomersOptions options)
+        public IPager<GetCustomersOptions, Customer> PageUsing(GetCustomersOptions options)
         {
             return new Pager<GetCustomersOptions, Customer>(GetPageAsync, options);
         }

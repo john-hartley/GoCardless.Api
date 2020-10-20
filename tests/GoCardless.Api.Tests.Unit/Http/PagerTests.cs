@@ -1,6 +1,7 @@
 ﻿using GoCardlessApi.Http;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,6 +39,25 @@ namespace GoCardlessApi.Tests.Unit.Http
             Assert.That(ex.ParamName, Is.EqualTo(nameof(options)));
         }
 
+        [TestCase(-1)]
+        [TestCase(0)]
+        public void OptionsLimitIsOutOfRangeThrows(int limit)
+        {
+            // given
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = _ => Task.FromResult(new PagedResponse<string>());
+            var options = new FakePageOptions
+            {
+                Limit = limit
+            };
+
+            // when
+            TestDelegate test = () => new Pager<FakePageOptions, string>(source, options);
+
+            // then
+            var ex = Assert.Throws<ArgumentOutOfRangeException>(test);
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(options.Limit)));
+        }
+
         [Test]
         public void PagingBeforeThrowsOnCancel()
         {
@@ -64,7 +84,7 @@ namespace GoCardlessApi.Tests.Unit.Http
             var subject = new Pager<FakePageOptions, string>(source, options);
 
             // when
-            AsyncTestDelegate test = () => subject.AndGetAllBeforeAsync(cancellationSource.Token);
+            AsyncTestDelegate test = () => subject.GetItemsBeforeAsync(cancellationSource.Token);
 
             // then
             Assert.That(test, Throws.InstanceOf<OperationCanceledException>());
@@ -96,10 +116,228 @@ namespace GoCardlessApi.Tests.Unit.Http
             var subject = new Pager<FakePageOptions, string>(source, options);
 
             // when
-            AsyncTestDelegate test = () => subject.AndGetAllAfterAsync(cancellationSource.Token);
+            AsyncTestDelegate test = () => subject.GetItemsAfterAsync(cancellationSource.Token);
 
             // then
             Assert.That(test, Throws.InstanceOf<OperationCanceledException>());
+        }
+
+        [Test]
+        public async Task BeforeLimitsItemsReturned()
+        {
+            // given
+            var responses = new Queue<PagedResponse<string>>();
+
+            responses.Enqueue(new PagedResponse<string>
+            {
+                Items = new List<string> { "1", "2", "3", "4", "5" },
+                Meta = new Meta
+                {
+                    Cursors = new Cursors
+                    {
+                        Before = "1"
+                    },
+                    Limit = 5
+                }
+            });
+
+            responses.Enqueue(new PagedResponse<string>
+            {
+                Items = new List<string>(),
+                Meta = new Meta
+                {
+                    Cursors = new Cursors(),
+                    Limit = 5
+                }
+            });
+
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = _ =>
+            {
+                return Task.FromResult(responses.Dequeue());
+            };
+
+            var options = new FakePageOptions
+            {
+                Limit = 3
+            };
+
+            var subject = new Pager<FakePageOptions, string>(source, options);
+
+            // when
+            var results = await subject.GetItemsBeforeAsync();
+
+            // then
+            Assert.That(results.Count, Is.EqualTo(options.Limit));
+        }
+
+        [Test]
+        public async Task BeforeLimitsItemsReturnedAcrossPages()
+        {
+            // given
+            var responses = new Queue<PagedResponse<string>>();
+
+            responses.Enqueue(new PagedResponse<string>
+            {
+                Items = new List<string> { "4", "5" },
+                Meta = new Meta
+                {
+                    Cursors = new Cursors
+                    {
+                        Before = "4"
+                    },
+                    Limit = 2
+                }
+            });
+
+            responses.Enqueue(new PagedResponse<string>
+            {
+                Items = new List<string> { "2", "3" },
+                Meta = new Meta
+                {
+                    Cursors = new Cursors
+                    {
+                        Before = "2"
+                    },
+                    Limit = 2
+                }
+            });
+
+            responses.Enqueue(new PagedResponse<string>
+            {
+                Items = new List<string> { "1" },
+                Meta = new Meta
+                {
+                    Cursors = new Cursors(),
+                    Limit = 2
+                }
+            });
+
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = _ =>
+            {
+                return Task.FromResult(responses.Dequeue());
+            };
+
+            var options = new FakePageOptions
+            {
+                Limit = 4
+            };
+
+            var subject = new Pager<FakePageOptions, string>(source, options);
+
+            // when
+            var results = await subject.GetItemsBeforeAsync();
+
+            // then
+            Assert.That(results.Count, Is.EqualTo(options.Limit));
+        }
+
+        [Test]
+        public async Task AfterLimitsItemsReturned()
+        {
+            // given
+            var responses = new Queue<PagedResponse<string>>();
+
+            responses.Enqueue(new PagedResponse<string>
+            {
+                Items = new List<string> { "1", "2", "3", "4", "5" },
+                Meta = new Meta
+                {
+                    Cursors = new Cursors
+                    {
+                        After = "5"
+                    },
+                    Limit = 5
+                }
+            });
+
+            responses.Enqueue(new PagedResponse<string>
+            {
+                Items = new List<string>(),
+                Meta = new Meta
+                {
+                    Cursors = new Cursors(),
+                    Limit = 5
+                }
+            });
+
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = _ =>
+            {
+                return Task.FromResult(responses.Dequeue());
+            };
+
+            var options = new FakePageOptions
+            {
+                Limit = 3
+            };
+
+            var subject = new Pager<FakePageOptions, string>(source, options);
+
+            // when
+            var results = await subject.GetItemsAfterAsync();
+
+            // then
+            Assert.That(results.Count, Is.EqualTo(options.Limit));
+        }
+
+        [Test]
+        public async Task AfterLimitsItemsReturnedAcrossPages()
+        {
+            // given
+            var responses = new Queue<PagedResponse<string>>();
+
+            responses.Enqueue(new PagedResponse<string>
+            {
+                Items = new List<string> { "1", "2" },
+                Meta = new Meta
+                {
+                    Cursors = new Cursors
+                    {
+                        After = "2"
+                    },
+                    Limit = 2
+                }
+            });
+
+            responses.Enqueue(new PagedResponse<string>
+            {
+                Items = new List<string> { "3", "4" },
+                Meta = new Meta
+                {
+                    Cursors = new Cursors
+                    {
+                        After = "4"
+                    },
+                    Limit = 2
+                }
+            });
+
+            responses.Enqueue(new PagedResponse<string>
+            {
+                Items = new List<string> { "5" },
+                Meta = new Meta
+                {
+                    Cursors = new Cursors(),
+                    Limit = 2
+                }
+            });
+
+            Func<FakePageOptions, Task<PagedResponse<string>>> source = _ =>
+            {
+                return Task.FromResult(responses.Dequeue());
+            };
+
+            var options = new FakePageOptions
+            {
+                Limit = 4
+            };
+
+            var subject = new Pager<FakePageOptions, string>(source, options);
+
+            // when
+            var results = await subject.GetItemsAfterAsync();
+
+            // then
+            Assert.That(results.Count, Is.EqualTo(options.Limit));
         }
     }
 

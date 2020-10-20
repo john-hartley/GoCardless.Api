@@ -229,7 +229,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Enabled, Is.EqualTo(creditorBankAccount.Enabled));
         }
 
-        [Test, Explicit("Can end up performing lots of calls.")]
+        [Test]
         [Category(TestCategory.Paging)]
         public async Task PagesThroughCreditorBankAccounts()
         {
@@ -238,14 +238,13 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             var options = new GetCreditorBankAccountsOptions
             {
-                After = firstId,
-                Limit = 1,
+                After = firstId
             };
 
             // when
             var result = await _subject
-                .PageFrom(options)
-                .AndGetAllAfterAsync();
+                .PageUsing(options)
+                .GetItemsAfterAsync();
 
             // then
             Assert.That(result.Count, Is.GreaterThan(1));
