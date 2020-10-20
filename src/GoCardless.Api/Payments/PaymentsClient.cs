@@ -99,7 +99,7 @@ namespace GoCardlessApi.Payments
             });
         }
 
-        public IPager<GetPaymentsOptions, Payment> PageFrom(GetPaymentsOptions options)
+        public IPager<GetPaymentsOptions, Payment> PageUsing(GetPaymentsOptions options)
         {
             return new Pager<GetPaymentsOptions, Payment>(GetPageAsync, options);
         }

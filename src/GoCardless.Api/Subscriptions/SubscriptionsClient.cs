@@ -99,7 +99,7 @@ namespace GoCardlessApi.Subscriptions
             });
         }
 
-        public IPager<GetSubscriptionsOptions, Subscription> PageFrom(GetSubscriptionsOptions options)
+        public IPager<GetSubscriptionsOptions, Subscription> PageUsing(GetSubscriptionsOptions options)
         {
             return new Pager<GetSubscriptionsOptions, Subscription>(GetPageAsync, options);
         }

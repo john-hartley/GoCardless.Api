@@ -99,7 +99,7 @@ namespace GoCardlessApi.CreditorBankAccounts
             });
         }
 
-        public IPager<GetCreditorBankAccountsOptions, CreditorBankAccount> PageFrom(GetCreditorBankAccountsOptions options)
+        public IPager<GetCreditorBankAccountsOptions, CreditorBankAccount> PageUsing(GetCreditorBankAccountsOptions options)
         {
             return new Pager<GetCreditorBankAccountsOptions, CreditorBankAccount>(GetPageAsync, options);
         }

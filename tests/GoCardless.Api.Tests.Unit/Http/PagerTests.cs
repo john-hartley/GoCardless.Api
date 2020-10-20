@@ -84,7 +84,7 @@ namespace GoCardlessApi.Tests.Unit.Http
             var subject = new Pager<FakePageOptions, string>(source, options);
 
             // when
-            AsyncTestDelegate test = () => subject.AndGetAllBeforeAsync(cancellationSource.Token);
+            AsyncTestDelegate test = () => subject.GetItemsBeforeAsync(cancellationSource.Token);
 
             // then
             Assert.That(test, Throws.InstanceOf<OperationCanceledException>());
@@ -116,7 +116,7 @@ namespace GoCardlessApi.Tests.Unit.Http
             var subject = new Pager<FakePageOptions, string>(source, options);
 
             // when
-            AsyncTestDelegate test = () => subject.AndGetAllAfterAsync(cancellationSource.Token);
+            AsyncTestDelegate test = () => subject.GetItemsAfterAsync(cancellationSource.Token);
 
             // then
             Assert.That(test, Throws.InstanceOf<OperationCanceledException>());
@@ -164,7 +164,7 @@ namespace GoCardlessApi.Tests.Unit.Http
             var subject = new Pager<FakePageOptions, string>(source, options);
 
             // when
-            var results = await subject.AndGetAllBeforeAsync();
+            var results = await subject.GetItemsBeforeAsync();
 
             // then
             Assert.That(results.Count, Is.EqualTo(options.Limit));
@@ -225,7 +225,7 @@ namespace GoCardlessApi.Tests.Unit.Http
             var subject = new Pager<FakePageOptions, string>(source, options);
 
             // when
-            var results = await subject.AndGetAllBeforeAsync();
+            var results = await subject.GetItemsBeforeAsync();
 
             // then
             Assert.That(results.Count, Is.EqualTo(options.Limit));
@@ -273,7 +273,7 @@ namespace GoCardlessApi.Tests.Unit.Http
             var subject = new Pager<FakePageOptions, string>(source, options);
 
             // when
-            var results = await subject.AndGetAllAfterAsync();
+            var results = await subject.GetItemsAfterAsync();
 
             // then
             Assert.That(results.Count, Is.EqualTo(options.Limit));
@@ -334,7 +334,7 @@ namespace GoCardlessApi.Tests.Unit.Http
             var subject = new Pager<FakePageOptions, string>(source, options);
 
             // when
-            var results = await subject.AndGetAllAfterAsync();
+            var results = await subject.GetItemsAfterAsync();
 
             // then
             Assert.That(results.Count, Is.EqualTo(options.Limit));

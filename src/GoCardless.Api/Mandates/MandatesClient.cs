@@ -99,7 +99,7 @@ namespace GoCardlessApi.Mandates
             });
         }
 
-        public IPager<GetMandatesOptions, Mandate> PageFrom(GetMandatesOptions options)
+        public IPager<GetMandatesOptions, Mandate> PageUsing(GetMandatesOptions options)
         {
             return new Pager<GetMandatesOptions, Mandate>(GetPageAsync, options);
         }

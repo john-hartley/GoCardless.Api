@@ -30,7 +30,7 @@ namespace GoCardlessApi.Http
             _options = (TOptions)options.Clone();
         }
 
-        public async Task<IReadOnlyList<TResource>> AndGetAllBeforeAsync(CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<TResource>> GetItemsBeforeAsync(CancellationToken cancellationToken = default)
         {
             var options = (TOptions)_options.Clone();
             var maxItems = options.Limit;
@@ -59,7 +59,7 @@ namespace GoCardlessApi.Http
             return results;
         }
 
-        public async Task<IReadOnlyList<TResource>> AndGetAllAfterAsync(CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<TResource>> GetItemsAfterAsync(CancellationToken cancellationToken = default)
         {
             var options = (TOptions)_options.Clone();
             var maxItems = options.Limit;

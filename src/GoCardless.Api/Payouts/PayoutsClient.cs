@@ -60,7 +60,7 @@ namespace GoCardlessApi.Payouts
             });
         }
 
-        public IPager<GetPayoutsOptions, Payout> PageFrom(GetPayoutsOptions options)
+        public IPager<GetPayoutsOptions, Payout> PageUsing(GetPayoutsOptions options)
         {
             return new Pager<GetPayoutsOptions, Payout>(GetPageAsync, options);
         }

@@ -78,7 +78,7 @@ namespace GoCardlessApi.Refunds
             });
         }
 
-        public IPager<GetRefundsOptions, Refund> PageFrom(GetRefundsOptions options)
+        public IPager<GetRefundsOptions, Refund> PageUsing(GetRefundsOptions options)
         {
             return new Pager<GetRefundsOptions, Refund>(GetPageAsync, options);
         }

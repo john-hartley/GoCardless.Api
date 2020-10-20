@@ -60,7 +60,7 @@ namespace GoCardlessApi.Creditors
             });
         }
 
-        public IPager<GetCreditorsOptions, Creditor> PageFrom(GetCreditorsOptions options)
+        public IPager<GetCreditorsOptions, Creditor> PageUsing(GetCreditorsOptions options)
         {
             return new Pager<GetCreditorsOptions, Creditor>(GetPageAsync, options);
         }

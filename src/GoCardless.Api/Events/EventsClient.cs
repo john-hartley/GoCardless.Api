@@ -60,7 +60,7 @@ namespace GoCardlessApi.Events
             });
         }
 
-        public IPager<GetEventsOptions, Event> PageFrom(GetEventsOptions options)
+        public IPager<GetEventsOptions, Event> PageUsing(GetEventsOptions options)
         {
             return new Pager<GetEventsOptions, Event>(GetPageAsync, options);
         }
