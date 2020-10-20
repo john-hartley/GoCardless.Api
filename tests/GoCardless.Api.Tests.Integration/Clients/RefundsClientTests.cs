@@ -209,10 +209,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         public async Task PagesThroughRefunds()
         {
             // given
-            var options = new GetRefundsOptions
-            {
-                Limit = 1
-            };
+            var options = new GetRefundsOptions();
 
             // when
             var result = await _subject
