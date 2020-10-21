@@ -10,6 +10,7 @@ namespace GoCardlessApi.Customers
         public string AddressLine2 { get; set; }
         public string AddressLine3 { get; set; }
         public string City { get; set; }
+        public string CompanyName { get; set; }
         public string CountryCode { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public string DanishIdentityNumber { get; set; }

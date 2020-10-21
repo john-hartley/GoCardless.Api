@@ -55,6 +55,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.AddressLine2, Is.EqualTo(options.AddressLine2));
             Assert.That(actual.AddressLine3, Is.EqualTo(options.AddressLine3));
             Assert.That(actual.City, Is.EqualTo(options.City));
+            Assert.That(actual.CompanyName, Is.EqualTo(options.CompanyName));
             Assert.That(actual.CountryCode, Is.EqualTo(options.CountryCode));
             Assert.That(actual.CreatedAt, Is.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(actual.DanishIdentityNumber, Is.EqualTo(options.DanishIdentityNumber));
