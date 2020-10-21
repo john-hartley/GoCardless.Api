@@ -1,16 +1,15 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.CustomerBankAccounts
+namespace GoCardlessApi.CustomerBankAccounts
 {
-    public interface ICustomerBankAccountsClient
+    public interface ICustomerBankAccountsClient : IPageable<GetCustomerBankAccountsOptions, CustomerBankAccount>
     {
-        IPagerBuilder<GetCustomerBankAccountsRequest, CustomerBankAccount> BuildPager();
-        Task<Response<CustomerBankAccount>> CreateAsync(CreateCustomerBankAccountRequest request);
-        Task<Response<CustomerBankAccount>> DisableAsync(DisableCustomerBankAccountRequest request);
+        Task<Response<CustomerBankAccount>> CreateAsync(CreateCustomerBankAccountOptions options);
+        Task<Response<CustomerBankAccount>> DisableAsync(DisableCustomerBankAccountOptions options);
         Task<Response<CustomerBankAccount>> ForIdAsync(string id);
         Task<PagedResponse<CustomerBankAccount>> GetPageAsync();
-        Task<PagedResponse<CustomerBankAccount>> GetPageAsync(GetCustomerBankAccountsRequest request);
-        Task<Response<CustomerBankAccount>> UpdateAsync(UpdateCustomerBankAccountRequest request);
+        Task<PagedResponse<CustomerBankAccount>> GetPageAsync(GetCustomerBankAccountsOptions options);
+        Task<Response<CustomerBankAccount>> UpdateAsync(UpdateCustomerBankAccountOptions options);
     }
 }

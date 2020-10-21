@@ -1,59 +1,97 @@
-﻿using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Http;
+﻿using Flurl.Http;
+using GoCardlessApi.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.MandateImports
+namespace GoCardlessApi.MandateImports
 {
-    public class MandateImportsClient : ApiClientBase, IMandateImportsClient
+    public class MandateImportsClient : IMandateImportsClient
     {
-        public MandateImportsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly ApiClient _apiClient;
 
-        public Task<Response<MandateImport>> CancelAsync(string id)
+        public MandateImportsClient(GoCardlessConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            _apiClient = new ApiClient(configuration);
+        }
+
+        public async Task<Response<MandateImport>> CancelAsync(CancelMandateImportOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            if (string.IsNullOrWhiteSpace(options.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
+            }
+
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"mandate_imports/{options.Id}/actions/cancel")
+                    .PostJsonAsync(new { })
+                    .ReceiveJson<Response<MandateImport>>();
+            });
+        }
+
+        public async Task<Response<MandateImport>> CreateAsync(CreateMandateImportOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            return await _apiClient.IdempotentRequestAsync(
+                options.IdempotencyKey,
+                request =>
+                {
+                    return request
+                        .AppendPathSegment("mandate_imports")
+                        .PostJsonAsync(new { mandate_imports = options })
+                        .ReceiveJson<Response<MandateImport>>();
+                });
+        }
+
+        public async Task<Response<MandateImport>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return PostAsync<Response<MandateImport>>(
-                $"mandate_imports/{id}/actions/cancel"
-            );
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"mandate_imports/{id}")
+                    .GetJsonAsync<Response<MandateImport>>();
+            });
         }
 
-        public Task<Response<MandateImport>> CreateAsync(CreateMandateImportRequest request)
+        public async Task<Response<MandateImport>> SubmitAsync(SubmitMandateImportOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return PostAsync<Response<MandateImport>>(
-                "mandate_imports",
-                new { mandate_imports = request }
-            );
-        }
-
-        public Task<Response<MandateImport>> ForIdAsync(string id)
-        {
-            if (string.IsNullOrWhiteSpace(id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return GetAsync<Response<MandateImport>>($"mandate_imports/{id}");
-        }
-
-        public Task<Response<MandateImport>> SubmitAsync(string id)
-        {
-            if (string.IsNullOrWhiteSpace(id))
+            return await _apiClient.RequestAsync(request =>
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
-            }
-
-            return PostAsync<Response<MandateImport>>(
-                $"mandate_imports/{id}/actions/submit"
-            );
+                return request
+                    .AppendPathSegment($"mandate_imports/{options.Id}/actions/submit")
+                    .PostJsonAsync(new { })
+                    .ReceiveJson<Response<MandateImport>>();
+            });
         }
     }
 }

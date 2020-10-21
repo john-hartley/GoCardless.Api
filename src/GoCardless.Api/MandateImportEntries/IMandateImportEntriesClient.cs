@@ -1,12 +1,11 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.MandateImportEntries
+namespace GoCardlessApi.MandateImportEntries
 {
-    public interface IMandateImportEntriesClient
+    public interface IMandateImportEntriesClient : IPageable<GetMandateImportEntriesOptions, MandateImportEntry>
     {
-        Task<Response<MandateImportEntry>> AddAsync(AddMandateImportEntryRequest request);
-        IPagerBuilder<GetMandateImportEntriesRequest, MandateImportEntry> BuildPager();
-        Task<PagedResponse<MandateImportEntry>> GetPageAsync(GetMandateImportEntriesRequest request);
+        Task<Response<MandateImportEntry>> CreateAsync(CreateMandateImportEntryOptions options);
+        Task<PagedResponse<MandateImportEntry>> GetPageAsync(GetMandateImportEntriesOptions options);
     }
 }

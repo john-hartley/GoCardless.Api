@@ -1,17 +1,16 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Mandates
+namespace GoCardlessApi.Mandates
 {
-    public interface IMandatesClient
+    public interface IMandatesClient : IPageable<GetMandatesOptions, Mandate>
     {
-        IPagerBuilder<GetMandatesRequest, Mandate> BuildPager();
-        Task<Response<Mandate>> CancelAsync(CancelMandateRequest request);
-        Task<Response<Mandate>> CreateAsync(CreateMandateRequest request);
+        Task<Response<Mandate>> CancelAsync(CancelMandateOptions options);
+        Task<Response<Mandate>> CreateAsync(CreateMandateOptions options);
         Task<Response<Mandate>> ForIdAsync(string id);
         Task<PagedResponse<Mandate>> GetPageAsync();
-        Task<PagedResponse<Mandate>> GetPageAsync(GetMandatesRequest request);
-        Task<Response<Mandate>> ReinstateAsync(ReinstateMandateRequest request);
-        Task<Response<Mandate>> UpdateAsync(UpdateMandateRequest request);
+        Task<PagedResponse<Mandate>> GetPageAsync(GetMandatesOptions options);
+        Task<Response<Mandate>> ReinstateAsync(ReinstateMandateOptions options);
+        Task<Response<Mandate>> UpdateAsync(UpdateMandateOptions options);
     }
 }

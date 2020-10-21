@@ -1,60 +1,89 @@
-﻿using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Http;
+﻿using Flurl.Http;
+using GoCardlessApi.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Creditors
+namespace GoCardlessApi.Creditors
 {
-    public class CreditorsClient : ApiClientBase, ICreditorsClient
+    public class CreditorsClient : ICreditorsClient
     {
-        public CreditorsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly ApiClient _apiClient;
 
-        public IPagerBuilder<GetCreditorsRequest, Creditor> BuildPager()
+        public CreditorsClient(GoCardlessConfiguration configuration)
         {
-            return new Pager<GetCreditorsRequest, Creditor>(GetPageAsync);
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            _apiClient = new ApiClient(configuration);
         }
 
-        public Task<Response<Creditor>> ForIdAsync(string id)
+        public async Task<Response<Creditor>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Creditor>>($"creditors/{id}");
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"creditors/{id}")
+                    .GetJsonAsync<Response<Creditor>>();
+            });
         }
 
-        public Task<PagedResponse<Creditor>> GetPageAsync()
+        public async Task<PagedResponse<Creditor>> GetPageAsync()
         {
-            return GetAsync<PagedResponse<Creditor>>("creditors");
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("creditors")
+                    .GetJsonAsync<PagedResponse<Creditor>>();
+            });
         }
 
-        public Task<PagedResponse<Creditor>> GetPageAsync(GetCreditorsRequest request)
+        public async Task<PagedResponse<Creditor>> GetPageAsync(GetCreditorsOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<Creditor>>("creditors", request.ToReadOnlyDictionary());
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("creditors")
+                    .SetQueryParams(options.ToReadOnlyDictionary())
+                    .GetJsonAsync<PagedResponse<Creditor>>();
+            });
         }
 
-        public Task<Response<Creditor>> UpdateAsync(UpdateCreditorRequest request)
+        public IPager<GetCreditorsOptions, Creditor> PageUsing(GetCreditorsOptions options)
         {
-            if (request == null)
+            return new Pager<GetCreditorsOptions, Creditor>(GetPageAsync, options);
+        }
+
+        public async Task<Response<Creditor>> UpdateAsync(UpdateCreditorOptions options)
+        {
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PutAsync<Response<Creditor>>(
-                $"creditors/{request.Id}",
-                new { creditors = request }
-            );
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"creditors/{options.Id}")
+                    .PutJsonAsync(new { creditors = options })
+                    .ReceiveJson<Response<Creditor>>();
+            });
         }
     }
 }

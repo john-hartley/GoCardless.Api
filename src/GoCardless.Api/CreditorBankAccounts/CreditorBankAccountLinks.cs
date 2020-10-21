@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.CreditorBankAccounts
+﻿namespace GoCardlessApi.CreditorBankAccounts
 {
     public class CreditorBankAccountLinks
     {

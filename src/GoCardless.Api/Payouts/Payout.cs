@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GoCardless.Api.Payouts
+namespace GoCardlessApi.Payouts
 {
     public class Payout
     {

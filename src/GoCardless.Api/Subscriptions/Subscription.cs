@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Subscriptions
+namespace GoCardlessApi.Subscriptions
 {
     public class Subscription
     {
         public string Id { get; set; }
         public int Amount { get; set; }
         public int? AppFee { get; set; }
+        public int? Count { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public string Currency { get; set; }
         public int? DayOfMonth { get; set; }

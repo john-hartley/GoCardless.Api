@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.Creditors
+﻿namespace GoCardlessApi.Creditors
 {
     public static class VerificationStatus
     {

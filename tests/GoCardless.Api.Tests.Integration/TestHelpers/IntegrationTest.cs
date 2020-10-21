@@ -1,18 +1,16 @@
-﻿using GoCardless.Api.Core.Configuration;
-
-namespace GoCardless.Api.Tests.Integration.TestHelpers
+﻿namespace GoCardlessApi.Tests.Integration.TestHelpers
 {
     public abstract class IntegrationTest
     {
         protected readonly string _accessToken;
-        protected readonly ClientConfiguration _clientConfiguration;
+        protected readonly GoCardlessConfiguration _configuration;
         protected readonly ResourceFactory _resourceFactory;
 
         internal IntegrationTest()
         {
             _accessToken = System.Environment.GetEnvironmentVariable("GoCardlessAccessToken");
-            _clientConfiguration = ClientConfiguration.ForSandbox(_accessToken);
-            _resourceFactory = new ResourceFactory(_clientConfiguration);
+            _configuration = GoCardlessConfiguration.ForSandbox(_accessToken, false);
+            _resourceFactory = new ResourceFactory(_configuration);
         }
     }
 }

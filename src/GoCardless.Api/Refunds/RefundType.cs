@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.Refunds
+﻿namespace GoCardlessApi.Refunds
 {
     public static class RefundType
     {

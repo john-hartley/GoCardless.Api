@@ -1,42 +1,68 @@
-﻿using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Http;
+﻿using Flurl.Http;
+using GoCardlessApi.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Payouts
+namespace GoCardlessApi.Payouts
 {
-    public class PayoutsClient : ApiClientBase, IPayoutsClient
+    public class PayoutsClient : IPayoutsClient
     {
-        public PayoutsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly ApiClient _apiClient;
 
-        public IPagerBuilder<GetPayoutsRequest, Payout> BuildPager()
+        public PayoutsClient(GoCardlessConfiguration configuration)
         {
-            return new Pager<GetPayoutsRequest, Payout>(GetPageAsync);
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            _apiClient = new ApiClient(configuration);
         }
 
-        public Task<Response<Payout>> ForIdAsync(string id)
+        public async Task<Response<Payout>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Payout>>($"payouts/{id}");
-        }
-
-        public Task<PagedResponse<Payout>> GetPageAsync()
-        {
-            return GetAsync<PagedResponse<Payout>>("payouts");
-        }
-
-        public Task<PagedResponse<Payout>> GetPageAsync(GetPayoutsRequest request)
-        {
-            if (request == null)
+            return await _apiClient.RequestAsync(request =>
             {
-                throw new ArgumentNullException(nameof(request));
+                return request
+                    .AppendPathSegment($"payouts/{id}")
+                    .GetJsonAsync<Response<Payout>>();
+            });
+        }
+
+        public async Task<PagedResponse<Payout>> GetPageAsync()
+        {
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("payouts")
+                    .GetJsonAsync<PagedResponse<Payout>>();
+            });
+        }
+
+        public async Task<PagedResponse<Payout>> GetPageAsync(GetPayoutsOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<Payout>>("payouts", request.ToReadOnlyDictionary());
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("payouts")
+                    .SetQueryParams(options.ToReadOnlyDictionary())
+                    .GetJsonAsync<PagedResponse<Payout>>();
+            });
+        }
+
+        public IPager<GetPayoutsOptions, Payout> PageUsing(GetPayoutsOptions options)
+        {
+            return new Pager<GetPayoutsOptions, Payout>(GetPageAsync, options);
         }
     }
 }

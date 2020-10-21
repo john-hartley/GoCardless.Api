@@ -1,17 +1,16 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Payments
+namespace GoCardlessApi.Payments
 {
-    public interface IPaymentsClient
+    public interface IPaymentsClient : IPageable<GetPaymentsOptions, Payment>
     {
-        IPagerBuilder<GetPaymentsRequest, Payment> BuildPager();
-        Task<Response<Payment>> CancelAsync(CancelPaymentRequest request);
-        Task<Response<Payment>> CreateAsync(CreatePaymentRequest request);
+        Task<Response<Payment>> CancelAsync(CancelPaymentOptions options);
+        Task<Response<Payment>> CreateAsync(CreatePaymentOptions options);
         Task<Response<Payment>> ForIdAsync(string id);
         Task<PagedResponse<Payment>> GetPageAsync();
-        Task<PagedResponse<Payment>> GetPageAsync(GetPaymentsRequest request);
-        Task<Response<Payment>> RetryAsync(RetryPaymentRequest request);
-        Task<Response<Payment>> UpdateAsync(UpdatePaymentRequest request);
+        Task<PagedResponse<Payment>> GetPageAsync(GetPaymentsOptions options);
+        Task<Response<Payment>> RetryAsync(RetryPaymentOptions options);
+        Task<Response<Payment>> UpdateAsync(UpdatePaymentOptions options);
     }
 }

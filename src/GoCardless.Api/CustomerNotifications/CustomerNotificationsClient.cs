@@ -1,24 +1,43 @@
-﻿using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Http;
+﻿using Flurl.Http;
+using GoCardlessApi.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.CustomerNotifications
+namespace GoCardlessApi.CustomerNotifications
 {
-    public class CustomerNotificationsClient : ApiClientBase, ICustomerNotificationsClient
+    public class CustomerNotificationsClient : ICustomerNotificationsClient
     {
-        public CustomerNotificationsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly ApiClient _apiClient;
 
-        public Task<Response<CustomerNotification>> HandleAsync(string id)
+        public CustomerNotificationsClient(GoCardlessConfiguration configuration)
         {
-            if (string.IsNullOrWhiteSpace(id))
+            if (configuration == null)
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            return PostAsync<Response<CustomerNotification>>(
-                $"customer_notifications/{id}/actions/handle"
-            );
+            _apiClient = new ApiClient(configuration);
+        }
+
+        public async Task<Response<CustomerNotification>> HandleAsync(HandleCustomerNotificationOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            if (string.IsNullOrWhiteSpace(options.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
+            }
+
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"customer_notifications/{options.Id}/actions/handle")
+                    .PostJsonAsync(new { })
+                    .ReceiveJson<Response<CustomerNotification>>();
+            });
         }
     }
 }

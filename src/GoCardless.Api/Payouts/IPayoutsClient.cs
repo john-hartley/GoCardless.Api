@@ -1,13 +1,12 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Payouts
+namespace GoCardlessApi.Payouts
 {
-    public interface IPayoutsClient
+    public interface IPayoutsClient : IPageable<GetPayoutsOptions, Payout>
     {
-        IPagerBuilder<GetPayoutsRequest, Payout> BuildPager();
         Task<Response<Payout>> ForIdAsync(string id);
         Task<PagedResponse<Payout>> GetPageAsync();
-        Task<PagedResponse<Payout>> GetPageAsync(GetPayoutsRequest request);
+        Task<PagedResponse<Payout>> GetPageAsync(GetPayoutsOptions options);
     }
 }

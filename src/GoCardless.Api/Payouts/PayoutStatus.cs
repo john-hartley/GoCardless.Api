@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.Payouts
+﻿namespace GoCardlessApi.Payouts
 {
     public static class PayoutStatus
     {

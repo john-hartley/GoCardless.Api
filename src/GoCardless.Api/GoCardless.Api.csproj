@@ -4,11 +4,16 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Authors>John Hartley</Authors>
 		<Company />
-		<Description>A .NET client for the GoCardless API.</Description>
+		<Description>A fully-asynchronous client for the GoCardless API that aims to improve upon the developer experience of the official GoCardless client.</Description>
+		<PackageId>GoCardless.Api</PackageId>
 		<PackageProjectUrl>https://github.com/john-hartley/GoCardless.Api</PackageProjectUrl>
+		<PackageTags>gocardless api client payments</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/john-hartley/GoCardless.Api</RepositoryUrl>
-		<VersionPrefix>1.0.0</VersionPrefix>
-		<PackageVersion>1.0.0</PackageVersion>
+		<RepositoryType>git</RepositoryType>
+		<VersionPrefix>3.0.0</VersionPrefix>
+		<VersionSuffix>pre</VersionSuffix>
+		<RootNamespace>GoCardlessApi</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

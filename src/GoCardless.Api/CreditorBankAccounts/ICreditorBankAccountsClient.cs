@@ -1,15 +1,14 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.CreditorBankAccounts
+namespace GoCardlessApi.CreditorBankAccounts
 {
-    public interface ICreditorBankAccountsClient
+    public interface ICreditorBankAccountsClient : IPageable<GetCreditorBankAccountsOptions, CreditorBankAccount>
     {
-        IPagerBuilder<GetCreditorBankAccountsRequest, CreditorBankAccount> BuildPager();
-        Task<Response<CreditorBankAccount>> CreateAsync(CreateCreditorBankAccountRequest request);
-        Task<Response<CreditorBankAccount>> DisableAsync(DisableCreditorBankAccountRequest request);
+        Task<Response<CreditorBankAccount>> CreateAsync(CreateCreditorBankAccountOptions options);
+        Task<Response<CreditorBankAccount>> DisableAsync(DisableCreditorBankAccountOptions options);
         Task<Response<CreditorBankAccount>> ForIdAsync(string id);
         Task<PagedResponse<CreditorBankAccount>> GetPageAsync();
-        Task<PagedResponse<CreditorBankAccount>> GetPageAsync(GetCreditorBankAccountsRequest request);
+        Task<PagedResponse<CreditorBankAccount>> GetPageAsync(GetCreditorBankAccountsOptions options);
     }
 }

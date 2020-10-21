@@ -1,25 +1,38 @@
-﻿using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Http;
+﻿using Flurl.Http;
+using GoCardlessApi.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.BankDetailsLookups
+namespace GoCardlessApi.BankDetailsLookups
 {
-    public class BankDetailsLookupsClient : ApiClientBase, IBankDetailsLookupsClient
+    public class BankDetailsLookupsClient : IBankDetailsLookupsClient
     {
-        public BankDetailsLookupsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly ApiClient _apiClient;
 
-        public Task<Response<BankDetailsLookup>> LookupAsync(BankDetailsLookupRequest request)
+        public BankDetailsLookupsClient(GoCardlessConfiguration configuration)
         {
-            if (request == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            return PostAsync<Response<BankDetailsLookup>>(
-                "bank_details_lookups",
-                new { bank_details_lookups = request }
-            );
+            _apiClient = new ApiClient(configuration);
+        }
+
+        public async Task<Response<BankDetailsLookup>> LookupAsync(BankDetailsLookupOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("bank_details_lookups")
+                    .PostJsonAsync(new { bank_details_lookups = options })
+                    .ReceiveJson<Response<BankDetailsLookup>>();
+            });
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.PayoutItems
+﻿namespace GoCardlessApi.PayoutItems
 {
     public static class PayoutItemType
     {

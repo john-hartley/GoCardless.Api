@@ -1,92 +1,128 @@
-﻿using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Http;
+﻿using Flurl.Http;
+using GoCardlessApi.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Subscriptions
+namespace GoCardlessApi.Subscriptions
 {
-    public class SubscriptionsClient : ApiClientBase, ISubscriptionsClient
+    public class SubscriptionsClient : ISubscriptionsClient
     {
-        public SubscriptionsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly ApiClient _apiClient;
 
-        public IPagerBuilder<GetSubscriptionsRequest, Subscription> BuildPager()
+        public SubscriptionsClient(GoCardlessConfiguration configuration)
         {
-            return new Pager<GetSubscriptionsRequest, Subscription>(GetPageAsync);
-        }
-
-        public Task<Response<Subscription>> CancelAsync(CancelSubscriptionRequest request)
-        {
-            if (request == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
-            {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
-            }
-
-            return PostAsync<Response<Subscription>>(
-                $"subscriptions/{request.Id}/actions/cancel",
-                new { subscriptions = request }
-            );
+            _apiClient = new ApiClient(configuration);
         }
 
-        public Task<Response<Subscription>> CreateAsync(CreateSubscriptionRequest request)
+        public async Task<Response<Subscription>> CancelAsync(CancelSubscriptionOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return PostAsync<Response<Subscription>>(
-                "subscriptions",
-                new { subscriptions = request },
-                request.IdempotencyKey
-            );
+            if (string.IsNullOrWhiteSpace(options.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
+            }
+
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"subscriptions/{options.Id}/actions/cancel")
+                    .PostJsonAsync(new { subscriptions = options })
+                    .ReceiveJson<Response<Subscription>>();
+            });
         }
 
-        public Task<Response<Subscription>> ForIdAsync(string id)
+        public async Task<Response<Subscription>> CreateAsync(CreateSubscriptionOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            return await _apiClient.IdempotentRequestAsync(
+                options.IdempotencyKey,
+                request =>
+                {
+                    return request
+                        .AppendPathSegment("subscriptions")
+                        .PostJsonAsync(new { subscriptions = options })
+                        .ReceiveJson<Response<Subscription>>();
+                });
+        }
+
+        public async Task<Response<Subscription>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Subscription>>($"subscriptions/{id}");
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"subscriptions/{id}")
+                    .GetJsonAsync<Response<Subscription>>();
+            });
         }
 
-        public Task<PagedResponse<Subscription>> GetPageAsync()
+        public async Task<PagedResponse<Subscription>> GetPageAsync()
         {
-            return GetAsync<PagedResponse<Subscription>>("subscriptions");
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("subscriptions")
+                    .GetJsonAsync<PagedResponse<Subscription>>();
+            });
         }
 
-        public Task<PagedResponse<Subscription>> GetPageAsync(GetSubscriptionsRequest request)
+        public async Task<PagedResponse<Subscription>> GetPageAsync(GetSubscriptionsOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<Subscription>>("subscriptions", request.ToReadOnlyDictionary());
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("subscriptions")
+                    .SetQueryParams(options.ToReadOnlyDictionary())
+                    .GetJsonAsync<PagedResponse<Subscription>>();
+            });
         }
 
-        public Task<Response<Subscription>> UpdateAsync(UpdateSubscriptionRequest request)
+        public IPager<GetSubscriptionsOptions, Subscription> PageUsing(GetSubscriptionsOptions options)
         {
-            if (request == null)
+            return new Pager<GetSubscriptionsOptions, Subscription>(GetPageAsync, options);
+        }
+
+        public async Task<Response<Subscription>> UpdateAsync(UpdateSubscriptionOptions options)
+        {
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PutAsync<Response<Subscription>>(
-                $"subscriptions/{request.Id}",
-                new { subscriptions = request }
-            );
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"subscriptions/{options.Id}")
+                    .PutJsonAsync(new { subscriptions = options })
+                    .ReceiveJson<Response<Subscription>>();
+            });
         }
     }
 }

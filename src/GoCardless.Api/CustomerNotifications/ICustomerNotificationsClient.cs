@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using GoCardless.Api.Core.Http;
+using GoCardlessApi.Http;
 
-namespace GoCardless.Api.CustomerNotifications
+namespace GoCardlessApi.CustomerNotifications
 {
     public interface ICustomerNotificationsClient
     {
-        Task<Response<CustomerNotification>> HandleAsync(string id);
+        Task<Response<CustomerNotification>> HandleAsync(HandleCustomerNotificationOptions options);
     }
 }

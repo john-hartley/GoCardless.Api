@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GoCardless.Api.CustomerNotifications
+namespace GoCardlessApi.CustomerNotifications
 {
     public class CustomerNotification
     {

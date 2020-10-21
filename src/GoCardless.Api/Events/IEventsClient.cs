@@ -1,13 +1,12 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Events
+namespace GoCardlessApi.Events
 {
-    public interface IEventsClient
+    public interface IEventsClient : IPageable<GetEventsOptions, Event>
     {
-        IPagerBuilder<GetEventsRequest, Event> BuildPager();
         Task<Response<Event>> ForIdAsync(string id);
         Task<PagedResponse<Event>> GetPageAsync();
-        Task<PagedResponse<Event>> GetPageAsync(GetEventsRequest request);
+        Task<PagedResponse<Event>> GetPageAsync(GetEventsOptions options);
     }
 }

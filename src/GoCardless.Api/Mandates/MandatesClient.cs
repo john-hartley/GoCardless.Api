@@ -1,110 +1,149 @@
-﻿using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Http;
+﻿using Flurl.Http;
+using GoCardlessApi.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Mandates
+namespace GoCardlessApi.Mandates
 {
-    public class MandatesClient : ApiClientBase, IMandatesClient
+    public class MandatesClient : IMandatesClient
     {
-        public MandatesClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly ApiClient _apiClient;
 
-        public IPagerBuilder<GetMandatesRequest, Mandate> BuildPager()
+        public MandatesClient(GoCardlessConfiguration configuration)
         {
-            return new Pager<GetMandatesRequest, Mandate>(GetPageAsync);
-        }
-
-        public Task<Response<Mandate>> CancelAsync(CancelMandateRequest request)
-        {
-            if (request == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
-            {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
-            }
-
-            return PostAsync<Response<Mandate>>(
-                $"mandates/{request.Id}/actions/cancel",
-                new { mandates = request }
-            );
+            _apiClient = new ApiClient(configuration);
         }
 
-        public Task<Response<Mandate>> CreateAsync(CreateMandateRequest request)
+        public async Task<Response<Mandate>> CancelAsync(CancelMandateOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return PostAsync<Response<Mandate>>(
-                "mandates",
-                new { mandates = request },
-                request.IdempotencyKey
-            );
+            if (string.IsNullOrWhiteSpace(options.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
+            }
+
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"mandates/{options.Id}/actions/cancel")
+                    .PostJsonAsync(new { mandates = options })
+                    .ReceiveJson<Response<Mandate>>();
+            });
         }
 
-        public Task<Response<Mandate>> ForIdAsync(string id)
+        public async Task<Response<Mandate>> CreateAsync(CreateMandateOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            return await _apiClient.IdempotentRequestAsync(
+                options.IdempotencyKey,
+                request =>
+                {
+                    return request
+                        .AppendPathSegment("mandates")
+                        .PostJsonAsync(new { mandates = options })
+                        .ReceiveJson<Response<Mandate>>();
+                });
+        }
+
+        public async Task<Response<Mandate>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Mandate>>($"mandates/{id}");
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"mandates/{id}")
+                    .GetJsonAsync<Response<Mandate>>();
+            });
         }
 
-        public Task<PagedResponse<Mandate>> GetPageAsync()
+        public async Task<PagedResponse<Mandate>> GetPageAsync()
         {
-            return GetAsync<PagedResponse<Mandate>>("mandates");
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("mandates")
+                    .GetJsonAsync<PagedResponse<Mandate>>();
+            });
         }
 
-        public Task<PagedResponse<Mandate>> GetPageAsync(GetMandatesRequest request)
+        public async Task<PagedResponse<Mandate>> GetPageAsync(GetMandatesOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<Mandate>>("mandates", request.ToReadOnlyDictionary());
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("mandates")
+                    .SetQueryParams(options.ToReadOnlyDictionary())
+                    .GetJsonAsync<PagedResponse<Mandate>>();
+            });
         }
 
-        public Task<Response<Mandate>> ReinstateAsync(ReinstateMandateRequest request)
+        public IPager<GetMandatesOptions, Mandate> PageUsing(GetMandatesOptions options)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            if (string.IsNullOrWhiteSpace(request.Id))
-            {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
-            }
-
-            return PostAsync<Response<Mandate>>(
-                $"mandates/{request.Id}/actions/reinstate",
-                new { mandates = request }
-            );
+            return new Pager<GetMandatesOptions, Mandate>(GetPageAsync, options);
         }
 
-        public Task<Response<Mandate>> UpdateAsync(UpdateMandateRequest request)
+        public async Task<Response<Mandate>> ReinstateAsync(ReinstateMandateOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PutAsync<Response<Mandate>>(
-                $"mandates/{request.Id}",
-                new { mandates = request }
-            );
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"mandates/{options.Id}/actions/reinstate")
+                    .PostJsonAsync(new { mandates = options })
+                    .ReceiveJson<Response<Mandate>>();
+            });
+        }
+
+        public async Task<Response<Mandate>> UpdateAsync(UpdateMandateOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            if (string.IsNullOrWhiteSpace(options.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
+            }
+
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"mandates/{options.Id}")
+                    .PutJsonAsync(new { mandates = options })
+                    .ReceiveJson<Response<Mandate>>();
+            });
         }
     }
 }

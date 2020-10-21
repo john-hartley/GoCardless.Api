@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Customers
+namespace GoCardlessApi.Customers
 {
     public class Customer
     {
@@ -10,6 +10,7 @@ namespace GoCardless.Api.Customers
         public string AddressLine2 { get; set; }
         public string AddressLine3 { get; set; }
         public string City { get; set; }
+        public string CompanyName { get; set; }
         public string CountryCode { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public string DanishIdentityNumber { get; set; }

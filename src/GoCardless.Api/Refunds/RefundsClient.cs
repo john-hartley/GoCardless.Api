@@ -1,74 +1,107 @@
-﻿using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Http;
+﻿using Flurl.Http;
+using GoCardlessApi.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Refunds
+namespace GoCardlessApi.Refunds
 {
-    public class RefundsClient : ApiClientBase, IRefundsClient
+    public class RefundsClient : IRefundsClient
     {
-        public RefundsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly ApiClient _apiClient;
 
-        public IPagerBuilder<GetRefundsRequest, Refund> BuildPager()
+        public RefundsClient(GoCardlessConfiguration configuration)
         {
-            return new Pager<GetRefundsRequest, Refund>(GetPageAsync);
-        }
-
-        public Task<Response<Refund>> CreateAsync(CreateRefundRequest request)
-        {
-            if (request == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(configuration));
             }
-            
-            return PostAsync<Response<Refund>>(
-                "refunds",
-                new { refunds = request },
-                request.IdempotencyKey
-            );
+
+            _apiClient = new ApiClient(configuration);
         }
 
-        public Task<Response<Refund>> ForIdAsync(string id)
+        public async Task<Response<Refund>> CreateAsync(CreateRefundOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            return await _apiClient.IdempotentRequestAsync(
+                options.IdempotencyKey,
+                request =>
+                {
+                    return request
+                        .AppendPathSegment("refunds")
+                        .PostJsonAsync(new { refunds = options })
+                        .ReceiveJson<Response<Refund>>();
+                });
+        }
+
+        public async Task<Response<Refund>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Refund>>($"refunds/{id}");
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"refunds/{id}")
+                    .GetJsonAsync<Response<Refund>>();
+            });
         }
 
-        public Task<PagedResponse<Refund>> GetPageAsync()
+        public async Task<PagedResponse<Refund>> GetPageAsync()
         {
-            return GetAsync<PagedResponse<Refund>>("refunds");
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("refunds")
+                    .GetJsonAsync<PagedResponse<Refund>>();
+            });
         }
 
-        public Task<PagedResponse<Refund>> GetPageAsync(GetRefundsRequest request)
+        public async Task<PagedResponse<Refund>> GetPageAsync(GetRefundsOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<Refund>>("refunds", request.ToReadOnlyDictionary());
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("refunds")
+                    .SetQueryParams(options.ToReadOnlyDictionary())
+                    .GetJsonAsync<PagedResponse<Refund>>();
+            });
         }
 
-        public Task<Response<Refund>> UpdateAsync(UpdateRefundRequest request)
+        public IPager<GetRefundsOptions, Refund> PageUsing(GetRefundsOptions options)
         {
-            if (request == null)
+            return new Pager<GetRefundsOptions, Refund>(GetPageAsync, options);
+        }
+
+        public async Task<Response<Refund>> UpdateAsync(UpdateRefundOptions options)
+        {
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PutAsync<Response<Refund>>(
-                $"refunds/{request.Id}",
-                new { refunds = request }
-            );
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"refunds/{options.Id}")
+                    .PutJsonAsync(new { refunds = options })
+                    .ReceiveJson<Response<Refund>>();
+            });
         }
     }
 }

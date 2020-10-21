@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GoCardless.Api.Subscriptions
+namespace GoCardlessApi.Subscriptions
 {
     public class UpcomingPayment
     {

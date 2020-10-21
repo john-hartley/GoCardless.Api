@@ -1,76 +1,107 @@
-﻿using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Http;
+﻿using Flurl.Http;
+using GoCardlessApi.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.CreditorBankAccounts
+namespace GoCardlessApi.CreditorBankAccounts
 {
-    public class CreditorBankAccountsClient : ApiClientBase, ICreditorBankAccountsClient
+    public class CreditorBankAccountsClient : ICreditorBankAccountsClient
     {
-        public CreditorBankAccountsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly ApiClient _apiClient;
 
-        public IPagerBuilder<GetCreditorBankAccountsRequest, CreditorBankAccount> BuildPager()
+        public CreditorBankAccountsClient(GoCardlessConfiguration configuration)
         {
-            return new Pager<GetCreditorBankAccountsRequest, CreditorBankAccount>(GetPageAsync);
-        }
-
-        public Task<Response<CreditorBankAccount>> CreateAsync(CreateCreditorBankAccountRequest request)
-        {
-            if (request == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            return PostAsync<Response<CreditorBankAccount>>(
-                "creditor_bank_accounts",
-                new { creditor_bank_accounts = request },
-                request.IdempotencyKey
-            );
+            _apiClient = new ApiClient(configuration);
         }
 
-        public Task<Response<CreditorBankAccount>> DisableAsync(DisableCreditorBankAccountRequest request)
+        public async Task<Response<CreditorBankAccount>> CreateAsync(CreateCreditorBankAccountOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
-            {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
-            }
-
-            return PostAsync<Response<CreditorBankAccount>>(
-                $"creditor_bank_accounts/{request.Id}/actions/disable"
-            );
+            return await _apiClient.IdempotentRequestAsync(
+                options.IdempotencyKey,
+                request =>
+                {
+                    return request
+                        .AppendPathSegment("creditor_bank_accounts")
+                        .PostJsonAsync(new { creditor_bank_accounts = options })
+                        .ReceiveJson<Response<CreditorBankAccount>>();
+                });
         }
 
-        public Task<Response<CreditorBankAccount>> ForIdAsync(string id)
+        public async Task<Response<CreditorBankAccount>> DisableAsync(DisableCreditorBankAccountOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            if (string.IsNullOrWhiteSpace(options.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
+            }
+
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"creditor_bank_accounts/{options.Id}/actions/disable")
+                    .PostJsonAsync(new { })
+                    .ReceiveJson<Response<CreditorBankAccount>>();
+            });
+        }
+
+        public async Task<Response<CreditorBankAccount>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<CreditorBankAccount>>($"creditor_bank_accounts/{id}");
-        }
-
-        public Task<PagedResponse<CreditorBankAccount>> GetPageAsync()
-        {
-            return GetAsync<PagedResponse<CreditorBankAccount>>("creditor_bank_accounts");
-        }
-
-        public Task<PagedResponse<CreditorBankAccount>> GetPageAsync(GetCreditorBankAccountsRequest request)
-        {
-            if (request == null)
+            return await _apiClient.RequestAsync(request =>
             {
-                throw new ArgumentNullException(nameof(request));
+                return request
+                    .AppendPathSegment($"creditor_bank_accounts/{id}")
+                    .GetJsonAsync<Response<CreditorBankAccount>>();
+            });
+        }
+
+        public async Task<PagedResponse<CreditorBankAccount>> GetPageAsync()
+        {
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("creditor_bank_accounts")
+                    .GetJsonAsync<PagedResponse<CreditorBankAccount>>();
+            });
+        }
+
+        public async Task<PagedResponse<CreditorBankAccount>> GetPageAsync(GetCreditorBankAccountsOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<CreditorBankAccount>>(
-                "creditor_bank_accounts",
-                request.ToReadOnlyDictionary()
-            );
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("creditor_bank_accounts")
+                    .SetQueryParams(options.ToReadOnlyDictionary())
+                    .GetJsonAsync<PagedResponse<CreditorBankAccount>>();
+            });
+        }
+
+        public IPager<GetCreditorBankAccountsOptions, CreditorBankAccount> PageUsing(GetCreditorBankAccountsOptions options)
+        {
+            return new Pager<GetCreditorBankAccountsOptions, CreditorBankAccount>(GetPageAsync, options);
         }
     }
 }

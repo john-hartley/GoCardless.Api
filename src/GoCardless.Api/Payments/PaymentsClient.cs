@@ -1,110 +1,149 @@
-﻿using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Http;
+﻿using Flurl.Http;
+using GoCardlessApi.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Payments
+namespace GoCardlessApi.Payments
 {
-    public class PaymentsClient : ApiClientBase, IPaymentsClient
+    public class PaymentsClient : IPaymentsClient
     {
-        public PaymentsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly ApiClient _apiClient;
 
-        public IPagerBuilder<GetPaymentsRequest, Payment> BuildPager()
+        public PaymentsClient(GoCardlessConfiguration configuration)
         {
-            return new Pager<GetPaymentsRequest, Payment>(GetPageAsync);
-        }
-
-        public Task<Response<Payment>> CancelAsync(CancelPaymentRequest request)
-        {
-            if (request == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
-            {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
-            }
-
-            return PostAsync<Response<Payment>>(
-                $"payments/{request.Id}/actions/cancel",
-                new { payments = request }
-            );
+            _apiClient = new ApiClient(configuration);
         }
 
-        public Task<Response<Payment>> CreateAsync(CreatePaymentRequest request)
+        public async Task<Response<Payment>> CancelAsync(CancelPaymentOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return PostAsync<Response<Payment>>(
-                "payments",
-                new { payments = request },
-                request.IdempotencyKey
-            );
+            if (string.IsNullOrWhiteSpace(options.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
+            }
+
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"payments/{options.Id}/actions/cancel")
+                    .PostJsonAsync(new { payments = options })
+                    .ReceiveJson<Response<Payment>>();
+            });
         }
 
-        public Task<Response<Payment>> ForIdAsync(string id)
+        public async Task<Response<Payment>> CreateAsync(CreatePaymentOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            return await _apiClient.IdempotentRequestAsync(
+                options.IdempotencyKey,
+                request =>
+                {
+                    return request
+                        .AppendPathSegment("payments")
+                        .PostJsonAsync(new { payments = options })
+                        .ReceiveJson<Response<Payment>>();
+                });
+        }
+
+        public async Task<Response<Payment>> ForIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return GetAsync<Response<Payment>>($"payments/{id}");
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"payments/{id}")
+                    .GetJsonAsync<Response<Payment>>();
+            });
         }
 
-        public Task<PagedResponse<Payment>> GetPageAsync()
+        public async Task<PagedResponse<Payment>> GetPageAsync()
         {
-            return GetAsync<PagedResponse<Payment>>("payments");
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("payments")
+                    .GetJsonAsync<PagedResponse<Payment>>();
+            });
         }
 
-        public Task<PagedResponse<Payment>> GetPageAsync(GetPaymentsRequest request)
+        public async Task<PagedResponse<Payment>> GetPageAsync(GetPaymentsOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return GetAsync<PagedResponse<Payment>>("payments", request.ToReadOnlyDictionary());
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("payments")
+                    .SetQueryParams(options.ToReadOnlyDictionary())
+                    .GetJsonAsync<PagedResponse<Payment>>();
+            });
         }
 
-        public Task<Response<Payment>> RetryAsync(RetryPaymentRequest request)
+        public IPager<GetPaymentsOptions, Payment> PageUsing(GetPaymentsOptions options)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            if (string.IsNullOrWhiteSpace(request.Id))
-            {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
-            }
-
-            return PostAsync<Response<Payment>>(
-                $"payments/{request.Id}/actions/retry",
-                new { payments = request }
-            );
+            return new Pager<GetPaymentsOptions, Payment>(GetPageAsync, options);
         }
 
-        public Task<Response<Payment>> UpdateAsync(UpdatePaymentRequest request)
+        public async Task<Response<Payment>> RetryAsync(RetryPaymentOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Id))
+            if (string.IsNullOrWhiteSpace(options.Id))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Id));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return PutAsync<Response<Payment>>(
-                $"payments/{request.Id}",
-                new { payments = request }
-            );
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"payments/{options.Id}/actions/retry")
+                    .PostJsonAsync(new { payments = options })
+                    .ReceiveJson<Response<Payment>>();
+            });
+        }
+
+        public async Task<Response<Payment>> UpdateAsync(UpdatePaymentOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            if (string.IsNullOrWhiteSpace(options.Id))
+            {
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
+            }
+
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment($"payments/{options.Id}")
+                    .PutJsonAsync(new { payments = options })
+                    .ReceiveJson<Response<Payment>>();
+            });
         }
     }
 }

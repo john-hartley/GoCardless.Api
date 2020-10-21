@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GoCardless.Api.Creditors
+namespace GoCardlessApi.Creditors
 {
     public class Creditor
     {

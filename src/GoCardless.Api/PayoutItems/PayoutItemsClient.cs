@@ -1,35 +1,48 @@
-﻿using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Http;
+﻿using Flurl.Http;
+using GoCardlessApi.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.PayoutItems
+namespace GoCardlessApi.PayoutItems
 {
-    public class PayoutItemsClient : ApiClientBase, IPayoutItemsClient
+    public class PayoutItemsClient : IPayoutItemsClient
     {
-        public PayoutItemsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly ApiClient _apiClient;
 
-        public IPagerBuilder<GetPayoutItemsRequest, PayoutItem> BuildPager()
+        public PayoutItemsClient(GoCardlessConfiguration configuration)
         {
-            return new Pager<GetPayoutItemsRequest, PayoutItem>(GetPageAsync);
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            _apiClient = new ApiClient(configuration);
         }
 
-        public Task<PagedResponse<PayoutItem>> GetPageAsync(GetPayoutItemsRequest request)
+        public async Task<PagedResponse<PayoutItem>> GetPageAsync(GetPayoutItemsOptions options)
         {
-            if (request == null)
+            if (options == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(options));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Payout))
+            if (string.IsNullOrWhiteSpace(options.Payout))
             {
-                throw new ArgumentException("Value is null, empty or whitespace.", nameof(request.Payout));
+                throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Payout));
             }
-            
-            return GetAsync<PagedResponse<PayoutItem>>(
-                "payout_items",
-                request.ToReadOnlyDictionary()
-            );
+
+            return await _apiClient.RequestAsync(request =>
+            {
+                return request
+                    .AppendPathSegment("payout_items")
+                    .SetQueryParams(options.ToReadOnlyDictionary())
+                    .GetJsonAsync<PagedResponse<PayoutItem>>();
+            });
+        }
+
+        public IPager<GetPayoutItemsOptions, PayoutItem> PageUsing(GetPayoutItemsOptions options)
+        {
+            return new Pager<GetPayoutItemsOptions, PayoutItem>(GetPageAsync, options);
         }
     }
 }

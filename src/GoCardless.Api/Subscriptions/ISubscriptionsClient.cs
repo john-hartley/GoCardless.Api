@@ -1,16 +1,15 @@
-﻿using GoCardless.Api.Core.Http;
+﻿using GoCardlessApi.Http;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.Subscriptions
+namespace GoCardlessApi.Subscriptions
 {
-    public interface ISubscriptionsClient
+    public interface ISubscriptionsClient : IPageable<GetSubscriptionsOptions, Subscription>
     {
-        IPagerBuilder<GetSubscriptionsRequest, Subscription> BuildPager();
-        Task<Response<Subscription>> CancelAsync(CancelSubscriptionRequest request);
-        Task<Response<Subscription>> CreateAsync(CreateSubscriptionRequest request);
+        Task<Response<Subscription>> CancelAsync(CancelSubscriptionOptions options);
+        Task<Response<Subscription>> CreateAsync(CreateSubscriptionOptions options);
         Task<Response<Subscription>> ForIdAsync(string id);
         Task<PagedResponse<Subscription>> GetPageAsync();
-        Task<PagedResponse<Subscription>> GetPageAsync(GetSubscriptionsRequest request);
-        Task<Response<Subscription>> UpdateAsync(UpdateSubscriptionRequest request);
+        Task<PagedResponse<Subscription>> GetPageAsync(GetSubscriptionsOptions options);
+        Task<Response<Subscription>> UpdateAsync(UpdateSubscriptionOptions options);
     }
 }

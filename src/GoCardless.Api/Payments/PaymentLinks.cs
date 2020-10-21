@@ -1,4 +1,4 @@
-﻿namespace GoCardless.Api.Payments
+﻿namespace GoCardlessApi.Payments
 {
     public class PaymentLinks
     {

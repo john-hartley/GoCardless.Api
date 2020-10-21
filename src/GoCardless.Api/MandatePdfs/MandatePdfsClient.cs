@@ -1,33 +1,43 @@
-﻿using GoCardless.Api.Core.Configuration;
-using GoCardless.Api.Core.Http;
+﻿using Flurl.Http;
+using GoCardlessApi.Http;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace GoCardless.Api.MandatePdfs
+namespace GoCardlessApi.MandatePdfs
 {
-    public class MandatePdfsClient : ApiClientBase, IMandatePdfsClient
+    public class MandatePdfsClient : IMandatePdfsClient
     {
-        public MandatePdfsClient(ClientConfiguration configuration) : base(configuration) { }
+        private readonly ApiClient _apiClient;
 
-        public Task<Response<MandatePdf>> CreateAsync(CreateMandatePdfRequest request)
+        public MandatePdfsClient(GoCardlessConfiguration configuration)
         {
-            if (request == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            var customHeaders = new Dictionary<string, string>();
-            if (!string.IsNullOrWhiteSpace(request.Language))
+            _apiClient = new ApiClient(configuration);
+        }
+
+        public async Task<Response<MandatePdf>> CreateAsync(CreateMandatePdfOptions options)
+        {
+            if (options == null)
             {
-                customHeaders.Add("Accept-Language", request.Language);
+                throw new ArgumentNullException(nameof(options));
             }
 
-            return PostAsync<Response<MandatePdf>>(
-                "mandate_pdfs",
-                new { mandate_pdfs = request },
-                customHeaders
-            );
+            return await _apiClient.RequestAsync(request =>
+            {
+                if (!string.IsNullOrWhiteSpace(options.Language))
+                {
+                    request.WithHeader("Accept-Language", options.Language);
+                }
+
+                return request
+                    .AppendPathSegment("mandate_pdfs")
+                    .PostJsonAsync(new { mandate_pdfs = options })
+                    .ReceiveJson<Response<MandatePdf>>();
+            });
         }
     }
 }
