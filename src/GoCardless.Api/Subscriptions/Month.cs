@@ -32,8 +32,8 @@ namespace GoCardlessApi.Subscriptions
         /// <summary>
         /// Returns the name of the month for the <see cref="DateTime"/> instance.
         /// </summary>
-        /// <returns>The name of the month in lowercase, as that's what the API expects.</returns>
-        public static string NameOf(DateTime dateTime)
+        /// <returns>The lowercased name of the month, as that's what the API expects.</returns>
+        public static string NameFrom(DateTime dateTime)
         {
             return _monthNameLookup[dateTime.Month];
         }
