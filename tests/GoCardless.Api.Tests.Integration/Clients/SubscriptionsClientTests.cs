@@ -57,6 +57,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             // then
             Assert.That(result.Item.Id, Is.Not.Empty);
             Assert.That(result.Item.Amount, Is.EqualTo(options.Amount));
+            Assert.That(result.Item.Count, Is.EqualTo(options.Count));
             Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result.Item.Currency, Is.EqualTo(options.Currency));
             Assert.That(result.Item.DayOfMonth, Is.Null);
@@ -153,6 +154,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result.Item.Id, Is.Not.Empty);
             Assert.That(result.Item.Amount, Is.EqualTo(options.Amount));
             Assert.That(result.Item.AppFee, Is.EqualTo(options.AppFee));
+            Assert.That(result.Item.Count, Is.EqualTo(options.Count));
             Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result.Item.Currency, Is.EqualTo(options.Currency));
             Assert.That(result.Item.DayOfMonth, Is.EqualTo(options.DayOfMonth));
@@ -244,6 +246,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             // then
             Assert.That(result.Item.Id, Is.EqualTo(subscription.Id));
             Assert.That(result.Item.Amount, Is.Not.Null.And.EqualTo(subscription.Amount));
+            Assert.That(result.Item.Count, Is.Not.Null.And.EqualTo(subscription.Count));
             Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result.Item.Currency, Is.Not.Null.And.EqualTo(subscription.Currency));
             Assert.That(result.Item.Interval, Is.Not.Null.And.EqualTo(subscription.Interval));
