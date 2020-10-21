@@ -142,6 +142,44 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
+        public async Task CreatesAmericanBankAccount()
+        {
+            // given
+            var createOptions = new CreateCreditorBankAccountOptions
+            {
+                AccountHolderName = "API BANK ACCOUNT",
+                AccountNumber = "2715500356",
+                AccountType = "checking",
+                BankCode = "026073150",
+                CountryCode = "US",
+                Currency = "USD",
+                Links = new CreditorBankAccountLinks { Creditor = _creditor.Id },
+                Metadata = Metadata.Initial
+            };
+
+            // when
+            var createResult = await _subject.CreateAsync(createOptions);
+
+            var result = await _subject.ForIdAsync(createResult.Item.Id);
+
+            var disableOptions = new DisableCreditorBankAccountOptions
+            {
+                Id = createResult.Item.Id
+            };
+
+            var disableResult = await _subject.DisableAsync(disableOptions);
+
+            // then
+            Assert.That(createResult.Item.Id, Is.Not.Null);
+            Assert.That(createResult.Item.AccountHolderName, Is.EqualTo(createOptions.AccountHolderName));
+            Assert.That(createResult.Item.AccountType, Is.EqualTo(createOptions.AccountType));
+
+            Assert.That(result.Item.AccountType, Is.EqualTo(createOptions.AccountType));
+
+            Assert.That(disableResult.Item.Enabled, Is.False);
+        }
+
+        [Test]
         public async Task ReturnsCreditorBankAccounts()
         {
             // given

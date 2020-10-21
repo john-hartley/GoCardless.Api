@@ -13,6 +13,7 @@ namespace GoCardlessApi.CreditorBankAccounts
 
         public string AccountHolderName { get; set; }
         public string AccountNumber { get; set; }
+        public string AccountType { get; set; }
         public string BankCode { get; set; }
         public string BranchCode { get; set; }
         public string CountryCode { get; set; }
