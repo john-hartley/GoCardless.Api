@@ -31,14 +31,17 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
             return (await creditorsClient.GetPageAsync()).Items.First();
         }
 
-        internal Task<Customer> CreateForeignCustomer()
+        internal Task<Customer> CreateNzCustomer()
         {
             return CreateCustomer("NZ", "en", "2205506218", "5302256218");
         }
 
-        internal Task<Customer> CreateLocalCustomer()
+        internal Task<Customer> CreateLocalCustomer(
+            string countryCode = null, 
+            string language = null,
+            string region = null)
         {
-            return CreateCustomer("GB", "en");
+            return CreateCustomer(countryCode ?? "GB", language ?? "en", region);
         }
 
         internal async Task<CustomerBankAccount> CreateCustomerBankAccountFor(Customer customer)
@@ -219,6 +222,7 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
         private async Task<Customer> CreateCustomer(
             string countryCode,
             string language,
+            string region = "Essex",
             string danishIdentityNumber = null,
             string swedishIdentityNumber = null)
         {
@@ -238,7 +242,7 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
                 Metadata = Metadata.Initial,
                 PhoneNumber = "+44 1234 567890",
                 PostalCode = "SW1A 1AA",
-                Region = "Essex",
+                Region = region ?? "Essex",
                 SwedishIdentityNumber = swedishIdentityNumber
             };
 

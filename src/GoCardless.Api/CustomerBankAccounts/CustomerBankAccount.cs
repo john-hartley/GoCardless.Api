@@ -7,6 +7,7 @@ namespace GoCardlessApi.CustomerBankAccounts
         public string Id { get; set; }
         public string AccountHolderName { get; set; }
         public string AccountNumberEnding { get; set; }
+        public string AccountType { get; set; }
         public string BankName { get; set; }
         public string CountryCode { get; set; }
         public string Currency { get; set; }
