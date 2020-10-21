@@ -2,7 +2,6 @@
 using GoCardlessApi.CreditorBankAccounts;
 using GoCardlessApi.Creditors;
 using NUnit.Framework;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,12 +37,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 CountryCode = "DE",
                 Currency = "EUR",
                 Links = new CreditorBankAccountLinks { Creditor = _creditor.Id },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 SetAsDefaultPayoutAccount = true
             };
 
@@ -84,12 +78,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 CountryCode = "GB",
                 Currency = "GBP",
                 Links = new CreditorBankAccountLinks { Creditor = _creditor.Id },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                }
+                Metadata = Metadata.Initial
             };
 
             // when
@@ -125,12 +114,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 AccountHolderName = "API BANK ACCOUNT",
                 Iban = "GB60 BARC 2000 0055 7799 11",
                 Links = new CreditorBankAccountLinks { Creditor = _creditor.Id },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                }
+                Metadata = Metadata.Initial
             };
 
             // when

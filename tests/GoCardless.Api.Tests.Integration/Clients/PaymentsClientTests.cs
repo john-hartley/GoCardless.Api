@@ -4,7 +4,6 @@ using GoCardlessApi.Payments;
 using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,12 +41,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 Description = "Sandbox Payment",
                 Currency = "GBP",
                 Links = new CreatePaymentLinks { Mandate = _mandate.Id },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 Reference = "REF123456"
             };
 
@@ -58,12 +52,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             var cancelOptions = new CancelPaymentOptions
             {
                 Id = createResult.Item.Id,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key4"] = "Value4",
-                    ["Key5"] = "Value5",
-                    ["Key6"] = "Value6",
-                },
+                Metadata = Metadata.Updated
             };
 
             var cancelResult = await _subject.CancelAsync(cancelOptions);
@@ -106,12 +95,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 Description = "Sandbox Payment",
                 Currency = "GBP",
                 Links = new CreatePaymentLinks { Mandate = mandate.Id },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                }
+                Metadata = Metadata.Initial
             };
 
             // when
@@ -121,12 +105,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             var cancelOptions = new CancelPaymentOptions
             {
                 Id = createResult.Item.Id,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key4"] = "Value4",
-                    ["Key5"] = "Value5",
-                    ["Key6"] = "Value6",
-                },
+                Metadata = Metadata.Updated
             };
 
             var cancelResult = await _subject.CancelAsync(cancelOptions);
@@ -295,12 +274,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             var options = new UpdatePaymentOptions
             {
                 Id = payment.Id,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key4"] = "Value4",
-                    ["Key5"] = "Value5",
-                    ["Key6"] = "Value6",
-                },
+                Metadata = Metadata.Updated
             };
 
             // when
@@ -323,12 +297,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             var options = new RetryPaymentOptions
             {
                 Id = payment.Id,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                }
+                Metadata = Metadata.Initial
             };
 
             // when

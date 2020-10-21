@@ -10,7 +10,6 @@ using GoCardlessApi.Payouts;
 using GoCardlessApi.RedirectFlows;
 using GoCardlessApi.Subscriptions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Customer = GoCardlessApi.Customers.Customer;
@@ -52,12 +51,7 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
                 CountryCode = "GB",
                 Currency = "GBP",
                 Links = new CustomerBankAccountLinks { Customer = customer.Id },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                }
+                Metadata = Metadata.Initial
             };
 
             var customerBankAccountsClient = new CustomerBankAccountsClient(_configuration);
@@ -75,12 +69,7 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
                     Creditor = creditor.Id,
                     CustomerBankAccount = customerBankAccount.Id
                 },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 Scheme = Scheme.Bacs
             };
 
@@ -149,12 +138,7 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
                 Description = "Sandbox Payment",
                 Currency = "GBP",
                 Links = new CreatePaymentLinks { Mandate = mandate.Id },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 Reference = "REF123456"
             };
 
@@ -222,12 +206,7 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
                 {
                     Mandate = mandate.Id
                 },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 Name = "Test subscription",
                 PaymentReference = paymentReference,
                 StartDate = DateTime.Now.AddMonths(1)
@@ -256,12 +235,7 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
                 FamilyName = "Family Name",
                 GivenName = "Given Name",
                 Language = language,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 PhoneNumber = "+44 1234 567890",
                 PostalCode = "SW1A 1AA",
                 Region = "Essex",

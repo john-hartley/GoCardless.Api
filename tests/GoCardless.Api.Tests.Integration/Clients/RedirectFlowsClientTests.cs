@@ -109,8 +109,6 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             // then;
             Assert.That(actualComplete, Is.Not.Null);
-            Assert.That(actual, Is.Not.Null);
-
             Assert.That(actualComplete.Id, Is.Not.Null.And.EqualTo(redirectFlow.Id));
             Assert.That(actualComplete.ConfirmationUrl, Is.Not.Null.And.Contains(redirectFlow.RedirectUrl));
             Assert.That(actualComplete.CreatedAt, Is.Not.Null.And.EqualTo(redirectFlow.CreatedAt));

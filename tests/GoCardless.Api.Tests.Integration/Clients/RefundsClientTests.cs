@@ -40,12 +40,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             {
                 Amount = 100,
                 Links = new CreateRefundLinks { Payment = payment.Id },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                },
+                Metadata = Metadata.Initial,
                 Reference = "RF123456",
                 TotalAmountConfirmation = 100
             };
@@ -61,6 +56,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(actual.Currency, Is.EqualTo(payment.Currency));
             Assert.That(actual.Links, Is.Not.Null);
+            Assert.That(actual.Links.Mandate, Is.EqualTo(_mandate.Id));
             Assert.That(actual.Links.Payment, Is.EqualTo(options.Links.Payment));
             Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
             Assert.That(actual.Reference, Is.EqualTo(options.Reference));
@@ -131,16 +127,8 @@ namespace GoCardlessApi.Tests.Integration.Clients
             var actual = result.Item;
 
             // then
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual.Id, Is.Not.Null.And.EqualTo(refund.Id));
-            Assert.That(actual.Amount, Is.Not.Null.And.EqualTo(refund.Amount));
-            Assert.That(actual.Currency, Is.Not.Null.And.EqualTo(refund.Currency));
-            Assert.That(actual.CreatedAt, Is.Not.Null.And.EqualTo(refund.CreatedAt));
-            Assert.That(actual.Links, Is.Not.Null);
-            Assert.That(actual.Links.Mandate, Is.Not.Null.And.EqualTo(refund.Links.Mandate));
-            Assert.That(actual.Links.Payment, Is.Not.Null.And.EqualTo(refund.Links.Payment));
+            Validate(actual, refund);
             Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(refund.Metadata));
-            Assert.That(actual.Reference, Is.Not.Null.And.EqualTo(refund.Reference));
         }
 
         [Test, NonParallelizable]
@@ -159,16 +147,8 @@ namespace GoCardlessApi.Tests.Integration.Clients
             var actual = result.Item;
 
             // then
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual.Id, Is.Not.Null.And.EqualTo(refund.Id));
-            Assert.That(actual.Amount, Is.Not.Null.And.EqualTo(refund.Amount));
-            Assert.That(actual.Currency, Is.Not.Null.And.EqualTo(refund.Currency));
-            Assert.That(actual.CreatedAt, Is.Not.Null.And.EqualTo(refund.CreatedAt));
-            Assert.That(actual.Links, Is.Not.Null);
-            Assert.That(actual.Links.Mandate, Is.Not.Null.And.EqualTo(refund.Links.Mandate));
-            Assert.That(actual.Links.Payment, Is.Not.Null.And.EqualTo(refund.Links.Payment));
+            Validate(actual, refund);
             Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(refund.Metadata));
-            Assert.That(actual.Reference, Is.Not.Null.And.EqualTo(refund.Reference));
         }
 
         [Test, NonParallelizable]
@@ -194,16 +174,8 @@ namespace GoCardlessApi.Tests.Integration.Clients
             var actual = result.Item;
 
             // then
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual.Id, Is.Not.Null.And.EqualTo(refund.Id));
-            Assert.That(actual.Amount, Is.Not.Null.And.EqualTo(refund.Amount));
-            Assert.That(actual.Currency, Is.Not.Null.And.EqualTo(refund.Currency));
-            Assert.That(actual.CreatedAt, Is.Not.Null.And.EqualTo(refund.CreatedAt));
-            Assert.That(actual.Links, Is.Not.Null);
-            Assert.That(actual.Links.Mandate, Is.Not.Null.And.EqualTo(refund.Links.Mandate));
-            Assert.That(actual.Links.Payment, Is.Not.Null.And.EqualTo(refund.Links.Payment));
+            Validate(actual, refund);
             Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(options.Metadata));
-            Assert.That(actual.Reference, Is.Not.Null.And.EqualTo(refund.Reference));
         }
 
         [Test]
@@ -221,6 +193,19 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result.Count, Is.GreaterThan(1));
             Assert.That(result[0].Id, Is.Not.Null.And.Not.EqualTo(result[1].Id));
             Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
+        }
+
+        private static void Validate(Refund actual, Refund expected)
+        {
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null.And.EqualTo(expected.Id));
+            Assert.That(actual.Amount, Is.Not.Null.And.EqualTo(expected.Amount));
+            Assert.That(actual.Currency, Is.Not.Null.And.EqualTo(expected.Currency));
+            Assert.That(actual.CreatedAt, Is.Not.Null.And.EqualTo(expected.CreatedAt));
+            Assert.That(actual.Links, Is.Not.Null);
+            Assert.That(actual.Links.Mandate, Is.Not.Null.And.EqualTo(expected.Links.Mandate));
+            Assert.That(actual.Links.Payment, Is.Not.Null.And.EqualTo(expected.Links.Payment));
+            Assert.That(actual.Reference, Is.Not.Null.And.EqualTo(expected.Reference));
         }
     }
 }

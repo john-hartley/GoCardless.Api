@@ -2,7 +2,6 @@
 using GoCardlessApi.CustomerBankAccounts;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,12 +31,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 CountryCode = "GB",
                 Currency = "GBP",
                 Links = new CustomerBankAccountLinks { Customer = customer.Id },
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key1"] = "Value1",
-                    ["Key2"] = "Value2",
-                    ["Key3"] = "Value3",
-                }
+                Metadata = Metadata.Initial
             };
 
             // when
@@ -172,12 +166,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             var options = new UpdateCustomerBankAccountOptions
             {
                 Id = customerBankAccount.Id,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Key4"] = "Value4",
-                    ["Key5"] = "Value5",
-                    ["Key6"] = "Value6",
-                },
+                Metadata = Metadata.Updated
             };
 
             // when
