@@ -33,7 +33,7 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
 
         internal Task<Customer> CreateNzCustomer()
         {
-            return CreateCustomer("NZ", "en", "2205506218", "5302256218");
+            return CreateCustomer("NZ", "en", danishIdentityNumber: "2205506218", swedishIdentityNumber: "5302256218");
         }
 
         internal Task<Customer> CreateLocalCustomer(
