@@ -1,6 +1,6 @@
 ﻿namespace GoCardlessApi.MandateImportEntries
 {
-    public class AddMandateImportEntryLinks
+    public class CreateMandateImportEntryLinks
     {
         public string MandateImport { get; set; }
     }
