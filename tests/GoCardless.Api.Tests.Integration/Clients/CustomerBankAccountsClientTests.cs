@@ -51,10 +51,51 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(createResult.Item.AccountNumberEnding, Is.Not.Null);
             Assert.That(createResult.Item.BankName, Is.Not.Null);
             Assert.That(createResult.Item.CountryCode, Is.EqualTo(createOptions.CountryCode));
+            Assert.That(createResult.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(createResult.Item.Currency, Is.EqualTo(createOptions.Currency));
             Assert.That(createResult.Item.Metadata, Is.EqualTo(createOptions.Metadata));
             Assert.That(createResult.Item.Links.Customer, Is.EqualTo(createOptions.Links.Customer));
             Assert.That(createResult.Item.Enabled, Is.True);
+
+            Assert.That(disableResult.Item.Enabled, Is.False);
+        }
+
+        [Test]
+        public async Task CreatesAmericanBankAccount()
+        {
+            // given
+            var customer = await _resourceFactory.CreateLocalCustomer("US", "en", "WA");
+
+            var createOptions = new CreateCustomerBankAccountOptions
+            {
+                AccountHolderName = "API BANK ACCOUNT",
+                AccountNumber = "2715500356",
+                AccountType = "checking",
+                BankCode = "026073150",
+                CountryCode = "US",
+                Currency = "USD",
+                Links = new CustomerBankAccountLinks { Customer = customer.Id },
+                Metadata = Metadata.Initial
+            };
+
+            // when
+            var createResult = await _subject.CreateAsync(createOptions);
+
+            var result = await _subject.ForIdAsync(createResult.Item.Id);
+
+            var disableOptions = new DisableCustomerBankAccountOptions
+            {
+                Id = createResult.Item.Id
+            };
+
+            var disableResult = await _subject.DisableAsync(disableOptions);
+
+            // then
+            Assert.That(createResult.Item.Id, Is.Not.Null);
+            Assert.That(createResult.Item.AccountHolderName, Is.EqualTo(createOptions.AccountHolderName));
+            Assert.That(createResult.Item.AccountType, Is.EqualTo(createOptions.AccountType));
+
+            Assert.That(result.Item.AccountType, Is.EqualTo(createOptions.AccountType));
 
             Assert.That(disableResult.Item.Enabled, Is.False);
         }
@@ -73,6 +114,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result[0].AccountNumberEnding, Is.Not.Null);
             Assert.That(result[0].BankName, Is.Not.Null);
             Assert.That(result[0].CountryCode, Is.Not.Null);
+            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result[0].Currency, Is.Not.Null);
             Assert.That(result[0].Metadata, Is.Not.Null);
             Assert.That(result[0].Links.Customer, Is.Not.Null);
@@ -128,6 +170,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.AccountNumberEnding, Is.Not.Null.And.EqualTo(customerBankAccount.AccountNumberEnding));
             Assert.That(actual.BankName, Is.Not.Null.And.EqualTo(customerBankAccount.BankName));
             Assert.That(actual.CountryCode, Is.Not.Null.And.EqualTo(customerBankAccount.CountryCode));
+            Assert.That(actual.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(actual.Currency, Is.Not.Null.And.EqualTo(customerBankAccount.Currency));
             Assert.That(actual.Links.Customer, Is.Not.Null.And.EqualTo(customerBankAccount.Links.Customer));
             Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(customerBankAccount.Metadata));

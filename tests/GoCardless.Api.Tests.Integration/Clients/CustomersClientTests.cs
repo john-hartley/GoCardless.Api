@@ -134,7 +134,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         public async Task ReturnsIndividualCustomer()
         {
             // given
-            var customer = await _resourceFactory.CreateForeignCustomer();
+            var customer = await _resourceFactory.CreateNzCustomer();
 
             // when
             var result = await _subject.ForIdAsync(customer.Id);
@@ -150,7 +150,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         public async Task ReturnsIndividualCustomerForNewZealand()
         {
             // given
-            var customer = await _resourceFactory.CreateForeignCustomer();
+            var customer = await _resourceFactory.CreateNzCustomer();
 
             // when
             var result = await _subject.ForIdAsync(customer.Id);
@@ -164,7 +164,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         public async Task UpdatesCustomerPreservingMetadata()
         {
             // given
-            var customer = await _resourceFactory.CreateForeignCustomer();
+            var customer = await _resourceFactory.CreateNzCustomer();
 
             var options = new UpdateCustomerOptions
             {
@@ -198,7 +198,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         public async Task UpdatesCustomerReplacingMetadata()
         {
             // given
-            var customer = await _resourceFactory.CreateForeignCustomer();
+            var customer = await _resourceFactory.CreateNzCustomer();
 
             var options = new UpdateCustomerOptions
             {
