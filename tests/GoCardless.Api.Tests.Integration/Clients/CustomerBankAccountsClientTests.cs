@@ -51,6 +51,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(createResult.Item.AccountNumberEnding, Is.Not.Null);
             Assert.That(createResult.Item.BankName, Is.Not.Null);
             Assert.That(createResult.Item.CountryCode, Is.EqualTo(createOptions.CountryCode));
+            Assert.That(createResult.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(createResult.Item.Currency, Is.EqualTo(createOptions.Currency));
             Assert.That(createResult.Item.Metadata, Is.EqualTo(createOptions.Metadata));
             Assert.That(createResult.Item.Links.Customer, Is.EqualTo(createOptions.Links.Customer));
@@ -113,6 +114,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result[0].AccountNumberEnding, Is.Not.Null);
             Assert.That(result[0].BankName, Is.Not.Null);
             Assert.That(result[0].CountryCode, Is.Not.Null);
+            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result[0].Currency, Is.Not.Null);
             Assert.That(result[0].Metadata, Is.Not.Null);
             Assert.That(result[0].Links.Customer, Is.Not.Null);
@@ -168,6 +170,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.AccountNumberEnding, Is.Not.Null.And.EqualTo(customerBankAccount.AccountNumberEnding));
             Assert.That(actual.BankName, Is.Not.Null.And.EqualTo(customerBankAccount.BankName));
             Assert.That(actual.CountryCode, Is.Not.Null.And.EqualTo(customerBankAccount.CountryCode));
+            Assert.That(actual.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(actual.Currency, Is.Not.Null.And.EqualTo(customerBankAccount.Currency));
             Assert.That(actual.Links.Customer, Is.Not.Null.And.EqualTo(customerBankAccount.Links.Customer));
             Assert.That(actual.Metadata, Is.Not.Null.And.EqualTo(customerBankAccount.Metadata));

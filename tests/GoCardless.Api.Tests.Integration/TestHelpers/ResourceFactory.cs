@@ -242,7 +242,7 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
                 Metadata = Metadata.Initial,
                 PhoneNumber = "+44 1234 567890",
                 PostalCode = "SW1A 1AA",
-                Region = region ?? "Essex",
+                Region = region,
                 SwedishIdentityNumber = swedishIdentityNumber
             };
 
