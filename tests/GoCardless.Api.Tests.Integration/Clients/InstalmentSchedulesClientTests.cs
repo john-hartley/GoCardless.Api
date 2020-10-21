@@ -34,7 +34,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             // given
             var options = new CreateInstalmentScheduleWithDatesOptions
             {
-                Currency = "CAD",
+                Currency = "GBP",
                 Instalments = new List<InstalmentScheduleDate>
                 {
                     new InstalmentScheduleDate
@@ -44,8 +44,13 @@ namespace GoCardlessApi.Tests.Integration.Clients
                     },
                     new InstalmentScheduleDate
                     {
-                        Amount = 900,
+                        Amount = 800,
                         ChargeDate = DateTime.Now.AddDays(7)
+                    },
+                    new InstalmentScheduleDate
+                    {
+                        Amount = 100,
+                        ChargeDate = new DateTime(2020, 12, 25)
                     },
                 },
                 Links = new InstalmentScheduleLinks
