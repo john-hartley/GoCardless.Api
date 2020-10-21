@@ -56,6 +56,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(actual.Currency, Is.EqualTo(payment.Currency));
             Assert.That(actual.Links, Is.Not.Null);
+            Assert.That(actual.Links.Mandate, Is.EqualTo(_mandate.Id));
             Assert.That(actual.Links.Payment, Is.EqualTo(options.Links.Payment));
             Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
             Assert.That(actual.Reference, Is.EqualTo(options.Reference));
