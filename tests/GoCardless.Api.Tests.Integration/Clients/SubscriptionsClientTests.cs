@@ -91,7 +91,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                     Mandate = _mandate.Id
                 },
                 Metadata = Metadata.Initial,
-                Month = Month.NameOf(startDate),
+                Month = Month.NameFrom(startDate),
                 Name = "Test subscription",
                 PaymentReference = "PR123456",
                 StartDate = startDate

@@ -33,7 +33,7 @@ namespace GoCardlessApi.Subscriptions
 
         /// <summary>
         /// See <see cref="Subscriptions.Month"/> for possible values.
-        /// <para>Use <see cref="Subscriptions.Month.NameOf(DateTime)"/> to get the month name for a given date.</para>
+        /// <para>Use <see cref="Subscriptions.Month.NameFrom(DateTime)"/> to get the month name for a given date.</para>
         /// </summary>
         public string Month { get; set; }
 
