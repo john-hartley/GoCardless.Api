@@ -51,7 +51,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                     Region = "Essex",
                     SwedishIdentityNumber = "5302256218",
                 },
-                Links = new AddMandateImportEntryLinks
+                Links = new CreateMandateImportEntryLinks
                 {
                     MandateImport = mandateImport.Id
                 },
