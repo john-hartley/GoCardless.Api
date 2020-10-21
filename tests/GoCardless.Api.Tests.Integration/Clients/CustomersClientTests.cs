@@ -41,8 +41,6 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 SwedishIdentityNumber = "5302256218",
             };
 
-            _subject = new CustomersClient(_configuration);
-
             // when
             await _subject.CreateAsync(options);
             var result = await _subject.CreateAsync(options);

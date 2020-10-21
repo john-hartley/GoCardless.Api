@@ -4,6 +4,7 @@ using GoCardlessApi.Creditors;
 using GoCardlessApi.CustomerBankAccounts;
 using GoCardlessApi.CustomerNotifications;
 using GoCardlessApi.Events;
+using GoCardlessApi.InstalmentSchedules;
 using GoCardlessApi.MandateImportEntries;
 using GoCardlessApi.MandateImports;
 using GoCardlessApi.MandatePdfs;
@@ -42,6 +43,9 @@ namespace GoCardlessApi.Http
 
         [JsonProperty("events")]
         private Event Event { set => Item = value as TResource; }
+
+        [JsonProperty("instalment_schedules")]
+        private InstalmentSchedule InstalmentSchedule { set => Item = value as TResource; }
 
         [JsonProperty("mandate_import_entries")]
         private MandateImportEntry MandateImportEntry { set => Item = value as TResource; }
