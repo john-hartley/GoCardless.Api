@@ -28,6 +28,9 @@
         public static readonly string PaymentPaidOut = "payment_paid_out";
         public static readonly string PaymentRetried = "payment_retried";
         public static readonly string PaymentSubmitted = "payment_submitted";
+        public static readonly string PayoutFxRateConfirmed = "payout_fx_rate_confirmed";
+        public static readonly string PayoutTaxExchangeRatesConfirmed = "payout_tax_exchange_rates_confirmed";
+        public static readonly string PayoutPaid = "payout_paid";
         public static readonly string ReferToPayer = "refer_to_payer";
         public static readonly string RefundRequested = "refund_requested";
         public static readonly string ResubmissionRequested = "resubmission_requested";

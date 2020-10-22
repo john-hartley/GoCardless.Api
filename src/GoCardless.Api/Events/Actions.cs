@@ -37,7 +37,9 @@
 
         public static class Payout
         {
+            public static readonly string FxRateConfirmed = "fx_rate_confirmed";
             public static readonly string Paid = "paid";
+            public static readonly string TaxExchangeRatesConfirmed = "tax_exchange_rates_confirmed";
         }
 
         public static class Refund
