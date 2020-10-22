@@ -2,6 +2,12 @@
 {
     public static class Actions
     {
+        public static class Creditor
+        {
+            public static readonly string NewPayoutCurrencyAdded = "new_payout_currency_added";
+            public static readonly string Updated = "updated";
+        }
+
         public static class InstalmentSchedule
         {
             public static readonly string Cancelled = "cancelled";

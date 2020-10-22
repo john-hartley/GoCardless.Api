@@ -6,6 +6,7 @@
         public static readonly string BankAccountClosed = "bank_account_closed";
         public static readonly string BankAccountTransferred = "bank_account_transferred";
         public static readonly string ChargebackSettled = "chargeback_settled";
+        public static readonly string CreditorUpdated = "creditor_updated";
         public static readonly string CustomerApprovalDenied = "customer_approval_denied";
         public static readonly string CustomerApprovalGranted = "customer_approval_granted";
         public static readonly string CustomerApprovalSkipped = "customer_approval_skipped";
@@ -27,6 +28,7 @@
         public static readonly string MandateFailed = "mandate_failed";
         public static readonly string MandateReinstated = "mandate_reinstated";
         public static readonly string MandateSubmitted = "mandate_submitted";
+        public static readonly string NewPayoutCurrencyAdded = "new_payout_currency_added";
         public static readonly string Other = "other";
         public static readonly string PaymentAutoretried = "payment_autoretried";
         public static readonly string PaymentConfirmed = "payment_confirmed";

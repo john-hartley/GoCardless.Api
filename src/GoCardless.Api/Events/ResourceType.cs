@@ -2,6 +2,7 @@
 {
     public static class ResourceType
     {
+        public static readonly string Creditor = "creditors";
         public static readonly string InstalmentSchedules = "instalment_schedules";
         public static readonly string Mandates = "mandates";
         public static readonly string Payments = "payments";
