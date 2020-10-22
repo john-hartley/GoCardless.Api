@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void CancelSubscriptionOptionsIsNullThrows()
+        public void throws_when_cancel_subscription_options_not_provided()
         {
             // given
             CancelSubscriptionOptions options = null;
@@ -57,7 +57,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void CancelSubscriptionOptionsIdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_cancel_subscription_id_not_provided(string id)
         {
             // given
             var options = new CancelSubscriptionOptions
@@ -74,7 +74,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCancelSubscriptionEndpoint()
+        public async Task calls_cancel_subscription_endpoint()
         {
             // given
             var options = new CancelSubscriptionOptions
@@ -92,7 +92,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void CreateSubscriptionOptionsIsNullThrows()
+        public void throws_when_create_subscription_options_not_provided()
         {
             // given
             CreateSubscriptionOptions options = null;
@@ -106,7 +106,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCreateSubscriptionEndpoint()
+        public async Task calls_create_subscription_endpoint()
         {
             // given
             var options = new CreateSubscriptionOptions
@@ -127,7 +127,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void IdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_id_not_provided(string id)
         {
             // given
             // when
@@ -140,7 +140,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsIndividualSubscriptionsEndpoint()
+        public async Task calls_get_subscription_endpoint()
         {
             // given
             var id = "SB12345678";
@@ -155,7 +155,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetSubscriptionsEndpoint()
+        public async Task calls_get_subscriptions_endpoint()
         {
             // given
             // when
@@ -168,7 +168,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void GetSubscriptionsOptionsIsNullThrows()
+        public void throws_when_get_subscriptions_options_not_provided()
         {
             // given
             GetSubscriptionsOptions options = null;
@@ -182,7 +182,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetSubscriptionsEndpointUsingOptions()
+        public async Task calls_get_subscriptions_endpoint_using_options()
         {
             // given
             var options = new GetSubscriptionsOptions
@@ -202,7 +202,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void UpdateSubscriptionOptionsIsNullThrows()
+        public void throws_when_update_subscription_options_not_provided()
         {
             // given
             UpdateSubscriptionOptions options = null;
@@ -218,7 +218,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateSubscriptionOptionsIdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_update_subscription_id_not_provided(string id)
         {
             // given
             var options = new UpdateSubscriptionOptions
@@ -235,7 +235,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsUpdateSubscriptionEndpoint()
+        public async Task calls_update_subscription_endpoint()
         {
             // given
             var options = new UpdateSubscriptionOptions

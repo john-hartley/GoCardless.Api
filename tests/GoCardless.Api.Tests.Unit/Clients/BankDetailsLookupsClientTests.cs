@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void BankDetailsLookupOptionsIsNullThrows()
+        public void throws_when_bank_details_lookup_options_not_provided()
         {
             // given
             BankDetailsLookupOptions options = null;
@@ -55,7 +55,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task BankDetailsLookupEndpoint()
+        public async Task calls_bank_details_lookup_endpoint()
         {
             // given
             var options = new BankDetailsLookupOptions();

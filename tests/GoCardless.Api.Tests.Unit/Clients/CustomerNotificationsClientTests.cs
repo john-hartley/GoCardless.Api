@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void HandleCustomerNotificationOptionsIsNullThrows()
+        public void throws_when_handle_customer_notification_options_not_provided()
         {
             // given
             HandleCustomerNotificationOptions options = null;
@@ -57,7 +57,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void HandleCustomerNotificationOptionsIdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_handle_customer_notification_id_not_provided(string id)
         {
             // given
             var options = new HandleCustomerNotificationOptions
@@ -74,7 +74,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsHandleCustomerNotificationsEndpoint()
+        public async Task calls_handle_customer_notifications_endpoint()
         {
             // given
             var options = new HandleCustomerNotificationOptions

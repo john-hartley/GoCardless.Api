@@ -8,7 +8,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
     public class BankDetailsLookupsClientTests : IntegrationTest
     {
         [Test]
-        public async Task LooksupBankDetails()
+        public async Task looks_up_bank_details()
         {
             // given
             var subject = new BankDetailsLookupsClient(_configuration);

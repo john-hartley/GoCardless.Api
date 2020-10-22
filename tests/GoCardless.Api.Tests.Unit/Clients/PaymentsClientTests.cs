@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void CancelPaymentOptionsIsNullThrows()
+        public void throws_when_cancel_payment_options_not_provided()
         {
             // given
             CancelPaymentOptions options = null;
@@ -57,7 +57,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void CancelPaymentOptionsIdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_cancel_payment_id_not_provided(string id)
         {
             // given
             var options = new CancelPaymentOptions
@@ -74,7 +74,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCancelPaymentEndpoint()
+        public async Task calls_cancel_payment_endpoint()
         {
             // given
             var options = new CancelPaymentOptions
@@ -92,7 +92,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void CreatePaymentOptionsIsNullThrows()
+        public void throws_when_create_payment_options_not_provided()
         {
             // given
             CreatePaymentOptions options = null;
@@ -106,7 +106,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCreatePaymentEndpoint()
+        public async Task calls_create_payment_endpoint()
         {
             // given
             var options = new CreatePaymentOptions
@@ -127,7 +127,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void IdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_id_not_provided(string id)
         {
             // given
             // when
@@ -140,7 +140,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsIndividualPaymentsEndpoint()
+        public async Task calls_get_payment_endpoint()
         {
             // given
             var id = "PM12345678";
@@ -155,7 +155,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetPaymentsEndpoint()
+        public async Task calls_get_payments_endpoint()
         {
             // given
             // when
@@ -168,7 +168,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void GetPaymentsOptionsIsNullThrows()
+        public void throws_when_get_payment_options_not_provided()
         {
             // given
             GetPaymentsOptions options = null;
@@ -182,7 +182,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetPaymentsEndpointUsingOptions()
+        public async Task calls_get_payments_endpoint_using_options()
         {
             // given
             var options = new GetPaymentsOptions
@@ -202,7 +202,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void RetryPaymentOptionsIsNullThrows()
+        public void throws_when_retry_payment_options_not_provided()
         {
             // given
             RetryPaymentOptions options = null;
@@ -218,7 +218,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void RetryPaymentOptionsIdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_retry_payment_id_not_provided(string id)
         {
             // given
             var options = new RetryPaymentOptions
@@ -235,7 +235,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsRetryPaymentEndpoint()
+        public async Task calls_retry_payment_endpoint()
         {
             // given
             var options = new RetryPaymentOptions
@@ -253,7 +253,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void UpdatePaymentOptionsIsNullThrows()
+        public void throws_when_update_payment_options_not_provided()
         {
             // given
             UpdatePaymentOptions options = null;
@@ -269,7 +269,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdatePaymentOptionsIdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_update_payment_id_not_provided(string id)
         {
             // given
             var options = new UpdatePaymentOptions
@@ -286,7 +286,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsUpdatePaymentEndpoint()
+        public async Task calls_update_payment_endpoint()
         {
             // given
             var options = new UpdatePaymentOptions

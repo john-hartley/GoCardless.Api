@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void CreateCustomerOptionsIsNullThrows()
+        public void throws_when_create_customer_options_not_provided()
         {
             // given
             CreateCustomerOptions options = null;
@@ -55,7 +55,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCreateCustomerEndpoint()
+        public async Task calls_create_customer_endpoint()
         {
             // given
             var options = new CreateCustomerOptions
@@ -76,7 +76,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void IdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_id_not_provided(string id)
         {
             // given
             // when
@@ -89,7 +89,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsIndividualCustomersEndpoint()
+        public async Task calls_get_customer_endpoint()
         {
             // given
             var id = "CU12345678";
@@ -104,7 +104,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetCustomersEndpoint()
+        public async Task calls_get_customers_endpoint()
         {
             // given
             // when
@@ -117,7 +117,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void GetCustomersOptionsIsNullThrows()
+        public void throws_when_get_customers_options_not_provided()
         {
             // given
             GetCustomersOptions options = null;
@@ -131,7 +131,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetCustomersEndpointUsingOptions()
+        public async Task calls_get_customers_endpoint_using_options()
         {
             // given
             var options = new GetCustomersOptions
@@ -151,7 +151,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void UpdateCustomerOptionsIsNullThrows()
+        public void throws_when_update_customer_options_not_provided()
         {
             // given
             UpdateCustomerOptions options = null;
@@ -167,7 +167,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateCustomerOptionsIdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_update_customer_id_not_provided(string id)
         {
             // given
             var options = new UpdateCustomerOptions
@@ -184,7 +184,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsUpdateCustomerEndpoint()
+        public async Task calls_update_customer_endpoint()
         {
             // given
             var options = new UpdateCustomerOptions

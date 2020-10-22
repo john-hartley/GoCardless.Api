@@ -11,7 +11,7 @@ namespace GoCardlessApi.Tests.Unit.Exceptions
     public class FlurlHttpExceptionExtensionsTests
     {
         [Test]
-        public async Task GoCardlessErrorTypeReturnsApiException()
+        public async Task returns_api_exception_for_go_cardless_error()
         {
             // given
             var apiErrorResponse = ApiErrorResponseFor(400, "gocardless");
@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Exceptions
         }
 
         [Test]
-        public async Task InvalidApiUsageErrorTypeReturnsInvalidApiUsageException()
+        public async Task returns_invalid_api_usage_exception_for_invalid_api_usage_error()
         {
             // given
             var apiErrorResponse = ApiErrorResponseFor(400, "invalid_api_usage");
@@ -42,7 +42,7 @@ namespace GoCardlessApi.Tests.Unit.Exceptions
         }
 
         [Test]
-        public async Task ConflictErrorTypeReturnsConflictingResourceException()
+        public async Task returns_conflicting_resource_exception_for_conflict_error()
         {
             // given
             var apiErrorResponse = ApiErrorResponseFor(409, "");
@@ -57,7 +57,7 @@ namespace GoCardlessApi.Tests.Unit.Exceptions
         }
 
         [Test]
-        public async Task InvalidStateErrorTypeReturnsInvalidStateException()
+        public async Task returns_invalid_state_exception_for_invalid_state_error()
         {
             // given
             var apiErrorResponse = ApiErrorResponseFor(400, "invalid_state");
@@ -72,7 +72,7 @@ namespace GoCardlessApi.Tests.Unit.Exceptions
         }
 
         [Test]
-        public async Task ValidationFailedErrorTypeReturnsInvalidStateException()
+        public async Task returns_invalid_state_exception_for_validation_failed_error()
         {
             // given
             var apiErrorResponse = ApiErrorResponseFor(400, "validation_failed");
@@ -87,7 +87,7 @@ namespace GoCardlessApi.Tests.Unit.Exceptions
         }
 
         [Test]
-        public async Task UnknownErrorTypeReturnsApiException()
+        public async Task returns_api_exception_for_unknown_error()
         {
             // given
             var apiErrorResponse = ApiErrorResponseFor(400, "");
@@ -103,7 +103,7 @@ namespace GoCardlessApi.Tests.Unit.Exceptions
         }
 
         [Test]
-        public async Task CannotParseApiErrorResponseReturnsApiException()
+        public async Task returns_api_exception_when_unable_to_parse_api_error_response()
         {
             // given
             var httpCall = new HttpCall

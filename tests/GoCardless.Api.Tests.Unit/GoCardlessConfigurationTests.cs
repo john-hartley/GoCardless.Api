@@ -10,7 +10,7 @@ namespace GoCardlessApi.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void AccessTokenIsNotSuppliedForLiveConfigurationThrows(string accessToken)
+        public void throws_when_access_token_is_not_provided_for_live_configuration(string accessToken)
         {
             // given
             // when
@@ -22,7 +22,7 @@ namespace GoCardlessApi.Tests.Unit
         }
 
         [Test]
-        public void BaseUriIsLiveUriWhenUsingLiveConfiguration()
+        public void uses_live_uri_for_live_configuration()
         {
             // given
             var subject = GoCardlessConfiguration.ForLive(_accessToken, false);
@@ -37,7 +37,7 @@ namespace GoCardlessApi.Tests.Unit
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void AccessTokenIsNotSuppliedForSandboxConfigurationThrows(string accessToken)
+        public void throws_when_access_token_is_not_provided_for_sandbox_configuration(string accessToken)
         {
             // given
             // when
@@ -49,7 +49,7 @@ namespace GoCardlessApi.Tests.Unit
         }
 
         [Test]
-        public void BaseUriIsSandboxUriWhenUsingSandboxConfiguration()
+        public void uses_sandbox_uri_for_sandbox_configuration()
         {
             // given
             var subject = GoCardlessConfiguration.ForSandbox(_accessToken, false);

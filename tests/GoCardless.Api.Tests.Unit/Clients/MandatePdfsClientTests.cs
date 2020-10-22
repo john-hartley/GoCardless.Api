@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void CreateMandatePdfOptionsIsNullThrows()
+        public void throws_when_create_mandate_pdf_options_not_provided()
         {
             // given
             CreateMandatePdfOptions options = null;
@@ -55,7 +55,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCreateMandatePdfEndpointWithoutAcceptsLanguageHeader()
+        public async Task calls_create_mandate_pdf_endpoint_without_specified_language()
         {
             // given
             var options = new CreateMandatePdfOptions
@@ -77,7 +77,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCreateMandatePdfEndpointWithAcceptsLanguageHeader()
+        public async Task calls_create_mandate_pdf_endpoint_with_specified_language()
         {
             // given
             var options = new CreateMandatePdfOptions

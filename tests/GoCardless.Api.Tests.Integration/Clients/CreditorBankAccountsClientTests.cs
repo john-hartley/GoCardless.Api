@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test, Explicit("Checking the disabled state in the final assertion sometimes takes a little time.")]
         [Category(TestCategory.TimeDependent)]
-        public async Task CreatesAndDisablesConflictingCreditorBankAccountUsingBankCode()
+        public async Task creates_and_disables_conflicting_creditor_bank_account_using_bank_code()
         {
             // given
             var createOptions = new CreateCreditorBankAccountOptions
@@ -69,7 +69,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CreatesAndDisablesCreditorBankAccountUsingBranchCode()
+        public async Task creates_and_disables_creditor_bank_account_using_branch_code()
         {
             // given
             var createOptions = new CreateCreditorBankAccountOptions
@@ -109,7 +109,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CreatesAndDisablesCreditorBankAccountUsingIban()
+        public async Task creates_and_disables_creditor_bank_account_using_iban()
         {
             // given
             var createOptions = new CreateCreditorBankAccountOptions
@@ -146,7 +146,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CreatesAmericanBankAccount()
+        public async Task creates_american_creditor_bank_account()
         {
             // given
             var createOptions = new CreateCreditorBankAccountOptions
@@ -184,7 +184,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsCreditorBankAccounts()
+        public async Task returns_creditor_bank_accounts()
         {
             // given
             // when
@@ -203,7 +203,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task MapsPagingProperties()
+        public async Task maps_paging_properties()
         {
             // given
             var firstPageOptions = new GetCreditorBankAccountsOptions
@@ -235,7 +235,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsIndividualCreditorBankAccount()
+        public async Task returns_creditor_bank_account()
         {
             // given
             var creditorBankAccount = (await _subject.GetPageAsync()).Items.First();
@@ -259,7 +259,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test]
         [Category(TestCategory.Paging)]
-        public async Task PagesThroughCreditorBankAccounts()
+        public async Task pages_through_creditor_bank_accounts()
         {
             // given
             var firstId = (await _subject.GetPageAsync()).Items.First().Id;

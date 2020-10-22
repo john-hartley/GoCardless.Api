@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void CreateCreditorBankAccountOptionsIsNullThrows()
+        public void throws_when_create_creditor_bank_account_options_not_provided()
         {
             // given
             CreateCreditorBankAccountOptions options = null;
@@ -55,7 +55,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCreateCreditorBankAccountEndpoint()
+        public async Task calls_create_creditor_bank_account_endpoint()
         {
             // given
             var options = new CreateCreditorBankAccountOptions
@@ -74,7 +74,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void DisableCreditorBankAccountOptionsIsNullThrows()
+        public void throws_when_disable_creditor_bank_account_options_not_provided()
         {
             // given
             DisableCreditorBankAccountOptions options = null;
@@ -90,7 +90,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void DisableCreditorBankAccountOptionsIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void throws_when_disable_creditor_bank_account_id_not_provided(string id)
         {
             // given
             var options = new DisableCreditorBankAccountOptions
@@ -107,7 +107,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsDisableCreditorBankAccountEndpoint()
+        public async Task calls_disable_creditor_bank_account_endpoint()
         {
             // given
             var options = new DisableCreditorBankAccountOptions
@@ -127,7 +127,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void IdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_id_not_provided(string id)
         {
             // given
             // when
@@ -140,7 +140,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsIndividualCreditorBankAccountsEndpoint()
+        public async Task calls_get_creditor_bank_account_endpoint()
         {
             // given
             var id = "BA12345678";
@@ -155,7 +155,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetCreditorBankAccountsEndpoint()
+        public async Task calls_get_creditor_bank_accounts_endpoint()
         {
             // given
             // when
@@ -168,7 +168,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void GetCreditorBankAccountsOptionsIsNullThrows()
+        public void throws_when_get_creditor_bank_accounts_options_not_provided()
         {
             // given
             GetCreditorBankAccountsOptions options = null;
@@ -182,7 +182,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetCreditorBankAccountsEndpointUsingOptions()
+        public async Task calls_get_creditor_bank_accounts_endpoint_using_options()
         {
             // given
             var options = new GetCreditorBankAccountsOptions

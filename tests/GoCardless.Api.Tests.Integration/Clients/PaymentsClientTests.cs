@@ -31,7 +31,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CreatesAndCancelsConflictingPayment()
+        public async Task creates_and_cancels_conflicting_payment()
         {
             // given
             var createOptions = new CreatePaymentOptions
@@ -76,7 +76,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test, Explicit("Needs a merchant account to be setup, an OAuth access token to have been exchanged, and a mandate setup via a redirect flow.")]
         [Category(TestCategory.NeedsMerchantAccount)]
-        public async Task CreatesAndCancelsPaymentForMerchant()
+        public async Task creates_and_cancels_payment_for_merchant()
         {
             var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
             var configuration = GoCardlessConfiguration.ForSandbox(accessToken, false);
@@ -128,7 +128,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsPayments()
+        public async Task returns_payments()
         {
             // given
             // when
@@ -152,7 +152,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task MapsPagingProperties()
+        public async Task maps_paging_properties()
         {
             // given
             var firstPageOptions = new GetPaymentsOptions
@@ -185,7 +185,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test]
         [Category(TestCategory.Paging)]
-        public async Task ReturnsResultsWhenLimitIsHigherThanApiMaximum()
+        public async Task returns_payments_when_limit_is_higher_than_api_maximum()
         {
             // given
             var options = new GetPaymentsOptions
@@ -219,7 +219,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsIndividualPayment()
+        public async Task returns_payment()
         {
             // given
             var payment = await _resourceFactory.CreatePaymentFor(_mandate);
@@ -245,7 +245,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task UpdatesPaymentPreservingMetadata()
+        public async Task updates_payment_preserving_metadata()
         {
             // given
             var payment = await _resourceFactory.CreatePaymentFor(_mandate);
@@ -266,7 +266,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task UpdatesPaymentReplacingMetadata()
+        public async Task updates_payment_replacing_metadata()
         {
             // given
             var payment = await _resourceFactory.CreatePaymentFor(_mandate);
@@ -289,7 +289,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test, Explicit("Need to use scenario simulators to activate the mandate, and fail the created payment, before continuing.")]
         [Category(TestCategory.NeedsManualIntervention)]
-        public async Task RetriesPayment()
+        public async Task retries_failed_payment()
         {
             // given
             var payment = await _resourceFactory.CreatePaymentFor(_mandate);
@@ -313,7 +313,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test]
         [Category(TestCategory.Paging)]
-        public async Task PagesThroughPayments()
+        public async Task pages_through_payments()
         {
             // given
             var firstId = (await _subject.GetPageAsync()).Items.First().Id;

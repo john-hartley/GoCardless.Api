@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void CancelMandateOptionsIsNullThrows()
+        public void throws_when_cancel_mandate_options_not_provided()
         {
             // given
             CancelMandateOptions options = null;
@@ -57,7 +57,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void CancelMandateOptionsIdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_cancel_mandate_id_not_provided(string id)
         {
             // given
             var options = new CancelMandateOptions
@@ -74,7 +74,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCancelMandateEndpoint()
+        public async Task calls_cancel_mandate_endpoint()
         {
             // given
             var options = new CancelMandateOptions
@@ -92,7 +92,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void CreateMandateOptionsIsNullThrows()
+        public void throws_when_create_mandate_options_not_provided()
         {
             // given
             CreateMandateOptions options = null;
@@ -106,7 +106,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCreateMandateEndpoint()
+        public async Task calls_create_mandate_endpoint()
         {
             // given
             var options = new CreateMandateOptions
@@ -127,7 +127,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void IsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_id_not_provided(string id)
         {
             // given
             // when
@@ -140,7 +140,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsIndividualMandatesEndpoint()
+        public async Task calls_get_mandate_endpoint()
         {
             // given
             var id = "MD12345678";
@@ -155,7 +155,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetMandatesEndpoint()
+        public async Task calls_get_mandates_endpoint()
         {
             // given
             // when
@@ -168,7 +168,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void GetMandatesOptionsIsNullThrows()
+        public void throws_when_get_mandates_options_not_provided()
         {
             // given
             GetMandatesOptions options = null;
@@ -182,7 +182,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetMandatesEndpointUsingOptions()
+        public async Task calls_get_mandates_endpoint_using_options()
         {
             // given
             var options = new GetMandatesOptions
@@ -202,7 +202,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ReinstateMandateOptionsIsNullThrows()
+        public void throws_when_reinstate_mandates_options_not_provided()
         {
             // given
             ReinstateMandateOptions options = null;
@@ -218,7 +218,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void ReinstateMandateOptionsIdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_reinstate_mandates_id_not_provided(string id)
         {
             // given
             var options = new ReinstateMandateOptions
@@ -235,7 +235,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsReinstateMandateEndpoint()
+        public async Task calls_reinstate_mandate_endpoint()
         {
             // given
             var options = new ReinstateMandateOptions
@@ -253,7 +253,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void UpdateMandateOptionsIsNullThrows()
+        public void throws_when_update_mandates_options_not_provided()
         {
             // given
             UpdateMandateOptions options = null;
@@ -269,7 +269,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateMandateOptionsIdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_update_mandates_id_not_provided(string id)
         {
             // given
             var options = new UpdateMandateOptions
@@ -286,7 +286,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsUpdateMandateEndpoint()
+        public async Task calls_update_mandate_endpoint()
         {
             // given
             var options = new UpdateMandateOptions

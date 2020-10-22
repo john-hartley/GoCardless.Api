@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void CompleteRedirectFlowOptionsIsNullThrows()
+        public void throws_when_complete_redirect_flow_options_not_provided()
         {
             // given
             CompleteRedirectFlowOptions options = null;
@@ -55,7 +55,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCompleteRedirectFlowEndpointUsingOptions()
+        public async Task calls_complete_redirect_flow_endpoint_using_options()
         {
             // given
             var options = new CompleteRedirectFlowOptions
@@ -74,7 +74,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void CreateRedirectFlowOptionsIsNullThrows()
+        public void throws_when_create_redirect_flow_options_not_provided()
         {
             // given
             CreateRedirectFlowOptions options = null;
@@ -88,7 +88,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCreateRedirectFlowEndpoint()
+        public async Task calls_create_redirect_flow_endpoint()
         {
             // given
             var options = new CreateRedirectFlowOptions();
@@ -105,7 +105,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void IdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_id_not_provided(string id)
         {
             // given
             // when
@@ -118,7 +118,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsIndividualRedirectFlowsEndpoint()
+        public async Task calls_get_redirect_flow_endpoint()
         {
             // given
             var id = "RE12345678";

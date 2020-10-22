@@ -18,7 +18,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsPayouts()
+        public async Task returns_payouts()
         {
             // given
             var options = new GetPayoutsOptions
@@ -47,7 +47,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task MapsPagingProperties()
+        public async Task maps_paging_properties()
         {
             // given
             var firstPageOptions = new GetPayoutsOptions
@@ -79,7 +79,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsIndividualPayout()
+        public async Task returns_payout()
         {
             // given
             var payout = (await _subject.GetPageAsync()).Items.First();
@@ -106,7 +106,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test]
         [Category(TestCategory.Paging)]
-        public async Task ReturnsPagesIncludingAndBeforeInitialOptions()
+        public async Task returns_all_payouts_before_specified_payout()
         {
             // given
             var lastId = (await _subject.GetPageAsync()).Items.Last().Id;
@@ -117,37 +117,20 @@ namespace GoCardlessApi.Tests.Integration.Clients
             };
 
             // when
-            var result = await _subject
+            var results = await _subject
                 .PageUsing(options)
                 .GetItemsBeforeAsync();
 
             // then
-            Assert.That(result.Count, Is.GreaterThan(1));
-            Assert.That(result[0].Id, Is.Not.Null.And.Not.EqualTo(result[1].Id));
-            Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
+            Assert.That(results.Count, Is.GreaterThan(1));
+            Assert.That(results.Any(x => x.Id == lastId), Is.False);
+            Assert.That(results[0].Id, Is.Not.Null.And.Not.EqualTo(results[1].Id));
+            Assert.That(results[1].Id, Is.Not.Null.And.Not.EqualTo(results[0].Id));
         }
 
         [Test]
         [Category(TestCategory.Paging)]
-        public async Task ReturnsPagesIncludingAndAfterInitialOptions()
-        {
-            // given
-            var options = new GetPayoutsOptions();
-
-            // when
-            var result = await _subject
-                .PageUsing(options)
-                .GetItemsAfterAsync();
-
-            // then
-            Assert.That(result.Count, Is.GreaterThan(1));
-            Assert.That(result[0].Id, Is.Not.Null.And.Not.EqualTo(result[1].Id));
-            Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
-        }
-
-        [Test]
-        [Category(TestCategory.Paging)]
-        public async Task ReturnsPagesIncludingAndAfterInitialOptionsWhenCursorSpecified()
+        public async Task returns_all_payouts_after_specified_payout()
         {
             // given
             var firstId = (await _subject.GetPageAsync()).Items.First().Id;
@@ -158,14 +141,15 @@ namespace GoCardlessApi.Tests.Integration.Clients
             };
 
             // when
-            var result = await _subject
+            var results = await _subject
                 .PageUsing(options)
                 .GetItemsAfterAsync();
 
             // then
-            Assert.That(result.Count, Is.GreaterThan(1));
-            Assert.That(result[0].Id, Is.Not.Null.And.Not.EqualTo(result[1].Id));
-            Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
+            Assert.That(results.Count, Is.GreaterThan(1));
+            Assert.That(results.Any(x => x.Id == firstId), Is.False);
+            Assert.That(results[0].Id, Is.Not.Null.And.Not.EqualTo(results[1].Id));
+            Assert.That(results[1].Id, Is.Not.Null.And.Not.EqualTo(results[0].Id));
         }
     }
 }

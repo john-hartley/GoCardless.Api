@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void CreateCustomerBankAccountOptionsIsNullThrows()
+        public void throws_when_create_customer_bank_account_options_not_provided()
         {
             // given
             CreateCustomerBankAccountOptions options = null;
@@ -55,7 +55,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCreateCustomerBankAccountEndpoint()
+        public async Task calls_create_customer_bank_account_endpoint()
         {
             // given
             var options = new CreateCustomerBankAccountOptions
@@ -76,7 +76,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void IdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_id_not_provided(string id)
         {
             // given
             // when
@@ -89,7 +89,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsIndividualCustomerBankAccountsEndpoint()
+        public async Task calls_get_customer_bank_account_endpoint()
         {
             // given
             var id = "BA12345678";
@@ -104,7 +104,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void DisableCustomerBankAccountOptionsIsNullThrows()
+        public void throws_when_disable_customer_bank_account_options_not_provided()
         {
             // given
             DisableCustomerBankAccountOptions options = null;
@@ -120,7 +120,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void DisableCustomerBankAccountOptionsIdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_disable_customer_bank_account_id_not_provided(string id)
         {
             // given
             var options = new DisableCustomerBankAccountOptions
@@ -137,7 +137,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsDisableCustomerBankAccountEndpoint()
+        public async Task calls_disable_customer_bank_account_endpoint()
         {
             // given
             var options = new DisableCustomerBankAccountOptions
@@ -155,7 +155,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetCustomerBankAccountsEndpoint()
+        public async Task calls_get_customer_bank_accounts_endpoint()
         {
             // given
             // when
@@ -168,7 +168,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void GetCustomerBankAccountsOptionsIsNullThrows()
+        public void throws_when_get_customer_bank_accounts_options_not_provided()
         {
             // given
             GetCustomerBankAccountsOptions options = null;
@@ -182,7 +182,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetCustomerBankAccountsEndpointUsingOptions()
+        public async Task calls_get_customer_bank_accounts_endpoint_using_options()
         {
             // given
             var options = new GetCustomerBankAccountsOptions
@@ -202,7 +202,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void UpdateCustomerBankAccountOptionsIsNullThrows()
+        public void throws_when_update_customer_bank_account_options_not_provided()
         {
             // given
             UpdateCustomerBankAccountOptions options = null;
@@ -218,7 +218,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateCustomerBankAccountOptionsIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void throws_when_update_customer_bank_account_id_not_provided(string id)
         {
             // given
             var options = new UpdateCustomerBankAccountOptions
@@ -235,7 +235,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsUpdateCustomerBankAccountEndpoint()
+        public async Task calls_update_customer_bank_account_endpoint()
         {
             // given
             var options = new UpdateCustomerBankAccountOptions

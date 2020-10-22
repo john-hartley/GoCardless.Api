@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -43,7 +43,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void EventIdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_id_not_provided(string id)
         {
             // given
             // when
@@ -56,7 +56,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsIndividualEventsEndpoint()
+        public async Task calls_get_event_endpoint()
         {
             // given
             var id = "EV12345678";
@@ -71,7 +71,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetEventsEndpoint()
+        public async Task calls_get_events_endpoint()
         {
             // given
             // when
@@ -84,7 +84,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void GetEventsOptionsIsNullThrows()
+        public void throws_when_get_events_options_not_provided()
         {
             // given
             GetEventsOptions options = null;
@@ -98,7 +98,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetEventsEndpointUsingOptions()
+        public async Task calls_get_events_endpoint_using_options()
         {
             // given
             var options = new GetEventsOptions

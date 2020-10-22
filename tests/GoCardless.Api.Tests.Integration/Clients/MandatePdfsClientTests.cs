@@ -18,7 +18,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CreatesMandatePdfUsingMandate()
+        public async Task creates_mandate_pdf_using_linked_mandate()
         {
             // given
             var creditor = await _resourceFactory.Creditor();
@@ -45,7 +45,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CreatesMandatePdfUsingSuppliedDetails()
+        public async Task creates_mandate_pdf_using_customer_details()
         {
             // given
             var options = new CreateMandatePdfOptions

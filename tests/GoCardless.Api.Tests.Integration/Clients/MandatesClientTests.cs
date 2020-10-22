@@ -33,7 +33,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, NonParallelizable]
-        public async Task CreatesCancelsAndReinstatesMandate()
+        public async Task creates_cancels_and_reinstates_mandate()
         {
             // given
             var createOptions = new CreateMandateOptions
@@ -85,7 +85,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, NonParallelizable]
-        public async Task CreatesConflictingMandate()
+        public async Task creates_conflicting_mandate()
         {
             // given
             var options = new CreateMandateOptions
@@ -116,7 +116,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsMandates()
+        public async Task returns_mandates()
         {
             // given
             // when
@@ -137,7 +137,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task MapsPagingProperties()
+        public async Task maps_paging_properties()
         {
             // given
             var firstPageOptions = new GetMandatesOptions
@@ -169,7 +169,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsIndividualMandate()
+        public async Task returns_mandate()
         {
             // given
             var mandate = await _resourceFactory.CreateMandateFor(_creditor, _customerBankAccount);
@@ -193,7 +193,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task UpdatesMandatePreservingMetadata()
+        public async Task updates_mandate_preserving_metadata()
         {
             // given
             var mandate = await _resourceFactory.CreateMandateFor(_creditor, _customerBankAccount);
@@ -214,7 +214,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task UpdatesMandateReplacingMetadata()
+        public async Task updates_mandate_replacing_metadata()
         {
             // given
             var mandate = await _resourceFactory.CreateMandateFor(_creditor, _customerBankAccount);
@@ -237,7 +237,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test]
         [Category(TestCategory.Paging)]
-        public async Task PagesThroughMandates()
+        public async Task pages_through_mandates()
         {
             // given
             var firstId = (await _subject.GetPageAsync()).Items.First().Id;
