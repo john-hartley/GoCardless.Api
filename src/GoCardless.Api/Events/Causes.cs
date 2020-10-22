@@ -32,6 +32,7 @@
         public static readonly string PayoutFxRateConfirmed = "payout_fx_rate_confirmed";
         public static readonly string PayoutTaxExchangeRatesConfirmed = "payout_tax_exchange_rates_confirmed";
         public static readonly string PayoutPaid = "payout_paid";
+        public static readonly string PlanCancelled = "plan_cancelled";
         public static readonly string ReferToPayer = "refer_to_payer";
         public static readonly string RefundCreated = "refund_created";
         public static readonly string RefundFailed = "refund_failed";
@@ -41,6 +42,11 @@
         public static readonly string RefundSettled = "refund_settled";
         public static readonly string ResubmissionRequested = "resubmission_requested";
         public static readonly string SchemeIdentifierChanged = "scheme_identifier_changed";
+        public static readonly string SubscriptionAmended = "subscription_amended";
+        public static readonly string SubscriptionCreated = "subscription_created";
+        public static readonly string SubscriptionFinished = "subscription_finished";
+        public static readonly string SubscriptionPaused = "subscription_paused";
+        public static readonly string SubscriptionResumed = "subscription_resumed";
         public static readonly string TestFailure = "test_failure";
     }
 }
