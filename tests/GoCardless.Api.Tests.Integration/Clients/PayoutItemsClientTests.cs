@@ -25,7 +25,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsPayoutItems()
+        public async Task returns_payout_items()
         {
             // given
             var options = new GetPayoutItemsOptions
@@ -46,7 +46,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test]
         [Category(TestCategory.Paging)]
-        public async Task MapsPagingProperties()
+        public async Task maps_paging_properties()
         {
             // given
             var firstPageOptions = new GetPayoutItemsOptions
@@ -81,7 +81,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test]
         [Category(TestCategory.Paging)]
-        public async Task ReturnsPagesIncludingAndAfterInitialOptions()
+        public async Task returns_all_payout_items()
         {
             // given
             var options = new GetPayoutItemsOptions

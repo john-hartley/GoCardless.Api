@@ -6,7 +6,7 @@ namespace GoCardlessApi.Tests.Unit
     public class GoCardlessClientTests
     {
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;

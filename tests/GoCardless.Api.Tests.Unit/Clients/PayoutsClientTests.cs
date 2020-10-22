@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetPayoutsEndpoint()
+        public async Task calls_get_payouts_endpoint()
         {
             // given
             // when
@@ -54,7 +54,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void GetPayoutsOptionsIsNullThrows()
+        public void throws_when_get_payouts_options_not_provided()
         {
             // given
             GetPayoutsOptions options = null;
@@ -68,7 +68,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetPayoutsEndpointUsingOptions()
+        public async Task calls_get_payouts_endpoint_using_options()
         {
             // given
             var options = new GetPayoutsOptions
@@ -90,7 +90,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void IdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_id_not_provided(string id)
         {
             // given
             // when
@@ -103,7 +103,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsIndividualPayoutsEndpoint()
+        public async Task calls_get_payout_endpoint()
         {
             // given
             var id = "PO12345678";

@@ -19,7 +19,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CreatesMandateImportEntries()
+        public async Task creates_mandate_import_entries()
         {
             // given
             var mandateImport = await _resourceFactory.CreateMandateImport();
@@ -72,7 +72,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test, Explicit("There is a short delay between the submission of a mandate import and it being processed. Once processed, the properties should be mapped.")]
         [Category(TestCategory.TimeDependent)]
-        public async Task MapsAllLinksAfterMandateImportHasBeenSubmitted()
+        public async Task maps_all_links_after_mandate_import_has_been_submitted()
         {
             // given
             var mandateImport = await _resourceFactory.CreateMandateImport();
@@ -105,7 +105,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsAllMandateImportEntries()
+        public async Task returns_all_mandate_import_entries()
         {
             // given
             var mandateImport = await _resourceFactory.CreateMandateImport();
@@ -144,7 +144,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task MapsPagingProperties()
+        public async Task maps_paging_properties()
         {
             // given
             var mandateImport = await _resourceFactory.CreateMandateImport();
@@ -186,7 +186,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task PagesThroughMandateImportEntries()
+        public async Task pages_through_mandate_import_entries()
         {
             // given
             var mandateImport = await _resourceFactory.CreateMandateImport();

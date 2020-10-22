@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void AddMandateImportEntryOptionsIsNullThrows()
+        public void throws_when_create_mandate_import_entry_options_not_provided()
         {
             // given
             CreateMandateImportEntryOptions options = null;
@@ -55,7 +55,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsAddMandateImportEntryEndpoint()
+        public async Task calls_create_mandate_import_entry_endpoint()
         {
             // given
             var options = new CreateMandateImportEntryOptions();
@@ -70,7 +70,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void GetMandateImportEntriesOptionsIsNullThrows()
+        public void throws_when_get_mandate_import_entries_options_not_provided()
         {
             // given
             GetMandateImportEntriesOptions options = null;
@@ -86,7 +86,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void GetMandateImportEntriesOptionsMandateImportIsNullOrWhiteSpaceThrows(string mandateImport)
+        public void throws_when_get_mandate_import_entries_mandate_import_not_provided(string mandateImport)
         {
             // given
             var options = new GetMandateImportEntriesOptions
@@ -103,7 +103,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetMandateImportEntriesEndpoint()
+        public async Task calls_get_mandate_import_entries_endpoint()
         {
             // given
             var options = new GetMandateImportEntriesOptions

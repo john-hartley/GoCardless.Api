@@ -31,7 +31,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test, Explicit("Use scenario simulators to activate the mandate, and pay out the created payment, before continuing.")]
         [Category(TestCategory.NeedsManualIntervention)]
-        public async Task CreatesRefund()
+        public async Task creates_refund()
         {
             // given
             var payment = await _resourceFactory.CreatePaymentFor(_mandate);
@@ -63,7 +63,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, NonParallelizable]
-        public async Task ReturnsRefunds()
+        public async Task returns_refunds()
         {
             // given
             // when
@@ -85,7 +85,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test]
         [Category(TestCategory.Paging)]
-        public async Task MapsPagingProperties()
+        public async Task maps_paging_properties()
         {
             // given
             var firstPageOptions = new GetRefundsOptions
@@ -117,7 +117,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, NonParallelizable]
-        public async Task ReturnsIndividualRefund()
+        public async Task returns_refund()
         {
             // given
             var refund = (await _subject.GetPageAsync()).Items.First();
@@ -132,7 +132,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, NonParallelizable]
-        public async Task UpdatesRefundPreservingMetadata()
+        public async Task updates_refund_preserving_metadata()
         {
             // given
             var refund = (await _subject.GetPageAsync()).Items.First();
@@ -152,7 +152,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, NonParallelizable]
-        public async Task UpdatesRefundReplacingMetadata()
+        public async Task updates_refund_replacing_metadata()
         {
             // given
             var refund = (await _subject.GetPageAsync()).Items.First();
@@ -179,7 +179,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task PagesThroughRefunds()
+        public async Task pages_through_refunds()
         {
             // given
             var options = new GetRefundsOptions();

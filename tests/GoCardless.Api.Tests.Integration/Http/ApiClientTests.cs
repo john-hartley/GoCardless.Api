@@ -4,7 +4,6 @@ using GoCardlessApi.Customers;
 using GoCardlessApi.Exceptions;
 using GoCardlessApi.Mandates;
 using GoCardlessApi.Payments;
-using GoCardlessApi.Refunds;
 using GoCardlessApi.Subscriptions;
 using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
@@ -31,7 +30,7 @@ namespace GoCardlessApi.Tests.Integration.Http
         }
 
         [Test]
-        public void ValidationFailsForOptionsThrows()
+        public void throws_when_validation_fails()
         {
             // given
             var options = new CreateCustomerOptions
@@ -69,35 +68,7 @@ namespace GoCardlessApi.Tests.Integration.Http
         }
 
         [Test]
-        public async Task CreateRefundOptionsIsInvalidThrows()
-        {
-            // given
-            var payment = await _resourceFactory.CreatePaymentFor(_mandate);
-
-            var options = new CreateRefundOptions
-            {
-                Amount = 100,
-                Links = new CreateRefundLinks { Payment = payment.Id },
-                TotalAmountConfirmation = 100
-            };
-
-            var subject = new RefundsClient(_configuration);
-
-            // when
-            AsyncTestDelegate test = () => subject.CreateAsync(options);
-
-            // then
-            var ex = Assert.ThrowsAsync<ValidationFailedException>(test);
-            Assert.That(ex.Code, Is.EqualTo((int)HttpStatusCode.UnprocessableEntity));
-            Assert.That(ex.DocumentationUrl, Is.Not.Null);
-            Assert.That(ex.Errors?.Any(), Is.True);
-            Assert.That(ex.Message, Is.Not.Null.And.Not.Empty);
-            Assert.That(ex.RawResponse, Is.Not.Null.And.Not.Empty);
-            Assert.That(ex.RequestId, Is.Not.Null.And.Not.Empty);
-        }
-
-        [Test]
-        public void ApiUsageIsInvalidThrows()
+        public void throws_when_api_usage_is_invalid()
         {
             // given
             var options = new CreateSubscriptionOptions
@@ -132,7 +103,34 @@ namespace GoCardlessApi.Tests.Integration.Http
         }
 
         [Test]
-        public async Task ThrowsOnConflict()
+        public async Task throws_when_resource_state_is_invalid()
+        {
+            // given
+            var subscription = await _resourceFactory.CreateSubscriptionFor(_mandate);
+
+            var options = new CancelSubscriptionOptions
+            {
+                Id = subscription.Id
+            };
+
+            var subject = new SubscriptionsClient(_configuration);
+
+            // when
+            await subject.CancelAsync(options);
+            AsyncTestDelegate test = () => subject.CancelAsync(options);
+
+            // then
+            var ex = Assert.ThrowsAsync<InvalidStateException>(test);
+            Assert.That(ex.Code, Is.EqualTo((int)HttpStatusCode.UnprocessableEntity));
+            Assert.That(ex.DocumentationUrl, Is.Not.Null);
+            Assert.That(ex.Errors?.Any(), Is.True);
+            Assert.That(ex.Message, Is.Not.Null.And.Not.Empty);
+            Assert.That(ex.RawResponse, Is.Not.Null.And.Not.Empty);
+            Assert.That(ex.RequestId, Is.Not.Null.And.Not.Empty);
+        }
+
+        [Test]
+        public async Task throws_on_conflict()
         {
             // given
             var options = new CreatePaymentOptions
@@ -159,7 +157,7 @@ namespace GoCardlessApi.Tests.Integration.Http
         }
 
         [Test]
-        public async Task FetchesOnConflict()
+        public async Task fetches_on_conflict()
         {
             // given
             var options = new CreatePaymentOptions

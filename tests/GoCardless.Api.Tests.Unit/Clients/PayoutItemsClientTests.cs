@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void GetPayoutItemOptionsIsNullThrows()
+        public void throws_when_get_payout_item_options_not_provided()
         {
             // given
             GetPayoutItemsOptions options = null;
@@ -57,7 +57,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void PayoutIdIsNullOrWhiteSpaceThrows(string payoutId)
+        public void throws_when_get_payout_item_id_not_provided(string payoutId)
         {
             // given
             var options = new GetPayoutItemsOptions
@@ -75,7 +75,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetPayoutItemsEndpointUsingOptions()
+        public async Task calls_get_payout_items_endpoint_using_options()
         {
             // given
             var options = new GetPayoutItemsOptions

@@ -18,7 +18,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsEvents()
+        public async Task returns_events()
         {
             // given
             // when
@@ -40,7 +40,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsMandateEvents()
+        public async Task returns_mandate_events()
         {
             // given
             var options = new GetEventsOptions
@@ -68,7 +68,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsPaymentEvents()
+        public async Task returns_payment_events()
         {
             // given
             var options = new GetEventsOptions
@@ -96,7 +96,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsPayoutEvents()
+        public async Task returns_payout_events()
         {
             // given
             var options = new GetEventsOptions
@@ -124,7 +124,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsRefundEvents()
+        public async Task returns_refund_events()
         {
             // given
             var options = new GetEventsOptions
@@ -152,7 +152,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsSubscriptionEvents()
+        public async Task returns_subscription_events()
         {
             // given
             var options = new GetEventsOptions
@@ -180,7 +180,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task MapsPagingProperties()
+        public async Task maps_paging_properties()
         {
             // given
             var firstPageOptions = new GetEventsOptions
@@ -212,7 +212,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task MapsParentEvent()
+        public async Task maps_parent_event()
         {
             // given
             var options = new GetEventsOptions
@@ -243,7 +243,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsIndividualEvent()
+        public async Task returns_event()
         {
             // given
             var options = new GetEventsOptions
@@ -278,7 +278,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test]
         [Category(TestCategory.Paging)]
-        public async Task PagesThroughEvents()
+        public async Task pages_through_events()
         {
             // given
             var firstId = (await _subject.GetPageAsync()).Items.First().Id;

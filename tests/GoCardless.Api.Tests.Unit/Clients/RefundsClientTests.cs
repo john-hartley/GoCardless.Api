@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void CreateRefundOptionsIsNullThrows()
+        public void throws_when_create_refund_options_not_provided()
         {
             // given
             CreateRefundOptions options = null;
@@ -55,7 +55,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCreateRefundEndpoint()
+        public async Task calls_create_refund_endpoint()
         {
             // given
             var options = new CreateRefundOptions
@@ -76,7 +76,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void IdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_id_not_provided(string id)
         {
             // given
             // when
@@ -89,7 +89,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsIndividualRefundsEndpoint()
+        public async Task calls_get_refund_endpoint()
         {
             // given
             var id = "RF12345678";
@@ -104,7 +104,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetRefundsEndpoint()
+        public async Task calls_get_refunds_endpoint()
         {
             // given
             // when
@@ -117,7 +117,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void GetRefundsOptionsIsNullThrows()
+        public void throws_when_get_refunds_options_not_provided()
         {
             // given
             GetRefundsOptions options = null;
@@ -131,7 +131,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetRefundsEndpointUsingOptions()
+        public async Task calls_get_refunds_endpoint_using_options()
         {
             // given
             var options = new GetRefundsOptions
@@ -151,7 +151,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void UpdateRefundOptionsIsNullThrows()
+        public void throws_when_update_refund_options_not_provided()
         {
             // given
             UpdateRefundOptions options = null;
@@ -167,7 +167,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateRefundOptionsIdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_update_refund_id_not_provided(string id)
         {
             // given
             var options = new UpdateRefundOptions
@@ -184,7 +184,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsUpdateRefundEndpoint()
+        public async Task calls_update_refund_endpoint()
         {
             // given
             var options = new UpdateRefundOptions

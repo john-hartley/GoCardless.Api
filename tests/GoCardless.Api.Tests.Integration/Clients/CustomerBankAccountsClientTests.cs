@@ -18,7 +18,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CreatesAndDisablesConflictingCustomerBankAccountUsingBranchCode()
+        public async Task creates_and_disables_conflicting_customer_bank_account_using_branch_code()
         {
             // given
             var customer = await _resourceFactory.CreateLocalCustomer();
@@ -61,7 +61,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CreatesAmericanBankAccount()
+        public async Task creates_american_customer_bank_account()
         {
             // given
             var customer = await _resourceFactory.CreateLocalCustomer("US", "en", "WA");
@@ -101,7 +101,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsCustomerBankAccounts()
+        public async Task returns_customer_bank_accounts()
         {
             // given
             // when
@@ -121,7 +121,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task MapsPagingProperties()
+        public async Task maps_paging_properties()
         {
             // given
             var firstPageOptions = new GetCustomerBankAccountsOptions
@@ -153,7 +153,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsIndividualCustomerBankAccount()
+        public async Task returns_customer_bank_account()
         {
             // given
             var customer = await _resourceFactory.CreateLocalCustomer();
@@ -178,7 +178,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task UpdatesCustomerBankAccountPreservingMetadata()
+        public async Task updates_customer_bank_account_preserving_metadata()
         {
             // given
             var customer = await _resourceFactory.CreateLocalCustomer();
@@ -200,7 +200,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task UpdatesCustomerBankAccountReplacingMetadata()
+        public async Task updates_customer_bank_account_replacing_metadata()
         {
             // given
             var customer = await _resourceFactory.CreateLocalCustomer();
@@ -224,7 +224,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test]
         [Category(TestCategory.Paging)]
-        public async Task PagesThroughCustomerBankAccounts()
+        public async Task pages_through_customer_bank_accounts()
         {
             // given
             var firstId = (await _subject.GetPageAsync()).Items.First().Id;

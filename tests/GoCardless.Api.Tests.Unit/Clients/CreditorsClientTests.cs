@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -43,7 +43,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void IdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_id_not_provided(string id)
         {
             // given
             // when
@@ -56,7 +56,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsIndividualCreditorsEndpoint()
+        public async Task calls_get_creditor_endpoint()
         {
             // given
             var id = "CR12345678";
@@ -71,7 +71,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetCreditorsEndpoint()
+        public async Task calls_get_creditors_endpoint()
         {
             // given
             // when
@@ -84,7 +84,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void GetCreditorsOptionsIsNullThrows()
+        public void throws_when_get_creditors_options_not_provided()
         {
             // given
             GetCreditorsOptions options = null;
@@ -98,7 +98,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsGetCreditorsEndpointUsingOptions()
+        public async Task calls_get_creditors_endpoint_using_options()
         {
             // given
             var options = new GetCreditorsOptions
@@ -118,7 +118,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void UpdateCreditorOptionsIsNullThrows()
+        public void throws_when_update_creditor_options_not_provided()
         {
             // given
             UpdateCreditorOptions options = null;
@@ -134,7 +134,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void UpdateCreditorOptionsIdIsNullEmptyOrWhiteSpaceThrows(string id)
+        public void throws_when_update_creditor_id_not_provided(string id)
         {
             // given
             var options = new UpdateCreditorOptions
@@ -151,7 +151,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsUpdateCreditorEndpoint()
+        public async Task calls_update_creditor_endpoint()
         {
             // given
             var options = new UpdateCreditorOptions

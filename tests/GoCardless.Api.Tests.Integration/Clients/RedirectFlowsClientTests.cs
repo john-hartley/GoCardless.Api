@@ -18,7 +18,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CreatesAndReturnsRedirectFlow()
+        public async Task creates_and_returns_redirect_flow()
         {
             // given
             var creditor = await _resourceFactory.Creditor();
@@ -88,7 +88,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test, Explicit("Need to complete a session with GoCardless in a browser.")]
         [Category(TestCategory.NeedsManualIntervention)]
-        public async Task CompletesRedirectFlow()
+        public async Task completes_redirect_flow()
         {
             // given
             var creditor = await _resourceFactory.Creditor();

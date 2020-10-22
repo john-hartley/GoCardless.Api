@@ -29,7 +29,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CreatesConflictingSubscription()
+        public async Task creates_conflicting_subscription()
         {
             // given
             var options = new CreateSubscriptionOptions
@@ -75,7 +75,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CreatesSubscriptionUsingMonthAndDayOfMonth()
+        public async Task creates_subscription_using_month_and_day_of_month()
         {
             // given
             var startDate = DateTime.Now.AddDays(7);
@@ -120,7 +120,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test, Explicit("Needs a merchant account to be setup, an OAuth access token to have been exchanged, and a mandate setup via a redirect flow.")]
         [Category(TestCategory.NeedsMerchantAccount)]
-        public async Task CreatesSubscriptionForMerchant()
+        public async Task creates_subscription_for_merchant()
         {
             // given
             var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
@@ -172,7 +172,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsAllSubscriptions()
+        public async Task returns_subscriptions()
         {
             // given
             // when
@@ -203,7 +203,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task MapsPagingProperties()
+        public async Task maps_paging_properties()
         {
             // given
             var firstPageOptions = new GetSubscriptionsOptions
@@ -235,7 +235,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsIndividualSubscription()
+        public async Task returns_subscription()
         {
             // given
             var subscription = await _resourceFactory.CreateSubscriptionFor(_mandate);
@@ -263,7 +263,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task UpdatesSubscriptionPreservingMetadata()
+        public async Task updates_subscription_preserving_metadata()
         {
             // given
             var subscription = await _resourceFactory.CreateSubscriptionFor(_mandate);
@@ -288,7 +288,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task UpdatesSubscriptionReplacingMetadata()
+        public async Task updates_subscription_replacing_metadata()
         {
             // given
             var subscription = await _resourceFactory.CreateSubscriptionFor(_mandate);
@@ -315,7 +315,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test, Explicit("Needs a merchant account to be setup, an OAuth access token to have been exchanged, and a mandate setup via a redirect flow.")]
         [Category(TestCategory.NeedsMerchantAccount)]
-        public async Task UpdatesSubscriptionForMerchant()
+        public async Task updates_subscription_for_merchant()
         {
             // given
             var accessToken = Environment.GetEnvironmentVariable("GoCardlessMerchantAccessToken");
@@ -349,7 +349,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CancelsSubscription()
+        public async Task cancels_subscription()
         {
             // given
             var subscription = await _resourceFactory.CreateSubscriptionFor(_mandate);
@@ -370,7 +370,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test]
         [Category(TestCategory.Paging)]
-        public async Task PagesThroughSubscriptions()
+        public async Task pages_through_subscriptions()
         {
             // given
             var firstId = (await _subject.GetPageAsync()).Items.First().Id;

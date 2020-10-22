@@ -27,7 +27,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void ConfigurationIsNullThrows()
+        public void throws_when_configuration_not_provided()
         {
             // given
             GoCardlessConfiguration configuration = null;
@@ -41,7 +41,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void CancelMandateImportOptionsIsNullThrows()
+        public void throws_when_cancel_mandate_import_options_not_provided()
         {
             // given
             CancelMandateImportOptions options = null;
@@ -57,7 +57,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void CancelIdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_cancel_mandate_import_id_not_provided(string id)
         {
             // given
             var options = new CancelMandateImportOptions
@@ -74,7 +74,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCancelMandateImportEndpoint()
+        public async Task calls_cancel_mandate_import_endpoint()
         {
             // given
             var options = new CancelMandateImportOptions
@@ -92,7 +92,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void CreateMandateImportOptionsIsNullThrows()
+        public void throws_when_create_mandate_import_options_not_provided()
         {
             // given
             CreateMandateImportOptions options = null;
@@ -106,7 +106,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsCreateMandateImportEndpoint()
+        public async Task calls_create_mandate_import_endpoint()
         {
             // given
             var options = new CreateMandateImportOptions();
@@ -123,7 +123,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void IdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_id_not_provided(string id)
         {
             // given
             // when
@@ -135,7 +135,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsIndividualMandateImportEndpoint()
+        public async Task calls_get_mandate_import_endpoint()
         {
             // given
             var id = "IM12345678";
@@ -150,7 +150,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void SubmitMandateImportOptionsIsNullThrows()
+        public void throws_when_submit_mandate_import_options_not_provided()
         {
             // given
             SubmitMandateImportOptions options = null;
@@ -166,7 +166,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         [TestCase(null)]
         [TestCase("")]
         [TestCase("\t  ")]
-        public void SubmitIdIsNullOrWhiteSpaceThrows(string id)
+        public void throws_when_submit_mandate_import_id_not_provided(string id)
         {
             // given
             var options = new SubmitMandateImportOptions
@@ -183,7 +183,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public async Task CallsSubmitMandateImportEndpoint()
+        public async Task calls_submit_mandate_import_endpoint()
         {
             // given
             var options = new SubmitMandateImportOptions

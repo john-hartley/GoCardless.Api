@@ -18,7 +18,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CancelsMandateImport()
+        public async Task cancels_mandate_import()
         {
             // given
             var mandateImport = await _resourceFactory.CreateMandateImport();
@@ -39,7 +39,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CreatesMandateImport()
+        public async Task creates_mandate_import()
         {
             // given
             var options = new CreateMandateImportOptions
@@ -59,7 +59,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsIndividualMandateImport()
+        public async Task returns_mandate_import()
         {
             // given
             var mandateImport = await _resourceFactory.CreateMandateImport();
@@ -76,7 +76,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task SubmitsMandateImport()
+        public async Task submits_mandate_import()
         {
             // given
             var mandateImport = await _resourceFactory.CreateMandateImport();

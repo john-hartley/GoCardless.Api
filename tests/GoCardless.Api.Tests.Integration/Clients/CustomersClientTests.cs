@@ -18,7 +18,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task CreatesConflictingCustomer()
+        public async Task creates_conflicting_customer()
         {
             // given
             var options = new CreateCustomerOptions
@@ -69,7 +69,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsCustomers()
+        public async Task returns_customers()
         {
             // given
             // when
@@ -99,7 +99,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task MapsPagingProperties()
+        public async Task maps_paging_properties()
         {
             // given
             var firstPageOptions = new GetCustomersOptions
@@ -131,7 +131,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsIndividualCustomer()
+        public async Task returns_customer()
         {
             // given
             var customer = await _resourceFactory.CreateNzCustomer();
@@ -147,7 +147,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task ReturnsIndividualCustomerForNewZealand()
+        public async Task returns_customer_for_new_zealand()
         {
             // given
             var customer = await _resourceFactory.CreateNzCustomer();
@@ -161,7 +161,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task UpdatesCustomerPreservingMetadata()
+        public async Task updates_customer_preserving_metadata()
         {
             // given
             var customer = await _resourceFactory.CreateNzCustomer();
@@ -195,7 +195,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task UpdatesCustomerReplacingMetadata()
+        public async Task updates_customer_replacing_metadata()
         {
             // given
             var customer = await _resourceFactory.CreateNzCustomer();
@@ -231,7 +231,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
         [Test]
         [Category(TestCategory.Paging)]
-        public async Task PagesThroughCustomers()
+        public async Task pages_through_customers()
         {
             // given
             var firstId = (await _subject.GetPageAsync()).Items.First().Id;

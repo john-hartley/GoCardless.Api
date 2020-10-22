@@ -10,7 +10,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
     {
         [Test, Explicit("The id for the notification to handle comes via a webhook, so a mandate or payment must be created prior to use.")]
         [Category(TestCategory.NeedsManualIntervention)]
-        public async Task HandlesCustomerNotification()
+        public async Task handles_customer_notification()
         {
             // given
             var creditor = await _resourceFactory.Creditor();

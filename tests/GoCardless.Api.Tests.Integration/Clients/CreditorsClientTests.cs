@@ -17,7 +17,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, NonParallelizable]
-        public async Task ReturnsCreditors()
+        public async Task returns_creditors()
         {
             // given
             var creditor = await _resourceFactory.Creditor();
@@ -34,7 +34,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task MapsPagingProperties()
+        public async Task maps_paging_properties()
         {
             // given
             var options = new GetCreditorsOptions
@@ -53,7 +53,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test, NonParallelizable]
-        public async Task ReturnsIndividualCreditor()
+        public async Task returns_creditor()
         {
             // given
             var creditor = await _resourceFactory.Creditor();
@@ -72,7 +72,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
 
         [Test, NonParallelizable]
-        public async Task UpdatesCreditor()
+        public async Task updates_creditor()
         {
             // given
             var creditor = await _resourceFactory.Creditor();
