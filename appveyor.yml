@@ -51,7 +51,7 @@ deploy:
   skip_symbols: false
   artifact: /.*(\.|\.s)nupkg/
   on:
-    branch: dev
+    branch: master
 
 - provider: GitHub
   auth_token:
@@ -60,4 +60,4 @@ deploy:
   tag: v$(PRODUCT_VERSION)
   draft: true
   on:
-    branch: dev
+    branch: master
