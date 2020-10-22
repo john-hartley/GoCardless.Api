@@ -2,6 +2,16 @@
 {
     public static class Actions
     {
+        public static class InstalmentSchedule
+        {
+            public static readonly string Cancelled = "cancelled";
+            public static readonly string Completed = "completed";
+            public static readonly string Created = "created";
+            public static readonly string CreationFailed = "creation_failed";
+            public static readonly string Errored = "errored";
+            public static readonly string Resumed = "resumed";
+        }
+
         public static class Mandate
         {
             public static readonly string Active = "active";

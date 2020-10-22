@@ -11,7 +11,12 @@
         public static readonly string CustomerApprovalSkipped = "customer_approval_skipped";
         public static readonly string DirectDebitNotEnabled = "direct_debit_not_enabled";
         public static readonly string InstalmentScheduleCancelled = "instalment_schedule_cancelled";
+        public static readonly string InstalmentScheduleCompleted = "instalment_schedule_completed";
         public static readonly string InstalmentScheduleCreated = "instalment_schedule_created";
+        public static readonly string InstalmentScheduleCreationFailed = "instalment_schedule_creation_failed";
+        public static readonly string InstalmentScheduleErrored = "instalment_schedule_errored";
+        public static readonly string InstalmentScheduleErroredLate = "instalment_schedule_errored_late";
+        public static readonly string InstalmentScheduleResumed = "instalment_schedule_resumed";
         public static readonly string InsufficientFunds = "insufficient_funds";
         public static readonly string InvalidBankDetails = "invalid_bank_details";
         public static readonly string LateFailureSettled = "late_failure_settled";
@@ -19,6 +24,7 @@
         public static readonly string MandateCancelled = "mandate_cancelled";
         public static readonly string MandateCreated = "mandate_created";
         public static readonly string MandateExpired = "mandate_expired";
+        public static readonly string MandateFailed = "mandate_failed";
         public static readonly string MandateReinstated = "mandate_reinstated";
         public static readonly string MandateSubmitted = "mandate_submitted";
         public static readonly string Other = "other";
