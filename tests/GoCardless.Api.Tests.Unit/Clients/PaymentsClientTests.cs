@@ -168,7 +168,7 @@ namespace GoCardlessApi.Tests.Unit.Clients
         }
 
         [Test]
-        public void throws_when_get_payment_options_not_provided()
+        public void throws_when_get_payments_options_not_provided()
         {
             // given
             GetPaymentsOptions options = null;

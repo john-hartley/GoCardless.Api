@@ -27,21 +27,6 @@ namespace GoCardlessApi.Tests.Unit.Exceptions
         }
 
         [Test]
-        public async Task returns_invalid_api_usage_exception_for_invalid_api_usage_error()
-        {
-            // given
-            var apiErrorResponse = ApiErrorResponseFor(400, "invalid_api_usage");
-            var httpCall = HttpCallFor(apiErrorResponse);
-            var exception = new FlurlHttpException(httpCall);
-
-            // when
-            var result = await exception.CreateApiExceptionAsync();
-
-            // then
-            Assert.That(result, Is.InstanceOf<InvalidApiUsageException>());
-        }
-
-        [Test]
         public async Task returns_conflicting_resource_exception_for_conflict_error()
         {
             // given
@@ -54,6 +39,21 @@ namespace GoCardlessApi.Tests.Unit.Exceptions
 
             // then
             Assert.That(result, Is.InstanceOf<ConflictingResourceException>());
+        }
+
+        [Test]
+        public async Task returns_invalid_api_usage_exception_for_invalid_api_usage_error()
+        {
+            // given
+            var apiErrorResponse = ApiErrorResponseFor(400, "invalid_api_usage");
+            var httpCall = HttpCallFor(apiErrorResponse);
+            var exception = new FlurlHttpException(httpCall);
+
+            // when
+            var result = await exception.CreateApiExceptionAsync();
+
+            // then
+            Assert.That(result, Is.InstanceOf<InvalidApiUsageException>());
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace GoCardlessApi.Tests.Unit.Exceptions
         }
 
         [Test]
-        public async Task returns_invalid_state_exception_for_validation_failed_error()
+        public async Task returns_validation_failed_exception_for_validation_failed_error()
         {
             // given
             var apiErrorResponse = ApiErrorResponseFor(400, "validation_failed");
