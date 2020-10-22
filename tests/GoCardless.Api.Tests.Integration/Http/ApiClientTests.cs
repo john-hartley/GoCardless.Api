@@ -62,6 +62,7 @@ namespace GoCardlessApi.Tests.Integration.Http
             Assert.That(ex.Code, Is.EqualTo((int)HttpStatusCode.UnprocessableEntity));
             Assert.That(ex.DocumentationUrl, Is.Not.Null);
             Assert.That(ex.Errors?.Any(), Is.True);
+            Assert.That(ex.Errors[0].RequestPointer, Is.Not.Null);
             Assert.That(ex.Message, Is.Not.Null.And.Not.Empty);
             Assert.That(ex.RawResponse, Is.Not.Null.And.Not.Empty);
             Assert.That(ex.RequestId, Is.Not.Null.And.Not.Empty);
