@@ -28,9 +28,9 @@ namespace GoCardlessApi.Refunds
 
             return await _apiClient.IdempotentRequestAsync(
                 options.IdempotencyKey,
-                request =>
+                async request =>
                 {
-                    return request
+                    return await request
                         .AppendPathSegment("refunds")
                         .PostJsonAsync(new { refunds = options })
                         .ReceiveJson<Response<Refund>>();
@@ -44,9 +44,9 @@ namespace GoCardlessApi.Refunds
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment($"refunds/{id}")
                     .GetJsonAsync<Response<Refund>>();
             });
@@ -54,9 +54,9 @@ namespace GoCardlessApi.Refunds
 
         public async Task<PagedResponse<Refund>> GetPageAsync()
         {
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment("refunds")
                     .GetJsonAsync<PagedResponse<Refund>>();
             });
@@ -69,9 +69,9 @@ namespace GoCardlessApi.Refunds
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment("refunds")
                     .SetQueryParams(options.ToReadOnlyDictionary())
                     .GetJsonAsync<PagedResponse<Refund>>();
@@ -95,9 +95,9 @@ namespace GoCardlessApi.Refunds
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment($"refunds/{options.Id}")
                     .PutJsonAsync(new { refunds = options })
                     .ReceiveJson<Response<Refund>>();

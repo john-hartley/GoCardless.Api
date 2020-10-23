@@ -31,9 +31,9 @@ namespace GoCardlessApi.PayoutItems
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Payout));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment("payout_items")
                     .SetQueryParams(options.ToReadOnlyDictionary())
                     .GetJsonAsync<PagedResponse<PayoutItem>>();

@@ -26,9 +26,9 @@ namespace GoCardlessApi.Creditors
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment($"creditors/{id}")
                     .GetJsonAsync<Response<Creditor>>();
             });
@@ -36,9 +36,9 @@ namespace GoCardlessApi.Creditors
 
         public async Task<PagedResponse<Creditor>> GetPageAsync()
         {
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment("creditors")
                     .GetJsonAsync<PagedResponse<Creditor>>();
             });
@@ -51,9 +51,9 @@ namespace GoCardlessApi.Creditors
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment("creditors")
                     .SetQueryParams(options.ToReadOnlyDictionary())
                     .GetJsonAsync<PagedResponse<Creditor>>();
@@ -77,9 +77,9 @@ namespace GoCardlessApi.Creditors
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment($"creditors/{options.Id}")
                     .PutJsonAsync(new { creditors = options })
                     .ReceiveJson<Response<Creditor>>();

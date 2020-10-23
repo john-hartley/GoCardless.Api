@@ -31,9 +31,9 @@ namespace GoCardlessApi.Payments
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment($"payments/{options.Id}/actions/cancel")
                     .PostJsonAsync(new { payments = options })
                     .ReceiveJson<Response<Payment>>();
@@ -49,9 +49,9 @@ namespace GoCardlessApi.Payments
 
             return await _apiClient.IdempotentRequestAsync(
                 options.IdempotencyKey,
-                request =>
+                async request =>
                 {
-                    return request
+                    return await request
                         .AppendPathSegment("payments")
                         .PostJsonAsync(new { payments = options })
                         .ReceiveJson<Response<Payment>>();
@@ -65,9 +65,9 @@ namespace GoCardlessApi.Payments
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment($"payments/{id}")
                     .GetJsonAsync<Response<Payment>>();
             });
@@ -75,9 +75,9 @@ namespace GoCardlessApi.Payments
 
         public async Task<PagedResponse<Payment>> GetPageAsync()
         {
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment("payments")
                     .GetJsonAsync<PagedResponse<Payment>>();
             });
@@ -90,9 +90,9 @@ namespace GoCardlessApi.Payments
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment("payments")
                     .SetQueryParams(options.ToReadOnlyDictionary())
                     .GetJsonAsync<PagedResponse<Payment>>();
@@ -116,9 +116,9 @@ namespace GoCardlessApi.Payments
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment($"payments/{options.Id}/actions/retry")
                     .PostJsonAsync(new { payments = options })
                     .ReceiveJson<Response<Payment>>();
@@ -137,9 +137,9 @@ namespace GoCardlessApi.Payments
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment($"payments/{options.Id}")
                     .PutJsonAsync(new { payments = options })
                     .ReceiveJson<Response<Payment>>();
