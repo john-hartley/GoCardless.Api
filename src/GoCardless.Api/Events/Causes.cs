@@ -55,6 +55,8 @@
         public static readonly string SubscriptionFinished = "subscription_finished";
         public static readonly string SubscriptionPaused = "subscription_paused";
         public static readonly string SubscriptionResumed = "subscription_resumed";
+        public static readonly string SurchargeFeeCredited = "surcharge_fee_credited";
+        public static readonly string SurchargeFeeDebited = "surcharge_fee_debited";
         public static readonly string TestFailure = "test_failure";
     }
 }

@@ -49,6 +49,8 @@
             public static readonly string PaidOut = "paid_out";
             public static readonly string ResubmissionRequested = "resubmission_requested";
             public static readonly string Submitted = "submitted";
+            public static readonly string SurchargeFeeCredited = "surcharge_fee_credited";
+            public static readonly string SurchargeFeeDebited = "surcharge_fee_debited";
         }
 
         public static class Payout
