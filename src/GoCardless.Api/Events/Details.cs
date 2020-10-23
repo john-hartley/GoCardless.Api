@@ -6,6 +6,10 @@
         public string Description { get; set; }
         public string Origin { get; set; }
         public string ReasonCode { get; set; }
+
+        /// <summary>
+        /// See <see cref="Common.Scheme"/> for possible values.
+        /// </summary>
         public string Scheme { get; set; }
     }
 }
