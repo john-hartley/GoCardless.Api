@@ -31,9 +31,9 @@ namespace GoCardlessApi.CustomerNotifications
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment($"customer_notifications/{options.Id}/actions/handle")
                     .PostJsonAsync(new { })
                     .ReceiveJson<Response<CustomerNotification>>();

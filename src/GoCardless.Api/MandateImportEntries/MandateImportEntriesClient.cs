@@ -26,9 +26,9 @@ namespace GoCardlessApi.MandateImportEntries
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment("mandate_import_entries")
                     .PostJsonAsync(new { mandate_import_entries = options })
                     .ReceiveJson<Response<MandateImportEntry>>();
@@ -47,9 +47,9 @@ namespace GoCardlessApi.MandateImportEntries
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.MandateImport));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment("mandate_import_entries")
                     .SetQueryParams(options.ToReadOnlyDictionary())
                     .GetJsonAsync<PagedResponse<MandateImportEntry>>();

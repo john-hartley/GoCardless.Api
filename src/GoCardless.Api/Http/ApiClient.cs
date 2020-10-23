@@ -64,9 +64,9 @@ namespace GoCardlessApi.Http
                     if (!string.IsNullOrWhiteSpace(conflictingResourceId)
                         && uri.Segments.Length >= 2)
                     {
-                        return await RequestAsync(fetchOnConflictRequest =>
+                        return await RequestAsync(async fetchOnConflictRequest =>
                         {
-                            return fetchOnConflictRequest
+                            return await fetchOnConflictRequest
                                 .AppendPathSegments(uri.Segments[1], conflictingResourceId)
                                 .GetJsonAsync<TResponse>();
                         }).ConfigureAwait(false);

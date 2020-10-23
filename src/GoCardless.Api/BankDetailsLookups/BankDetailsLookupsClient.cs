@@ -26,9 +26,9 @@ namespace GoCardlessApi.BankDetailsLookups
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment("bank_details_lookups")
                     .PostJsonAsync(new { bank_details_lookups = options })
                     .ReceiveJson<Response<BankDetailsLookup>>();

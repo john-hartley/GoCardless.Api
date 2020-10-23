@@ -28,9 +28,9 @@ namespace GoCardlessApi.Customers
 
             return await _apiClient.IdempotentRequestAsync(
                 options.IdempotencyKey,
-                request =>
+                async request =>
                 {
-                    return request
+                    return await request
                         .AppendPathSegment("customers")
                         .PostJsonAsync(new { customers = options })
                         .ReceiveJson<Response<Customer>>();
@@ -44,9 +44,9 @@ namespace GoCardlessApi.Customers
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(id));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment($"customers/{id}")
                     .GetJsonAsync<Response<Customer>>();
             });
@@ -54,9 +54,9 @@ namespace GoCardlessApi.Customers
 
         public async Task<PagedResponse<Customer>> GetPageAsync()
         {
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment("customers")
                     .GetJsonAsync<PagedResponse<Customer>>();
             });
@@ -69,9 +69,9 @@ namespace GoCardlessApi.Customers
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment("customers")
                     .SetQueryParams(options.ToReadOnlyDictionary())
                     .GetJsonAsync<PagedResponse<Customer>>();
@@ -95,9 +95,9 @@ namespace GoCardlessApi.Customers
                 throw new ArgumentException("Value is null, empty or whitespace.", nameof(options.Id));
             }
 
-            return await _apiClient.RequestAsync(request =>
+            return await _apiClient.RequestAsync(async request =>
             {
-                return request
+                return await request
                     .AppendPathSegment($"customers/{options.Id}")
                     .PutJsonAsync(new { customers = options })
                     .ReceiveJson<Response<Customer>>();
