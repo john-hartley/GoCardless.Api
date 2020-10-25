@@ -40,6 +40,36 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
+        public async Task returns_creditor_events()
+        {
+            // given
+            var options = new GetEventsOptions
+            {
+                Action = Actions.Creditor.Updated,
+                ResourceType = ResourceType.Creditors
+            };
+
+            // when
+            var result = (await _subject.GetPageAsync(options)).Items.ToList();
+
+            // then
+            Assert.That(result.Any(), Is.True);
+            Assert.That(result[0], Is.Not.Null);
+            Assert.That(result[0].Id, Is.Not.Null);
+            Assert.That(result[0].Action, Is.EqualTo(Actions.Creditor.Updated));
+            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result[0].Details, Is.Not.Null);
+            Assert.That(result[0].Details.Cause, Is.EqualTo(Causes.CreditorUpdated));
+            Assert.That(result[0].Details.Description, Is.Not.Null);
+            Assert.That(result[0].Details.Origin, Is.Not.Null);
+            Assert.That(result[0].Details.Property, Is.Not.Null);
+            Assert.That(result[0].Links, Is.Not.Null);
+            Assert.That(result[0].Links.Creditor, Is.Not.Null);
+            Assert.That(result[0].Metadata, Is.Not.Null);
+            Assert.That(result[0].ResourceType, Is.EqualTo(ResourceType.Creditors));
+        }
+
+        [Test]
         public async Task returns_mandate_events()
         {
             // given
@@ -64,7 +94,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result[0].Links, Is.Not.Null);
             Assert.That(result[0].Links.Mandate, Is.Not.Null);
             Assert.That(result[0].Metadata, Is.Not.Null);
-            Assert.That(result[0].ResourceType, Is.Not.Null);
+            Assert.That(result[0].ResourceType, Is.EqualTo(ResourceType.Mandates));
         }
 
         [Test]
@@ -92,7 +122,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result[0].Links, Is.Not.Null);
             Assert.That(result[0].Links.Payment, Is.Not.Null);
             Assert.That(result[0].Metadata, Is.Not.Null);
-            Assert.That(result[0].ResourceType, Is.Not.Null);
+            Assert.That(result[0].ResourceType, Is.EqualTo(ResourceType.Payments));
         }
 
         [Test]
@@ -120,7 +150,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result[0].Links, Is.Not.Null);
             Assert.That(result[0].Links.Payout, Is.Not.Null);
             Assert.That(result[0].Metadata, Is.Not.Null);
-            Assert.That(result[0].ResourceType, Is.Not.Null);
+            Assert.That(result[0].ResourceType, Is.EqualTo(ResourceType.Payouts));
         }
 
         [Test]
@@ -148,7 +178,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result[0].Links, Is.Not.Null);
             Assert.That(result[0].Links.Refund, Is.Not.Null);
             Assert.That(result[0].Metadata, Is.Not.Null);
-            Assert.That(result[0].ResourceType, Is.Not.Null);
+            Assert.That(result[0].ResourceType, Is.EqualTo(ResourceType.Refunds));
         }
 
         [Test]
@@ -176,7 +206,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result[0].Links, Is.Not.Null);
             Assert.That(result[0].Links.Subscription, Is.Not.Null);
             Assert.That(result[0].Metadata, Is.Not.Null);
-            Assert.That(result[0].ResourceType, Is.Not.Null);
+            Assert.That(result[0].ResourceType, Is.EqualTo(ResourceType.Subscriptions));
         }
 
         [Test]
@@ -228,18 +258,49 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result.Any(), Is.True);
             Assert.That(result[0], Is.Not.Null);
             Assert.That(result[0].Id, Is.Not.Null);
-            Assert.That(result[0].Action, Is.Not.Null);
+            Assert.That(result[0].Action, Is.EqualTo(Actions.Payment.PaidOut));
             Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result[0].Details, Is.Not.Null);
-            Assert.That(result[0].Details.Cause, Is.Not.Null);
+            Assert.That(result[0].Details.Cause, Is.EqualTo(Causes.PaymentPaidOut));
             Assert.That(result[0].Details.Description, Is.Not.Null);
-            Assert.That(result[0].Details.Origin, Is.Not.Null);
+            Assert.That(result[0].Details.Origin, Is.EqualTo(Origin.GoCardless));
             Assert.That(result[0].Links, Is.Not.Null);
             Assert.That(result[0].Links.ParentEvent, Is.Not.Null);
             Assert.That(result[0].Links.Payment, Is.Not.Null);
             Assert.That(result[0].Links.Payout, Is.Not.Null);
             Assert.That(result[0].Metadata, Is.Not.Null);
-            Assert.That(result[0].ResourceType, Is.Not.Null);
+            Assert.That(result[0].ResourceType, Is.EqualTo(ResourceType.Payments));
+        }
+
+        [Test]
+        public async Task maps_bank_account_id_and_currency()
+        {
+            // given
+            var options = new GetEventsOptions
+            {
+                Action = Actions.Creditor.NewPayoutCurrencyAdded,
+                ResourceType = ResourceType.Creditors
+            };
+
+            // when
+            var result = (await _subject.GetPageAsync(options)).Items.ToList();
+
+            // then
+            Assert.That(result.Any(), Is.True);
+            Assert.That(result[0], Is.Not.Null);
+            Assert.That(result[0].Id, Is.Not.Null);
+            Assert.That(result[0].Action, Is.EqualTo(Actions.Creditor.NewPayoutCurrencyAdded));
+            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(result[0].Details, Is.Not.Null);
+            Assert.That(result[0].Details.BankAccountId, Is.Not.Null);
+            Assert.That(result[0].Details.Cause, Is.EqualTo(Causes.NewPayoutCurrencyAdded));
+            Assert.That(result[0].Details.Currency, Is.Not.Null);
+            Assert.That(result[0].Details.Description, Is.Not.Null);
+            Assert.That(result[0].Details.Origin, Is.EqualTo(Origin.GoCardless));
+            Assert.That(result[0].Links, Is.Not.Null);
+            Assert.That(result[0].Links.Creditor, Is.Not.Null);
+            Assert.That(result[0].Metadata, Is.Not.Null);
+            Assert.That(result[0].ResourceType, Is.EqualTo(ResourceType.Creditors));
         }
 
         [Test]
