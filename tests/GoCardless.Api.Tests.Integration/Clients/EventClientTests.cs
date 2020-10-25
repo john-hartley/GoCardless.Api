@@ -3,6 +3,7 @@ using GoCardlessApi.Tests.Integration.TestHelpers;
 using NUnit.Framework;
 using System;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace GoCardlessApi.Tests.Integration.Clients
@@ -22,21 +23,21 @@ namespace GoCardlessApi.Tests.Integration.Clients
         {
             // given
             // when
-            var result = (await _subject.GetPageAsync()).Items.ToList();
+            var results = (await _subject.GetPageAsync()).Items.ToList();
 
             // then
-            Assert.That(result.Any(), Is.True);
-            Assert.That(result[0], Is.Not.Null);
-            Assert.That(result[0].Id, Is.Not.Null);
-            Assert.That(result[0].Action, Is.Not.Null);
-            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result[0].Details, Is.Not.Null);
-            Assert.That(result[0].Details.Cause, Is.Not.Null);
-            Assert.That(result[0].Details.Description, Is.Not.Null);
-            Assert.That(result[0].Details.Origin, Is.Not.Null);
-            Assert.That(result[0].Links, Is.Not.Null);
-            Assert.That(result[0].Metadata, Is.Not.Null);
-            Assert.That(result[0].ResourceType, Is.Not.Null);
+            Assert.That(results.Any(), Is.True);
+            Assert.That(results[0], Is.Not.Null);
+            Assert.That(results[0].Id, Is.Not.Null);
+            Assert.That(results[0].Action, Is.Not.Null);
+            Assert.That(results[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(results[0].Details, Is.Not.Null);
+            Assert.That(results[0].Details.Cause, Is.Not.Null);
+            Assert.That(results[0].Details.Description, Is.Not.Null);
+            Assert.That(results[0].Details.Origin, Is.Not.Null);
+            Assert.That(results[0].Links, Is.Not.Null);
+            Assert.That(results[0].Metadata, Is.Not.Null);
+            Assert.That(results[0].ResourceType, Is.Not.Null);
         }
 
         [Test]
@@ -50,23 +51,23 @@ namespace GoCardlessApi.Tests.Integration.Clients
             };
 
             // when
-            var result = (await _subject.GetPageAsync(options)).Items.ToList();
+            var results = (await _subject.GetPageAsync(options)).Items.ToList();
 
             // then
-            Assert.That(result.Any(), Is.True);
-            Assert.That(result[0], Is.Not.Null);
-            Assert.That(result[0].Id, Is.Not.Null);
-            Assert.That(result[0].Action, Is.EqualTo(Actions.Creditor.Updated));
-            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result[0].Details, Is.Not.Null);
-            Assert.That(result[0].Details.Cause, Is.EqualTo(Causes.CreditorUpdated));
-            Assert.That(result[0].Details.Description, Is.Not.Null);
-            Assert.That(result[0].Details.Origin, Is.Not.Null);
-            Assert.That(result[0].Details.Property, Is.Not.Null);
-            Assert.That(result[0].Links, Is.Not.Null);
-            Assert.That(result[0].Links.Creditor, Is.Not.Null);
-            Assert.That(result[0].Metadata, Is.Not.Null);
-            Assert.That(result[0].ResourceType, Is.EqualTo(ResourceType.Creditors));
+            Assert.That(results.Any(), Is.True);
+            Assert.That(results[0], Is.Not.Null);
+            Assert.That(results[0].Id, Is.Not.Null);
+            Assert.That(results[0].Action, Is.EqualTo(Actions.Creditor.Updated));
+            Assert.That(results[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(results[0].Details, Is.Not.Null);
+            Assert.That(results[0].Details.Cause, Is.EqualTo(Causes.CreditorUpdated));
+            Assert.That(results[0].Details.Description, Is.Not.Null);
+            Assert.That(results[0].Details.Origin, Is.Not.Null);
+            Assert.That(results[0].Details.Property, Is.Not.Null);
+            Assert.That(results[0].Links, Is.Not.Null);
+            Assert.That(results[0].Links.Creditor, Is.Not.Null);
+            Assert.That(results[0].Metadata, Is.Not.Null);
+            Assert.That(results[0].ResourceType, Is.EqualTo(ResourceType.Creditors));
         }
 
         [Test]
@@ -79,22 +80,22 @@ namespace GoCardlessApi.Tests.Integration.Clients
             };
 
             // when
-            var result = (await _subject.GetPageAsync(options)).Items.ToList();
+            var results = (await _subject.GetPageAsync(options)).Items.ToList();
 
             // then
-            Assert.That(result.Any(), Is.True);
-            Assert.That(result[0], Is.Not.Null);
-            Assert.That(result[0].Id, Is.Not.Null);
-            Assert.That(result[0].Action, Is.Not.Null);
-            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result[0].Details, Is.Not.Null);
-            Assert.That(result[0].Details.Cause, Is.Not.Null);
-            Assert.That(result[0].Details.Description, Is.Not.Null);
-            Assert.That(result[0].Details.Origin, Is.Not.Null);
-            Assert.That(result[0].Links, Is.Not.Null);
-            Assert.That(result[0].Links.Mandate, Is.Not.Null);
-            Assert.That(result[0].Metadata, Is.Not.Null);
-            Assert.That(result[0].ResourceType, Is.EqualTo(ResourceType.Mandates));
+            Assert.That(results.Any(), Is.True);
+            Assert.That(results[0], Is.Not.Null);
+            Assert.That(results[0].Id, Is.Not.Null);
+            Assert.That(results[0].Action, Is.Not.Null);
+            Assert.That(results[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(results[0].Details, Is.Not.Null);
+            Assert.That(results[0].Details.Cause, Is.Not.Null);
+            Assert.That(results[0].Details.Description, Is.Not.Null);
+            Assert.That(results[0].Details.Origin, Is.Not.Null);
+            Assert.That(results[0].Links, Is.Not.Null);
+            Assert.That(results[0].Links.Mandate, Is.Not.Null);
+            Assert.That(results[0].Metadata, Is.Not.Null);
+            Assert.That(results[0].ResourceType, Is.EqualTo(ResourceType.Mandates));
         }
 
         [Test]
@@ -107,22 +108,22 @@ namespace GoCardlessApi.Tests.Integration.Clients
             };
 
             // when
-            var result = (await _subject.GetPageAsync(options)).Items.ToList();
+            var results = (await _subject.GetPageAsync(options)).Items.ToList();
 
             // then
-            Assert.That(result.Any(), Is.True);
-            Assert.That(result[0], Is.Not.Null);
-            Assert.That(result[0].Id, Is.Not.Null);
-            Assert.That(result[0].Action, Is.Not.Null);
-            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result[0].Details, Is.Not.Null);
-            Assert.That(result[0].Details.Cause, Is.Not.Null);
-            Assert.That(result[0].Details.Description, Is.Not.Null);
-            Assert.That(result[0].Details.Origin, Is.Not.Null);
-            Assert.That(result[0].Links, Is.Not.Null);
-            Assert.That(result[0].Links.Payment, Is.Not.Null);
-            Assert.That(result[0].Metadata, Is.Not.Null);
-            Assert.That(result[0].ResourceType, Is.EqualTo(ResourceType.Payments));
+            Assert.That(results.Any(), Is.True);
+            Assert.That(results[0], Is.Not.Null);
+            Assert.That(results[0].Id, Is.Not.Null);
+            Assert.That(results[0].Action, Is.Not.Null);
+            Assert.That(results[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(results[0].Details, Is.Not.Null);
+            Assert.That(results[0].Details.Cause, Is.Not.Null);
+            Assert.That(results[0].Details.Description, Is.Not.Null);
+            Assert.That(results[0].Details.Origin, Is.Not.Null);
+            Assert.That(results[0].Links, Is.Not.Null);
+            Assert.That(results[0].Links.Payment, Is.Not.Null);
+            Assert.That(results[0].Metadata, Is.Not.Null);
+            Assert.That(results[0].ResourceType, Is.EqualTo(ResourceType.Payments));
         }
 
         [Test]
@@ -135,22 +136,22 @@ namespace GoCardlessApi.Tests.Integration.Clients
             };
 
             // when
-            var result = (await _subject.GetPageAsync(options)).Items.ToList();
+            var results = (await _subject.GetPageAsync(options)).Items.ToList();
 
             // then
-            Assert.That(result.Any(), Is.True);
-            Assert.That(result[0], Is.Not.Null);
-            Assert.That(result[0].Id, Is.Not.Null);
-            Assert.That(result[0].Action, Is.Not.Null);
-            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result[0].Details, Is.Not.Null);
-            Assert.That(result[0].Details.Cause, Is.Not.Null);
-            Assert.That(result[0].Details.Description, Is.Not.Null);
-            Assert.That(result[0].Details.Origin, Is.Not.Null);
-            Assert.That(result[0].Links, Is.Not.Null);
-            Assert.That(result[0].Links.Payout, Is.Not.Null);
-            Assert.That(result[0].Metadata, Is.Not.Null);
-            Assert.That(result[0].ResourceType, Is.EqualTo(ResourceType.Payouts));
+            Assert.That(results.Any(), Is.True);
+            Assert.That(results[0], Is.Not.Null);
+            Assert.That(results[0].Id, Is.Not.Null);
+            Assert.That(results[0].Action, Is.Not.Null);
+            Assert.That(results[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(results[0].Details, Is.Not.Null);
+            Assert.That(results[0].Details.Cause, Is.Not.Null);
+            Assert.That(results[0].Details.Description, Is.Not.Null);
+            Assert.That(results[0].Details.Origin, Is.Not.Null);
+            Assert.That(results[0].Links, Is.Not.Null);
+            Assert.That(results[0].Links.Payout, Is.Not.Null);
+            Assert.That(results[0].Metadata, Is.Not.Null);
+            Assert.That(results[0].ResourceType, Is.EqualTo(ResourceType.Payouts));
         }
 
         [Test]
@@ -163,22 +164,22 @@ namespace GoCardlessApi.Tests.Integration.Clients
             };
 
             // when
-            var result = (await _subject.GetPageAsync(options)).Items.ToList();
+            var results = (await _subject.GetPageAsync(options)).Items.ToList();
 
             // then
-            Assert.That(result.Any(), Is.True);
-            Assert.That(result[0], Is.Not.Null);
-            Assert.That(result[0].Id, Is.Not.Null);
-            Assert.That(result[0].Action, Is.Not.Null);
-            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result[0].Details, Is.Not.Null);
-            Assert.That(result[0].Details.Cause, Is.Not.Null);
-            Assert.That(result[0].Details.Description, Is.Not.Null);
-            Assert.That(result[0].Details.Origin, Is.Not.Null);
-            Assert.That(result[0].Links, Is.Not.Null);
-            Assert.That(result[0].Links.Refund, Is.Not.Null);
-            Assert.That(result[0].Metadata, Is.Not.Null);
-            Assert.That(result[0].ResourceType, Is.EqualTo(ResourceType.Refunds));
+            Assert.That(results.Any(), Is.True);
+            Assert.That(results[0], Is.Not.Null);
+            Assert.That(results[0].Id, Is.Not.Null);
+            Assert.That(results[0].Action, Is.Not.Null);
+            Assert.That(results[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(results[0].Details, Is.Not.Null);
+            Assert.That(results[0].Details.Cause, Is.Not.Null);
+            Assert.That(results[0].Details.Description, Is.Not.Null);
+            Assert.That(results[0].Details.Origin, Is.Not.Null);
+            Assert.That(results[0].Links, Is.Not.Null);
+            Assert.That(results[0].Links.Refund, Is.Not.Null);
+            Assert.That(results[0].Metadata, Is.Not.Null);
+            Assert.That(results[0].ResourceType, Is.EqualTo(ResourceType.Refunds));
         }
 
         [Test]
@@ -191,22 +192,22 @@ namespace GoCardlessApi.Tests.Integration.Clients
             };
 
             // when
-            var result = (await _subject.GetPageAsync(options)).Items.ToList();
+            var results = (await _subject.GetPageAsync(options)).Items.ToList();
 
             // then
-            Assert.That(result.Any(), Is.True);
-            Assert.That(result[0], Is.Not.Null);
-            Assert.That(result[0].Id, Is.Not.Null);
-            Assert.That(result[0].Action, Is.Not.Null);
-            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result[0].Details, Is.Not.Null);
-            Assert.That(result[0].Details.Cause, Is.Not.Null);
-            Assert.That(result[0].Details.Description, Is.Not.Null);
-            Assert.That(result[0].Details.Origin, Is.Not.Null);
-            Assert.That(result[0].Links, Is.Not.Null);
-            Assert.That(result[0].Links.Subscription, Is.Not.Null);
-            Assert.That(result[0].Metadata, Is.Not.Null);
-            Assert.That(result[0].ResourceType, Is.EqualTo(ResourceType.Subscriptions));
+            Assert.That(results.Any(), Is.True);
+            Assert.That(results[0], Is.Not.Null);
+            Assert.That(results[0].Id, Is.Not.Null);
+            Assert.That(results[0].Action, Is.Not.Null);
+            Assert.That(results[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(results[0].Details, Is.Not.Null);
+            Assert.That(results[0].Details.Cause, Is.Not.Null);
+            Assert.That(results[0].Details.Description, Is.Not.Null);
+            Assert.That(results[0].Details.Origin, Is.Not.Null);
+            Assert.That(results[0].Links, Is.Not.Null);
+            Assert.That(results[0].Links.Subscription, Is.Not.Null);
+            Assert.That(results[0].Metadata, Is.Not.Null);
+            Assert.That(results[0].ResourceType, Is.EqualTo(ResourceType.Subscriptions));
         }
 
         [Test]
@@ -283,24 +284,23 @@ namespace GoCardlessApi.Tests.Integration.Clients
             };
 
             // when
-            var result = (await _subject.GetPageAsync(options)).Items.ToList();
+            var results = (await _subject.GetPageAsync(options)).Items.ToList();
+            var actual = results.FirstOrDefault(x => x.Details.Currency != null);
 
             // then
-            Assert.That(result.Any(), Is.True);
-            Assert.That(result[0], Is.Not.Null);
-            Assert.That(result[0].Id, Is.Not.Null);
-            Assert.That(result[0].Action, Is.EqualTo(Actions.Creditor.NewPayoutCurrencyAdded));
-            Assert.That(result[0].CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
-            Assert.That(result[0].Details, Is.Not.Null);
-            Assert.That(result[0].Details.BankAccountId, Is.Not.Null);
-            Assert.That(result[0].Details.Cause, Is.EqualTo(Causes.NewPayoutCurrencyAdded));
-            Assert.That(result[0].Details.Currency, Is.Not.Null);
-            Assert.That(result[0].Details.Description, Is.Not.Null);
-            Assert.That(result[0].Details.Origin, Is.EqualTo(Origin.GoCardless));
-            Assert.That(result[0].Links, Is.Not.Null);
-            Assert.That(result[0].Links.Creditor, Is.Not.Null);
-            Assert.That(result[0].Metadata, Is.Not.Null);
-            Assert.That(result[0].ResourceType, Is.EqualTo(ResourceType.Creditors));
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual.Id, Is.Not.Null);
+            Assert.That(actual.Action, Is.EqualTo(Actions.Creditor.NewPayoutCurrencyAdded));
+            Assert.That(actual.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
+            Assert.That(actual.Details, Is.Not.Null);
+            Assert.That(actual.Details.BankAccountId, Is.Not.Null);
+            Assert.That(actual.Details.Cause, Is.EqualTo(Causes.NewPayoutCurrencyAdded));
+            Assert.That(actual.Details.Description, Is.Not.Null);
+            Assert.That(actual.Details.Origin, Is.EqualTo(Origin.GoCardless));
+            Assert.That(actual.Links, Is.Not.Null);
+            Assert.That(actual.Links.Creditor, Is.Not.Null);
+            Assert.That(actual.Metadata, Is.Not.Null);
+            Assert.That(actual.ResourceType, Is.EqualTo(ResourceType.Creditors));
         }
 
         [Test]
@@ -351,14 +351,14 @@ namespace GoCardlessApi.Tests.Integration.Clients
             };
 
             // when
-            var result = await _subject
+            var results = await _subject
                 .PageUsing(options)
                 .GetItemsAfterAsync();
 
             // then
-            Assert.That(result.Count, Is.GreaterThan(1));
-            Assert.That(result[0].Id, Is.Not.Null.And.Not.EqualTo(result[1].Id));
-            Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
+            Assert.That(results.Count, Is.GreaterThan(1));
+            Assert.That(results[0].Id, Is.Not.Null.And.Not.EqualTo(results[1].Id));
+            Assert.That(results[1].Id, Is.Not.Null.And.Not.EqualTo(results[0].Id));
         }
     }
 }
