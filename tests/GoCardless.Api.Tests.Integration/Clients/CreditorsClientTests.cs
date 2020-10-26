@@ -86,9 +86,14 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 CountryCode = "GB",
                 Links = new CreditorLinks
                 {
+                    DefaultAudPayoutAccount = creditor.Links.DefaultAudPayoutAccount,
+                    DefaultCadPayoutAccount = creditor.Links.DefaultCadPayoutAccount,
                     DefaultDkkPayoutAccount = creditor.Links.DefaultDkkPayoutAccount,
+                    DefaultEurPayoutAccount = creditor.Links.DefaultEurPayoutAccount,
                     DefaultGbpPayoutAccount = creditor.Links.DefaultGbpPayoutAccount,
+                    DefaultNzdPayoutAccount = creditor.Links.DefaultNzdPayoutAccount,
                     DefaultSekPayoutAccount = creditor.Links.DefaultSekPayoutAccount,
+                    DefaultUsdPayoutAccount = creditor.Links.DefaultUsdPayoutAccount,
                 },
                 Name = "API Client Development",
                 PostalCode = "SW1A 1AA",
@@ -110,9 +115,14 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.CountryCode, Is.EqualTo(options.CountryCode));
             Assert.That(actual.CreatedAt, Is.Not.Null.And.EqualTo(creditor.CreatedAt));
             Assert.That(actual.Links, Is.Not.Null);
+            Assert.That(actual.Links.DefaultAudPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultAudPayoutAccount));
+            Assert.That(actual.Links.DefaultCadPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultCadPayoutAccount));
             Assert.That(actual.Links.DefaultDkkPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultDkkPayoutAccount));
+            Assert.That(actual.Links.DefaultEurPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultEurPayoutAccount));
             Assert.That(actual.Links.DefaultGbpPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultGbpPayoutAccount));
+            Assert.That(actual.Links.DefaultNzdPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultNzdPayoutAccount));
             Assert.That(actual.Links.DefaultSekPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultSekPayoutAccount));
+            Assert.That(actual.Links.DefaultUsdPayoutAccount, Is.Not.Null.And.EqualTo(creditor.Links.DefaultUsdPayoutAccount));
             Assert.That(actual.Name, Is.EqualTo(options.Name));
             Assert.That(actual.PostalCode, Is.EqualTo(options.PostalCode));
             Assert.That(actual.Region, Is.EqualTo(options.Region));
@@ -135,9 +145,14 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.CountryCode, Is.Not.Null.And.EqualTo(expected.CountryCode));
             Assert.That(actual.CreatedAt, Is.Not.Null.And.EqualTo(expected.CreatedAt));
             Assert.That(actual.Links, Is.Not.Null);
+            Assert.That(actual.Links.DefaultAudPayoutAccount, Is.Not.Null.And.EqualTo(expected.Links.DefaultAudPayoutAccount));
+            Assert.That(actual.Links.DefaultCadPayoutAccount, Is.Not.Null.And.EqualTo(expected.Links.DefaultCadPayoutAccount));
             Assert.That(actual.Links.DefaultDkkPayoutAccount, Is.Not.Null.And.EqualTo(expected.Links.DefaultDkkPayoutAccount));
+            Assert.That(actual.Links.DefaultEurPayoutAccount, Is.Not.Null.And.EqualTo(expected.Links.DefaultEurPayoutAccount));
             Assert.That(actual.Links.DefaultGbpPayoutAccount, Is.Not.Null.And.EqualTo(expected.Links.DefaultGbpPayoutAccount));
+            Assert.That(actual.Links.DefaultNzdPayoutAccount, Is.Not.Null.And.EqualTo(expected.Links.DefaultNzdPayoutAccount));
             Assert.That(actual.Links.DefaultSekPayoutAccount, Is.Not.Null.And.EqualTo(expected.Links.DefaultSekPayoutAccount));
+            Assert.That(actual.Links.DefaultUsdPayoutAccount, Is.Not.Null.And.EqualTo(expected.Links.DefaultUsdPayoutAccount));
             Assert.That(actual.Name, Is.Not.Null.And.EqualTo(expected.Name));
             Assert.That(actual.PostalCode, Is.Not.Null.And.EqualTo(expected.PostalCode));
             Assert.That(actual.Region, Is.Not.Null.And.EqualTo(expected.Region));
