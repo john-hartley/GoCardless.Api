@@ -3,6 +3,8 @@
     public class EventLinks
     {
         public string Creditor { get; set; }
+        public string Customer { get; set; }
+        public string CustomerBankAccount { get; set; }
         public string Mandate { get; set; }
         public string NewCustomerBankAccount { get; set; }
         public string NewMandate { get; set; }

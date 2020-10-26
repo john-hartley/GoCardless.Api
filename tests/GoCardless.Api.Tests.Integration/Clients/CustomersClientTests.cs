@@ -183,6 +183,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 PhoneNumber = "+44 1235 567890",
                 PostalCode = "SW1A 1AA",
                 Region = "Region",
+                SwedishIdentityNumber = "5302256218",
             };
 
             // when
@@ -218,6 +219,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
                 PhoneNumber = "+44 1235 567890",
                 PostalCode = "SW1A 1AA",
                 Region = "Essex",
+                SwedishIdentityNumber = "5302256218",
             };
 
             // when
@@ -292,6 +294,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.PhoneNumber, Is.EqualTo(expected.PhoneNumber));
             Assert.That(actual.PostalCode, Is.EqualTo(expected.PostalCode));
             Assert.That(actual.Region, Is.EqualTo(expected.Region));
+            Assert.That(actual.SwedishIdentityNumber, Does.Contain(expected.SwedishIdentityNumber));
         }
     }
 }

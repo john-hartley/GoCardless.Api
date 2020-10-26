@@ -44,6 +44,37 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
             return CreateCustomer(countryCode ?? "GB", language ?? "en", region);
         }
 
+        private async Task<Customer> CreateCustomer(
+            string countryCode,
+            string language,
+            string region = "Essex",
+            string danishIdentityNumber = null,
+            string swedishIdentityNumber = null)
+        {
+            var options = new CreateCustomerOptions
+            {
+                AddressLine1 = "Address Line 1",
+                AddressLine2 = "Address Line 2",
+                AddressLine3 = "Address Line 3",
+                City = "London",
+                CompanyName = "Company Name",
+                CountryCode = countryCode,
+                DanishIdentityNumber = danishIdentityNumber,
+                Email = "email@example.com",
+                FamilyName = "Family Name",
+                GivenName = "Given Name",
+                Language = language,
+                Metadata = Metadata.Initial,
+                PhoneNumber = "+44 1234 567890",
+                PostalCode = "SW1A 1AA",
+                Region = region,
+                SwedishIdentityNumber = swedishIdentityNumber
+            };
+
+            var customersClient = new CustomersClient(_configuration);
+            return (await customersClient.CreateAsync(options)).Item;
+        }
+
         internal async Task<CustomerBankAccount> CreateCustomerBankAccountFor(Customer customer)
         {
             var options = new CreateCustomerBankAccountOptions
@@ -217,37 +248,6 @@ namespace GoCardlessApi.Tests.Integration.TestHelpers
 
             var subscriptionsClient = new SubscriptionsClient(_configuration);
             return (await subscriptionsClient.CreateAsync(options)).Item;
-        }
-
-        private async Task<Customer> CreateCustomer(
-            string countryCode,
-            string language,
-            string region = "Essex",
-            string danishIdentityNumber = null,
-            string swedishIdentityNumber = null)
-        {
-            var options = new CreateCustomerOptions
-            {
-                AddressLine1 = "Address Line 1",
-                AddressLine2 = "Address Line 2",
-                AddressLine3 = "Address Line 3",
-                City = "London",
-                CompanyName = "Company Name",
-                CountryCode = countryCode,
-                DanishIdentityNumber = danishIdentityNumber,
-                Email = "email@example.com",
-                FamilyName = "Family Name",
-                GivenName = "Given Name",
-                Language = language,
-                Metadata = Metadata.Initial,
-                PhoneNumber = "+44 1234 567890",
-                PostalCode = "SW1A 1AA",
-                Region = region,
-                SwedishIdentityNumber = swedishIdentityNumber
-            };
-
-            var customersClient = new CustomersClient(_configuration);
-            return (await customersClient.CreateAsync(options)).Item;
         }
     }
 }

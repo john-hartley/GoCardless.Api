@@ -3,7 +3,7 @@
     public class PayoutItem
     {
         public string Amount { get; set; }
-        public PayoutLinks Links { get; set; }
+        public PayoutItemLinks Links { get; set; }
 
         /// <summary>
         /// See <see cref="PayoutItems.PayoutItemType"/> for possible values.

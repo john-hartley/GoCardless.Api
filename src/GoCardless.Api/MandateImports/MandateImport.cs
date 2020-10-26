@@ -12,6 +12,9 @@ namespace GoCardlessApi.MandateImports
         /// </summary>
         public string Scheme { get; set; }
 
+        /// <summary>
+        /// See <see cref="MandateImports.MandateImportStatus"/> for possible values.
+        /// </summary>
         public string Status { get; set; }
     }
 }

@@ -297,6 +297,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             var options = new RetryPaymentOptions
             {
                 Id = payment.Id,
+                ChargeDate = _mandate.NextPossibleChargeDate,
                 Metadata = Metadata.Initial
             };
 

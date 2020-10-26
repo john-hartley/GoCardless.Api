@@ -9,6 +9,8 @@
         public static readonly string PaymentPaidOut = "payment_paid_out";
         public static readonly string PaymentRefunded = "payment_refunded";
         public static readonly string Refund = "refund";
+        public static readonly string RefundFundsReturned = "refund_funds_returned";
         public static readonly string RevenueShare = "revenue_share";
+        public static readonly string SurchargeFee = "surcharge_fee";
     }
 }
