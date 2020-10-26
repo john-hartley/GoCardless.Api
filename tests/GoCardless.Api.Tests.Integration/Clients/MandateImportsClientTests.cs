@@ -35,7 +35,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result.Item.Id, Is.Not.Null.And.EqualTo(mandateImport.Id));
             Assert.That(result.Item.CreatedAt, Is.Not.Null.And.EqualTo(mandateImport.CreatedAt));
             Assert.That(result.Item.Scheme, Is.Not.Null.And.EqualTo(mandateImport.Scheme));
-            Assert.That(result.Item.Status, Is.Not.Null.And.Not.EqualTo(mandateImport.Status));
+            Assert.That(result.Item.Status, Is.EqualTo(MandateImportStatus.Cancelled));
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result.Item.Id, Is.Not.Null);
             Assert.That(result.Item.CreatedAt, Is.Not.Null.And.Not.EqualTo(default(DateTimeOffset)));
             Assert.That(result.Item.Scheme, Is.EqualTo(options.Scheme));
-            Assert.That(result.Item.Status, Is.Not.Null);
+            Assert.That(result.Item.Status, Is.EqualTo(MandateImportStatus.Created));
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result.Item.Id, Is.Not.Null.And.EqualTo(mandateImport.Id));
             Assert.That(result.Item.CreatedAt, Is.Not.Null.And.EqualTo(mandateImport.CreatedAt));
             Assert.That(result.Item.Scheme, Is.Not.Null.And.EqualTo(mandateImport.Scheme));
-            Assert.That(result.Item.Status, Is.Not.Null.And.EqualTo(mandateImport.Status));
+            Assert.That(result.Item.Status, Is.EqualTo(MandateImportStatus.Created));
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result.Item.Id, Is.Not.Null.And.EqualTo(mandateImport.Id));
             Assert.That(result.Item.CreatedAt, Is.Not.Null.And.EqualTo(mandateImport.CreatedAt));
             Assert.That(result.Item.Scheme, Is.Not.Null.And.EqualTo(mandateImport.Scheme));
-            Assert.That(result.Item.Status, Is.Not.Null.And.Not.EqualTo(mandateImport.Status));
+            Assert.That(result.Item.Status, Is.EqualTo(MandateImportStatus.Submitted));
         }
     }
 }
