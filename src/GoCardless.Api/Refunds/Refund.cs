@@ -12,5 +12,10 @@ namespace GoCardlessApi.Refunds
         public RefundLinks Links { get; set; }
         public IDictionary<string, string> Metadata { get; set; }
         public string Reference { get; set; }
+
+        /// <summary>
+        /// See <see cref="Refunds.RefundStatus"/> for possible values.
+        /// </summary>
+        public string Status { get; set; }
     }
 }

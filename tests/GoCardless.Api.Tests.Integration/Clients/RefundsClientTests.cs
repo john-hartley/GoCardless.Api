@@ -60,6 +60,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Links.Payment, Is.EqualTo(options.Links.Payment));
             Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
             Assert.That(actual.Reference, Is.EqualTo(options.Reference));
+            Assert.That(actual.Status, Is.Not.Null);
         }
 
         [Test, NonParallelizable]
