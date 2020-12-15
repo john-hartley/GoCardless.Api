@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using GoCardlessApi.Creditors;
 using GoCardlessApi.Tests.Integration.TestHelpers;
+using GoCardlessApi.Common;
 
 namespace GoCardlessApi.Tests.Integration.Clients
 {
@@ -68,10 +69,12 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             var schemeIdentifier = actual.SchemeIdentifiers.SingleOrDefault(x => x.Currency == "GBP");
             Validate(schemeIdentifier);
+
+            var sepaSchemeIdentifier = actual.SchemeIdentifiers.SingleOrDefault(x => x.Scheme == Scheme.Sepa);
+            Assert.That(sepaSchemeIdentifier, Is.Not.Null);
         }
 
-
-        [Test, NonParallelizable]
+        [Test, Explicit("Can fail if a bank account is set to disabled by another test after the creditor was fetched.")]
         public async Task updates_creditor()
         {
             // given
