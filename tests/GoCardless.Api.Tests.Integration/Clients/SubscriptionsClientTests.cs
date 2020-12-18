@@ -29,7 +29,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         }
 
         [Test]
-        public async Task creates_conflicting_subscription()
+        public async Task creates_subscription_specifying_number_of_payments()
         {
             // given
             var options = new CreateSubscriptionOptions
@@ -78,7 +78,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
         public async Task creates_subscription_using_month_and_day_of_month()
         {
             // given
-            var startDate = DateTime.Now.AddDays(7);
+            var startDate = _mandate.NextPossibleChargeDate.Value;
             var options = new CreateSubscriptionOptions
             {
                 Amount = 123,
