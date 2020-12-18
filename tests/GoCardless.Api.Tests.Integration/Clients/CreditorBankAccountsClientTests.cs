@@ -25,6 +25,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             _subject = new CreditorBankAccountsClient(_configuration);
         }
 
+
         [Test, Explicit("Checking the disabled state in the final assertion sometimes takes a little time.")]
         [Category(TestCategory.TimeDependent)]
         public async Task creates_and_disables_conflicting_creditor_bank_account_using_bank_code()
