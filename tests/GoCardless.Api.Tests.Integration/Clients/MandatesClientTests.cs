@@ -235,17 +235,17 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
         }
 
-        [Test, NonParallelizable]
+        [Test]
         [Category(TestCategory.Paging)]
         public async Task pages_through_mandates()
         {
             // given
-            var firstId = (await _subject.GetPageAsync()).Items.First().Id;
+            var first = (await _subject.GetPageAsync()).Items.First();
 
             var options = new GetMandatesOptions
             {
-                After = firstId,
-                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddMinutes(-1))
+                After = first.Id,
+                CreatedGreaterThan = first.CreatedAt.AddDays(-1),
             };
 
             // when

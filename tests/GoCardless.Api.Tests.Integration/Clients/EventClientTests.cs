@@ -337,28 +337,28 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.ResourceType, Is.Not.Null.And.EqualTo(@event.ResourceType));
         }
 
-        [Test, NonParallelizable]
+        [Test]
         [Category(TestCategory.Paging)]
         public async Task pages_through_events()
         {
             // given
-            var firstId = (await _subject.GetPageAsync()).Items.First().Id;
+            var first = (await _subject.GetPageAsync()).Items.First();
 
             var options = new GetEventsOptions
             {
-                After = firstId,
-                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddMinutes(-1))
+                After = first.Id,
+                CreatedGreaterThan = first.CreatedAt.AddDays(-1),
             };
 
             // when
-            var results = await _subject
+            var result = await _subject
                 .PageUsing(options)
                 .GetItemsAfterAsync();
 
             // then
-            Assert.That(results.Count, Is.GreaterThan(1));
-            Assert.That(results[0].Id, Is.Not.Null.And.Not.EqualTo(results[1].Id));
-            Assert.That(results[1].Id, Is.Not.Null.And.Not.EqualTo(results[0].Id));
+            Assert.That(result.Count, Is.GreaterThan(1));
+            Assert.That(result[0].Id, Is.Not.Null.And.Not.EqualTo(result[1].Id));
+            Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
         }
     }
 }

@@ -312,17 +312,17 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Status, Is.EqualTo(PaymentStatus.PendingSubmission));
         }
 
-        [Test, NonParallelizable]
+        [Test]
         [Category(TestCategory.Paging)]
         public async Task pages_through_payments()
         {
             // given
-            var firstId = (await _subject.GetPageAsync()).Items.First().Id;
+            var first = (await _subject.GetPageAsync()).Items.First();
 
             var options = new GetPaymentsOptions
             {
-                After = firstId,
-                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddMinutes(-1))
+                After = first.Id,
+                CreatedGreaterThan = first.CreatedAt.AddDays(-1),
             };
 
             // when
