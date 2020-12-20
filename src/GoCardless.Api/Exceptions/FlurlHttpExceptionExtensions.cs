@@ -1,5 +1,6 @@
 ﻿using Flurl.Http;
 using Newtonsoft.Json;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GoCardlessApi.Exceptions
@@ -44,19 +45,19 @@ namespace GoCardlessApi.Exceptions
             var error = apiErrorResponse.Error;
             if (error.Code == 409)
             {
-                return new ConflictingResourceException(error.Message, error);
+                return new ConflictingResourceException(error);
             }
 
             switch (error.Type)
             {
                 case "gocardless":
-                    return new ApiException($"An internal error occurred. Please contact GoCardless support, quoting '{error.RequestId}' as the id of the request.", error);
+                    return new ApiException($"An internal error occurred. Please contact GoCardless support, quoting '{error.RequestId}' as the id of the request.", flurlHttpException, error);
                 case "invalid_api_usage":
-                    return new InvalidApiUsageException(error.Message, error);
+                    return new InvalidApiUsageException(error);
                 case "invalid_state":
-                    return new InvalidStateException(error.Message, error);
+                    return new InvalidStateException(error);
                 case "validation_failed":
-                    return new ValidationFailedException(error.Message, error);
+                    return new ValidationFailedException(error);
                 default:
                     return new ApiException($"Unknown API error type '{error.Type}' found. See the RawResponse property, and the inner exception, for details.", flurlHttpException, error);
             }

@@ -6,12 +6,16 @@ namespace GoCardlessApi.Exceptions
 {
     public class ApiException : Exception
     {
-        public ApiException() : base("An unknown API error occurred.") { }
+        private const string DefaultMessage = "An unknown API error occurred. Please see the RawResponse property for more information.";
+
+        public ApiException() : base(DefaultMessage) { }
         public ApiException(string message) : base(message) { }
         public ApiException(string message, Exception innerException) : base(message, innerException) { }
 
-        public ApiException(string message, ApiError apiError) : this(message, null, apiError) { }
-        public ApiException(string message, Exception innerException, ApiError apiError) : base(message, innerException)
+        public ApiException(ApiError apiError) : this(MessageFrom(apiError), null, apiError) { }
+
+        public ApiException(string message, Exception innerException, ApiError apiError) 
+            : base(message, innerException)
         {
             Code = apiError.Code;
             DocumentationUrl = apiError.DocumentationUrl;
@@ -48,6 +52,24 @@ namespace GoCardlessApi.Exceptions
                     ?.Links
                     ?.SingleOrDefault(x => x.Key == "conflicting_resource_id").Value;
             }
+        }
+
+        private static string MessageFrom(ApiError apiError)
+        {
+            var error = apiError.Errors.FirstOrDefault(x => !string.IsNullOrWhiteSpace(x.Message));
+            if (error == null)
+            {
+                return !string.IsNullOrWhiteSpace(apiError.Message)
+                    ? apiError.Message
+                    : DefaultMessage;
+            }
+
+            if (string.IsNullOrWhiteSpace(error.Field))
+            {
+                return error.Message;
+            }
+
+            return $"{error.Field}: {error.Message}";
         }
     }
 }
