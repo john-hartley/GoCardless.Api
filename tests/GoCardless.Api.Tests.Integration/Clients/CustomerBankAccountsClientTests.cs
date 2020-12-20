@@ -222,7 +222,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(actual.Metadata, Is.EqualTo(options.Metadata));
         }
 
-        [Test]
+        [Test, NonParallelizable]
         [Category(TestCategory.Paging)]
         public async Task pages_through_customer_bank_accounts()
         {
@@ -232,7 +232,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             var options = new GetCustomerBankAccountsOptions
             {
                 After = firstId,
-                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1))
+                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddMinutes(-1))
             };
 
             // when
