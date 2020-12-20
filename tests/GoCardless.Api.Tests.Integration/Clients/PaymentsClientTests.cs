@@ -317,12 +317,12 @@ namespace GoCardlessApi.Tests.Integration.Clients
         public async Task pages_through_payments()
         {
             // given
-            var firstId = (await _subject.GetPageAsync()).Items.First().Id;
+            var first = (await _subject.GetPageAsync()).Items.First();
 
             var options = new GetPaymentsOptions
             {
-                After = firstId,
-                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1))
+                After = first.Id,
+                CreatedGreaterThan = first.CreatedAt.AddDays(-1),
             };
 
             // when

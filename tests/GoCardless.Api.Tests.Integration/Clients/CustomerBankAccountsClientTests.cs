@@ -227,12 +227,12 @@ namespace GoCardlessApi.Tests.Integration.Clients
         public async Task pages_through_customer_bank_accounts()
         {
             // given
-            var firstId = (await _subject.GetPageAsync()).Items.First().Id;
+            var first = (await _subject.GetPageAsync()).Items.First();
 
             var options = new GetCustomerBankAccountsOptions
             {
-                After = firstId,
-                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1))
+                After = first.Id,
+                CreatedGreaterThan = first.CreatedAt.AddDays(-1),
             };
 
             // when
