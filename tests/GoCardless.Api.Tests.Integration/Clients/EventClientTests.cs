@@ -342,12 +342,14 @@ namespace GoCardlessApi.Tests.Integration.Clients
         public async Task pages_through_events()
         {
             // given
-            var first = (await _subject.GetPageAsync()).Items.First();
+            var items = (await _subject.GetPageAsync()).Items;
+            var first = items.First();
+            var last = items.Last();
 
             var options = new GetEventsOptions
             {
                 After = first.Id,
-                CreatedGreaterThan = first.CreatedAt.AddDays(-1),
+                CreatedGreaterThan = last.CreatedAt.AddDays(-1)
             };
 
             // when
@@ -357,6 +359,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             // then
             Assert.That(result.Count, Is.GreaterThan(1));
+            Assert.That(result.Any(x => x.Id == first.Id), Is.False);
             Assert.That(result[0].Id, Is.Not.Null.And.Not.EqualTo(result[1].Id));
             Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
         }
