@@ -342,7 +342,6 @@ namespace GoCardlessApi.Tests.Integration.Clients
         public async Task pages_through_events()
         {
             // given
-            // given
             var items = (await _subject.GetPageAsync()).Items;
             var first = items.First();
             var last = items.Last();
