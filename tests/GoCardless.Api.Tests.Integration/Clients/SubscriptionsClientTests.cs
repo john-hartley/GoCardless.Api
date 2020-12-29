@@ -83,7 +83,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             {
                 Amount = 123,
                 Currency = "GBP",
-                DayOfMonth = DateTime.Now.Day,
+                DayOfMonth = Day.From(DateTime.Now),
                 Interval = 1,
                 IntervalUnit = IntervalUnit.Yearly,
                 Links = new SubscriptionLinks
