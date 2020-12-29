@@ -236,12 +236,14 @@ namespace GoCardlessApi.Tests.Integration.Clients
         public async Task pages_through_customers()
         {
             // given
-            var firstId = (await _subject.GetPageAsync()).Items.First().Id;
+            var items = (await _subject.GetPageAsync()).Items;
+            var first = items.First();
+            var last = items.Last();
 
             var options = new GetCustomersOptions
             {
-                After = firstId,
-                CreatedGreaterThan = new DateTimeOffset(DateTime.Now.AddDays(-1))
+                After = first.Id,
+                CreatedGreaterThan = last.CreatedAt.AddDays(-1)
             };
 
             // when
@@ -251,6 +253,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
 
             // then
             Assert.That(result.Count, Is.GreaterThan(1));
+            Assert.That(result.Any(x => x.Id == first.Id), Is.False);
             Assert.That(result[0].Id, Is.Not.Null.And.Not.EqualTo(result[1].Id));
             Assert.That(result[1].Id, Is.Not.Null.And.Not.EqualTo(result[0].Id));
         }
