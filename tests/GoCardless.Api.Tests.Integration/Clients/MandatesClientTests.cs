@@ -76,7 +76,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(createResult.Item.Metadata, Is.EqualTo(createOptions.Metadata));
             Assert.That(createResult.Item.NextPossibleChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
             Assert.That(createResult.Item.Reference, Is.Not.Null.And.EqualTo(createOptions.Reference));
-            Assert.That(createResult.Item.Scheme, Is.EqualTo(createOptions.Scheme));
+            Assert.That(createResult.Item.Scheme, Is.EqualTo(Scheme.Bacs));
             Assert.That(createResult.Item.Status, Is.Not.Null.And.Not.EqualTo(MandateStatus.Cancelled));
             
             Assert.That(cancelResult.Item.Status, Is.EqualTo(MandateStatus.Cancelled));
@@ -111,7 +111,7 @@ namespace GoCardlessApi.Tests.Integration.Clients
             Assert.That(result.Item.Links.CustomerBankAccount, Is.EqualTo(_customerBankAccount.Id));
             Assert.That(result.Item.Metadata, Is.EqualTo(options.Metadata));
             Assert.That(result.Item.NextPossibleChargeDate, Is.Not.Null.And.Not.EqualTo(default(DateTime)));
-            Assert.That(result.Item.Scheme, Is.EqualTo(options.Scheme));
+            Assert.That(result.Item.Scheme, Is.EqualTo(Scheme.Bacs));
             Assert.That(result.Item.Status, Is.Not.Null.And.Not.EqualTo(MandateStatus.Cancelled));
         }
 

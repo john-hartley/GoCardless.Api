@@ -8,6 +8,7 @@
         public static readonly string Becs = "becs";
         public static readonly string BecsNz = "becs_nz";
         public static readonly string Betalingsservice = "betalingsservice";
+        public static readonly string Pad = "pad";
 
         /// <summary>
         /// Should only be used with the creditors endpoint.
